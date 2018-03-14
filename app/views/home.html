@@ -1,16 +1,39 @@
-<div layout="column">
-	<h1>Hello World</h1>
-	
-	<!-- Mentions légales -->
-	<div
-		layout="column"
-		layout-align="center center"
-		style="padding: 16px;"
-		md-colors="{
-    	background: 'default-background-200'
-	  }"
-	>
-		<a href="legalnotice.html">Mentions légales</a>
+<div layout="row" layout-fill>
+	<div layout="column" style="width:32px" md-colors="{background: 'default-background-500'}">
+		
 	</div>
+	<div layout="row" flex>
+		<div layout="column" flex="66">
+			<!-- Select left panel content -->
+			<md-toolbar class="md-hue-2">
+				<div class="md-toolbar-tools">
+		      <h2 md-truncate flex>My App's Title</h2>
+		      <md-button>
+		        Right Bar Button
+		      </md-button>
+		    </div>
+			</md-toolbar>
 
+			<!-- Left panel -->
+			<div layout="column" flex>
+				<div flex>Left panel content</div>
+				<div style="height: 32px" md-colors="{background: 'default-background-500'}"></div>
+			</div>
+		</div>
+		<div layout="column" flex="33">
+
+			<!-- Title -->
+			<md-toolbar class="md-hue-2">
+				<div class="md-toolbar-tools">
+		      <h2 md-truncate flex>Project Title</h2>
+		    </div>
+			</md-toolbar>
+
+			<!-- Right panel -->
+			<div layout="column" flex>
+				<div flex>Right panel content</div>
+				<div style="height: 32px" md-colors="{background: 'default-background-500'}"></div>
+			</div>
+		</div>
+	</div>
 </div>
