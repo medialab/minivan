@@ -1,0 +1,26 @@
+{
+  "name": "visual-network-analyser",
+  "private": true,
+  "version": "0.0.1",
+  "description": "A web interface for visual network analysis",
+  "repository": "https://github.com/medialab/visual-net-analyser",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/angular/material/blob/master/LICENSE"
+    }
+  ],
+  "dependencies": {
+    "angular": "^1.4.9",
+    "angular-animate": "^1.4.9",
+    "angular-aria": "^1.4.9",
+    "angular-marked": "^1.2.2",
+    "angular-material": "^1.1.5",
+    "angular-messages": "^1.6.6",
+    "angular-route": "^1.4.9",
+    "angular-sanitize": "^1.5.7",
+    "d3": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {}
+}
