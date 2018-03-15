@@ -4,15 +4,28 @@
 
 angular.module('app.services', [])
 
-	.factory('networkData', ['$http', function($http){
+	.factory('networkData', ['$http', 'networkProcessor', function($http, networkProcessor){
     var ns = {}     // namespace
 
     $http.get('data/sample rio+20.gexf')
       .then(function(r){
-        ns.g = r.data
+        ns = networkProcessor.process(r.data)
       }, function(){
         console.error('Error loading sample network')
       })
+
+    return ns
+  }])
+
+  .factory('networkProcessor', [function(){
+    var ns = {}     // namespace
+
+    ns.process = function(gexf){
+      var result = {}
+      result.g = gexf
+      console.log(result)
+      return result
+    }
 
     return ns
   }])
