@@ -5,7 +5,7 @@ module.exports = {
   entry: './vendors.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'app')
   },
   module: {
     rules: [
