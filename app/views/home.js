@@ -15,6 +15,6 @@ angular.module('app.home', ['ngRoute'])
 	$timeout,
 	$routeParams
 ) {
-
+	$scope.attributes = ['Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie']
 	
 })

@@ -27,8 +27,8 @@
 				    </div>
 					</md-toolbar>
 					<!-- Content -->
-					<div>
-						Hello World
+					<div flex layout="column" layout-align="center center">
+						MAP
 					</div>
 				</div>
 				<!-- Footer -->
@@ -50,12 +50,23 @@
 				    </div>
 					</md-toolbar>
 					<!-- Content -->
-					<div>
-						Lolilol
+					<div flex>
+						<md-virtual-repeat-container layout-fill>
+				      <div md-virtual-repeat="attribute in attributes" flex>
+				        <div attribute="attribute" layout="column" layout-align="center center" style="height: 80px;">
+				        	{{attribute}}
+				        </div>
+				      </div>
+				    </md-virtual-repeat-container>
 					</div>
 				</div>
 				<!-- Footer -->
-				<div class="component-footer"></div>
+				<div class="component-footer" layout="row" layout-align="center center">
+					<md-button class="footer-button">
+		      	<md-icon>bubble_chart</md-icon>
+		        Map
+		      </md-button>
+				</div>
 			</div>
 		</div>
 	</div>
