@@ -22,7 +22,7 @@ angular.module('app.services', [])
 
     ns.process = function(gexf){
       var result = {}
-      result.g = gexf
+      result.g = Graph.library.gexf.parse(Graph, gexf)
       console.log(result)
       return result
     }
