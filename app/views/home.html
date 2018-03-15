@@ -1,38 +1,51 @@
-<div layout="row" layout-fill>
-	<div layout="column" style="width:32px" md-colors="{background: 'default-background-500'}">
+<div layout="row" layout-fill md-colors="{background: 'default-background-600'}">
+	<div layout="column" style="width:32px">
 		
 	</div>
 	<div layout="row" flex>
-		<div layout="column" flex="66">
-			<!-- Select left panel content -->
-			<md-toolbar class="md-hue-2">
-				<div class="md-toolbar-tools">
-		      <h2 md-truncate flex>My App's Title</h2>
-		      <md-button>
-		        Right Bar Button
-		      </md-button>
-		    </div>
-			</md-toolbar>
 
-			<!-- Left panel -->
+		<!-- Left part of the screen -->
+		<div layout="column" flex="66">
 			<div layout="column" flex>
-				<div flex>Left panel content</div>
-				<div style="height: 32px" md-colors="{background: 'default-background-500'}"></div>
+				<!-- Panel -->
+				<div layout="column" flex md-colors="{background: 'default-background-200'}">
+					<!-- Toolbar -->
+					<md-toolbar class="md-hue-2">
+						<div class="md-toolbar-tools">
+				      <h2 md-truncate flex>My App's Title</h2>
+				      <md-button>
+				        Right Bar Button
+				      </md-button>
+				    </div>
+					</md-toolbar>
+					<!-- Content -->
+					<div>
+						Hello World
+					</div>
+				</div>
+				<!-- Footer -->
+				<div class="component-footer"></div>
 			</div>
 		</div>
+
+		<!-- Right part of the screen -->
 		<div layout="column" flex="33">
-
-			<!-- Title -->
-			<md-toolbar class="md-hue-2">
-				<div class="md-toolbar-tools">
-		      <h2 md-truncate flex>Project Title</h2>
-		    </div>
-			</md-toolbar>
-
-			<!-- Right panel -->
 			<div layout="column" flex>
-				<div flex>Right panel content</div>
-				<div style="height: 32px" md-colors="{background: 'default-background-500'}"></div>
+				<!-- Panel -->
+				<div layout="column" flex md-colors="{background: 'default-background-200'}">
+					<!-- Toolbar -->
+					<md-toolbar class="md-hue-2">
+						<div class="md-toolbar-tools">
+				      <h2 md-truncate flex>Project Title</h2>
+				    </div>
+					</md-toolbar>
+					<!-- Content -->
+					<div>
+						Lolilol
+					</div>
+				</div>
+				<!-- Footer -->
+				<div class="component-footer"></div>
 			</div>
 		</div>
 	</div>
