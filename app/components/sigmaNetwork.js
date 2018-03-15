@@ -115,7 +115,7 @@ angular.module('app.sigmaNetworkComponent', [])
             if ($scope.layout) {
               $scope.layout.kill()
             }
-            $scope.layout = new ForceAtlas2Layout($scope.network, {
+            $scope.layout = new Graph.library.FA2Layout($scope.network, {
               settings: {
                 barnesHutOptimize: $scope.network.order > 2000,
                 strongGravityMode: true,

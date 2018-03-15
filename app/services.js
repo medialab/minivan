@@ -30,6 +30,7 @@ angular.module('app.services', [])
     }
 
     ns.addMissingVisualizationData = function(g) {
+      // Nodes
       var colorIssues = 0
       var coordinateIssues = 0
       g.nodes().forEach(function(nid){
@@ -50,11 +51,24 @@ angular.module('app.services', [])
       })
 
       if (coordinateIssues > 0) {
-        console.warn('Note: '+coordinateIssues+' nodes had coordinate issues. We carelessly fixed them.')
+        console.warn('Note: '+coordinateIssues+' nodes had coordinate issues. We set them to a random position.')
       }
 
       if (colorIssues > 0) {
-        console.warn('Note: '+colorIssues+' nodes had color issues. We carelessly fixed them.')
+        console.warn('Note: '+colorIssues+' nodes had no color. We colored them to a default value.')
+      }
+
+      colorIssues = 0
+      g.edges().forEach(function(eid){
+        var e = g.getEdgeAttributes(eid)
+        if (e.color == undefined) {
+          e.color = '#665'
+          colorIssues++
+        }
+      })
+
+      if (colorIssues > 0) {
+        console.warn('Note: '+colorIssues+' edges had no color. We colored them to a default value.')
       }
 
       function isNumeric(n) {
