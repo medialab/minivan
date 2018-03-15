@@ -1,5 +1,5 @@
 // Style
-require('angular-material/angular-material.css');
+// require('angular-material/angular-material.css');
 
 // Angular
 require('angular');
