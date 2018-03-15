@@ -6,7 +6,7 @@ tmp
 .DS_Store
 .idea
 app/jspm_packages
-build
+app/bundle.js
 
 
 # Windows image file caches
