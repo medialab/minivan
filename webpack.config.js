@@ -1,6 +1,7 @@
 var path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: './vendors.js',
   output: {
     filename: 'bundle.js',
