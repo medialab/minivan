@@ -13,7 +13,8 @@ angular.module('app.home', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	$routeParams
+	$routeParams,
+	networkData
 ) {
 	$scope.attributes = ['Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie']
 	
