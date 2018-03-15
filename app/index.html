@@ -21,6 +21,10 @@
   display: none !important;
 }
 
+.component-panel {
+  margin-left: 6px;
+  margin-bottom: 6px;
+}
 .component-footer {
   height: 32px;
 }
@@ -69,15 +73,15 @@ angular
 
   // Material theme
   $mdThemingProvider.theme('default')
-    .primaryPalette('brown', {
-      'default': '200'
-    })
-    .accentPalette('amber', {
-      'default': '600'
-    })
-    .warnPalette('lime')
-    .backgroundPalette('grey', {
+    .primaryPalette('cyan', {
       'default': '100'
+    })
+    .accentPalette('lime', {
+      'default': '500'
+    })
+    .warnPalette('pink')
+    .backgroundPalette('grey', {
+      'default': '200'
     })
 
 })
