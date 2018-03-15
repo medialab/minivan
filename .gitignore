@@ -6,6 +6,7 @@ tmp
 .DS_Store
 .idea
 app/jspm_packages
+build
 
 
 # Windows image file caches

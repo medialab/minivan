@@ -4,6 +4,10 @@
   "version": "0.0.1",
   "description": "A web interface for visual network analysis",
   "repository": "https://github.com/medialab/visual-net-analyser",
+  "scripts": {
+    "build": "webpack --colors --progress",
+    "postinstall": "npm run build"
+  },
   "licenses": [
     {
       "type": "MIT",
@@ -24,6 +28,10 @@
     "graphology-library": "0.0.1",
     "sigma": "^2.0.0-alpha9"
   },
-  "devDependencies": {},
-  "scripts": {}
+  "devDependencies": {
+    "css-loader": "^0.28.10",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
+  }
 }
