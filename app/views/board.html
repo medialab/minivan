@@ -28,7 +28,19 @@
 					</md-toolbar>
 					<!-- Content -->
 					<div flex layout="column" layout-align="center center">
-						MAP
+						
+						<md-progress-circular
+							ng-if="networkData.loading"
+							md-mode="indeterminate"
+						></md-progress-circular>
+
+						<sigma-network
+							ng-if="!networkData.loading"
+							network="networkData.g"
+							on-node-click="networkNodeClick"
+							layout-fill
+						></sigma-network>
+						
 					</div>
 				</div>
 				<!-- Footer -->

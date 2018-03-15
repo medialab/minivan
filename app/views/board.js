@@ -17,5 +17,8 @@ angular.module('app.board', ['ngRoute'])
 	networkData
 ) {
 	$scope.attributes = ['Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie']
-	
+	$scope.networkData = networkData
+	$scope.networkNodeClick = function(nid) {
+    console.log('Click on', nid)
+  }
 })
