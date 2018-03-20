@@ -56,3 +56,13 @@
   margin-left: 0px;
   margin-right: -80px;
 }
+
+/**/
+
+.md-icon-12 {
+  font-size:12px;
+  height: 12px;
+  min-height:12px;
+  width: 12px;
+  min-width:12px;
+}

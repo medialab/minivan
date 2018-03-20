@@ -15,7 +15,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         suspendLayout: '=',             // Optional. Stops layout when suspendLayout becomes true
         startLayoutOnShow: '=',         // Optional. Starts layout when suspendLayout becomes false
         startLayoutOnLoad: '=',         // Optional. Default: true
-        onNodeClick: '='
+        onNodeClick: '=',
+        selectedAttId: '='
       }
       ,link: function($scope, el, attrs) {
         var sigma
