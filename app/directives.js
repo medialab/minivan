@@ -19,7 +19,9 @@ angular.module('app.directives', [])
     return {
       restrict: 'A',
       scope: {
-      	att: '='
+      	att: '=',
+      	printMode: '=',
+      	detailLevel: '='
       },
       templateUrl: 'components/attributeListElement.html'
     }

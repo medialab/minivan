@@ -66,7 +66,15 @@
 					<div flex>
 						<md-virtual-repeat-container layout-fill>
 				      <div md-virtual-repeat="att in networkData.nodeAttributes" flex>
-				        <div attribute-list-element att="att" layout layout-align="center center" style="height: 80px;"></div>
+				        <div
+					        attribute-list-element
+					        att="att"
+					        print-mode="false"
+					        detail-level="attributeListDetailLevel"
+					        layout
+					        layout-align="center center"
+					        style="height: 80px;"
+					      ></div>
 				      </div>
 				    </md-virtual-repeat-container>
 					</div>
@@ -79,17 +87,20 @@
 					<md-button class="footer-button">
 		      	<md-icon>print</md-icon>
 		      </md-button>
-					<md-button class="footer-button">
+					<md-button class="footer-button" ng-click="attributeListDetailLevel=1">
 						Details
-		      	<md-icon>radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel==1">radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel!=1">radio_button_unchecked</md-icon>
 		      	1
 		      </md-button>
-					<md-button class="footer-button">
-		      	<md-icon>radio_button_unchecked</md-icon>
+					<md-button class="footer-button" ng-click="attributeListDetailLevel=2">
+		      	<md-icon ng-if="attributeListDetailLevel==2">radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel!=2">radio_button_unchecked</md-icon>
 						2
 		      </md-button>
-					<md-button class="footer-button">
-		      	<md-icon>radio_button_unchecked</md-icon>
+					<md-button class="footer-button" ng-click="attributeListDetailLevel=3">
+		      	<md-icon ng-if="attributeListDetailLevel==3">radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel!=3">radio_button_unchecked</md-icon>
 		      	3
 		      </md-button>
 				</div>
