@@ -73,7 +73,7 @@ angular.module('app.services', [])
           ]
         })
         ns.nodeAttributes.push({
-          id: 'Nature of institution',
+          id: 'Nature of institution:',
           name: 'Nature of institution',
           type: 'partition',
           modalities: [
