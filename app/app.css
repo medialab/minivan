@@ -35,3 +35,24 @@
 .md-button.md-icon-button.sigma-button:hover {
   background-color: rgba(255, 255, 255, 1);
 }
+
+/* Shifting components */
+.shifter-80 {
+  height: 80px;
+  transition: margin 0.1s;
+  cursor: pointer;
+}
+.shifter-80:focus {
+  outline: none;
+  border: 0;
+}
+
+.leftshift-80 {
+  margin-left: -80px;
+  margin-right: 0px;
+}
+
+.rightshift-80 {
+  margin-left: 0px;
+  margin-right: -80px;
+}

@@ -1,22 +1,11 @@
 <!-- Detail level 1 -->
-<!-- <div layout-fill ng-if="detailLevel==1" layout="row">
-	<div flex layout="column" layout-align="center center">
-		<md-button layout-fill ng-click="selectAtt()">
-			<md-icon ng-if="isSelected">radio_button_checked</md-icon>
-			<md-icon ng-if="!isSelected">radio_button_unchecked</md-icon>
-			{{att.name}}
-		</md-button layout-fill>
-	</div>
-	<div style="width: 80px" layout="column" layout-align="center center" ng-if="isSelected">
-		<md-button class="md-fab md-mini md-primary">
-			<md-icon>arrow_forward</md-icon>
-		</md-button>
-	</div>
-</div> -->
-<md-list-item ng-if="detailLevel==1" ng-click="selectAtt()">
+<md-list-item
+	ng-if="detailLevel==1"
+	ng-click="selectAtt()"
+	md-colors="{background: isSelected ? 'default-accent-100-0.5' : 'default'}"
+>
 	<md-icon ng-if="isSelected">radio_button_checked</md-icon>
 	<md-icon ng-if="!isSelected">radio_button_unchecked</md-icon>
-	<!-- <md-checkbox ng-model="isSelected"></md-checkbox> -->
   <p>{{att.name}}</p>
   <md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected">
 		<md-icon>arrow_forward</md-icon>
@@ -24,7 +13,31 @@
 </md-list-item>
 
 <!-- Detail level 2 -->
-<div layout-fill ng-if="detailLevel==2">{{att.name}} - 2</div>
+<md-content
+	ng-if="detailLevel==2"
+	layout-fill
+	md-ink-ripple style="overflow: hidden;"
+	md-colors="{background: isSelected ? 'default-accent-100-0.5' : 'default'}"
+>
+	<div layout="row" class="shifter-80" ng-class="{'leftshift-80':isSelected, 'rightshift-80':!isSelected}" ng-click="selectAtt()">
+		<div style="width: 80px" layout="column" layout-align="center center">
+			MAP
+		</div>
+		<div flex layout="row">
+			<div flex layout="column" layout-align="center center">
+				B
+			</div>
+			<div flex layout="column" layout-align="center" style="padding: 6px">
+				{{att.name}}
+			</div>
+		</div>
+		<div style="width: 80px" layout="column" layout-align="center center">
+			<md-button class="md-fab md-mini md-primary md-secondary">
+				<md-icon>arrow_forward</md-icon>
+			</md-button>
+		</div>
+	</div>
+</md-content>
 
 <!-- Detail level 3 -->
 <div layout-fill ng-if="detailLevel==3">{{att.name}} - 3</div>
