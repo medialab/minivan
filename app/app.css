@@ -66,3 +66,7 @@
   width: 12px;
   min-width:12px;
 }
+
+.ontop {
+  z-index: 10;
+}
