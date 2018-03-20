@@ -18,6 +18,7 @@ angular.module('app.board', ['ngRoute'])
 ) {
 	$scope.networkData = networkData
 	$scope.attributeListDetailLevel = 1
+	$scope.selectedAttId = undefined
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }

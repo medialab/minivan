@@ -21,8 +21,21 @@ angular.module('app.directives', [])
       scope: {
       	att: '=',
       	printMode: '=',
-      	detailLevel: '='
+      	detailLevel: '=',
+      	selectedAttId: '='
       },
-      templateUrl: 'components/attributeListElement.html'
+      templateUrl: 'components/attributeListElement.html',
+      link: function($scope, el, attrs) {
+      	$scope.isSelected = false
+      	$scope.$watch('selectedAttId', function(){
+      		$scope.isSelected = $scope.att && $scope.att.id && $scope.selectedAttId == $scope.att.id
+      	})
+      	$scope.selectAtt = function(){
+      		$scope.isSelected = true
+      		$scope.selectedAttId = $scope.att.id
+      	}
+      }
+
+      
     }
   })

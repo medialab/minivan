@@ -44,6 +44,34 @@ angular.module('app.services', [])
             }
           ]
         })
+        ns.nodeAttributes.push({
+          id: 'Language',
+          name: 'Language',
+          type: 'partition',
+          modalities: [
+            {
+              value: 'English',
+              count: 153,
+              color: '#e4a3d6'
+            },{
+              value: 'Portuguese',
+              count: 120,
+              color: '#6bdcc2'
+            },{
+              value: 'All',
+              count: 63,
+              color: '#e7b27c'
+            },{
+              value: 'Spanish',
+              count: 18,
+              color: '#78c3ec'
+            },{
+              value: 'French',
+              count: 12,
+              color: '#bad68d'
+            }
+          ]
+        })
 
         ns.loading = false
       }, function(){

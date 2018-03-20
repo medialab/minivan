@@ -1,1 +1,21 @@
-{{att.name}} - Detail {{detailLevel}} - Print: {{printMode}}
+<!-- Detail level 1 -->
+<div layout-fill ng-if="detailLevel==1" layout="row">
+	<div flex layout="column" layout-align="center center">
+		<md-button layout-fill ng-click="selectAtt()">
+			<md-icon ng-if="isSelected">radio_button_checked</md-icon>
+			<md-icon ng-if="!isSelected">radio_button_unchecked</md-icon>
+			{{att.name}}
+		</md-button layout-fill>
+	</div>
+	<div style="width: 80px" layout="column" layout-align="center center" ng-if="isSelected">
+		<md-button class="md-fab md-mini md-primary">
+			<md-icon>arrow_forward</md-icon>
+		</md-button>
+	</div>
+</div>
+
+<!-- Detail level 2 -->
+<div layout-fill ng-if="detailLevel==2">{{att.name}} - 2</div>
+
+<!-- Detail level 3 -->
+<div layout-fill ng-if="detailLevel==3">{{att.name}} - 3</div>
