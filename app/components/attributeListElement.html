@@ -1,5 +1,5 @@
 <!-- Detail level 1 -->
-<div layout-fill ng-if="detailLevel==1" layout="row">
+<!-- <div layout-fill ng-if="detailLevel==1" layout="row">
 	<div flex layout="column" layout-align="center center">
 		<md-button layout-fill ng-click="selectAtt()">
 			<md-icon ng-if="isSelected">radio_button_checked</md-icon>
@@ -12,7 +12,16 @@
 			<md-icon>arrow_forward</md-icon>
 		</md-button>
 	</div>
-</div>
+</div> -->
+<md-list-item ng-if="detailLevel==1" ng-click="selectAtt()">
+	<md-icon ng-if="isSelected">radio_button_checked</md-icon>
+	<md-icon ng-if="!isSelected">radio_button_unchecked</md-icon>
+	<!-- <md-checkbox ng-model="isSelected"></md-checkbox> -->
+  <p>{{att.name}}</p>
+  <md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected">
+		<md-icon>arrow_forward</md-icon>
+	</md-button>
+</md-list-item>
 
 <!-- Detail level 2 -->
 <div layout-fill ng-if="detailLevel==2">{{att.name}} - 2</div>
