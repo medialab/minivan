@@ -72,6 +72,78 @@ angular.module('app.services', [])
             }
           ]
         })
+        ns.nodeAttributes.push({
+          id: 'Nature of institution',
+          name: 'Nature of institution',
+          type: 'partition',
+          modalities: [
+            {
+              value: 'NGO',
+              count: 171,
+              color: '#e4a3d6'
+            },{
+              value: 'Trans-institutional',
+              count: 42,
+              color: '#6bdcc2'
+            },{
+              value: 'Individual',
+              count: 32,
+              color: '#e7b27c'
+            },{
+              value: 'Educational',
+              count: 25,
+              color: '#78c3ec'
+            },{
+              value: 'Social Movement',
+              count: 23,
+              color: '#bad68d'
+            },{
+              value: 'Event',
+              count: 22,
+              color: '#AAAAAA'
+            },{
+              value: 'Media',
+              count: 20,
+              color: '#AAAAAA'
+            },{
+              value: 'Governmental',
+              count: 15,
+              color: '#AAAAAA'
+            },{
+              value: 'Business',
+              count: 9,
+              color: '#AAAAAA'
+            },{
+              value: 'Religious',
+              count: 6,
+              color: '#AAAAAA'
+            }
+          ]
+        })
+        ns.nodeAttributes.push({
+          id: 'indegree',
+          name: 'Ranking A',
+          type: 'ranking',
+          min: 0,
+          max: 51,
+          areaScaling: {
+            min: 1,
+            max: 10,
+            interpolation: 'linear'
+          }
+        })
+        ns.nodeAttributes.push({
+          id: 'outdegree',
+          name: 'Ranking B',
+          type: 'ranking',
+          min: 0,
+          max: 47,
+          areaScaling: {
+            min: 1,
+            max: 10,
+            interpolation: 'linear'
+          }
+        })
 
         ns.loading = false
       }, function(){
