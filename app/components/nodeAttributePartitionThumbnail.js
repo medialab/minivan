@@ -4,7 +4,7 @@
 
 angular.module('app.components.nodeAttributePartitionThumbnail', [])
 
-.directive('nodeAttributePartitionThumbnail', function($timeout, networkData){
+.directive('nodeAttributePartitionThumbnail', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -43,18 +43,9 @@ angular.module('app.components.nodeAttributePartitionThumbnail', [])
 					var x
 					var y
 					var d
-					var xScale = d3.scaleLinear()
-						.range([settings.offset, settings.width - settings.offset])
-					var yScale = d3.scaleLinear()
-						.range([settings.offset, settings.height - settings.offset])
-
-					var xExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'x') })
-					var yExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'y') })
-					var sizeRatio = Math.max((xExtent[1] - xExtent[0])/(settings.width-2*settings.offset), (yExtent[1] - yExtent[0])/(settings.height-2*settings.offset))
-					var xMean = (xExtent[0] + xExtent[1])/2
-					var yMean = (yExtent[0] + yExtent[1])/2
-					xScale.domain([ xMean - sizeRatio * settings.width / 2, xMean + sizeRatio * settings.width / 2 ])
-					yScale.domain([ yMean - sizeRatio * settings.height / 2, yMean + sizeRatio * settings.height / 2 ])
+					var scales = scalesUtils.getXYScales(settings.width, settings.height, settings.offset)
+					var xScale = scales[0]
+					var yScale = scales[1]
 
 					// Limit voronoi range
 					settings.voronoi_range = Math.min(settings.voronoi_range, Math.sqrt(Math.pow(settings.width, 2) + Math.pow(settings.height, 2)))
