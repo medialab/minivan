@@ -2,7 +2,7 @@
 <md-list-item
 	ng-if="detailLevel==1"
 	ng-click="selectAtt()"
-	md-colors="{background: isSelected ? 'default-accent-100-0.5' : 'default'}"
+	md-colors="{background: isSelected ? 'default-background-50' : 'default'}"
 >
 	<md-icon ng-if="isSelected">radio_button_checked</md-icon>
 	<md-icon ng-if="!isSelected">radio_button_unchecked</md-icon>
@@ -17,7 +17,7 @@
 	ng-if="detailLevel==2"
 	layout-fill
 	md-ink-ripple style="overflow: hidden;"
-	md-colors="{background: isSelected ? 'default-accent-100-0.5' : 'default'}"
+	md-colors="{background: isSelected ? 'default-background-50' : 'default'}"
 >
 	<div layout="row" class="shifter-80" ng-class="{'leftshift-80':isSelected, 'rightshift-80':!isSelected}" ng-click="selectAtt()">
 		<div style="width: 80px; padding: 3px 6px 3px 0px" layout="column" layout-align="center center">
