@@ -2,9 +2,9 @@
 
 /* Services */
 
-angular.module('app.components.nodeAttributePartitionThumbnail', [])
+angular.module('app.components.nodeAttributeThumbnail', [])
 
-.directive('nodeAttributePartitionThumbnail', function($timeout, networkData, scalesUtils){
+.directive('nodeAttributeThumbnail', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -112,10 +112,22 @@ angular.module('app.components.nodeAttributePartitionThumbnail', [])
 					})
 
 					// Colors
-					var colorsIndex = {}
-					$scope.att.modalities.forEach(function(modality){
-						colorsIndex[modality.value] = d3.color(modality.color)
-					})
+					var getColor
+					if ($scope.att.type == 'partition') {
+						var colorsIndex = {}
+						$scope.att.modalities.forEach(function(modality){
+							colorsIndex[modality.value] = modality.color
+						})
+						getColor = function(d){
+							return d3.color(colorsIndex[d] || '#999')
+						}
+					} else if ($scope.att.type == 'ranking-size') {
+						getColor = scalesUtils.getSizeAsColorScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
+					} else if ($scope.att.type == 'ranking-color') {
+						getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
+					} else {
+						getColor = function(){ return d3.color('#000') }
+					}
 
 					// Paint voronoi map
 					var imgd = ctx.getImageData(0, 0, settings.width, settings.height)
@@ -124,14 +136,14 @@ angular.module('app.components.nodeAttributePartitionThumbnail', [])
 					for ( i = 0, pixlen = pix.length; i < pixlen; i += 4 ) {
 					  var vid = vidPixelMap[i/4]
 					  if (vid > 0) {
-					  	var color = colorsIndex[g.getNodeAttribute(nodesIndex[vid], $scope.att.id)] || '#999'
+					  	var color = getColor(g.getNodeAttribute(nodesIndex[vid], $scope.att.id))
 					    pix[i  ] = color.r // red
 					    pix[i+1] = color.g // green
 					    pix[i+2] = color.b // blue
 					    if (settings.voronoi_paint_distance) {
-					      pix[i+3] = Math.floor(255 - 255 * Math.pow(dPixelMap[i/4]/settings.voronoi_range, 2))
+					      pix[i+3] = Math.floor(color.opacity * (255 - 255 * Math.pow(dPixelMap[i/4]/settings.voronoi_range, 2)))
 					    } else {
-					      pix[i+3] = 255 // alpha
+					      pix[i+3] = Math.floor(255*color.opacity) // alpha
 					    }
 					  }
 					}

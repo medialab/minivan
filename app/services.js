@@ -123,7 +123,7 @@ angular.module('app.services', [])
         ns.nodeAttributes.push({
           id: 'indegree',
           name: 'Ranking A',
-          type: 'ranking',
+          type: 'ranking-size',
           min: 0,
           max: 51,
           areaScaling: {
@@ -133,15 +133,23 @@ angular.module('app.services', [])
           }
         })
         ns.nodeAttributes.push({
-          id: 'outdegree',
+          id: 'degree',
           name: 'Ranking B',
-          type: 'ranking',
+          type: 'ranking-color',
+          min: 0,
+          max: 51,
+          colorScale: 'interpolateCubehelixDefault'
+        })
+        ns.nodeAttributes.push({
+          id: 'outdegree',
+          name: 'Ranking C',
+          type: 'ranking-size',
           min: 0,
           max: 47,
           areaScaling: {
             min: 1,
             max: 10,
-            interpolation: 'linear'
+            interpolation: 'pow-0.5'
           }
         })
 
@@ -226,6 +234,44 @@ angular.module('app.services', [])
 
   .factory('scalesUtils', ['networkData', function(networkData){
     var ns = {} // Namespace
+
+    ns.getSizeAsColorScale = function(minValue, maxValue, minScaling, maxScaling, interpolation) {
+      var dScale
+      if (interpolation == 'linear') {
+        dScale = d3.scaleLinear()
+          .range([minScaling/maxScaling, 1])
+          .domain([minValue, maxValue])
+      } else if (interpolation.split('-')[0] == 'pow') {
+        dScale = d3.scalePow()
+          .exponent(+interpolation.split('-')[1] || 1)
+          .range([minScaling/maxScaling, 1])
+          .domain([minValue, maxValue])
+      } else {
+        console.error('[error] Unknown interpolation')
+      }
+      var colorScale = function(d) {
+        var black = d3.color('#000')
+        black.opacity = dScale(d)
+        return black
+      }
+      return colorScale
+    }
+
+    ns.getColorScale = function(minValue, maxValue, colorScaleInterpolator) {
+      var dScale = d3.scaleLinear()
+        .range([1, 0])
+        .domain([minValue, maxValue])
+      
+      var d3Interpolator = d3[colorScaleInterpolator]
+      if (d3Interpolator === undefined) {
+        console.error('[error] Unknown d3 color interpolator:', colorScaleInterpolator)
+      }
+      var colorScale = function(d) {
+        console.log(dScale(d), d3Interpolator(dScale(d)))
+        return d3.color(d3Interpolator(dScale(d)))
+      }
+      return colorScale
+    }
 
     ns.getXYScales = function(width, height, offset) {
       var g = networkData.g
