@@ -267,7 +267,6 @@ angular.module('app.services', [])
         console.error('[error] Unknown d3 color interpolator:', colorScaleInterpolator)
       }
       var colorScale = function(d) {
-        console.log(dScale(d), d3Interpolator(dScale(d)))
         return d3.color(d3Interpolator(dScale(d)))
       }
       return colorScale
