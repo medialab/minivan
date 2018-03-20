@@ -65,10 +65,8 @@
 					<!-- Content -->
 					<div flex>
 						<md-virtual-repeat-container layout-fill>
-				      <div md-virtual-repeat="attribute in networkData.nodeAttributes" flex>
-				        <div attribute="attribute" layout="column" layout-align="center center" style="height: 80px;">
-				        	{{attribute.name}}
-				        </div>
+				      <div md-virtual-repeat="att in networkData.nodeAttributes" flex>
+				        <div attribute-list-element att="att" layout layout-align="center center" style="height: 80px;"></div>
 				      </div>
 				    </md-virtual-repeat-container>
 					</div>

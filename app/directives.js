@@ -13,3 +13,14 @@ angular.module('app.directives', [])
       templateUrl: 'components/projectTitleBar.html'
     }
   })
+
+.directive('attributeListElement', function(
+  ){
+    return {
+      restrict: 'A',
+      scope: {
+      	att: '='
+      },
+      templateUrl: 'components/attributeListElement.html'
+    }
+  })
