@@ -8,9 +8,43 @@ angular.module('app.services', [])
     var ns = {}     // namespace
 
     ns.loading = true
+
+    // Demo sample
     $http.get('data/sample rio+20.gexf')
       .then(function(r){
         networkProcessor.process(ns, r.data)
+
+        // Consolidate
+        ns.nodeAttributes = []
+        ns.nodeAttributes.push({
+          id: 'Category',
+          name: 'Category',
+          type: 'partition',
+          modalities: [
+            {
+              value: 'Social Ecology',
+              count: 134,
+              color: '#dcb1d5'
+            },{
+              value: 'Green-economy',
+              count: 120,
+              color: '#9adbc1'
+            },{
+              value: 'Deep Ecology',
+              count: 85,
+              color: '#dac899'
+            },{
+              value: 'New Ecologism',
+              count: 20,
+              color: '#84c9e9'
+            },{
+              value: 'Others',
+              count: 7,
+              color: '#AAAAAA'
+            }
+          ]
+        })
+
         ns.loading = false
       }, function(){
         console.error('Error loading sample network')
