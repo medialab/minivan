@@ -2,7 +2,7 @@
 
 /* Services */
 
-angular.module('app.sigmaNetworkComponent', [])
+angular.module('app.components.sigmaNetworkComponent', [])
 
   .directive('sigmaNetwork', function(
     $timeout

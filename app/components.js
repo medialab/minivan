@@ -3,7 +3,8 @@
 /* Controllers */
 
 angular.module('app.components', [
-    'app.sigmaNetworkComponent'
+    'app.components.sigmaNetworkComponent',
+    'app.components.nodeAttributePartitionThumbnail'
   ])
 
 ;
