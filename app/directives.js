@@ -97,25 +97,6 @@ angular.module('app.directives', [])
             ctx.stroke()
             ctx.closePath()
           }
-
-          // Colors
-          /*var getColor
-          if ($scope.att.type == 'partition') {
-            var colorsIndex = {}
-            $scope.att.modalities.forEach(function(modality){
-              colorsIndex[modality.value] = modality.color
-            })
-            getColor = function(d){
-              return d3.color(colorsIndex[d] || '#999')
-            }
-          } else if ($scope.att.type == 'ranking-size') {
-            getColor = scalesUtils.getSizeAsColorScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
-          } else if ($scope.att.type == 'ranking-color') {
-            getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
-          } else {
-            getColor = function(){ return d3.color('#000') }
-          }*/
-
         })
       }
     }
