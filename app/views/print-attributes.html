@@ -1,0 +1,22 @@
+<div class="page-container">
+	<div class="a4page" layout="column" style="position: relative">
+		<h1>Attributes</h1>
+  	<div class="thin-h-line" style="margin-bottom: 3px"></div>
+		<md-list>
+      <div
+      	ng-repeat="att in networkData.nodeAttributes"
+      	md-item-size="20"
+      	ng-class="{'leftshift-80':isSelected, 'rightshift-80':!isSelected}"
+      >
+      	<div class="thin-h-line"></div>
+        <div
+	        attribute-list-element
+	        att="att"
+	        print-mode="true"
+	        detail-level="attributeListDetailLevel"
+	      ></div>
+      </div>
+		</md-list>
+  	<div class="thin-h-line"></div>
+	</div>
+</div>

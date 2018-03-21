@@ -14,6 +14,7 @@ angular.module('app.components.nodeAttributeThumbnail', [])
     },
     link: function($scope, el, attrs) {
       $scope.$watch('att', redraw, true)
+      $scope.$watch('printMode', redraw, true)
       window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
         window.removeEventListener('resize', redraw)
@@ -31,7 +32,7 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 
 					// Canvas size
 					settings.save_at_the_end = false
-					settings.oversampling = $scope.printMode ? 3 : 1
+					settings.oversampling = $scope.printMode ? 4 : 2
 					settings.width =  container.offsetWidth
 					settings.height = container.offsetHeight
 					settings.margin = 3

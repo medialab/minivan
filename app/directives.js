@@ -31,8 +31,15 @@ angular.module('app.directives', [])
       		$scope.isSelected = $scope.att && $scope.att.id && $scope.selectedAttId == $scope.att.id
       	})
       	$scope.selectAtt = function(){
-      		$scope.isSelected = true
-      		$scope.selectedAttId = $scope.att.id
+      		if (!$scope.printMode) {
+      			if ($scope.selectedAttId == $scope.att.id) {
+      				$scope.isSelected = false
+		      		$scope.selectedAttId = undefined
+      			} else {
+		      		$scope.isSelected = true
+		      		$scope.selectedAttId = $scope.att.id
+      			}
+      		}
       	}
       }
 

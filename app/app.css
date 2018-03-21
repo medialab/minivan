@@ -36,6 +36,18 @@
   background-color: rgba(255, 255, 255, 1);
 }
 
+.md-icon-12 {
+  font-size:12px;
+  height: 12px;
+  min-height:12px;
+  width: 12px;
+  min-width:12px;
+}
+
+.ontop {
+  z-index: 10;
+}
+
 /* Shifting components */
 .shifter-80 {
   height: 80px;
@@ -57,16 +69,37 @@
   margin-right: -80px;
 }
 
-/**/
-
-.md-icon-12 {
-  font-size:12px;
-  height: 12px;
-  min-height:12px;
-  width: 12px;
-  min-width:12px;
+/* A4 page for printing */
+@media print {
+  .page-container {
+    -webkit-print-color-adjust: exact;
+    overflow: hidden;
+  }
 }
-
-.ontop {
-  z-index: 10;
+@media screen {
+  .page-container {
+    overflow: scroll;
+  }
+}
+.a4page {
+  background-color: #FFF;
+  width: 170mm;
+  /*height: 257mm;*/
+  overflow: hidden;
+}
+.a4page h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 300;
+}
+.a4page md-list {
+  padding: 0px;
+}
+.a4page .thin-h-line {
+  border-top: 1px solid #AAA;
+  transform: scaleY(0.5)
+}
+@page {
+  size: 210mm 297mm;
+  margin: 18mm 18mm 18mm 18mm;
 }
