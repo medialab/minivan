@@ -37,9 +37,7 @@ angular.module('app.components.partitionBarChart', [])
 	        settings.color_box_width = 20
 
           var data = $scope.att.modalities
-          	.sort(function(a, b){
-          		return a.count - b.count
-          	})
+          	
           // set the dimensions and margins of the graph
 					var margin = {top: 0, right: 6, bottom: 0, left: 12 + settings.color_box_width},
 					    width = container.offsetWidth - margin.left - margin.right,
@@ -47,7 +45,7 @@ angular.module('app.components.partitionBarChart', [])
 
 					// set the ranges
 					var y = d3.scaleBand()
-					          .range([height * Math.min(data.length, 10) / 10, 0])
+					          .range([0, height * Math.min(data.length, 10) / 10])
 
 					var x = d3.scaleLinear()
 					          .range([0, width]);
