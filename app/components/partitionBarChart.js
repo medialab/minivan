@@ -34,12 +34,14 @@ angular.module('app.components.partitionBarChart', [])
 	        var settings = {}
 	        settings.max_bars = 10
 	        settings.bar_spacing = 3
-	        settings.color_box_width = 20
+	        settings.color_box_width = 18
+	        settings.percent_box_width = 36
+	        settings.label_in_out_threshold = 0.4
 
           var data = $scope.att.modalities
           	
           // set the dimensions and margins of the graph
-					var margin = {top: 0, right: 6, bottom: 0, left: 12 + settings.color_box_width},
+					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.color_box_width + settings.percent_box_width},
 					    width = container.offsetWidth - margin.left - margin.right,
 					    height = container.offsetHeight - margin.top - margin.bottom;
 
@@ -70,13 +72,12 @@ angular.module('app.components.partitionBarChart', [])
 				      .attr('width', function(d) {return x(d.count); } )
 				      .attr('y', function(d) { return y(d.value); })
 				      .attr('height', y.bandwidth() - settings.bar_spacing)
-				      .attr('fill', '#BBB')
+				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
 
 				  // Text labels
 				  var labels = bars.enter().append('text')
-				      .attr('class', 'bar-label')
 				      .attr('x', function(d) {
-				      	if (x(d.count) > width/2) {
+				      	if (x(d.count) > width * settings.label_in_out_threshold) {
 				      		return x(d.count) - 3 
 				      	} else {
 				      		return x(d.count) + 3
@@ -85,7 +86,7 @@ angular.module('app.components.partitionBarChart', [])
 				      .attr('y', function(d) { return y(d.value) + y.bandwidth() - settings.bar_spacing - 5; })
 				      .text( function (d) { return d.value; })
               .attr('text-anchor', function(d,i) {
-				      	if (x(d.count) > width/2) {
+				      	if (x(d.count) > width * settings.label_in_out_threshold) {
 				      		return 'end' 
 				      	} else {
 				      		return 'start'
@@ -105,13 +106,13 @@ angular.module('app.components.partitionBarChart', [])
 					      	}
 					      })
           
-          // Adjust placement issues
+          // Labels: Adjust placement issues
           labels
           	.attr('text-anchor', function(d,i,e) {
 				      	if (d.oob) {
 				      		return 'start'
 				      	} else {
-				      		if (x(d.count) > width/2) {
+				      		if (x(d.count) > width * settings.label_in_out_threshold) {
 					      		return 'end' 
 					      	} else {
 					      		return 'start'
@@ -122,7 +123,7 @@ angular.module('app.components.partitionBarChart', [])
 				      	if (d.oob) {
 				      		return 3
 				      	} else {
-				      		if (x(d.count) > width/2) {
+				      		if (x(d.count) > width * settings.label_in_out_threshold) {
 					      		return x(d.count) - 3 
 					      	} else {
 					      		return x(d.count) + 3
@@ -133,7 +134,7 @@ angular.module('app.components.partitionBarChart', [])
 				      	if (d.oob) {
 				      		return '500'
 				      	} else {
-				      		if (x(d.count) > width/2) {
+				      		if (x(d.count) > width * settings.label_in_out_threshold) {
 					      		return '500' 
 					      	} else {
 					      		return '400'
@@ -141,16 +142,24 @@ angular.module('app.components.partitionBarChart', [])
 				      	}
 				      })
 
-          // console.log(labels.node().getBBox())
-
 				  // Color boxes
 				  bars.enter().append('rect')
-				      .attr('class', 'color-box')
-				      .attr('x', -6 - settings.color_box_width )
+				      .attr('x', - settings.percent_box_width - settings.color_box_width )
 				      .attr('width', settings.color_box_width )
 				      .attr('y', function(d) { return y(d.value); })
 				      .attr('height', y.bandwidth() - settings.bar_spacing)
 				      .attr('fill', function(d) { return d.color })
+
+				  // Percent labels
+				  var labels = bars.enter().append('text')
+				      .attr('x', - 6 )
+				      .attr('y', function(d) { return y(d.value) + y.bandwidth() - settings.bar_spacing - 5; })
+				      .text( function (d) { return Math.round(100 * d.count / g.order) + '%'; })
+              .attr('text-anchor', 'end')
+              .attr('font-family', 'Quicksand, sans-serif')
+              .attr('font-weight', '400')
+              .attr('font-size', '12px')
+              .attr('fill', 'black')
         })
       }
     }
