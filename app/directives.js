@@ -78,8 +78,6 @@ angular.module('app.directives', [])
           var width = settings.oversampling * settings.width
           var height = settings.oversampling * settings.height
 
-          console.log(width, height)
-          
           // Create the canvas
           container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
           var canvas = container.querySelector('#cnvs')
