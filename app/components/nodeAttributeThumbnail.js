@@ -9,7 +9,8 @@ angular.module('app.components.nodeAttributeThumbnail', [])
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
     scope: {
-      att: '='
+      att: '=',
+      printMode: '='
     },
     link: function($scope, el, attrs) {
       $scope.$watch('att', redraw, true)
@@ -30,9 +31,10 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 
 					// Canvas size
 					settings.save_at_the_end = false
+					settings.oversampling = $scope.printMode ? 3 : 1
 					settings.width =  container.offsetWidth
 					settings.height = container.offsetHeight
-					settings.offset = 3 // Margin
+					settings.margin = 3
 
 					// Voronoi
 					settings.voronoi_use_node_size = false
@@ -43,15 +45,19 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 					var x
 					var y
 					var d
-					var scales = scalesUtils.getXYScales(settings.width, settings.height, settings.offset)
+					var width = settings.oversampling * settings.width
+					var height = settings.oversampling * settings.height
+					var margin = settings.oversampling * settings.margin
+					var voronoi_range = settings.oversampling * settings.voronoi_range
+					var scales = scalesUtils.getXYScales(width, height, margin)
 					var xScale = scales[0]
 					var yScale = scales[1]
 
 					// Limit voronoi range
-					settings.voronoi_range = Math.min(settings.voronoi_range, Math.sqrt(Math.pow(settings.width, 2) + Math.pow(settings.height, 2)))
+					voronoi_range = Math.min(voronoi_range, Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
 
 					// Create the canvas
-					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+settings.width+'" height="'+settings.height+'"></canvas></div>'
+					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
 					var canvas = container.querySelector('#cnvs')
 					var ctx = canvas.getContext("2d")
 
@@ -68,13 +74,13 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 					})
 
 					// Init a pixel map of integers for voronoi ids
-					var vidPixelMap = new Int32Array(settings.width * settings.height)
+					var vidPixelMap = new Int32Array(width * height)
 					for (i in vidPixelMap) {
 					  vidPixelMap[i] = 0
 					}
 
 					// Init a pixel map of floats for distances
-					var dPixelMap = new Float32Array(settings.width * settings.height)
+					var dPixelMap = new Float32Array(width * height)
 					for (i in dPixelMap) {
 					  dPixelMap[i] = Infinity
 					}
@@ -82,18 +88,18 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 					// Compute the voronoi using the pixel map
 					g.nodes().forEach(function(nid){
 					  var n = g.getNodeAttributes(nid)
-					  var range = settings.voronoi_range
+					  var range = voronoi_range
 					  if (settings.voronoi_use_node_size) {
 					    range *= n.size
 					  }
-					  for (x = Math.max(0, Math.floor(xScale(n.x) - range) ); x <= Math.min(settings.width, Math.floor(xScale(n.x) + range) ); x++ ){
-					    for (y = Math.max(0, Math.floor(yScale(n.y) - range) ); y <= Math.min(settings.height, Math.floor(yScale(n.y) + range) ); y++ ){
+					  for (x = Math.max(0, Math.floor(xScale(n.x) - range) ); x <= Math.min(width, Math.floor(xScale(n.x) + range) ); x++ ){
+					    for (y = Math.max(0, Math.floor(yScale(n.y) - range) ); y <= Math.min(height, Math.floor(yScale(n.y) + range) ); y++ ){
 					      d = Math.sqrt(Math.pow(xScale(n.x) - x, 2) + Math.pow(yScale(n.y) - y, 2))
 					      if (d < range && n.size>0) {
 					        if (settings.voronoi_use_node_size) {
 					          d /= n.size
 					        }
-					        i = x + settings.width * y
+					        i = x + width * y
 					        var existingVid = vidPixelMap[i]
 					        if (existingVid == 0) {
 					          // 0 means there is no closest node
@@ -130,7 +136,7 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 					}
 
 					// Paint voronoi map
-					var imgd = ctx.getImageData(0, 0, settings.width, settings.height)
+					var imgd = ctx.getImageData(0, 0, width, height)
 					var pix = imgd.data
 					var pixlen
 					for ( i = 0, pixlen = pix.length; i < pixlen; i += 4 ) {
@@ -141,7 +147,7 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 					    pix[i+1] = color.g // green
 					    pix[i+2] = color.b // blue
 					    if (settings.voronoi_paint_distance) {
-					      pix[i+3] = Math.floor(color.opacity * (255 - 255 * Math.pow(dPixelMap[i/4]/settings.voronoi_range, 2)))
+					      pix[i+3] = Math.floor(color.opacity * (255 - 255 * Math.pow(dPixelMap[i/4]/voronoi_range, 2)))
 					    } else {
 					      pix[i+3] = Math.floor(255*color.opacity) // alpha
 					    }
