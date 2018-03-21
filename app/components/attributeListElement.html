@@ -69,7 +69,7 @@
 						</div>
 					</div>
 
-					<!-- Key: Type == ranking-size -->
+					<!-- Key: Type == ranking-color -->
 					<div ng-if="att.type=='ranking-color'" layout="row">
 						<div style="width: 24px; padding: 0px 6px 0px 6px;" layout="column" layout-align="center center">
 							<v-color-key att="att" layout-fill></v-color-key>
@@ -127,18 +127,11 @@
 				></node-attribute-minimap>
 			</div>
 			<div flex layout="column">
-				<div style="padding-top: 3px; height: 24px">
+				<div style="height: 32px">
 					<div class="attribute-title" md-truncate>{{att.name}}</div>
 				</div>
-				<div flex style="padding-left: 6px; overflow: hidden;" layout="column" layout-align="center">
-					<div md-truncate ng-repeat="modality in att.modalities|limitTo:3">
-						<md-icon class="md-icon-12" ng-style="{'color':modality.color}">brightness_1</md-icon>
-						<small>{{modality.value}}</small>
-					</div>
-					<div ng-if="att.modalities.length > 3" style="line-height: 6px">
-						<md-icon class="md-icon-12" style="opacity:0">brightness_1</md-icon>
-						<small style="opacity: 0.6">...</small>
-					</div>
+				<div flex>
+					<div partition-bar-chart ng-if="att.type=='partition'" att="att" layout-fill style="overflow: hidden;"></div>
 				</div>
 				
 			</div>
