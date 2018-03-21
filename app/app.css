@@ -125,6 +125,9 @@
   border-top: 1px solid #AAA;
   transform: scaleY(0.5)
 }
+.a4page .print-no-break {
+  break-inside: avoid;
+}
 @page {
   size: 210mm 297mm;
   margin: 18mm 18mm 18mm 18mm;
