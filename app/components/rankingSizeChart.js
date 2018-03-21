@@ -4,7 +4,7 @@
 
 angular.module('app.components.rankingSizeChart', [])
 
-.directive('rankingSizeChart', function($timeout, networkData, scalesUtils){
+.directive('rankingSizeChart', function($timeout, networkData, scalesUtils, $filter){
   return {
     restrict: 'A',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -31,26 +31,48 @@ angular.module('app.components.rankingSizeChart', [])
         $timeout(function(){
 	        container.innerHTML = '';
 
-	        console.log('redraw rankingSizeChart')
-	        return
-
 	        var settings = {}
 	        settings.max_bars = 10
 	        settings.bar_spacing = 3
-	        settings.color_box_width = 18
+	        settings.color_size_width = 18
 	        settings.percent_box_width = 36
 	        settings.label_in_out_threshold = 0.4
 
-          var data = $scope.att.modalities
+	        var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+	        	.map(function(d){
+	        		// Percent
+	        		var pmin = d/10
+	        		var pmax = (d+1)/10
+	        		// Value
+	        		var min = $scope.att.min + pmin * ($scope.att.max - $scope.att.min)
+	        		var max = $scope.att.min + pmax * ($scope.att.max - $scope.att.min)
+	        		return {
+	        			pmin: pmin,
+	        			pmax: pmax,
+	        			min: min,
+	        			max: max,
+	        			average: (min + max) / 2,
+	        			count: g.nodes().filter(function(nid){
+	        				var val = g.getNodeAttribute(nid, $scope.att.id)
+	        				if (pmax == 1) {
+	        					return val >= min && val <= max
+	        				} else {
+	        					return val >= min && val < max
+	        				}
+	        			}).length
+	        		}
+	        	})
+
+	        
           	
           // set the dimensions and margins of the graph
-					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.color_box_width + settings.percent_box_width},
+					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.color_size_width + settings.percent_box_width},
 					    width = container.offsetWidth - margin.left - margin.right,
 					    height = container.offsetHeight - margin.top - margin.bottom;
 
 					// set the ranges
 					var y = d3.scaleBand()
-					          .range([0, height * Math.min(data.length, 10) / 10])
+					          .range([height * Math.min(data.length, 10) / 10, 0])
 
 					var x = d3.scaleLinear()
 					          .range([0, width]);
@@ -64,7 +86,7 @@ angular.module('app.components.rankingSizeChart', [])
 
 				  // Scale the range of the data in the domains
 					x.domain([0, d3.max(data, function(d){ return d.count; })])
-				  y.domain(data.map(function(d) { return d.value }).filter(function(d, i){ return i<settings.max_bars }));
+				  y.domain(data.map(function(d) { return d.average }).filter(function(d, i){ return i<settings.max_bars }));
 
 				  // append the rectangles for the bar chart
 				  var bars = svg.selectAll('.bar')
@@ -73,7 +95,7 @@ angular.module('app.components.rankingSizeChart', [])
 				  bars.enter().append('rect')
 				      .attr('class', 'bar')
 				      .attr('width', function(d) {return x(d.count); } )
-				      .attr('y', function(d) { return y(d.value); })
+				      .attr('y', function(d) { return y(d.average); })
 				      .attr('height', y.bandwidth() - settings.bar_spacing)
 				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
 
@@ -86,8 +108,8 @@ angular.module('app.components.rankingSizeChart', [])
 				      		return x(d.count) + 3
 				      	}
 				      })
-				      .attr('y', function(d) { return y(d.value) + y.bandwidth() - settings.bar_spacing - 5; })
-				      .text( function (d) { return d.value; })
+				      .attr('y', function(d) { return y(d.average) + y.bandwidth() - settings.bar_spacing - 5; })
+				      .text( function (d) { return $filter('number')(d.min) + ' to ' + $filter('number')(d.max) })
               .attr('text-anchor', function(d,i) {
 				      	if (x(d.count) > width * settings.label_in_out_threshold) {
 				      		return 'end' 
@@ -145,18 +167,19 @@ angular.module('app.components.rankingSizeChart', [])
 				      	}
 				      })
 
+          // TODO: change in size boxes
 				  // Color boxes
 				  bars.enter().append('rect')
-				      .attr('x', - settings.percent_box_width - settings.color_box_width )
-				      .attr('width', settings.color_box_width )
-				      .attr('y', function(d) { return y(d.value); })
+				      .attr('x', - settings.percent_box_width - settings.color_size_width )
+				      .attr('width', settings.color_size_width )
+				      .attr('y', function(d) { return y(d.average); })
 				      .attr('height', y.bandwidth() - settings.bar_spacing)
-				      .attr('fill', function(d) { return d.color })
+				      // .attr('fill', function(d) { return d.color })
 
 				  // Percent labels
 				  var labels = bars.enter().append('text')
 				      .attr('x', - 6 )
-				      .attr('y', function(d) { return y(d.value) + y.bandwidth() - settings.bar_spacing - 5; })
+				      .attr('y', function(d) { return y(d.average) + y.bandwidth() - settings.bar_spacing - 5; })
 				      .text( function (d) { return Math.round(100 * d.count / g.order) + '%'; })
               .attr('text-anchor', 'end')
               .attr('font-family', 'Quicksand, sans-serif')
