@@ -235,6 +235,31 @@ angular.module('app.services', [])
   .factory('scalesUtils', ['networkData', function(networkData){
     var ns = {} // Namespace
 
+    // Transforms the area of a circle into its radius
+    ns.getRScale = function() {
+      // A = PI * r^2 <=> r = SQRT( A/PI )
+      return function(A){
+        return Math.sqrt(A / Math.PI)
+      }
+    }
+
+    ns.getAreaScale = function(minValue, maxValue, minScaling, maxScaling, interpolation) {
+      var dScale
+      if (interpolation == 'linear') {
+        dScale = d3.scaleLinear()
+          .range([minScaling/maxScaling, 1])
+          .domain([minValue, maxValue])
+      } else if (interpolation.split('-')[0] == 'pow') {
+        dScale = d3.scalePow()
+          .exponent(+interpolation.split('-')[1] || 1)
+          .range([minScaling/maxScaling, 1])
+          .domain([minValue, maxValue])
+      } else {
+        console.error('[error] Unknown interpolation')
+      }
+      return dScale
+    }
+
     ns.getSizeAsColorScale = function(minValue, maxValue, minScaling, maxScaling, interpolation) {
       var dScale
       if (interpolation == 'linear') {

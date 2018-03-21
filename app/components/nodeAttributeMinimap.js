@@ -44,6 +44,7 @@ angular.module('app.components.nodeAttributeMinimap', [])
 
 					// Nodes
 					settings.node_size = 1.5
+					settings.size_scale_emphasize = 2
 
 					var i
 					var x
@@ -57,6 +58,7 @@ angular.module('app.components.nodeAttributeMinimap', [])
 					var scales = scalesUtils.getXYScales(width, height, margin)
 					var xScale = scales[0]
 					var yScale = scales[1]
+					var rScale = scalesUtils.getRScale()
 
 					// Create the canvas
 					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
@@ -92,12 +94,18 @@ angular.module('app.components.nodeAttributeMinimap', [])
 						getColor = function(d){
 							return d3.color(colorsIndex[d] || '#999')
 						}
-					} else if ($scope.att.type == 'ranking-size') {
-						getColor = scalesUtils.getSizeAsColorScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
 					} else if ($scope.att.type == 'ranking-color') {
 						getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
 					} else {
 						getColor = function(){ return d3.color('#000') }
+					}
+
+					// Sizes
+					var getArea
+					if ($scope.att.type == 'ranking-size') {
+						getArea = scalesUtils.getAreaScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
+					} else {
+						getArea = function(){ return Math.PI }
 					}
 
 					// Draw each node
@@ -108,7 +116,16 @@ angular.module('app.components.nodeAttributeMinimap', [])
 					  ctx.lineJoin="round"
 
 					  ctx.beginPath()
-					  ctx.arc(xScale(n.x), yScale(n.y), node_size, 0, 2 * Math.PI, false)
+					  ctx.arc(
+					  	xScale(n.x),
+					  	yScale(n.y),
+					  	node_size
+					  		* (($scope.att.type == 'ranking-size')?(settings.size_scale_emphasize):(1))
+					  		* rScale(getArea(g.getNodeAttribute(nid, $scope.att.id))), 
+					  	0,
+					  	2 * Math.PI,
+					  	false
+					  )
 					  ctx.lineWidth = 0
 					  ctx.fillStyle = getColor(g.getNodeAttribute(nid, $scope.att.id)).toString()
 					  ctx.shadowColor = 'transparent'
