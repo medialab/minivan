@@ -2,7 +2,7 @@
 <md-list-item
 	ng-if="detailLevel==1"
 	ng-click="selectAtt()"
-	md-colors="{background: isSelected ? 'default-background-50' : 'default'}"
+	md-colors="{background: isSelected ? 'default-background-A100' : 'default'}"
 	ng-class="{'md-whiteframe-3dp': isSelected}"
 >
 	<md-icon ng-if="isSelected && !printMode">radio_button_checked</md-icon>
@@ -27,7 +27,7 @@
 		<md-content
 			style="width: 100%; overflow: hidden;"
 			layout="row"
-			md-ink-ripple md-colors="{background: isSelected ? 'default-background-50' : 'default-background-50-0.0'}"
+			md-ink-ripple md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
 			ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
 		>
 			<div style="width: 80px; padding: 3px 6px 3px 0px" layout="column" layout-align="center center">
@@ -50,7 +50,7 @@
 					</div>
 				</div>
 				<div flex layout="column" layout-align="center" style="padding: 6px">
-					<strong>{{att.name}}</strong>
+					<div class="attribute-title">{{att.name}}</div>
 				</div>
 			</div>
 		</md-content>
@@ -63,4 +63,51 @@
 </div>
 
 <!-- Detail level 3 -->
-<div layout-fill ng-if="detailLevel==3">{{att.name}} - 3</div>
+<div
+	ng-if="detailLevel==3"
+	layout-fill
+>
+	<div
+		layout="row"
+		class="shifter-200"
+		ng-class="{'leftshift-200':isSelected, 'rightshift-200':!isSelected}"
+		ng-click="selectAtt()"
+	>
+		<md-content
+			style="width: 100%; overflow: hidden;"
+			layout="row"
+			md-ink-ripple md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
+			ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
+		>
+			<div style="width: 200px; padding: 3px 6px 3px 0px" layout="column" layout-align="center center">
+				<node-attribute-thumbnail
+					att="att"
+					print-mode="printMode"
+					layout-fill
+					style="background: rgba(255, 255, 255, 0.75)"
+				></node-attribute-thumbnail>
+			</div>
+			<div flex layout="column">
+				<div style="padding-top: 3px; height: 24px">
+					<div class="attribute-title">{{att.name}}</div>
+				</div>
+				<div flex style="padding-left: 6px; overflow: hidden;" layout="column" layout-align="center">
+					<div md-truncate ng-repeat="modality in att.modalities|limitTo:3">
+						<md-icon class="md-icon-12" ng-style="{'color':modality.color}">brightness_1</md-icon>
+						<small>{{modality.value}}</small>
+					</div>
+					<div ng-if="att.modalities.length > 3" style="line-height: 6px">
+						<md-icon class="md-icon-12" style="opacity:0">brightness_1</md-icon>
+						<small style="opacity: 0.6">...</small>
+					</div>
+				</div>
+				
+			</div>
+		</md-content>
+		<div style="min-width: 200px" layout="column" layout-align="center center">
+			<md-button class="md-fab md-mini md-primary md-secondary">
+				<md-icon>arrow_forward</md-icon>
+			</md-button>
+		</div>
+	</div>
+</div>
