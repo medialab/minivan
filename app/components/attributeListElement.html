@@ -109,7 +109,7 @@
 	<div
 		layout="row"
 		class="shifter-240"
-		ng-class="{'leftshift-240':isSelected, 'rightshift-80':!isSelected}"
+		ng-class="{'leftshift-240':!printMode && isSelected, 'rightshift-80':!printMode && !isSelected}"
 		ng-click="selectAtt()"
 	>
 		<md-content
@@ -131,7 +131,7 @@
 					<div class="attribute-title" md-truncate>{{att.name}}</div>
 				</div>
 				<div flex>
-					<div partition-bar-chart ng-if="att.type=='partition'" att="att" layout-fill style="overflow: hidden;"></div>
+					<div partition-bar-chart ng-if="att.type=='partition'" att="att" is-selected="isSelected" layout-fill style="overflow: hidden;"></div>
 				</div>
 				
 			</div>
