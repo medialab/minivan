@@ -40,14 +40,53 @@
 			</div>
 			<div flex layout="row">
 				<div flex style="padding-left: 6px; overflow: hidden;" layout="column" layout-align="center">
-					<div md-truncate ng-repeat="modality in att.modalities|limitTo:3">
-						<md-icon class="md-icon-12" ng-style="{'color':modality.color}">brightness_1</md-icon>
-						<small>{{modality.value}}</small>
+
+					<!-- Key: Type == partition -->
+					<div ng-if="att.type=='partition'">
+						<div md-truncate ng-repeat="modality in att.modalities|limitTo:3">
+							<md-icon style="width: 24px; text-align: center" class="md-icon-12" ng-style="{'color':modality.color}">brightness_1</md-icon>
+							<small>{{modality.value}}</small>
+						</div>
+						<div ng-if="att.modalities.length > 3" style="line-height: 6px">
+							<md-icon style="width: 24px; text-align: center; opacity:0" class="md-icon-12">brightness_1</md-icon>
+							<small style="opacity: 0.6">...</small>
+						</div>
 					</div>
-					<div ng-if="att.modalities.length > 3" style="line-height: 6px">
-						<md-icon class="md-icon-12" style="opacity:0">brightness_1</md-icon>
-						<small style="opacity: 0.6">...</small>
+
+					<!-- Key: Type == ranking-size -->
+					<div ng-if="att.type=='ranking-size'">
+						<div md-truncate>
+							<md-icon style="width: 24px; text-align: center" class="md-icon-18">brightness_1</md-icon>
+							{{att.max|number}}
+						</div>
+						<div md-truncate>
+							<md-icon style="width: 24px; text-align: center" class="md-icon-12">brightness_1</md-icon>
+							<small style="opacity: 0.6">to</small>
+						</div>
+						<div md-truncate>
+							<md-icon style="width: 24px; text-align: center" class="md-icon-8">brightness_1</md-icon>
+							{{att.min|number}}
+						</div>
 					</div>
+
+					<!-- Key: Type == ranking-size -->
+					<div ng-if="att.type=='ranking-color'" layout="row">
+						<div style="width: 24px; padding: 0px 6px 0px 6px;" layout="column" layout-align="center center">
+							<v-color-key att="att" layout-fill></v-color-key>
+						</div>
+						<div flex layout="column" layout-align="center">
+							<div md-truncate>
+								{{att.max|number}}
+							</div>
+							<div md-truncate>
+								<small style="opacity: 0.6">to</small>
+							</div>
+							<div md-truncate>
+								{{att.min|number}}
+							</div>
+						</div>
+					</div>
+
 				</div>
 				<div flex layout="column" layout-align="center" style="padding: 6px">
 					<div class="attribute-title">{{att.name}}</div>
