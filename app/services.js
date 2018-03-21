@@ -148,8 +148,8 @@ angular.module('app.services', [])
           max: 47,
           areaScaling: {
             min: 1,
-            max: 10,
-            interpolation: 'pow-0.5'
+            max: 100,
+            interpolation: 'linear'
           }
         })
 
