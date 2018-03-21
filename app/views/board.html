@@ -69,8 +69,8 @@
 				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-300'}">
 					<project-title-bar></project-title-bar>
 					<!-- Content -->
-					<md-list flex>
-						<md-virtual-repeat-container layout-fill>
+					<md-virtual-repeat-container flex>
+						<md-list layout-fill>
 				      <div md-virtual-repeat="att in networkData.nodeAttributes" md-item-size="20" flex>
 				        <div
 					        attribute-list-element
@@ -80,8 +80,8 @@
 					        selected-att-id="$parent.selectedAttId"
 					      ></div>
 				      </div>
-				    </md-virtual-repeat-container>
-					</md-list>
+						</md-list>
+			    </md-virtual-repeat-container>
 				</div>
 				<!-- Footer -->
 				<div class="component-footer" layout="row" layout-align="center center">
