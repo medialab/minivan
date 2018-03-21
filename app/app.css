@@ -1,7 +1,10 @@
 
 .component-panel {
-  margin-left: 6px;
+  /*margin-left: 6px;*/
   margin-bottom: 6px;
+}
+.component-panel.top-panel {
+  z-index: 2;
 }
 .component-footer {
   height: 32px;

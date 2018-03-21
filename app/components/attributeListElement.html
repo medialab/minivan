@@ -3,7 +3,7 @@
 	ng-if="detailLevel==1"
 	ng-click="selectAtt()"
 	md-colors="{background: isSelected ? 'default-background-A100' : 'default'}"
-	ng-class="{'md-whiteframe-3dp': isSelected}"
+	ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
 >
 	<md-icon ng-if="isSelected && !printMode">radio_button_checked</md-icon>
 	<md-icon ng-if="!isSelected  && !printMode">radio_button_unchecked</md-icon>
@@ -30,7 +30,7 @@
 			md-ink-ripple md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
 			ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
 		>
-			<div style="width: 80px; padding: 3px 6px 3px 0px" layout="column" layout-align="center center">
+			<div style="width: 80px; padding: 3px 0px 3px 6px" layout="column" layout-align="center center">
 				<node-attribute-thumbnail
 					att="att"
 					print-mode="printMode"
@@ -79,7 +79,7 @@
 			md-ink-ripple md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
 			ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
 		>
-			<div style="width: 200px; padding: 3px 6px 3px 0px" layout="column" layout-align="center center">
+			<div style="width: 200px; padding: 3px 0px 3px 6px" layout="column" layout-align="center center">
 				<node-attribute-thumbnail
 					att="att"
 					print-mode="printMode"
