@@ -34,7 +34,8 @@ angular.module('app.components.rankingSizeChart', [])
 	        var settings = {}
 	        settings.max_bars = 10
 	        settings.bar_spacing = 3
-	        settings.color_size_width = 18
+	        settings.size_box_width = 18
+	        settings.max_node_size = 16
 	        settings.percent_box_width = 36
 	        settings.label_in_out_threshold = 0.4
 
@@ -63,10 +64,12 @@ angular.module('app.components.rankingSizeChart', [])
 	        		}
 	        	})
 
-	        
-          	
+	        // Size scales
+	        var areaScale = scalesUtils.getAreaScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
+          var rScale = scalesUtils.getRScale()
+
           // set the dimensions and margins of the graph
-					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.color_size_width + settings.percent_box_width},
+					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.size_box_width + settings.percent_box_width},
 					    width = container.offsetWidth - margin.left - margin.right,
 					    height = container.offsetHeight - margin.top - margin.bottom;
 
@@ -167,14 +170,14 @@ angular.module('app.components.rankingSizeChart', [])
 				      	}
 				      })
 
-          // TODO: change in size boxes
-				  // Color boxes
-				  bars.enter().append('rect')
-				      .attr('x', - settings.percent_box_width - settings.color_size_width )
-				      .attr('width', settings.color_size_width )
-				      .attr('y', function(d) { return y(d.average); })
-				      .attr('height', y.bandwidth() - settings.bar_spacing)
-				      // .attr('fill', function(d) { return d.color })
+				  // Size boxes
+				  bars.enter().append('circle')
+				      .attr('cx', - settings.percent_box_width - settings.size_box_width/2 )
+				      .attr('cy', function(d) { return y(d.average) + (y.bandwidth() - settings.bar_spacing)/2; })
+				      .attr('r', function(d){
+				      	return rScale(areaScale(d.average)) * settings.max_node_size
+				      })
+				      .attr('fill', '#666')
 
 				  // Percent labels
 				  var labels = bars.enter().append('text')
