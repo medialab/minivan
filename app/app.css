@@ -78,24 +78,24 @@
   margin-right: -80px;
 }
 
-.shifter-200 {
-  height: 200px;
+.shifter-240 {
+  height: 240px;
   transition: margin 0.1s;
   cursor: pointer;
 }
-.shifter-200:focus {
+.shifter-240:focus {
   outline: none;
   border: 0;
 }
 
-.leftshift-200 {
-  margin-left: -200px;
+.leftshift-240 {
+  margin-left: -240px;
   margin-right: 0px;
 }
 
-.rightshift-200 {
+.rightshift-240 {
   margin-left: 0px;
-  margin-right: -200px;
+  margin-right: -240px;
 }
 
 /* A4 page for printing */
