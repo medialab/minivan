@@ -32,15 +32,18 @@ angular.module('app.components.nodeAttributeMinimap', [])
 
 					// Canvas size
 					settings.save_at_the_end = false
-					settings.oversampling = $scope.printMode ? 4 : 2
+					settings.oversampling = $scope.printMode ? 8 : 2
 					settings.width =  container.offsetWidth
 					settings.height = container.offsetHeight
 					settings.margin = 3
 
-					// Voronoi
-					settings.voronoi_use_node_size = false
-					settings.voronoi_range = 2.5 // Limits cells' size
-					settings.voronoi_paint_distance = true
+					// Edges
+					settings.draw_edges = g.size < 10000
+					settings.edge_color = 'rgba(230, 230, 230, 0.6)'
+					settings.edge_thickness = 0.6
+
+					// Nodes
+					settings.node_size = 1.5
 
 					var i
 					var x
@@ -49,74 +52,35 @@ angular.module('app.components.nodeAttributeMinimap', [])
 					var width = settings.oversampling * settings.width
 					var height = settings.oversampling * settings.height
 					var margin = settings.oversampling * settings.margin
-					var voronoi_range = settings.oversampling * settings.voronoi_range
+					var edge_thickness = settings.oversampling * settings.edge_thickness
+					var node_size = settings.oversampling * settings.node_size
 					var scales = scalesUtils.getXYScales(width, height, margin)
 					var xScale = scales[0]
 					var yScale = scales[1]
-
-					// Limit voronoi range
-					voronoi_range = Math.min(voronoi_range, Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
 
 					// Create the canvas
 					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
 					var canvas = container.querySelector('#cnvs')
 					var ctx = canvas.getContext("2d")
 
-					// Get an index of nodes where ids are integers
-					var nodesIndex = g.nodes().slice(0)
-					nodesIndex.unshift(null) // We reserve 0 for "no closest"
+					// Draw each edge
+					if (settings.draw_edges) {
+						g.edges().forEach(function(eid){
+							var ns = g.getNodeAttributes(g.source(eid))
+							var nt = g.getNodeAttributes(g.target(eid))
 
-					// Save this "voronoi id" as a node attribute
-					nodesIndex.forEach(function(nid, vid){
-					  if (vid > 0) {
-					    var n = g.getNodeAttributes(nid)
-					    n.vid = vid
-					  }
-					})
-
-					// Init a pixel map of integers for voronoi ids
-					var vidPixelMap = new Int32Array(width * height)
-					for (i in vidPixelMap) {
-					  vidPixelMap[i] = 0
+						  ctx.beginPath()
+						  ctx.lineCap="round"
+						  ctx.lineJoin="round"
+						  ctx.strokeStyle = settings.edge_color
+						  ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+						  ctx.lineWidth = edge_thickness
+						  ctx.moveTo(xScale(ns.x), yScale(ns.y))
+						  ctx.lineTo(xScale(nt.x), yScale(nt.y))
+						  ctx.stroke()
+						  ctx.closePath()
+						})
 					}
-
-					// Init a pixel map of floats for distances
-					var dPixelMap = new Float32Array(width * height)
-					for (i in dPixelMap) {
-					  dPixelMap[i] = Infinity
-					}
-
-					// Compute the voronoi using the pixel map
-					g.nodes().forEach(function(nid){
-					  var n = g.getNodeAttributes(nid)
-					  var range = voronoi_range
-					  if (settings.voronoi_use_node_size) {
-					    range *= n.size
-					  }
-					  for (x = Math.max(0, Math.floor(xScale(n.x) - range) ); x <= Math.min(width, Math.floor(xScale(n.x) + range) ); x++ ){
-					    for (y = Math.max(0, Math.floor(yScale(n.y) - range) ); y <= Math.min(height, Math.floor(yScale(n.y) + range) ); y++ ){
-					      d = Math.sqrt(Math.pow(xScale(n.x) - x, 2) + Math.pow(yScale(n.y) - y, 2))
-					      if (d < range && n.size>0) {
-					        if (settings.voronoi_use_node_size) {
-					          d /= n.size
-					        }
-					        i = x + width * y
-					        var existingVid = vidPixelMap[i]
-					        if (existingVid == 0) {
-					          // 0 means there is no closest node
-					          vidPixelMap[i] = n.vid
-					          dPixelMap[i] = d
-					        } else {
-					          // There is already a closest node. Edit only if we are closer.
-					          if (d < dPixelMap[i]) {
-					            vidPixelMap[i] = n.vid
-					            dPixelMap[i] = d
-					          }
-					        }
-					      }
-					    }
-					  }
-					})
 
 					// Colors
 					var getColor
@@ -136,27 +100,20 @@ angular.module('app.components.nodeAttributeMinimap', [])
 						getColor = function(){ return d3.color('#000') }
 					}
 
-					// Paint voronoi map
-					var imgd = ctx.getImageData(0, 0, width, height)
-					var pix = imgd.data
-					var pixlen
-					for ( i = 0, pixlen = pix.length; i < pixlen; i += 4 ) {
-					  var vid = vidPixelMap[i/4]
-					  if (vid > 0) {
-					  	var color = getColor(g.getNodeAttribute(nodesIndex[vid], $scope.att.id))
-					    pix[i  ] = color.r // red
-					    pix[i+1] = color.g // green
-					    pix[i+2] = color.b // blue
-					    if (settings.voronoi_paint_distance) {
-					      pix[i+3] = Math.floor(color.opacity * (255 - 255 * Math.pow(dPixelMap[i/4]/voronoi_range, 2)))
-					    } else {
-					      pix[i+3] = Math.floor(255*color.opacity) // alpha
-					    }
-					  }
-					}
+					// Draw each node
+					g.nodes().forEach(function(nid){
+						var n = g.getNodeAttributes(nid)
 
-					// Finalize paint
-					ctx.putImageData( imgd, 0, 0 )
+					  ctx.lineCap="round"
+					  ctx.lineJoin="round"
+
+					  ctx.beginPath()
+					  ctx.arc(xScale(n.x), yScale(n.y), node_size, 0, 2 * Math.PI, false)
+					  ctx.lineWidth = 0
+					  ctx.fillStyle = getColor(g.getNodeAttribute(nid, $scope.att.id)).toString()
+					  ctx.shadowColor = 'transparent'
+					  ctx.fill()
+					})
 
 					// Save if needed
 					/*if (settings.save_at_the_end) {
