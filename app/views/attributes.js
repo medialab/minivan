@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('app.board', ['ngRoute'])
+angular.module('app.attributes', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/board', {
-    templateUrl: 'views/board.html'
-  , controller: 'BoardController'
+  $routeProvider.when('/attributes', {
+    templateUrl: 'views/attributes.html'
+  , controller: 'AttributesController'
   })
 }])
 
-.controller('BoardController', function(
+.controller('AttributesController', function(
 	$scope,
 	$location,
 	$timeout,
