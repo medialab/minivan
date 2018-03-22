@@ -25,7 +25,7 @@ angular.module('app.board', ['ngRoute'])
 
 	$scope.$watch('selectedAttId', updateMapSettings)
 
-	function updateMapSettings() {
+	function updateMapSettings(newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
 			var selectedAtt = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
 			if (selectedAtt) {
@@ -40,6 +40,14 @@ angular.module('app.board', ['ngRoute'])
 						$scope.colorAttId = undefined
 					}
 				}
+			}
+		} else if (oldSelectedAttId) {
+			// Remove previous selected att
+			var oldSelectedAtt = $scope.networkData.nodeAttributesIndex[oldSelectedAttId]
+			if (oldSelectedAtt.type == 'partition' || oldSelectedAtt.type == 'ranking-color') {
+				$scope.colorAttId = undefined
+			} else if (oldSelectedAtt.type == 'ranking-size') {
+				$scope.sizeAttId = undefined
 			}
 		}
 	}
