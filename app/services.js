@@ -15,6 +15,7 @@ angular.module('app.services', [])
         networkProcessor.process(ns, r.data)
 
         // Add metadata
+        ns.title = 'Rio + 20'
         ns.nodeAttributes = []
         ns.nodeAttributes.push({
           id: 'Category',

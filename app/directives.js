@@ -9,6 +9,7 @@ angular.module('app.directives', [])
     return {
       restrict: 'E',
       scope: {
+        title: '='
       },
       templateUrl: 'components/projectTitleBar.html'
     }
