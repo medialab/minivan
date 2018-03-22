@@ -14,7 +14,7 @@ angular.module('app.services', [])
       .then(function(r){
         networkProcessor.process(ns, r.data)
 
-        // Consolidate
+        // Add metadata
         ns.nodeAttributes = []
         ns.nodeAttributes.push({
           id: 'Category',
@@ -128,7 +128,7 @@ angular.module('app.services', [])
           max: 51,
           areaScaling: {
             min: 1,
-            max: 10,
+            max: 8,
             interpolation: 'linear'
           }
         })
@@ -149,10 +149,13 @@ angular.module('app.services', [])
           max: 47,
           areaScaling: {
             min: 1,
-            max: 100,
+            max: 25,
             interpolation: 'pow-2'
           }
         })
+
+        // Consolidate
+        networkProcessor.consolidate(ns)
 
         ns.loading = false
       }, function(){
@@ -164,6 +167,14 @@ angular.module('app.services', [])
 
   .factory('networkProcessor', [function(){
     var ns = {}     // namespace
+
+    ns.consolidate = function(data) {
+      // Node attributes index
+      data.nodeAttributesIndex = {}
+      data.nodeAttributes.forEach(function(att){
+        data.nodeAttributesIndex[att.id] = att
+      })
+    }
 
     ns.process = function(obj, gexf){
       obj.g = Graph.library.gexf.parse(Graph, gexf)

@@ -41,10 +41,10 @@
 
 						<sigma-network
 							ng-if="!networkData.loading"
-							network="networkData.g"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
-							selected-att-id="$parent.selectedAttId"
+							size-att-id="$parent.sizeAttId"
+							color-att-id="$parent.colorAttId"
 							layout-fill
 						></sigma-network>
 						

@@ -17,8 +17,33 @@ angular.module('app.board', ['ngRoute'])
 	networkData
 ) {
 	$scope.networkData = networkData
-	$scope.attributeListDetailLevel = 3
+	$scope.attributeListDetailLevel = 1
 	$scope.selectedAttId = undefined
+	$scope.sizeAttId = undefined
+	$scope.colorAttId = undefined
+	$scope.sizePlusColor = false
+
+	$scope.$watch('selectedAttId', updateMapSettings)
+
+	function updateMapSettings() {
+		if ($scope.selectedAttId) {
+			var selectedAtt = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
+			if (selectedAtt) {
+				if (selectedAtt.type == 'partition' || selectedAtt.type == 'ranking-color') {
+					$scope.colorAttId = selectedAtt.id
+					if (!$scope.sizePlusColor) {
+						$scope.sizeAttId = undefined
+					}
+				} else if (selectedAtt.type == 'ranking-size') {
+					$scope.sizeAttId = selectedAtt.id
+					if (!$scope.sizePlusColor) {
+						$scope.colorAttId = undefined
+					}
+				}
+			}
+		}
+	}
+
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }
