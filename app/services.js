@@ -117,6 +117,10 @@ angular.module('app.services', [])
               value: 'Religious',
               count: 6,
               color: '#AAAAAA'
+            },{
+              value: 'Politic',
+              count: 1,
+              color: '#AAAAAA'
             }
           ]
         })

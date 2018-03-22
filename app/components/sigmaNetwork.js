@@ -110,14 +110,27 @@ angular.module('app.components.sigmaNetworkComponent', [])
               var rScale = scalesUtils.getRScale()
               getSize = function(nid){ return sizeAtt.areaScaling.max * rScale(areaScale(g.getNodeAttribute(nid, sizeAtt.id))) }
             } else {
-              var standardSize = 3 // Depends on density
+              var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
+              var standardSize =  0.003 / nodesDensity
               getSize = function(){ return standardSize }
             }
 
             // Color
             var getColor
             if ($scope.colorAttId) {
-              getColor = function(){ return '#666' }
+              var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
+              if (colorAtt.type == 'partition') {
+                var colorByModality = {}
+                colorAtt.modalities.forEach(function(m){
+                  colorByModality[m.value] = m.color
+                })
+                getColor = function(nid){ return colorByModality[g.getNodeAttribute(nid, colorAtt.id)] || '#000' }
+              } else if (colorAtt.type == 'ranking-color') {
+                var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
+                getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)).toString() }
+              } else {
+                getColor = function(){ return '#666' }
+              }
             } else {
               getColor = function(){ return '#666' }
             }
