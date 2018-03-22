@@ -21,7 +21,7 @@ angular.module('app.board', ['ngRoute'])
 	$scope.selectedAttId = undefined
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
-	$scope.sizePlusColor = false
+	$scope.sizePlusColor = true
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
@@ -39,13 +39,20 @@ angular.module('app.board', ['ngRoute'])
 					}
 				}
 			}
-		} else if (oldSelectedAttId) {
-			// Remove previous selected att
-			var oldSelectedAtt = $scope.networkData.nodeAttributesIndex[oldSelectedAttId]
-			if (oldSelectedAtt.type == 'partition' || oldSelectedAtt.type == 'ranking-color') {
-				$scope.colorAttId = undefined
-			} else if (oldSelectedAtt.type == 'ranking-size') {
-				$scope.sizeAttId = undefined
+		} else {
+			if (oldSelectedAttId) {
+				// Remove previous selected att
+				var oldSelectedAtt = $scope.networkData.nodeAttributesIndex[oldSelectedAttId]
+				if (oldSelectedAtt.type == 'partition' || oldSelectedAtt.type == 'ranking-color') {
+					$scope.colorAttId = undefined
+				} else if (oldSelectedAtt.type == 'ranking-size') {
+					$scope.sizeAttId = undefined
+				}
+			}
+			if ($scope.colorAttId) {
+				$scope.selectedAttId = $scope.colorAttId
+			} else if ($scope.sizeAttId) {
+				$scope.selectedAttId = $scope.sizeAttId
 			}
 		}
 	})
