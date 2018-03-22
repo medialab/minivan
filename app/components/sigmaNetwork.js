@@ -48,12 +48,12 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         $scope.$watch('colorAttId', function(){
           if ( $scope.networkData.g === undefined ) return
-          updateNodeAppearance()
+          $timeout(updateNodeAppearance, 120)
         })
 
         $scope.$watch('sizeAttId', function(){
           if ( $scope.networkData.g === undefined ) return
-          updateNodeAppearance()
+          $timeout(updateNodeAppearance, 120)
         })
 
         $scope.$watch('onNodeClick', updateMouseEvents)
