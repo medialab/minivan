@@ -107,4 +107,26 @@
       <md-icon>center_focus_weak</md-icon>
     </md-button>
   </div>
+
+  <!-- Panels -->
+  <div
+    style="position: absolute; left: 12px; bottom: 12px; height: 54px;"
+    layout="row"
+  >
+    <div class="sigma-key">
+      {{networkData.g.order}} nodes
+      <br>
+      {{networkData.g.size}} edges
+    </div>
+    <div class="sigma-key" ng-if="sizeAttId">
+      <span class="key-title">Node size</span>
+      <br>
+      {{sizeAtt.name}}
+    </div>
+    <div class="sigma-key" ng-if="colorAttId">
+      <span class="key-title">Node color</span>
+      <br>
+      {{colorAtt.name}}
+    </div>
+  </div>
 </div>

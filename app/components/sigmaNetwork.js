@@ -31,6 +31,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         $scope.tooBig = false
         $scope.loaded = false
         $scope.layout
+        $scope.colorAtt
+        $scope.sizeAtt
 
         $scope.stateOnSuspendLayout = ($scope.startLayoutOnLoad === undefined || $scope.startLayoutOnLoad)
 
@@ -48,11 +50,21 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         $scope.$watch('colorAttId', function(){
           if ( $scope.networkData.g === undefined ) return
+          if ($scope.colorAttId) {
+            $scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
+          } else {
+            $scope.colorAtt = undefined
+          }
           $timeout(updateNodeAppearance, 120)
         })
 
         $scope.$watch('sizeAttId', function(){
           if ( $scope.networkData.g === undefined ) return
+          if ($scope.sizeAttId) {
+            $scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
+          } else {
+            $scope.sizeAtt = undefined
+          }
           $timeout(updateNodeAppearance, 120)
         })
 
