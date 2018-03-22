@@ -78,23 +78,33 @@ angular.module('app.components.rankingSizeChart', [])
 	        	d.count = d.nodes.length
         	})
 
-        	data = data.filter(function(d){ return d.count > 0 })
 	        if ($scope.att.integer) {
 	        	// Use the numbers from the actual nodes
+	        	data = data.filter(function(d){ return d.count > 0 })
 	        	data.forEach(function(d){
 		        		var e = d3.extent(d.nodes, function(nid){ return g.getNodeAttribute(nid, $scope.att.id) })
 		        		d.min = e[0]
 		        		d.max = e[1]
 		        	})
+	        	data.forEach(function(d){
+		        	if (d.min == d.max) {
+		        		d.label = $filter('number')(d.min)
+		        	} else {
+		        		d.label = $filter('number')(d.min) + ' to ' + $filter('number')(d.max)
+		        	}
+	        	})
+	        } else {
+	        	data.forEach(function(d, i){
+	        		if (i < data.length - 1) {
+		        		d.label = $filter('number')(d.min) + ' - ' + $filter('number')(d.max)
+	        		} else {
+		        		d.label = $filter('number')(d.min) + ' - ' + $filter('number')(d.max)
+	        		}
+	        	})
 	        }
 
 	        data.forEach(function(d){
-	        	if (d.min == d.max) {
-	        		d.label = $filter('number')(d.min)
-	        	} else {
-	        		d.label = $filter('number')(d.min) + ' to ' + $filter('number')(d.max)
-	        	}
-        		delete d.nodes
+	        	delete d.nodes
         	})
 
           // set the dimensions and margins of the graph
