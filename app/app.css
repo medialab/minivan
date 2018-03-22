@@ -149,12 +149,12 @@
 @media print {
   .page-container {
     -webkit-print-color-adjust: exact;
-    overflow: hidden;
+    /*overflow: hidden;*/
   }
 }
 @media screen {
   .page-container {
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
 }
 .a4page {
@@ -181,4 +181,14 @@
 @page {
   size: 210mm 297mm;
   margin: 18mm 18mm 18mm 18mm;
+}
+.a4page-overlay {
+  position: absolute;
+  top: 0;
+  width: 170mm;
+}
+@media print {    
+  .a4page-overlay {
+    display: none !important;
+  }
 }
