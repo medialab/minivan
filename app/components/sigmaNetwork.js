@@ -104,7 +104,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             // Size
             var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
-            var standardArea =  0.02 / nodesDensity
+            var standardArea =  0.03 / nodesDensity
             var rScale = scalesUtils.getRScale()
             var getSize
             if ($scope.sizeAttId) {
