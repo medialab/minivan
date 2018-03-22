@@ -39,7 +39,7 @@
 				></node-attribute-thumbnail>
 			</div>
 			<div flex layout="row">
-				<div flex style="padding-left: 6px; overflow: hidden;" layout="column" layout-align="center">
+				<div flex="40" style="padding-left: 6px; overflow: hidden;" layout="column" layout-align="center">
 
 					<!-- Key: Type == partition -->
 					<div ng-if="att.type=='partition'">
@@ -88,8 +88,8 @@
 					</div>
 
 				</div>
-				<div flex layout="column" layout-align="center" style="padding: 6px">
-					<div class="attribute-title">{{att.name}}</div>
+				<div flex="60" layout="column" layout-align="center" style="padding: 6px">
+					<div class="attribute-title" md-truncate>{{att.name}}</div>
 				</div>
 			</div>
 		</md-content>
