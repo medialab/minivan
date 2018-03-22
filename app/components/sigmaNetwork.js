@@ -114,6 +114,9 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             var g = $scope.networkData.g
 
+            var settings = {}
+            settings.default_node_color = '#969390'
+
             // Size
             var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
             var standardArea =  0.03 / nodesDensity
@@ -143,10 +146,10 @@ angular.module('app.components.sigmaNetworkComponent', [])
                 var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
                 getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)).toString() }
               } else {
-                getColor = function(){ return '#666' }
+                getColor = function(){ return settings.default_node_color }
               }
             } else {
-              getColor = function(){ return '#666' }
+              getColor = function(){ return settings.default_node_color }
             }
 
             g.nodes().forEach(function(nid){

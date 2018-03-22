@@ -23,7 +23,7 @@ angular.module('app.services', [])
           type: 'partition',
           modalities: [
             {
-              value: 'Social "Ecology"',
+              value: 'Social Ecology',
               count: 134,
               color: '#dcb1d5'
             },{
