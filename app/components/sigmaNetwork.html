@@ -118,15 +118,29 @@
       <br>
       {{networkData.g.size}} edges
     </div>
-    <div class="sigma-key" ng-if="sizeAttId">
-      <span class="key-title">Node size</span>
-      <br>
-      {{sizeAtt.name}}
+    <div class="sigma-key" ng-if="sizeAttId" layout="row">
+      <div>
+        <span class="key-title">Node size</span>
+        <br>
+        {{sizeAtt.name}}
+      </div>
+      <div layout="column" layout-align="center center">
+        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.sizeAttId = undefined" style="opacity: 0.6">
+          <md-icon class="md-icon-18">close</md-icon>
+        </md-button>
+      </div>
     </div>
-    <div class="sigma-key" ng-if="colorAttId">
-      <span class="key-title">Node color</span>
-      <br>
-      {{colorAtt.name}}
+    <div class="sigma-key" ng-if="colorAttId" layout="row">
+      <div>
+        <span class="key-title">Node color</span>
+        <br>
+        {{colorAtt.name}}
+      </div>
+      <div layout="column" layout-align="center center">
+        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.colorAttId = undefined" style="opacity: 0.6">
+          <md-icon class="md-icon-18">close</md-icon>
+        </md-button>
+      </div>
     </div>
   </div>
 </div>

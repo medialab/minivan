@@ -23,9 +23,7 @@ angular.module('app.board', ['ngRoute'])
 	$scope.colorAttId = undefined
 	$scope.sizePlusColor = false
 
-	$scope.$watch('selectedAttId', updateMapSettings)
-
-	function updateMapSettings(newSelectedAttId, oldSelectedAttId) {
+	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
 			var selectedAtt = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
 			if (selectedAtt) {
@@ -50,7 +48,19 @@ angular.module('app.board', ['ngRoute'])
 				$scope.sizeAttId = undefined
 			}
 		}
-	}
+	})
+
+	$scope.$watch('sizeAttId', function(newSizeAttId, oldSizeAttId){
+		if (newSizeAttId === undefined && $scope.selectedAttId == oldSizeAttId) {
+			$scope.selectedAttId = undefined
+		}
+	})
+
+	$scope.$watch('colorAttId', function(newColorAttId, oldColorAttId){
+		if (newColorAttId === undefined && $scope.selectedAttId == oldColorAttId) {
+			$scope.selectedAttId = undefined
+		}
+	})
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)

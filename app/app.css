@@ -62,6 +62,15 @@
   font-size: 24px;
 }
 
+.mini-icon-button {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
 /* Icon sizes */
 
 .md-icon-6 {
