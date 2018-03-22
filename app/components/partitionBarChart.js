@@ -39,6 +39,9 @@ angular.module('app.components.partitionBarChart', [])
 	        settings.label_in_out_threshold = 0.4
 
           var data = $scope.att.modalities
+          	.filter(function(d, i){
+          		return i < 10
+          	})
           	
           // set the dimensions and margins of the graph
 					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.color_box_width + settings.percent_box_width},
@@ -73,7 +76,7 @@ angular.module('app.components.partitionBarChart', [])
 				      .attr('y', function(d) { return y(d.value); })
 				      .attr('height', y.bandwidth() - settings.bar_spacing)
 				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
-
+				  
 				  // Text labels
 				  var labels = bars.enter().append('text')
 				      .attr('x', function(d) {
@@ -83,7 +86,7 @@ angular.module('app.components.partitionBarChart', [])
 				      		return x(d.count) + 3
 				      	}
 				      })
-				      .attr('y', function(d) { return y(d.value) + y.bandwidth() - settings.bar_spacing - 5; })
+				      .attr('y', function(d) { return y(d.value) + y.bandwidth() - settings.bar_spacing - 5 })
 				      .text( function (d) { return d.value; })
               .attr('text-anchor', function(d,i) {
 				      	if (x(d.count) > width * settings.label_in_out_threshold) {
