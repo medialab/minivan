@@ -39,14 +39,24 @@ angular.module('app.components.rankingSizeChart', [])
 	        settings.percent_box_width = 36
 	        settings.label_in_out_threshold = 0.4
 
+	        // Size scales
+	        var areaScale = scalesUtils.getAreaScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
+          var rScale = scalesUtils.getRScale()
+
+          var minRadius = rScale($scope.att.areaScaling.min/$scope.att.areaScaling.max)
+          var maxRadius = rScale(1)
+
 	        var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 	        	.map(function(d){
 	        		// Percent
 	        		var pmin = d/10
 	        		var pmax = (d+1)/10
+	        		// Radius value
+	        		var rmin = minRadius + pmin * (maxRadius - minRadius)
+	        		var rmax = minRadius + pmax * (maxRadius - minRadius)
 	        		// Value
-	        		var min = $scope.att.min + pmin * ($scope.att.max - $scope.att.min)
-	        		var max = $scope.att.min + pmax * ($scope.att.max - $scope.att.min)
+	        		var min = areaScale.invert(rScale.invert(rmin))
+	        		var max = areaScale.invert(rScale.invert(rmax))
 	        		return {
 	        			pmin: pmin,
 	        			pmax: pmax,
@@ -68,9 +78,9 @@ angular.module('app.components.rankingSizeChart', [])
 	        	d.count = d.nodes.length
         	})
 
+        	data = data.filter(function(d){ return d.count > 0 })
 	        if ($scope.att.integer) {
 	        	// Use the numbers from the actual nodes
-	        	data = data.filter(function(d){ return d.count > 0 })
 	        	data.forEach(function(d){
 		        		var e = d3.extent(d.nodes, function(nid){ return g.getNodeAttribute(nid, $scope.att.id) })
 		        		d.min = e[0]
@@ -86,10 +96,6 @@ angular.module('app.components.rankingSizeChart', [])
 	        	}
         		delete d.nodes
         	})
-
-	        // Size scales
-	        var areaScale = scalesUtils.getAreaScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
-          var rScale = scalesUtils.getRScale()
 
           // set the dimensions and margins of the graph
 					var margin = {top: 0, right: 6, bottom: 0, left: 6 + settings.size_box_width + settings.percent_box_width},

@@ -236,14 +236,20 @@ angular.module('app.services', [])
   .factory('scalesUtils', ['networkData', function(networkData){
     var ns = {} // Namespace
 
-    // Transforms the area of a circle into its radius
+    // Circle area -> radius
     ns.getRScale = function() {
       // A = PI * r^2 <=> r = SQRT( A/PI )
-      return function(A){
+      var rScale = function(A){
         return Math.sqrt(A / Math.PI)
       }
+      // Circle radius -> area
+      rScale.invert = function(r) {
+        return Math.PI * r * r
+      }
+      return rScale
     }
 
+    // ranking value -> area as [0,1]
     ns.getAreaScale = function(minValue, maxValue, minScaling, maxScaling, interpolation) {
       var dScale
       if (interpolation == 'linear') {
