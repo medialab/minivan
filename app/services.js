@@ -289,6 +289,7 @@ angular.module('app.services', [])
       return colorScale
     }
 
+    // ranking value -> color
     ns.getColorScale = function(minValue, maxValue, colorScaleInterpolator) {
       var dScale = d3.scaleLinear()
         .range([1, 0])
