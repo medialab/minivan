@@ -58,6 +58,11 @@
 					<md-button class="footer-button">
 		      	<md-icon>print</md-icon>
 		      </md-button>
+					<md-button class="footer-button" ng-click="sizePlusColor = !sizePlusColor">
+						<md-icon ng-if="!sizePlusColor">check_box_outline_blank</md-icon>
+						<md-icon ng-if="sizePlusColor">check_box</md-icon>
+		      	Size &amp; color
+		      </md-button>
 				</div>
 			</div>
 		</div>

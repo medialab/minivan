@@ -21,7 +21,7 @@ angular.module('app.board', ['ngRoute'])
 	$scope.selectedAttId = undefined
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
-	$scope.sizePlusColor = true
+	$scope.sizePlusColor = false
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
