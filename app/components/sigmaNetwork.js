@@ -112,7 +112,9 @@ angular.module('app.components.sigmaNetworkComponent', [])
               var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
               getSize = function(nid){ return rScale(sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10) }
             } else {
-              getSize = function(){ return rScale(standardArea) }
+              // Trick: an barely visible size difference by degree
+              // (helps hierarchizing node labels)
+              getSize = function(nid){ return rScale(standardArea + 0.1 * Math.log(1 + g.degree(nid)) ) }
             }
 
             // Color
