@@ -53,16 +53,39 @@ angular.module('app.components.rankingSizeChart', [])
 	        			min: min,
 	        			max: max,
 	        			average: (min + max) / 2,
-	        			count: g.nodes().filter(function(nid){
+	        			nodes: g.nodes().filter(function(nid){
 	        				var val = g.getNodeAttribute(nid, $scope.att.id)
 	        				if (pmax == 1) {
 	        					return val >= min && val <= max
 	        				} else {
 	        					return val >= min && val < max
 	        				}
-	        			}).length
+	        			})
 	        		}
 	        	})
+
+        	data.forEach(function(d){
+	        	d.count = d.nodes.length
+        	})
+
+	        if ($scope.att.integer) {
+	        	// Use the numbers from the actual nodes
+	        	data = data.filter(function(d){ return d.count > 0 })
+	        	data.forEach(function(d){
+		        		var e = d3.extent(d.nodes, function(nid){ return g.getNodeAttribute(nid, $scope.att.id) })
+		        		d.min = e[0]
+		        		d.max = e[1]
+		        	})
+	        }
+
+	        data.forEach(function(d){
+	        	if (d.min == d.max) {
+	        		d.label = $filter('number')(d.min)
+	        	} else {
+	        		d.label = $filter('number')(d.min) + ' to ' + $filter('number')(d.max)
+	        	}
+        		delete d.nodes
+        	})
 
 	        // Size scales
 	        var areaScale = scalesUtils.getAreaScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
@@ -112,7 +135,7 @@ angular.module('app.components.rankingSizeChart', [])
 				      	}
 				      })
 				      .attr('y', function(d) { return y(d.average) + y.bandwidth() - settings.bar_spacing - 5; })
-				      .text( function (d) { return $filter('number')(d.min) + ' to ' + $filter('number')(d.max) })
+				      .text( function (d) { return d.label })
               .attr('text-anchor', function(d,i) {
 				      	if (x(d.count) > width * settings.label_in_out_threshold) {
 				      		return 'end' 

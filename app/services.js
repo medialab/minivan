@@ -144,6 +144,7 @@ angular.module('app.services', [])
           id: 'outdegree',
           name: 'Ranking C',
           type: 'ranking-size',
+          integer: true,
           min: 0,
           max: 47,
           areaScaling: {
