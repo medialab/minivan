@@ -131,8 +131,8 @@ angular.module('app.services', [])
           min: 0,
           max: 51,
           areaScaling: {
-            min: 1,
-            max: 8,
+            min: 6,
+            max: 36,
             interpolation: 'linear'
           }
         })
@@ -152,8 +152,8 @@ angular.module('app.services', [])
           min: 0,
           max: 47,
           areaScaling: {
-            min: 1,
-            max: 25,
+            min: 2,
+            max: 100,
             interpolation: 'pow-2'
           }
         })

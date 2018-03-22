@@ -103,16 +103,16 @@ angular.module('app.components.sigmaNetworkComponent', [])
             var g = $scope.networkData.g
 
             // Size
+            var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
+            var standardArea =  0.02 / nodesDensity
+            var rScale = scalesUtils.getRScale()
             var getSize
             if ($scope.sizeAttId) {
               var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
               var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
-              var rScale = scalesUtils.getRScale()
-              getSize = function(nid){ return sizeAtt.areaScaling.max * rScale(areaScale(g.getNodeAttribute(nid, sizeAtt.id))) }
+              getSize = function(nid){ return rScale(sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10) }
             } else {
-              var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
-              var standardSize =  0.003 / nodesDensity
-              getSize = function(){ return standardSize }
+              getSize = function(){ return rScale(standardArea) }
             }
 
             // Color
