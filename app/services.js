@@ -23,7 +23,7 @@ angular.module('app.services', [])
           type: 'partition',
           modalities: [
             {
-              value: 'Social Ecology',
+              value: 'Social "Ecology"',
               count: 134,
               color: '#dcb1d5'
             },{
@@ -185,7 +185,7 @@ angular.module('app.services', [])
       obj.g = Graph.library.gexf.parse(Graph, gexf)
       ns.addMissingVisualizationData(obj.g)
       window.g = obj.g
-      console.log(obj)
+      // console.log(obj)
     }
 
     ns.addMissingVisualizationData = function(g) {
@@ -337,6 +337,36 @@ angular.module('app.services', [])
       yScale.domain([ yMean - sizeRatio * height / 2, yMean + sizeRatio * height / 2 ])
 
       return [xScale, yScale]
+    }
+
+    return ns
+  }])
+
+  .factory('csvBuilder', ['networkData', function(networkData){
+    var ns = {} // Namespace
+
+    ns.getAttributes = function() {
+      var csv = d3.csvFormat(
+        networkData.nodeAttributes
+          .map(function(att){
+            var validElements = {}
+            validElements.id = att.id
+            validElements.name = att.name
+            validElements.type = att.type
+            validElements.integer = att.integer
+            validElements.min = att.min
+            validElements.max = att.max
+            if (att.areaScaling) {
+              validElements.areaScaling_min = att.areaScaling.min
+              validElements.areaScaling_max = att.areaScaling.max
+              validElements.areaScaling_interpolation = att.areaScaling.interpolation
+            }
+            validElements.colorScale = att.colorScale
+            validElements.modalities = JSON.stringify(att.modalities || [])
+            return validElements
+          })
+      )
+      return csv
     }
 
     return ns

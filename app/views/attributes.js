@@ -14,7 +14,8 @@ angular.module('app.attributes', ['ngRoute'])
 	$location,
 	$timeout,
 	$routeParams,
-	networkData
+	networkData,
+	csvBuilder
 ) {
 	$scope.networkData = networkData
 	$scope.attributeListDetailLevel = 1
@@ -75,8 +76,13 @@ angular.module('app.attributes', ['ngRoute'])
 
   $scope.downloadGEXF = function() {
   	var xml = Graph.library.gexf.write($scope.networkData.g);
-
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + ".gexf");
+  }
+
+  $scope.downloadAttributes = function() {
+  	var csv = csvBuilder.getAttributes()
+    var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Attributes.csv");
   }
 })
