@@ -114,9 +114,9 @@
     layout="row"
   >
     <div class="sigma-key">
-      {{networkData.g.order}} nodes
+      {{networkData.g.order|number}} nodes
       <br>
-      {{networkData.g.size}} edges
+      {{networkData.g.size|number}} edges
     </div>
     <div class="sigma-key" ng-if="sizeAttId" layout="row">
       <div>
