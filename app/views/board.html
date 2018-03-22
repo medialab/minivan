@@ -52,16 +52,18 @@
 				</div>
 				<!-- Footer -->
 				<div class="component-footer" layout="row" layout-align="center center">
-					<md-button class="footer-button">
+					<md-button class="footer-button" ng-click="downloadGEXF()">
+						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
 					<md-button class="footer-button">
 		      	<md-icon>print</md-icon>
 		      </md-button>
 					<md-button class="footer-button" ng-click="sizePlusColor = !sizePlusColor">
+						<md-tooltip md-direction="top">Node color can be set along with with node size</md-tooltip>
 						<md-icon ng-if="!sizePlusColor">check_box_outline_blank</md-icon>
 						<md-icon ng-if="sizePlusColor">check_box</md-icon>
-		      	Size &amp; color
+		      	Size + color
 		      </md-button>
 				</div>
 			</div>
