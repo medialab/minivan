@@ -25,5 +25,25 @@ angular.module('app.print-network', ['ngRoute'])
 	}
 
 	$scope.oversampling = 2
-	
+	updateResolutionInfo()
+
+	$scope.$watch('oversampling', updateResolutionInfo)
+
+	$scope.downloadImage = function() {
+		var canvas = document.querySelector('#cnvs')
+		canvas.toBlob(function(blob) {
+	    saveAs(blob, $scope.networkData.title + " network map.png");
+	  })
+	}
+
+	function updateResolutionInfo() {
+		$timeout(function(){
+			if (document.querySelector('#cnvs')) {
+				$scope.imageWidth = document.querySelector('#cnvs').width
+				$scope.imageHeight = document.querySelector('#cnvs').height
+			} else {
+				updateResolutionInfo()
+			}
+		}, 500)
+	}
 })

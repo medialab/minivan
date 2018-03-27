@@ -125,13 +125,6 @@ angular.module('app.components.canvasNetworkMap', [])
 					  ctx.fill()
 					})
 
-					// Save if needed
-					/*if (settings.save_at_the_end) {
-					  canvas.toBlob(function(blob) {
-					      saveAs(blob, store.get('graphname') + "Heatmap.png");
-					  });
-					}*/
-
         })
       }
     }

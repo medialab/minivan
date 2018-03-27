@@ -10,15 +10,24 @@
 				<md-toolbar>
 					<div class="md-toolbar-tools" layout-align="start">
 				    <md-button md-truncate>
-				      Settings
+				      Image settings
 				    </md-button>
 				  </div>
 				</md-toolbar>
 				<div layout="column" style="overflow-y: auto; padding: 12px">
-					<md-input-container ng-if="true">
+					<md-input-container style="margin-bottom: 0px;">
 					  <label>Oversampling</label>
-					  <input type="number" step="1" min="1" max="16" ng-pattern="/^\d+$/" ng-model="$parent.oversampling">
+					  <input type="number" step="1" min="1" max="16" ng-pattern="/^\d+$/" ng-model="oversampling">
+					  <div class="input-hint" ng-show="imageWidth">
+					  	Image resolution:
+							{{imageWidth}} x {{imageHeight}}
+						</div>
 					</md-input-container>
+
+					<md-button class="md-primary" ng-click="downloadImage()">
+						<md-icon>file_download</md-icon>
+						Download image
+					</md-button>
 				</div>
 			</div>
 
