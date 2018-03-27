@@ -4,6 +4,21 @@
 
 angular.module('app.directives', [])
 
+.directive('printButtonOverlay', function(
+  ){
+    return {
+      restrict: 'E',
+      scope: {
+      },
+      templateUrl: 'components/printButtonOverlay.html',
+      link: function($scope, el, attrs) {
+        $scope.print = function() {
+          window.print()
+        }
+      }
+    }
+  })
+
 .directive('projectTitleBar', function(
   ){
     return {
