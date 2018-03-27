@@ -57,6 +57,7 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					// Nodes
 					settings.node_size = (+$scope.nodeSize || 10) / 10
+					settings.default_node_color = d3.color('#999')
 					settings.size_scale_emphasize = 2
 
 					var i
@@ -99,8 +100,23 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					// Colors
 					var getColor
-					// TODO: properly set color
-					getColor = function(nid){ return d3.color('#000') }
+					if ($scope.colorAttId) {
+            var colorAtt = networkData.nodeAttributesIndex[$scope.colorAttId]
+            if (colorAtt.type == 'partition') {
+              var colorByModality = {}
+              colorAtt.modalities.forEach(function(m){
+                colorByModality[m.value] = m.color
+              })
+              getColor = function(nid){ return colorByModality[g.getNodeAttribute(nid, colorAtt.id)] || '#000' }
+            } else if (colorAtt.type == 'ranking-color') {
+              var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
+              getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)).toString() }
+            } else {
+              getColor = function(){ return settings.default_node_color }
+            }
+          } else {
+            getColor = function(){ return settings.default_node_color }
+          }
 
 					// Sizes
 					var nodesInTheFrame = g.nodes().filter(function(nid){
