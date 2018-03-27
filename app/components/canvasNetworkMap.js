@@ -112,8 +112,13 @@ angular.module('app.components.canvasNetworkMap', [])
 					var nodesDensity = nodesInTheFrame.length / (el[0].offsetWidth * el[0].offsetHeight)
 					var standardArea =  0.03 / nodesDensity
 					var getArea
-					// TODO: properly set area
-					getArea = function(nid){ return standardArea }
+					if ($scope.sizeAttId) {
+            var sizeAtt = networkData.nodeAttributesIndex[$scope.sizeAttId]
+            var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
+            getArea = function(nid){ return sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10 }
+          } else {
+						getArea = function(nid){ return standardArea }
+          }
 
 					// Draw each node
 					g.nodes().forEach(function(nid){
