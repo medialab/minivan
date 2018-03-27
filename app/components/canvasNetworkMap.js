@@ -131,7 +131,9 @@ angular.module('app.components.canvasNetworkMap', [])
             var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
             getArea = function(nid){ return sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10 }
           } else {
-						getArea = function(nid){ return standardArea }
+            // Trick: a barely visible size difference by degree
+            // (helps hierarchizing node labels)
+            getArea = function(nid){ return standardArea + 0.1 * Math.log(1 + g.degree(nid)) }
           }
 
           // Compute areas once for all
