@@ -56,7 +56,8 @@
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-disabled="true">
+					<md-button class="footer-button" ng-href="#!/print-network/{{colorAttId||'undefined'}}/{{sizeAttId||'undefined'}}" target="_blank">
+						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
 					<md-button class="footer-button" ng-click="sizePlusColor = !sizePlusColor">
