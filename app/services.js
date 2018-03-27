@@ -339,6 +339,24 @@ angular.module('app.services', [])
       return [xScale, yScale]
     }
 
+    ns.getXYScales_camera = function(width, height, offset, x, y, ratio) {
+      var g = networkData.g
+      var xScale = d3.scaleLinear()
+        .range([offset - x * width / ratio, width - offset - x * width / ratio])
+      var yScale = d3.scaleLinear()
+        .range([offset - y * height / ratio, height - offset - y * height / ratio])
+
+      var xExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'x') })
+      var yExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'y') })
+      var sizeRatio = ratio * Math.max((xExtent[1] - xExtent[0])/(width-2*offset), (yExtent[1] - yExtent[0])/(height-2*offset))
+      var xMean = (xExtent[0] + xExtent[1])/2
+      var yMean = (yExtent[0] + yExtent[1])/2
+      xScale.domain([ xMean - sizeRatio * width / 2, xMean + sizeRatio * width / 2])
+      yScale.domain([ yMean - sizeRatio * height / 2, yMean + sizeRatio * height / 2])
+
+      return [xScale, yScale]
+    }
+
     return ns
   }])
 

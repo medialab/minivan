@@ -3,7 +3,7 @@
 angular.module('app.print-network', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/print-network/:colorAttId/:sizeAttId', {
+  $routeProvider.when('/print-network/:colorAttId/:sizeAttId/:camX/:camY/:camRatio', {
     templateUrl: 'views/print-network.html'
   , controller: 'PrintNetworkController'
   })
@@ -23,6 +23,9 @@ angular.module('app.print-network', ['ngRoute'])
 	if ($routeParams.sizeAttId !== 'undefined') {
 		$scope.sizeAttId = $routeParams.sizeAttId
 	}
+	$scope.camX = $routeParams.camX
+	$scope.camY = $routeParams.camY
+	$scope.camRatio = $routeParams.camRatio
 
 	$scope.oversampling = 2
 	updateResolutionInfo()

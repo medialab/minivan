@@ -45,6 +45,7 @@
 							start-layout-on-load="false"
 							size-att-id="$parent.sizeAttId"
 							color-att-id="$parent.colorAttId"
+							get-camera-state="$parent.getCameraState"
 							layout-fill
 						></sigma-network>
 						
@@ -56,7 +57,7 @@
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-network/{{colorAttId||'undefined'}}/{{sizeAttId||'undefined'}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-network/{{colorAttId||'undefined'}}/{{sizeAttId||'undefined'}}/{{getCameraState().x}}/{{getCameraState().y}}/{{getCameraState().ratio}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>

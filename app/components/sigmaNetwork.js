@@ -18,7 +18,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         startLayoutOnLoad: '=',         // Optional. Default: true
         onNodeClick: '=',
         colorAttId: '=',
-        sizeAttId: '='
+        sizeAttId: '=',
+        getCameraState: '='
       }
       ,link: function($scope, el, attrs) {
         var sigma
@@ -161,6 +162,10 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         function refreshSigma() {
           $timeout(function(){
+
+            var settings = {}
+            settings.default_ratio = 1.2
+
             var container = document.getElementById('sigma-div')
             if (!container) return
             renderer = new Sigma.WebGLRenderer(container)
@@ -181,13 +186,22 @@ angular.module('app.components.sigmaNetworkComponent', [])
             $scope.resetCamera = function(){
               var camera = renderer.getCamera()
               var state = camera.getState()
-              camera.animate({ratio: 1.5, x:0, y:0})
+              camera.animate({ratio: settings.default_ratio, x:0, y:0})
             }
 
             // Defaults to some unzoom
             var camera = renderer.getCamera()
             var state = camera.getState()
-            camera.animate({ratio: 1.2, x:0, y:0})
+            camera.animate({ratio: settings.default_ratio, x:0, y:0})
+
+            $scope.getCameraState = function() {
+              var state = camera.getState()
+              return {
+                x: state.x / +container.offsetWidth,
+                y: state.y / +container.offsetHeight,
+                ratio: state.ratio
+              }
+            }
 
             if ($scope.layout) {
               $scope.layout.kill()

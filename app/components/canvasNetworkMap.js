@@ -11,7 +11,10 @@ angular.module('app.components.canvasNetworkMap', [])
     scope: {
     	colorAttId:'=',
     	sizeAttId:'=',
-    	oversampling: '='
+    	oversampling: '=',
+    	x: '=',
+    	y: '=',
+    	ratio: '='
     },
     link: function($scope, el, attrs) {
     	$scope.$watch('colorAttId', redraw)
@@ -63,7 +66,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					var margin = settings.oversampling * settings.margin
 					var edge_thickness = settings.oversampling * settings.edge_thickness
 					var node_size = settings.oversampling * settings.node_size
-					var scales = scalesUtils.getXYScales(width, height, margin)
+					var scales = scalesUtils.getXYScales_camera(width, height, margin, +$scope.x, +$scope.y, +$scope.ratio)
 					var xScale = scales[0]
 					var yScale = scales[1]
 					var rScale = scalesUtils.getRScale()
