@@ -15,7 +15,10 @@
 				  </div>
 				</md-toolbar>
 				<div layout="column" style="overflow-y: auto; padding: 12px">
-					TODO: Settings
+					<md-input-container ng-if="true">
+					  <label>Oversampling</label>
+					  <input type="number" step="1" min="1" max="16" ng-pattern="/^\d+$/" ng-model="$parent.oversampling">
+					</md-input-container>
 				</div>
 			</div>
 
@@ -26,6 +29,14 @@
 		<h1>{{networkData.title}}</h1>
   	<div class="thin-h-line" style="margin-bottom: 3px"></div>
   	<div class="thin-h-line"></div>
-			TODO: CANVAS
+  	<div style="width: 170mm; height: 170mm">
+			<canvas-network-map
+				layout
+				layout-fill
+				color-att-id="colorAttId"
+				size-att-id="sizeAttId"
+				oversampling="oversampling"
+			></canvas-network-map>
+		</div>
 	</div>
 </div>

@@ -17,5 +17,13 @@ angular.module('app.print-network', ['ngRoute'])
 	networkData
 ) {
 	$scope.networkData = networkData
+	if ($routeParams.colorAttId !== 'undefined') {
+		$scope.colorAttId = $routeParams.colorAttId
+	}
+	if ($routeParams.sizeAttId !== 'undefined') {
+		$scope.sizeAttId = $routeParams.sizeAttId
+	}
+
+	$scope.oversampling = 2
 	
 })

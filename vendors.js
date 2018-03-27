@@ -8,6 +8,7 @@ require('angular-aria');
 require('angular-material');
 require('angular-route');
 require('angular-sanitize');
+require('angular-messages');
 require('angular-marked');
 
 // Other libraries
