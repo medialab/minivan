@@ -1,9 +1,17 @@
 <div class="page-container">
+	<print-button-overlay></print-button-overlay>
+	<div class="a4page-overlay" layout="row" style="height: 100%;">
+		<div flex></div>
+		<div layout="column" style="height: 100%; width: 0px;">
+			<div flex></div>
+			<div class="md-whiteframe-3dp" style="width: 300px; height: 300px; margin-left: 12px; background-color: #FFF"> PANEL </div>
+			<div flex></div>
+		</div>
+	</div>
 	<div class="a4page" layout="column" style="position: relative">
 		<h1>{{networkData.title}}</h1>
   	<div class="thin-h-line" style="margin-bottom: 3px"></div>
-		Hello World!
   	<div class="thin-h-line"></div>
+			TODO: CANVAS
 	</div>
-	<print-button-overlay></print-button-overlay>
 </div>
