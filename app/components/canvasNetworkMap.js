@@ -9,8 +9,9 @@ angular.module('app.components.canvasNetworkMap', [])
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
     scope: {
-    	colorAttId:'=',
-    	sizeAttId:'=',
+    	colorAttId: '=',
+    	sizeAttId: '=',
+    	nodeSize: '=',
     	oversampling: '=',
     	x: '=',
     	y: '=',
@@ -20,6 +21,7 @@ angular.module('app.components.canvasNetworkMap', [])
     	$scope.$watch('colorAttId', redraw)
     	$scope.$watch('sizeAttId', redraw)
     	$scope.$watch('oversampling', redraw)
+    	$scope.$watch('nodeSize', redraw)
 
       window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
@@ -54,7 +56,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.edge_thickness = 0.6
 
 					// Nodes
-					settings.node_size = 1.5
+					settings.node_size = (+$scope.nodeSize || 10) / 10
 					settings.size_scale_emphasize = 2
 
 					var i
@@ -101,9 +103,17 @@ angular.module('app.components.canvasNetworkMap', [])
 					getColor = function(nid){ return d3.color('#000') }
 
 					// Sizes
+					var nodesInTheFrame = g.nodes().filter(function(nid){
+						var n = g.getNodeAttributes(nid)
+						var x = xScale(n.x)
+						var y = xScale(n.y)
+						return x >= 0 && x <= width && y >= 0 && y <= height
+					})
+					var nodesDensity = nodesInTheFrame.length / (el[0].offsetWidth * el[0].offsetHeight)
+					var standardArea =  0.03 / nodesDensity
 					var getArea
 					// TODO: properly set area
-					getArea = function(nid){ return Math.PI }
+					getArea = function(nid){ return standardArea }
 
 					// Draw each node
 					g.nodes().forEach(function(nid){

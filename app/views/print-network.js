@@ -28,6 +28,7 @@ angular.module('app.print-network', ['ngRoute'])
 	$scope.camRatio = $routeParams.camRatio
 
 	$scope.oversampling = 2
+	$scope.nodeSize = 10
 	updateResolutionInfo()
 
 	$scope.$watch('oversampling', updateResolutionInfo)
