@@ -13,6 +13,7 @@ angular.module('app.components.canvasNetworkMap', [])
     	sizeAttId: '=',
     	nodeSize: '=',
     	oversampling: '=',
+    	clearEdgesAroundNodes: '=',
     	x: '=',
     	y: '=',
     	ratio: '='
@@ -22,6 +23,7 @@ angular.module('app.components.canvasNetworkMap', [])
     	$scope.$watch('sizeAttId', redraw)
     	$scope.$watch('oversampling', redraw)
     	$scope.$watch('nodeSize', redraw)
+    	$scope.$watch('clearEdgesAroundNodes', redraw)
 
       window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
@@ -52,6 +54,7 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					// Edges
 					settings.draw_edges = g.size < 10000
+					settings.clear_edges_around_nodes = $scope.clearEdgesAroundNodes
 					settings.edge_color = 'rgba(230, 230, 230, 0.6)'
 					settings.edge_thickness = 0.6
 
@@ -174,74 +177,76 @@ angular.module('app.components.canvasNetworkMap', [])
 					  showLabelIndex[nid] = i < settings.label_count;
 					})
 
-					// Get an index of nodes where ids are integers
-					var nodesIndex = g.nodes().slice(0)
-					nodesIndex.unshift(null) // We reserve 0 for "no closest"
-
-					// Generate "voronoi ids" (vid)
 					var vidIndex = {}
-					nodesIndex.forEach(function(nid, vid){
-					  if (vid > 0) {
-					    vidIndex[nid] = vid
-					  }
-					})
+					if (settings.clear_edges_around_nodes) {
+						// Get an index of nodes where ids are integers
+						var nodesIndex = g.nodes().slice(0)
+						nodesIndex.unshift(null) // We reserve 0 for "no closest"
 
-					// Init a pixel map of integers for voronoi ids
-					var vidPixelMap = new Int32Array(width * height)
-					for (i in vidPixelMap) {
-					  vidPixelMap[i] = 0
-					}
+						// Generate "voronoi ids" (vid)
+						nodesIndex.forEach(function(nid, vid){
+						  if (vid > 0) {
+						    vidIndex[nid] = vid
+						  }
+						})
 
-					// Init a pixel map of floats for distances
-					var dPixelMap = new Float32Array(width * height)
-					for (i in dPixelMap) {
-					  dPixelMap[i] = Infinity
-					}
+						// Init a pixel map of integers for voronoi ids
+						var vidPixelMap = new Int32Array(width * height)
+						for (i in vidPixelMap) {
+						  vidPixelMap[i] = 0
+						}
 
-					// Compute the voronoi using the pixel map
-					nodesInTheFrame.forEach(function(nid){
-					  var n = g.getNodeAttributes(nid)
-					  var nx = xScale(n.x)
-					  var ny = yScale(n.y)
-					  var nsize = rScale(areaIndex[nid])
-					  var nvid = vidIndex[nid]
-					  var range = nsize * node_size + node_halo_range
-					  for (x = Math.max(0, Math.floor(nx - range) ); x <= Math.min(width, Math.floor(nx + range) ); x++ ){
-					    for (y = Math.max(0, Math.floor(ny - range) ); y <= Math.min(height, Math.floor(ny + range) ); y++ ){
-					      var d = Math.sqrt(Math.pow(nx - x, 2) + Math.pow(ny - y, 2))
-					      if (d < range) {
-					        var dmod // A tweak of the voronoi: a modified distance in [0,1]
-					        if (d <= nsize * node_size) {
-					          // "Inside" the node
-					          dmod = 0
-					        } else {
-					          // In the halo range
-					          dmod = (d - nsize * node_size) / node_halo_range
-					        }
-					        i = x + width * y
-					        var existingVid = vidPixelMap[i]
-					        if (existingVid == 0) {
-					          // 0 means there is no closest node
-					          vidPixelMap[i] = nvid
-					          dPixelMap[i] = dmod
-					        } else {
-					          // There is already a closest node. Edit only if we are closer.
-					          if (dmod < dPixelMap[i]) {
-					            vidPixelMap[i] = nvid
-					            dPixelMap[i] = dmod
-					          }
-					        }
-					      }
-					    }
-					  }
-					})
+						// Init a pixel map of floats for distances
+						var dPixelMap = new Float32Array(width * height)
+						for (i in dPixelMap) {
+						  dPixelMap[i] = Infinity
+						}
 
-					// Convert distance map to a visually pleasant gradient
-					var gradient = function(d){
-					  return 0.5 + 0.5 * Math.cos(Math.PI - Math.pow(d, 2) * Math.PI)
-					}
-					for (i in dPixelMap) {
-					  dPixelMap[i] = gradient(dPixelMap[i])
+						// Compute the voronoi using the pixel map
+						nodesInTheFrame.forEach(function(nid){
+						  var n = g.getNodeAttributes(nid)
+						  var nx = xScale(n.x)
+						  var ny = yScale(n.y)
+						  var nsize = rScale(areaIndex[nid])
+						  var nvid = vidIndex[nid]
+						  var range = nsize * node_size + node_halo_range
+						  for (x = Math.max(0, Math.floor(nx - range) ); x <= Math.min(width, Math.floor(nx + range) ); x++ ){
+						    for (y = Math.max(0, Math.floor(ny - range) ); y <= Math.min(height, Math.floor(ny + range) ); y++ ){
+						      var d = Math.sqrt(Math.pow(nx - x, 2) + Math.pow(ny - y, 2))
+						      if (d < range) {
+						        var dmod // A tweak of the voronoi: a modified distance in [0,1]
+						        if (d <= nsize * node_size) {
+						          // "Inside" the node
+						          dmod = 0
+						        } else {
+						          // In the halo range
+						          dmod = (d - nsize * node_size) / node_halo_range
+						        }
+						        i = x + width * y
+						        var existingVid = vidPixelMap[i]
+						        if (existingVid == 0) {
+						          // 0 means there is no closest node
+						          vidPixelMap[i] = nvid
+						          dPixelMap[i] = dmod
+						        } else {
+						          // There is already a closest node. Edit only if we are closer.
+						          if (dmod < dPixelMap[i]) {
+						            vidPixelMap[i] = nvid
+						            dPixelMap[i] = dmod
+						          }
+						        }
+						      }
+						    }
+						  }
+						})
+
+						// Convert distance map to a visually pleasant gradient
+						var gradient = function(d){
+						  return 0.5 + 0.5 * Math.cos(Math.PI - Math.pow(d, 2) * Math.PI)
+						}
+						for (i in dPixelMap) {
+						  dPixelMap[i] = gradient(dPixelMap[i])
+						}
 					}
 
 
@@ -270,7 +275,7 @@ angular.module('app.components.canvasNetworkMap', [])
 						    // Opacity
 						    var o
 						    var pixi = Math.floor(x) + width * Math.floor(y)
-						    if (vidPixelMap[pixi] == nsvid || vidPixelMap[pixi] == ntvid || vidPixelMap[pixi] == 0) {
+						    if (!settings.clear_edges_around_nodes || vidPixelMap[pixi] == nsvid || vidPixelMap[pixi] == ntvid || vidPixelMap[pixi] == 0) {
 						      o = 1
 						    } else {
 						      o = dPixelMap[pixi]

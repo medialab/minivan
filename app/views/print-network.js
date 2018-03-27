@@ -29,10 +29,11 @@ angular.module('app.print-network', ['ngRoute'])
 
 	$scope.oversampling = 2
 	$scope.nodeSize = 10
+	$scope.clearEdgesAroundNodes = false
 	updateResolutionInfo()
 
 	$scope.$watch('oversampling', updateResolutionInfo)
-
+	
 	$scope.downloadImage = function() {
 		var canvas = document.querySelector('#cnvs')
 		canvas.toBlob(function(blob) {

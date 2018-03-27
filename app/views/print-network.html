@@ -31,6 +31,11 @@
 					  <input type="number" step="1" min="0" max="10000" ng-model="nodeSize">
 					</md-input-container>
 
+					<!-- clear edges around nodes -->
+					<md-switch ng-model="clearEdgesAroundNodes" aria-label="Clear edges around nodes">
+				    Clear edges around nodes
+				  </md-switch>
+
 					<!-- Download image -->
 					<md-button class="md-primary" ng-click="downloadImage()">
 						<md-icon>file_download</md-icon>
@@ -54,6 +59,7 @@
 				size-att-id="sizeAttId"
 				node-size="nodeSize"
 				oversampling="oversampling"
+				clear-edges-around-nodes="clearEdgesAroundNodes"
 				x="camX || 0"
 				y="camY || 0"
 				ratio="camRatio || 1"
