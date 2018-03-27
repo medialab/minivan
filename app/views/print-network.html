@@ -3,9 +3,23 @@
 	<div class="a4page-overlay" layout="row" style="height: 100%;">
 		<div flex></div>
 		<div layout="column" style="height: 100%; width: 0px;">
-			<div flex></div>
-			<div class="md-whiteframe-3dp" style="width: 300px; height: 300px; margin-left: 12px; background-color: #FFF"> PANEL </div>
-			<div flex></div>
+			<div flex="20"></div>
+
+			<!-- Tools Panel -->
+			<div flex class="md-whiteframe-3dp" style="width: 300px; margin: 12px; background-color: #FFF;" layout="column">
+				<md-toolbar>
+					<div class="md-toolbar-tools" layout-align="start">
+				    <md-button md-truncate>
+				      Settings
+				    </md-button>
+				  </div>
+				</md-toolbar>
+				<div layout="column" style="overflow-y: auto; padding: 12px">
+					TODO: Settings
+				</div>
+			</div>
+
+			<div flex="20"></div>
 		</div>
 	</div>
 	<div class="a4page" layout="column" style="position: relative">
