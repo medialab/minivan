@@ -154,7 +154,9 @@
 }
 @media screen {
   .page-container {
-    /*overflow: scroll;*/
+    overflow: scroll;
+    height:100%;
+    width:100%;
   }
 }
 .a4page {
