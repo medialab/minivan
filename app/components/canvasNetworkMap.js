@@ -71,6 +71,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.edge_thickness = 0.6
 
 					// Nodes
+					settings.draw_nodes = true
 					settings.node_size = (+$scope.nodeSize || 10) / 10
 					settings.node_stroke_width = 1.0 // Nodes white contour
 					settings.default_node_color = d3.color('#999')
@@ -78,6 +79,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.node_halo_range = 15
 
 					// Node labels
+					settings.draw_labels = true
 					settings.label_count = 10 // How much node labels you want to show (the biggest nodes)
 					settings.label_white_border_thickness = 2.5
 					settings.label_font_min_size = 9
@@ -163,31 +165,6 @@ angular.module('app.components.canvasNetworkMap', [])
 					ctx.fillStyle="white"
 					ctx.fill()
 					ctx.closePath()
-
-					// Tell which nodes' label to show
-					// TODO: implement a strategy without overlap
-					var nodesBySize = nodesInTheFrame.slice(0)
-					// We sort nodes by 1) size and 2) left to right
-					nodesBySize.sort(function(naid, nbid){
-					  var na = g.getNodeAttributes(naid)
-					  var nb = g.getNodeAttributes(nbid)
-					  var nasize = areaIndex[naid]
-					  var nbsize = areaIndex[nbid]
-					  if ( nasize < nbsize ) {
-					    return 1
-					  } else if ( nasize > nbsize ) {
-					    return -1
-					  } else if ( na.x < nb.x ) {
-					    return 1
-					  } else if ( na.x > nb.x ) {
-					    return -1
-					  }
-					  return 0
-					})
-					var showLabelIndex = {}
-					nodesBySize.forEach(function(nid, i){
-					  showLabelIndex[nid] = i < settings.label_count;
-					})
 
 					var vidIndex = {}
 					if (settings.clear_edges_around_nodes) {
@@ -326,101 +303,136 @@ angular.module('app.components.canvasNetworkMap', [])
 						})
 					}
 
-					// Draw each node
-					nodesBySize.reverse() // Because we draw from background to foreground
-					nodesBySize.forEach(function(nid){
-						var n = g.getNodeAttributes(nid)
-						var nx = xScale(n.x)
-						var ny = yScale(n.y)
-						var nsize = rScale(getArea(nid))
-
-					  var color = getColor(nid)
-
-					  ctx.lineCap="round"
-					  ctx.lineJoin="round"
-
-					  ctx.beginPath()
-					  ctx.arc(nx, ny, node_size * nsize + node_stroke_width, 0, 2 * Math.PI, false)
-					  ctx.lineWidth = 0
-					  ctx.fillStyle = '#FFFFFF'
-					  ctx.shadowColor = 'transparent'
-					  ctx.fill()
-
-					  ctx.beginPath()
-					  ctx.arc(nx, ny, node_size * nsize, 0, 2 * Math.PI, false)
-					  ctx.lineWidth = 0
-					  ctx.fillStyle = color.toString()
-					  ctx.shadowColor = 'transparent'
-					  ctx.fill()
-					})
-
-					// Compute scale for labels
-					var label_nodeSizeExtent = d3.extent(
-					  nodesBySize.filter(function(nid){
-					    return showLabelIndex[nid]
-					  }).map(function(nid){
-					    return rScale(areaIndex[nid])
-					  })
-					)
-					if (label_nodeSizeExtent[0] == label_nodeSizeExtent[1]) {label_nodeSizeExtent[0] *= 0.9}
-
-					// Draw labels
-					nodesBySize.forEach(function(nid){
-					  var n = g.getNodeAttributes(nid)
-					  var nx = xScale(n.x)
-						var ny = yScale(n.y)
-						var nsize = rScale(getArea(nid))
-
-					  if(showLabelIndex[nid]){
-					    var color = getColor(nid)
-					    var fontSize = Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
-
-					    // Then, draw the label only if wanted
-					    var labelCoordinates = {
-					      x: nx + 0.6 * label_white_border_thickness + 1.05 * node_size * nsize,
-					      y: ny + 0.25 * fontSize
-					    }
-
-					    var label = n.label.replace(/^https*:\/\/(www\.)*/gi, '')
-
-					    ctx.font = settings.label_font_weight + " " + fontSize + "px " + settings.label_font_family
-					    ctx.lineWidth = label_white_border_thickness
-
-					    // Bounding box test
-							var bbox = getBBox(ctx, fontSize, labelCoordinates)
-							function getBBox(ctx, fontSize, labelCoordinates) {
-								return {
-									x: labelCoordinates.x,
-									y: labelCoordinates.y - 0.8 * fontSize,
-									width: ctx.measureText(label).width,
-									height: fontSize
-								}
-							}
-							
-							ctx.fillStyle = '#FFFFFF'
-					    ctx.strokeStyle = '#FFFFFF'
-
-					    ctx.fillText(
-					      label
-					    , labelCoordinates.x
-					    , labelCoordinates.y
-					    )
-					    ctx.strokeText(
-					      label
-					    , labelCoordinates.x
-					    , labelCoordinates.y
-					    )
-					    ctx.lineWidth = 0
-					    ctx.fillStyle = color.toString()
-					    ctx.fillText(
-					      label
-					    , labelCoordinates.x
-					    , labelCoordinates.y
-					    )
+					// Sort nodes
+					var nodesBySize = nodesInTheFrame.slice(0)
+					// We sort nodes by 1) size and 2) left to right
+					nodesBySize.sort(function(naid, nbid){
+					  var na = g.getNodeAttributes(naid)
+					  var nb = g.getNodeAttributes(nbid)
+					  var nasize = areaIndex[naid]
+					  var nbsize = areaIndex[nbid]
+					  if ( nasize < nbsize ) {
+					    return 1
+					  } else if ( nasize > nbsize ) {
+					    return -1
+					  } else if ( na.x < nb.x ) {
+					    return 1
+					  } else if ( na.x > nb.x ) {
+					    return -1
 					  }
-					  
+					  return 0
 					})
 
+					// Draw each node
+					if (settings.draw_nodes) {
+						nodesBySize.reverse() // Because we draw from background to foreground
+						nodesBySize.forEach(function(nid){
+							var n = g.getNodeAttributes(nid)
+							var nx = xScale(n.x)
+							var ny = yScale(n.y)
+							var nsize = rScale(getArea(nid))
+
+						  var color = getColor(nid)
+
+						  ctx.lineCap="round"
+						  ctx.lineJoin="round"
+
+						  ctx.beginPath()
+						  ctx.arc(nx, ny, node_size * nsize + node_stroke_width, 0, 2 * Math.PI, false)
+						  ctx.lineWidth = 0
+						  ctx.fillStyle = '#FFFFFF'
+						  ctx.shadowColor = 'transparent'
+						  ctx.fill()
+
+						  ctx.beginPath()
+						  ctx.arc(nx, ny, node_size * nsize, 0, 2 * Math.PI, false)
+						  ctx.lineWidth = 0
+						  ctx.fillStyle = color.toString()
+						  ctx.shadowColor = 'transparent'
+						  ctx.fill()
+						})
+						nodesBySize.reverse() // Put it back how it was
+					}
+
+					// Draw each label
+					if (settings.draw_labels) {
+
+						// Tell which nodes' label to show
+						// TODO: implement a strategy without overlap
+						var showLabelIndex = {}
+						nodesBySize.forEach(function(nid, i){
+						  showLabelIndex[nid] = i < settings.label_count;
+						})
+
+						// Compute scale for labels
+						var label_nodeSizeExtent = d3.extent(
+						  nodesBySize.filter(function(nid){
+						    return showLabelIndex[nid]
+						  }).map(function(nid){
+						    return rScale(areaIndex[nid])
+						  })
+						)
+						if (label_nodeSizeExtent[0] == label_nodeSizeExtent[1]) {label_nodeSizeExtent[0] *= 0.9}
+
+						// Draw labels
+						nodesBySize.reverse() // Because we draw from background to foreground
+						nodesBySize.forEach(function(nid){
+						  var n = g.getNodeAttributes(nid)
+						  var nx = xScale(n.x)
+							var ny = yScale(n.y)
+							var nsize = rScale(getArea(nid))
+
+						  if(showLabelIndex[nid]){
+						    var color = getColor(nid)
+						    var fontSize = Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
+
+						    // Then, draw the label only if wanted
+						    var labelCoordinates = {
+						      x: nx + 0.6 * label_white_border_thickness + 1.05 * node_size * nsize,
+						      y: ny + 0.25 * fontSize
+						    }
+
+						    var label = n.label.replace(/^https*:\/\/(www\.)*/gi, '')
+
+						    ctx.font = settings.label_font_weight + " " + fontSize + "px " + settings.label_font_family
+						    ctx.lineWidth = label_white_border_thickness
+
+						    // Bounding box test
+								var bbox = getBBox(ctx, fontSize, labelCoordinates)
+								function getBBox(ctx, fontSize, labelCoordinates) {
+									return {
+										x: labelCoordinates.x,
+										y: labelCoordinates.y - 0.8 * fontSize,
+										width: ctx.measureText(label).width,
+										height: fontSize
+									}
+								}
+								
+								ctx.fillStyle = '#FFFFFF'
+						    ctx.strokeStyle = '#FFFFFF'
+
+						    ctx.fillText(
+						      label
+						    , labelCoordinates.x
+						    , labelCoordinates.y
+						    )
+						    ctx.strokeText(
+						      label
+						    , labelCoordinates.x
+						    , labelCoordinates.y
+						    )
+						    ctx.lineWidth = 0
+						    ctx.fillStyle = color.toString()
+						    ctx.fillText(
+						      label
+						    , labelCoordinates.x
+						    , labelCoordinates.y
+						    )
+						  }
+						  
+						})
+						nodesBySize.reverse() // Put it back like it was before
+					}
         }, 10)
       }
 
