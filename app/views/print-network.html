@@ -42,7 +42,7 @@
 						  </md-switch>
 						</div>
 
-						<!-- Colored labels -->
+						Colored labels
 						<div flex="50">
 							<md-switch ng-model="coloredLabels">
 						    Colored labels
@@ -98,10 +98,10 @@
 			<div flex="20"></div>
 		</div>
 	</div>
-	<div class="a4page" layout="column" style="position: relative">
+	<div class="a4page" layout="column">
 		<h1>{{networkData.title}}</h1>
   	<div class="thin-h-line" style="margin-bottom: 3px"></div>
-  	<div class="thin-h-line"></div>
+  	<div class="thin-h-line" style="margin-bottom: 3px"></div>
   	<div style="width: 170mm; height: 170mm">
 			<canvas-network-map
 				layout="column"
@@ -121,6 +121,40 @@
 				y="camY || 0"
 				ratio="camRatio || 1"
 			></canvas-network-map>
+		</div>
+		<div class="thin-h-line"></div>
+	</div>
+	<div class="page-break"></div>
+	<div class="a4page" layout="column">
+		<!-- Key -->
+		<div layout="row">
+			<!-- Nodes  -->
+			<div layout="column" flex="50">
+				<h3>Node size</h3>
+				<p>TODO</p>
+
+				<h3>Node color</h3>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+				<p>TODO</p>
+			</div>
+			<!-- Edges  -->
+			<div layout="column" flex="50">
+				<h3>Edge color</h3>
+				<p>TODO</p>
+			</div>
 		</div>
 	</div>
 </div>

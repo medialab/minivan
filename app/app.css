@@ -183,6 +183,9 @@
   margin-bottom: 0px;
   font-weight: 300;
 }
+.a4page h2, h3, h4, h5 {
+  font-weight: 300;
+}
 .a4page md-list {
   padding: 0px;
 }
@@ -205,6 +208,11 @@
 @media print {    
   .a4page-overlay {
     display: none !important;
+  }
+}
+@media print {
+  .page-break {
+    page-break-after: always;
   }
 }
 @media print {    
