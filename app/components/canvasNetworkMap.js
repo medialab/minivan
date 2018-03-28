@@ -342,7 +342,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					  ctx.fill()
 					})
 
-					// Compute formula for labels
+					// Compute scale for labels
 					var label_nodeSizeExtent = d3.extent(
 					  nodesBySize.filter(function(nid){
 					    return showLabelIndex[nid]
@@ -373,8 +373,21 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					    ctx.font = settings.label_font_weight + " " + fontSize + "px " + settings.label_font_family
 					    ctx.lineWidth = label_white_border_thickness
-					    ctx.fillStyle = '#FFFFFF'
+
+					    // Bounding box test
+							var bbox = getBBox(ctx, fontSize, labelCoordinates)
+							function getBBox(ctx, fontSize, labelCoordinates) {
+								return {
+									x: labelCoordinates.x,
+									y: labelCoordinates.y - 0.8 * fontSize,
+									width: ctx.measureText(label).width,
+									height: fontSize
+								}
+							}
+							
+							ctx.fillStyle = '#FFFFFF'
 					    ctx.strokeStyle = '#FFFFFF'
+
 					    ctx.fillText(
 					      label
 					    , labelCoordinates.x
