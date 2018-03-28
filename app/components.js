@@ -10,6 +10,7 @@ angular.module('app.components', [
     'app.components.partitionBarChart',
     'app.components.rankingColorChart',
     'app.components.rankingSizeChart',
+    'app.components.partitionColorKey',
     'app.components.rankingSizeKey'
   ])
 

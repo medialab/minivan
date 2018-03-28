@@ -131,18 +131,27 @@
 		<h1>Key</h1>
   	<div class="thin-h-line"></div>
   	<div class="thin-h-line"></div>
-		<div layout="row">
+		<div layout="row" style="padding-top: 24px">
 			
-			<div layout="column" flex="33">
-				<h2>Node size</h2>
-				<div>
-					<div
-						ranking-size-key
-						att="networkData.nodeAttributesIndex[sizeAttId]"
-						scales="scales"
-						layout-fill
-					></div>
-				</div>
+			<div layout="column" flex="33" ng-if="sizeAttId">
+				<h3 style="margin-bottom: 12px">Node size</h3>
+				<div
+					ranking-size-key
+					att="networkData.nodeAttributesIndex[sizeAttId]"
+					scales="scales"
+					layout-fill
+				></div>
+			</div>
+
+			<div layout="column" flex="33" ng-if="colorAttId">
+				<h3 style="margin-bottom: 12px">Node color</h3>
+				<div
+					ng-if="networkData.nodeAttributesIndex[colorAttId].type == 'partition'"
+					partition-color-key
+					att="networkData.nodeAttributesIndex[colorAttId]"
+					scales="scales"
+					layout-fill
+				></div>
 			</div>
 			
 		</div>
