@@ -16,6 +16,10 @@ angular.module('app.services', [])
 
         // Add metadata
         ns.title = 'Rio + 20'
+        ns.authors = ["Débora de Carvalho Pereira", "Mathieu Jacomy", "Tommaso Venturini"]
+        ns.date = "2013"
+        ns.url = "http://www.medialab.sciences-po.fr/wp-content/uploads/2015/06/VisualNetwork_Paper-10.pdf"
+        ns.bundleVersion = "0.1"
         ns.nodeAttributes = []
         ns.nodeAttributes.push({
           id: 'Category',

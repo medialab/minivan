@@ -160,6 +160,38 @@
 					layout-fill
 				></div>
 			</div>
+
+			<div layout="column" flex="33">
+				<div layout="column" style="margin-bottom: 24px" ng-if="showEdges && curvedEdges">
+					<h3 style="margin-bottom: 12px">How to read</h3>
+					<p class="key-element-p" ng-if="showEdges && curvedEdges">
+						<span style="font-weight: 400">Curved edges</span>
+						indicate the direction of the link.
+						Follow the line so that it turns clockwise, and it will lead you from the source to the target.
+					</p>
+				</div>
+
+				<h3 style="margin-bottom: 12px">About</h3>
+				<p class="key-element-p" style="font-weight: 400">
+					{{networkData.title}}
+				</p>
+				<p class="key-element-p" ng-if="networkData.date">
+					{{networkData.date}}
+				</p>
+				<p class="key-element-p">
+					{{networkData.g.order|number}} nodes
+					<br>
+					{{networkData.g.size|number}} edges
+				</p>
+				<p class="key-element-p" ng-if="networkData.authors && networkData.authors.length > 0">
+					Author{{networkData.authors.length > 1 ? 's' : ''}}:
+					<span ng-repeat="author in networkData.authors"><br/>{{author}}</span>
+				</p>
+				<p class="key-element-p" ng-if="networkData.url" style="word-break: break-all;">
+					{{networkData.url}}
+				</p>
+				
+			</div>
 			
 		</div>
 	</div>
