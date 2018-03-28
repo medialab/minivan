@@ -75,6 +75,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.clear_edges_around_nodes = $scope.clearEdgesAroundNodes
 					settings.edge_color = 'rgba(120, 120, 120, 1)'
 					settings.edge_thickness = 0.06
+					settings.curved_edges = true
 
 					// Nodes
 					settings.draw_nodes = true
@@ -269,12 +270,7 @@ angular.module('app.components.canvasNetworkMap', [])
 						  var color = d3.color(settings.edge_color)
 
 						  // Build path
-						  var path = []
-						  for (i=0; i<1; i+=1/d) {
-						    x = (1-i)*nsx + i*ntx
-						    y = (1-i)*nsy + i*nty
-						    path.push([x, y, 1])
-						  }
+						  var path = settings.curved_edges ? getCurvedPath(nsx, nsy, ntx, nty) : getLinePath(nsx, nsy, ntx, nty)
 
 						  // Set opacity at each path point
 						  path.forEach(function(p){
@@ -485,6 +481,64 @@ angular.module('app.components.canvasNetworkMap', [])
 		      	hcl.l = Math.min(hcl.l, settings.label_color_max_L)
 		      	return d3.color(hcl)
 		      }
+
+		      function getLinePath(nsx, nsy, ntx, nty) {
+		      	var d = Math.sqrt(Math.pow(nsx-ntx, 2), Math.pow(nsy-nty, 2))
+						var path = []
+					  for (i=0; i<1; i+=1/d) {
+					    x = (1-i)*nsx + i*ntx
+					    y = (1-i)*nsy + i*nty
+					    path.push([x, y, 1])
+					  }
+					  return path
+				  }
+
+				  function getCurvedPath(nsx, nsy, ntx, nty) {
+						var path = []
+						var angle = Math.atan2( nty - nsy, ntx - nsx )
+						var distance = Math.sqrt( ( nsx - ntx ) * ( nsx - ntx ) + ( nsy - nty ) * ( nsy - nty ) )
+						var offset = 1 + 0.8 * Math.sqrt(distance)
+						var ticks = interpolateValues(0, distance, distance/3)
+						var reverseTicks = ticks.slice(0).reverse()
+
+						ticks.forEach(function(t){
+							path.push([
+								nsx + ( Math.cos(angle) * t ) + ( Math.cos( angle + Math.PI/2 ) * centralLineCurve(t) ),
+								nsy + ( Math.sin(angle) * t ) + ( Math.sin( angle + Math.PI/2 ) * centralLineCurve(t) ),
+								1
+							])
+						})
+
+						return path
+
+						function centralLineCurve(X){
+							// Parabolic curve with given offset at center
+							var a = 0
+								, c = 4 * offset / ( distance * distance )
+								, b = - c * distance
+
+							return a + b * X + c * X * X
+						}
+
+						function interpolateValues(min, max, intervalsCount, omitFirst, omitLast){
+
+							var range = []
+							for(var i = 0; i <= intervalsCount; i++){
+								range.push( min + (max - min) * i / intervalsCount )
+							}
+							
+							if ( omitFirst ) {
+								range.shift()
+							}
+
+							if ( omitLast ) {
+								range.pop()
+							}
+
+							return range
+
+						}
+					}
         }, 50)
       }
 
