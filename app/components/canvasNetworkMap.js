@@ -19,6 +19,8 @@ angular.module('app.components.canvasNetworkMap', [])
     	ratio: '='
     },
     link: function($scope, el, attrs) {
+    	var redraw = debounce(_redraw, 100) // Prevents multiple triggers in a row
+
     	$scope.$watch('colorAttId', redraw)
     	$scope.$watch('sizeAttId', redraw)
     	$scope.$watch('oversampling', redraw)
@@ -34,14 +36,23 @@ angular.module('app.components.canvasNetworkMap', [])
 
       var container = el[0]
 
-      function redraw(){
+      function _redraw(){
+
+      	// Postpone if network data not loaded
       	g = networkData.g
       	if (g === undefined) {
       		$timeout(redraw, 500)
       		return
       	}
-      	container.innerHTML = '<small style="opacity:0.5;">Refreshing...</small>'
+
+      	// Redraw waiting message
       	$timeout(function(){
+	      	container.innerHTML = '<small style="opacity:0.5;">Refreshing...</small>'
+	      })
+      	
+      	// Actual redraw
+      	$timeout(function(){
+
           container.innerHTML = '';
 
           var settings = {}
@@ -410,8 +421,23 @@ angular.module('app.components.canvasNetworkMap', [])
 					  
 					})
 
-        })
+        }, 10)
       }
+
+      function debounce(func, wait, immediate) {
+			  var timeout;
+			  return function() {
+			    var context = this, args = arguments;
+			    var later = function() {
+			      timeout = null;
+			      if (!immediate) func.apply(context, args);
+			    };
+			    var callNow = immediate && !timeout;
+			    clearTimeout(timeout);
+			    timeout = setTimeout(later, wait);
+			    if (callNow) func.apply(context, args);
+			  };
+			};
     }
   }
 })
