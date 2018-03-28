@@ -11,6 +11,7 @@ angular.module('app.components', [
     'app.components.rankingColorChart',
     'app.components.rankingSizeChart',
     'app.components.partitionColorKey',
+    'app.components.rankingColorKey',
     'app.components.rankingSizeKey'
   ])
 
