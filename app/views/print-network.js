@@ -29,7 +29,7 @@ angular.module('app.print-network', ['ngRoute'])
 
 	$scope.oversampling = 2
 	$scope.nodeSize = 10
-	$scope.clearEdgesAroundNodes = false
+	$scope.highQuality = false
 	updateResolutionInfo()
 
 	$scope.$watch('oversampling', updateResolutionInfo)

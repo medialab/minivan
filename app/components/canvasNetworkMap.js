@@ -67,16 +67,16 @@ angular.module('app.components.canvasNetworkMap', [])
 					// Edges
 					settings.draw_edges = g.size < 10000
 					settings.clear_edges_around_nodes = $scope.clearEdgesAroundNodes
-					settings.edge_color = 'rgba(230, 230, 230, 0.6)'
-					settings.edge_thickness = 0.6
+					settings.edge_color = 'rgba(120, 120, 120, 1)'
+					settings.edge_thickness = 0.06
 
 					// Nodes
 					settings.draw_nodes = true
 					settings.node_size = (+$scope.nodeSize || 10) / 10
-					settings.node_stroke_width = 1.0 // Nodes white contour
+					settings.node_stroke_width = 0 // Nodes white contour
 					settings.default_node_color = d3.color('#999')
 					settings.size_scale_emphasize = 2
-					settings.node_halo_range = 15
+					settings.node_halo_ratio = 4 * settings.node_size
 
 					// Node labels
 					settings.draw_labels = true
@@ -97,7 +97,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					var edge_thickness = settings.oversampling * settings.edge_thickness
 					var node_size = settings.oversampling * settings.node_size
 					var node_stroke_width = settings.oversampling * settings.node_stroke_width
-					var node_halo_range = settings.oversampling * settings.node_halo_range
+					var node_halo_ratio = settings.oversampling * settings.node_halo_ratio
 					var label_white_border_thickness = settings.oversampling * settings.label_white_border_thickness
 					var label_font_min_size = settings.oversampling * settings.label_font_min_size
 					var label_font_max_size = settings.oversampling * settings.label_font_max_size
@@ -198,6 +198,7 @@ angular.module('app.components.canvasNetworkMap', [])
 						  var ny = yScale(n.y)
 						  var nsize = rScale(areaIndex[nid])
 						  var nvid = vidIndex[nid]
+						  var node_halo_range = node_halo_ratio * rScale(standardArea)
 						  var range = nsize * node_size + node_halo_range
 						  for (x = Math.max(0, Math.floor(nx - range) ); x <= Math.min(width, Math.floor(nx + range) ); x++ ){
 						    for (y = Math.max(0, Math.floor(ny - range) ); y <= Math.min(height, Math.floor(ny + range) ); y++ ){
