@@ -80,7 +80,7 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					// Node labels
 					settings.draw_labels = true
-					settings.label_count = 10 // How much node labels you want to show (the biggest nodes)
+					settings.label_count = Infinity // Limit the number of visible labels
 					settings.label_white_border_thickness = 2.5
 					settings.label_font_min_size = 9
 					settings.label_font_max_size = 18
@@ -357,32 +357,31 @@ angular.module('app.components.canvasNetworkMap', [])
 					// Draw each label
 					if (settings.draw_labels) {
 
-						// Tell which nodes' label to show
-						// TODO: implement a strategy without overlap
-						var showLabelIndex = {}
-						nodesBySize.forEach(function(nid, i){
-						  showLabelIndex[nid] = i < settings.label_count;
-						})
-
+						// Init a pixel map of int for bounding boxes
+						var bbPixelMap = new Uint8Array(width * height)
+						for (i in bbPixelMap) {
+						  bbPixelMap[i] = 0 // 1 means "occupied"
+						}
+						
 						// Compute scale for labels
 						var label_nodeSizeExtent = d3.extent(
-						  nodesBySize.filter(function(nid){
-						    return showLabelIndex[nid]
-						  }).map(function(nid){
+						  nodesBySize.map(function(nid){
 						    return rScale(areaIndex[nid])
 						  })
 						)
 						if (label_nodeSizeExtent[0] == label_nodeSizeExtent[1]) {label_nodeSizeExtent[0] *= 0.9}
 
 						// Draw labels
-						nodesBySize.reverse() // Because we draw from background to foreground
+						var labelDrawCount = settings.label_count
 						nodesBySize.forEach(function(nid){
-						  var n = g.getNodeAttributes(nid)
-						  var nx = xScale(n.x)
-							var ny = yScale(n.y)
-							var nsize = rScale(getArea(nid))
+						  if(labelDrawCount > 0){
 
-						  if(showLabelIndex[nid]){
+							  var n = g.getNodeAttributes(nid)
+							  var nx = xScale(n.x)
+								var ny = yScale(n.y)
+								var nsize = rScale(getArea(nid))
+						  	
+						  	// Precompute the label
 						    var color = getColor(nid)
 						    var fontSize = Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
 
@@ -397,7 +396,7 @@ angular.module('app.components.canvasNetworkMap', [])
 						    ctx.font = settings.label_font_weight + " " + fontSize + "px " + settings.label_font_family
 						    ctx.lineWidth = label_white_border_thickness
 
-						    // Bounding box test
+						    // Bounding box
 								var bbox = getBBox(ctx, fontSize, labelCoordinates)
 								function getBBox(ctx, fontSize, labelCoordinates) {
 									return {
@@ -407,31 +406,57 @@ angular.module('app.components.canvasNetworkMap', [])
 										height: fontSize
 									}
 								}
-								
-								ctx.fillStyle = '#FFFFFF'
-						    ctx.strokeStyle = '#FFFFFF'
 
-						    ctx.fillText(
-						      label
-						    , labelCoordinates.x
-						    , labelCoordinates.y
-						    )
-						    ctx.strokeText(
-						      label
-						    , labelCoordinates.x
-						    , labelCoordinates.y
-						    )
-						    ctx.lineWidth = 0
-						    ctx.fillStyle = color.toString()
-						    ctx.fillText(
-						      label
-						    , labelCoordinates.x
-						    , labelCoordinates.y
-						    )
+								// Test bounding box collision
+								var collision = false
+								for (x = Math.floor(bbox.x); x< bbox.x + bbox.width; x++) {
+									for (y = Math.floor(bbox.y); y< bbox.y + bbox.height; y++) {
+										if (bbPixelMap[x + y*width] == 1) {
+											collision = true
+											break
+											break
+										}
+									}
+								}
+								if (!collision) {
+
+									// Update bounding box data
+									for (x = Math.floor(bbox.x); x< bbox.x + bbox.width; x++) {
+										for (y = Math.floor(bbox.y); y< bbox.y + bbox.height; y++) {
+											bbPixelMap[x + y*width] = 1
+										}
+									}
+
+									// Update count
+									labelDrawCount--
+
+									// Draw
+									ctx.fillStyle = '#FFFFFF'
+							    ctx.strokeStyle = '#FFFFFF'
+
+							    ctx.fillText(
+							      label
+							    , labelCoordinates.x
+							    , labelCoordinates.y
+							    )
+							    ctx.strokeText(
+							      label
+							    , labelCoordinates.x
+							    , labelCoordinates.y
+							    )
+							    ctx.lineWidth = 0
+							    ctx.fillStyle = color.toString()
+							    ctx.fillText(
+							      label
+							    , labelCoordinates.x
+							    , labelCoordinates.y
+							    )
+
+								}
+
 						  }
 						  
 						})
-						nodesBySize.reverse() // Put it back like it was before
 					}
         }, 10)
       }
