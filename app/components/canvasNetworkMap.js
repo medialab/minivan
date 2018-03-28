@@ -40,6 +40,7 @@ angular.module('app.components.canvasNetworkMap', [])
       		$timeout(redraw, 500)
       		return
       	}
+      	container.innerHTML = '<small style="opacity:0.5;">Refreshing...</small>'
       	$timeout(function(){
           container.innerHTML = '';
 
