@@ -1,4 +1,4 @@
-<div class="page-container">
+<div class="page-container" ng-if="networkData && !networkData.loading">
 	<print-button-overlay></print-button-overlay>
 	<div class="a4page-overlay" layout="row" style="height: 100%;">
 		<div flex></div>
@@ -100,8 +100,8 @@
 	</div>
 	<div class="a4page" layout="column">
 		<h1>{{networkData.title}}</h1>
-  	<div class="thin-h-line" style="margin-bottom: 3px"></div>
-  	<div class="thin-h-line" style="margin-bottom: 3px"></div>
+  	<div class="thin-h-line"></div>
+  	<div class="thin-h-line"></div>
   	<div style="width: 170mm; height: 170mm">
 			<canvas-network-map
 				layout="column"
@@ -117,6 +117,7 @@
 				curved-edges="curvedEdges"
 				oversampling="oversampling"
 				clear-edges-around-nodes="highQuality"
+				scales="scales"
 				x="camX || 0"
 				y="camY || 0"
 				ratio="camRatio || 1"
@@ -127,34 +128,23 @@
 	<div class="page-break"></div>
 	<div class="a4page" layout="column">
 		<!-- Key -->
+		<h1>Key</h1>
+  	<div class="thin-h-line"></div>
+  	<div class="thin-h-line"></div>
 		<div layout="row">
-			<!-- Nodes  -->
-			<div layout="column" flex="50">
-				<h3>Node size</h3>
-				<p>TODO</p>
-
-				<h3>Node color</h3>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
-				<p>TODO</p>
+			
+			<div layout="column" flex="33">
+				<h2>Node size</h2>
+				<div>
+					<div
+						ranking-size-key
+						att="networkData.nodeAttributesIndex[sizeAttId]"
+						scales="scales"
+						layout-fill
+					></div>
+				</div>
 			</div>
-			<!-- Edges  -->
-			<div layout="column" flex="50">
-				<h3>Edge color</h3>
-				<p>TODO</p>
-			</div>
+			
 		</div>
 	</div>
 </div>

@@ -9,7 +9,8 @@ angular.module('app.components', [
     'app.components.canvasNetworkMap',
     'app.components.partitionBarChart',
     'app.components.rankingColorChart',
-    'app.components.rankingSizeChart'
+    'app.components.rankingSizeChart',
+    'app.components.rankingSizeKey'
   ])
 
 ;

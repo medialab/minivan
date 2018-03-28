@@ -178,12 +178,9 @@
   position: relative;
   overflow: hidden;
 }
-.a4page h1 {
+.a4page h1, h2, h3, h4, h5 {
   margin-top: 0px;
   margin-bottom: 0px;
-  font-weight: 300;
-}
-.a4page h2, h3, h4, h5 {
   font-weight: 300;
 }
 .a4page md-list {
@@ -191,6 +188,10 @@
 }
 .a4page .thin-h-line {
   border-top: 1px solid #AAA;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding-top: 1px;
+  padding-bottom: 1px;
   transform: scaleY(0.5)
 }
 .a4page .print-no-break {
@@ -219,4 +220,11 @@
   .no-print {
     display: none !important;
   }
+}
+
+/* Network map key elements */
+.key-element-label {
+  padding-left: 12px;
+  font: Quicksand;
+  font-weight: 300;
 }

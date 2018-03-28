@@ -21,7 +21,8 @@ angular.module('app.components.canvasNetworkMap', [])
     	clearEdgesAroundNodes: '=',
     	x: '=',
     	y: '=',
-    	ratio: '='
+    	ratio: '=',
+    	scales: '='
     },
     link: function($scope, el, attrs) {
     	var redraw = debounce(_redraw, 100) // Prevents multiple triggers in a row
@@ -118,10 +119,11 @@ angular.module('app.components.canvasNetworkMap', [])
 					var label_white_border_thickness = settings.oversampling * settings.label_white_border_thickness
 					var label_font_min_size = settings.oversampling * settings.label_font_min_size
 					var label_font_max_size = settings.oversampling * settings.label_font_max_size
-					var scales = scalesUtils.getXYScales_camera(width, height, margin, +$scope.x, +$scope.y, +$scope.ratio)
-					var xScale = scales[0]
-					var yScale = scales[1]
+					var xyScales = scalesUtils.getXYScales_camera(width, height, margin, +$scope.x, +$scope.y, +$scope.ratio)
+					var xScale = xyScales[0]
+					var yScale = xyScales[1]
 					var rScale = scalesUtils.getRScale()
+					var scales = {} // Collect scales to broadcast and inform the network map key
 
 					// Create the canvas
 					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
@@ -137,16 +139,23 @@ angular.module('app.components.canvasNetworkMap', [])
               colorAtt.modalities.forEach(function(m){
                 colorByModality[m.value] = m.color
               })
-              getColor = function(nid){ return colorByModality[g.getNodeAttribute(nid, colorAtt.id)] || '#000' }
+              var colorScale = function(val) {
+              	return colorByModality[val] || '#000'
+              }
+              getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)) }
+              scales.colorScale = colorScale
             } else if (colorAtt.type == 'ranking-color') {
               var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
-              getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)).toString() }
+              var colorScale_string = function(val){ return colorScale(val).toString() }
+              getColor = function(nid){ return colorScale_string(g.getNodeAttribute(nid, colorAtt.id)) }
+              scales.colorScale = colorScale_string
             } else {
               getColor = function(){ return settings.default_node_color }
             }
           } else {
             getColor = function(){ return settings.default_node_color }
           }
+
 
           // Nodes in the frame
 					var nodesInTheFrame = g.nodes().filter(function(nid){
@@ -163,7 +172,10 @@ angular.module('app.components.canvasNetworkMap', [])
 					if ($scope.sizeAttId) {
             var sizeAtt = networkData.nodeAttributesIndex[$scope.sizeAttId]
             var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
-            getArea = function(nid){ return sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10 }
+            var areaScale_norm = function(val){ return sizeAtt.areaScaling.max * areaScale(val) * standardArea / 10 }
+            getArea = function(nid){ return areaScale_norm(g.getNodeAttribute(nid, sizeAtt.id)) }
+            scales.areaScale = areaScale_norm
+            scales.rFactor = node_size / settings.oversampling
           } else {
             // Trick: a barely visible size difference by degree
             // (helps hierarchizing node labels)
@@ -397,7 +409,6 @@ angular.module('app.components.canvasNetworkMap', [])
 							  var n = g.getNodeAttributes(nid)
 							  var nx = xScale(n.x)
 								var ny = yScale(n.y)
-								// var nsize = settings.sized_labels ? rScale(getArea(nid)) : rScale(standardArea)
 								var nsize = rScale(getArea(nid))
 						  	
 						  	// Precompute the label
@@ -479,6 +490,8 @@ angular.module('app.components.canvasNetworkMap', [])
 						  
 						})
 					}
+
+					$scope.scales = scales
 
 					function tuneColorForLabel(c) {
 		      	var hcl = d3.hcl(c)
