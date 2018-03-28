@@ -273,17 +273,22 @@ angular.module('app.components.canvasNetworkMap', [])
 						  for (i=0; i<1; i+=1/d) {
 						    x = (1-i)*nsx + i*ntx
 						    y = (1-i)*nsy + i*nty
+						    path.push([x, y, 1])
+						  }
 
-						    // Opacity
-						    var o
+						  // Set opacity at each path point
+						  path.forEach(function(p){
+						  	var x = p[0]
+						  	var y = p[1]
+						  	var o
 						    var pixi = Math.floor(x) + width * Math.floor(y)
 						    if (!settings.clear_edges_around_nodes || vidPixelMap[pixi] == nsvid || vidPixelMap[pixi] == ntvid || vidPixelMap[pixi] == 0) {
 						      o = 1
 						    } else {
 						      o = dPixelMap[pixi]
 						    }
-						    path.push([x,y,o])
-						  }
+						    p[2] = o
+						  })
 						  
 						  // Smoothe path
 						  if (path.length > 5) {
