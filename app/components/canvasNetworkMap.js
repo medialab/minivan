@@ -101,8 +101,8 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.label_font_weight = 300
 					settings.label_color_min_C = 0
 					settings.label_color_max_C = 50
-					settings.label_color_min_L = 5
-					settings.label_color_max_L = 50
+					settings.label_color_min_L = 2
+					settings.label_color_max_L = 35
 
 					var i
 					var x
@@ -397,11 +397,14 @@ angular.module('app.components.canvasNetworkMap', [])
 							  var n = g.getNodeAttributes(nid)
 							  var nx = xScale(n.x)
 								var ny = yScale(n.y)
-								var nsize = settings.sized_labels ? rScale(getArea(nid)) : rScale(standardArea)
+								// var nsize = settings.sized_labels ? rScale(getArea(nid)) : rScale(standardArea)
+								var nsize = rScale(getArea(nid))
 						  	
 						  	// Precompute the label
 						    var color = settings.colored_labels ? tuneColorForLabel(getColor(nid)) : d3.color('#666')
-						    var fontSize = Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
+						    var fontSize = settings.sized_labels 
+						    	? Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
+						    	: Math.floor(0.6 * label_font_min_size + 0.4 * label_font_max_size)
 
 						    // Then, draw the label only if wanted
 						    var labelCoordinates = {
