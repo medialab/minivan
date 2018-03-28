@@ -12,6 +12,9 @@ angular.module('app.components.canvasNetworkMap', [])
     	colorAttId: '=',
     	sizeAttId: '=',
     	nodeSize: '=',
+    	labelSize: '=',
+    	sizedLabels: '=',
+    	coloredLabels: '=',
     	oversampling: '=',
     	clearEdgesAroundNodes: '=',
     	x: '=',
@@ -25,6 +28,9 @@ angular.module('app.components.canvasNetworkMap', [])
     	$scope.$watch('sizeAttId', redraw)
     	$scope.$watch('oversampling', redraw)
     	$scope.$watch('nodeSize', redraw)
+    	$scope.$watch('labelSize', redraw)
+    	$scope.$watch('sizedLabels', redraw)
+    	$scope.$watch('coloredLabels', redraw)
     	$scope.$watch('clearEdgesAroundNodes', redraw)
 
       window.addEventListener('resize', redraw)
@@ -82,8 +88,10 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.draw_labels = true
 					settings.label_count = Infinity // Limit the number of visible labels
 					settings.label_white_border_thickness = 2.5
-					settings.label_font_min_size = 9
-					settings.label_font_max_size = 18
+					settings.sized_labels = $scope.sizedLabels
+					settings.colored_labels = $scope.coloredLabels
+					settings.label_font_min_size = 9 * (+$scope.labelSize || 10) / 10
+					settings.label_font_max_size = 18 * (+$scope.labelSize || 10) / 10
 					settings.label_font_family = 'Quicksand, sans-serif'
 					settings.label_font_weight = 300
 
@@ -380,10 +388,10 @@ angular.module('app.components.canvasNetworkMap', [])
 							  var n = g.getNodeAttributes(nid)
 							  var nx = xScale(n.x)
 								var ny = yScale(n.y)
-								var nsize = rScale(getArea(nid))
+								var nsize = settings.sized_labels ? rScale(getArea(nid)) : rScale(standardArea)
 						  	
 						  	// Precompute the label
-						    var color = getColor(nid)
+						    var color = settings.colored_labels ? getColor(nid) : d3.color('#666')
 						    var fontSize = Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
 
 						    // Then, draw the label only if wanted
@@ -459,7 +467,7 @@ angular.module('app.components.canvasNetworkMap', [])
 						  
 						})
 					}
-        }, 10)
+        }, 50)
       }
 
       function debounce(func, wait, immediate) {

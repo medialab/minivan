@@ -6,7 +6,7 @@
 			<div flex="20"></div>
 
 			<!-- Tools Panel -->
-			<div flex class="md-whiteframe-3dp" style="width: 300px; margin: 12px; background-color: #FFF;" layout="column">
+			<div flex class="md-whiteframe-3dp" style="width: 360px; margin: 12px; background-color: #FFF;" layout="column">
 				<md-toolbar>
 					<div class="md-toolbar-tools" layout-align="start">
 				    <md-button md-truncate>
@@ -15,26 +15,61 @@
 				  </div>
 				</md-toolbar>
 				<div layout="column" style="overflow-y: auto; padding: 12px">
-					<!-- Oversampling -->
-					<md-input-container>
-					  <label>Oversampling</label>
-					  <input type="number" step="1" min="1" max="16" ng-pattern="/^\d+$/" ng-model="oversampling">
-					  <div class="input-hint" ng-show="imageWidth">
-					  	Image resolution:
-							{{imageWidth}} x {{imageHeight}}
+
+					<div layout="row" style="margin-bottom: -36px;">
+						<!-- Node size -->
+						<div flex="50">
+							<md-input-container>
+							  <label>Node size</label>
+							  <input type="number" step="1" min="0" max="10000" ng-model="nodeSize">
+							</md-input-container>
 						</div>
-					</md-input-container>
 
-					<!-- Node size -->
-					<md-input-container>
-					  <label>Node size</label>
-					  <input type="number" step="1" min="0" max="10000" ng-model="nodeSize">
-					</md-input-container>
+						<!-- Label size -->
+						<div flex="50">
+							<md-input-container>
+							  <label>Label size</label>
+							  <input type="number" step="1" min="0" max="10000" ng-model="labelSize">
+							</md-input-container>
+						</div>
+					</div>
 
-					<!-- clear edges around nodes -->
-					<md-switch ng-model="highQuality" aria-label="Clear edges around nodes">
-				    High quality rendering
-				  </md-switch>
+					<div layout="row">
+						<!-- Sized labels -->
+						<div flex="50">
+							<md-switch ng-model="sizedLabels">
+						    Sized labels
+						  </md-switch>
+						</div>
+
+						<!-- Colored labels -->
+						<div flex="50">
+							<md-switch ng-model="coloredLabels">
+						    Colored labels
+						  </md-switch>
+						</div>
+					</div>
+
+					<div layout="row">
+						<!-- Oversampling -->
+						<div flex="50" layout="column" style="padding-right: 12px">
+							<md-input-container>
+							  <label>Oversampling</label>
+							  <input type="number" step="1" min="1" max="16" ng-pattern="/^\d+$/" ng-model="oversampling">
+							  <div class="input-hint" ng-show="imageWidth">
+							  	Resolution:
+									{{imageWidth}} x {{imageHeight}}
+								</div>
+							</md-input-container>
+						</div>
+
+						<!-- High quality rendering -->
+						<div flex="50">
+							<md-switch ng-model="highQuality">
+						    High quality
+						  </md-switch>
+						</div>
+					</div>
 
 					<!-- Download image -->
 					<md-button class="md-primary" ng-click="downloadImage()">
@@ -59,6 +94,9 @@
 				color-att-id="colorAttId"
 				size-att-id="sizeAttId"
 				node-size="nodeSize"
+				label-size="labelSize"
+				sized-labels="sizedLabels"
+				colored-labels="coloredLabels"
 				oversampling="oversampling"
 				clear-edges-around-nodes="highQuality"
 				x="camX || 0"
