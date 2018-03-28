@@ -94,6 +94,10 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.label_font_max_size = 18 * (+$scope.labelSize || 10) / 10
 					settings.label_font_family = 'Quicksand, sans-serif'
 					settings.label_font_weight = 300
+					settings.label_color_min_C = 0
+					settings.label_color_max_C = 50
+					settings.label_color_min_L = 5
+					settings.label_color_max_L = 50
 
 					var i
 					var x
@@ -391,7 +395,7 @@ angular.module('app.components.canvasNetworkMap', [])
 								var nsize = settings.sized_labels ? rScale(getArea(nid)) : rScale(standardArea)
 						  	
 						  	// Precompute the label
-						    var color = settings.colored_labels ? getColor(nid) : d3.color('#666')
+						    var color = settings.colored_labels ? tuneColorForLabel(getColor(nid)) : d3.color('#666')
 						    var fontSize = Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
 
 						    // Then, draw the label only if wanted
@@ -467,6 +471,15 @@ angular.module('app.components.canvasNetworkMap', [])
 						  
 						})
 					}
+
+					function tuneColorForLabel(c) {
+		      	var hcl = d3.hcl(c)
+		      	hcl.c = Math.max(hcl.c, settings.label_color_min_C)
+		      	hcl.c = Math.min(hcl.c, settings.label_color_max_C)
+		      	hcl.l = Math.max(hcl.l, settings.label_color_min_L)
+		      	hcl.l = Math.min(hcl.l, settings.label_color_max_L)
+		      	return d3.color(hcl)
+		      }
         }, 50)
       }
 
