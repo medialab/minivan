@@ -16,6 +16,8 @@ angular.module('app.components.canvasNetworkMap', [])
     	sizedLabels: '=',
     	coloredLabels: '=',
     	oversampling: '=',
+    	showEdges: '=',
+    	curvedEdges: '=',
     	clearEdgesAroundNodes: '=',
     	x: '=',
     	y: '=',
@@ -32,6 +34,8 @@ angular.module('app.components.canvasNetworkMap', [])
     	$scope.$watch('sizedLabels', redraw)
     	$scope.$watch('coloredLabels', redraw)
     	$scope.$watch('clearEdgesAroundNodes', redraw)
+    	$scope.$watch('curvedEdges', redraw)
+    	$scope.$watch('showEdges', redraw)
 
       window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
@@ -65,17 +69,17 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					// Canvas size
 					settings.save_at_the_end = false
-					settings.oversampling = +$scope.oversampling
+					settings.oversampling = +$scope.oversampling || 1
 					settings.width =  container.offsetWidth
 					settings.height = container.offsetHeight
 					settings.margin = 3
 
 					// Edges
-					settings.draw_edges = g.size < 10000
-					settings.clear_edges_around_nodes = $scope.clearEdgesAroundNodes
+					settings.draw_edges = !!$scope.showEdges
+					settings.clear_edges_around_nodes = !!$scope.clearEdgesAroundNodes
 					settings.edge_color = 'rgba(120, 120, 120, 1)'
 					settings.edge_thickness = 0.06
-					settings.curved_edges = true
+					settings.curved_edges = !!$scope.curvedEdges
 
 					// Nodes
 					settings.draw_nodes = true
@@ -89,8 +93,8 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.draw_labels = true
 					settings.label_count = Infinity // Limit the number of visible labels
 					settings.label_white_border_thickness = 2.5
-					settings.sized_labels = $scope.sizedLabels
-					settings.colored_labels = $scope.coloredLabels
+					settings.sized_labels = !!$scope.sizedLabels
+					settings.colored_labels = !!$scope.coloredLabels
 					settings.label_font_min_size = 9 * (+$scope.labelSize || 10) / 10
 					settings.label_font_max_size = 18 * (+$scope.labelSize || 10) / 10
 					settings.label_font_family = 'Quicksand, sans-serif'

@@ -32,6 +32,8 @@ angular.module('app.print-network', ['ngRoute'])
 	$scope.labelSize = 10
 	$scope.sizedLabels = false
 	$scope.coloredLabels = true
+	$scope.curvedEdges = false
+	$scope.showEdges = true
 	$scope.highQuality = false
 	updateResolutionInfo()
 

@@ -51,6 +51,22 @@
 					</div>
 
 					<div layout="row">
+						<!-- Show edges -->
+						<div flex="50">
+							<md-switch ng-model="showEdges">
+						    Show edges
+						  </md-switch>
+						</div>
+
+						<!-- Curved edges -->
+						<div flex="50">
+							<md-switch ng-model="curvedEdges">
+						    Curved edges
+						  </md-switch>
+						</div>
+					</div>
+
+					<div layout="row">
 						<!-- Oversampling -->
 						<div flex="50" layout="column" style="padding-right: 12px">
 							<md-input-container>
@@ -97,6 +113,8 @@
 				label-size="labelSize"
 				sized-labels="sizedLabels"
 				colored-labels="coloredLabels"
+				show-edges="showEdges"
+				curved-edges="curvedEdges"
 				oversampling="oversampling"
 				clear-edges-around-nodes="highQuality"
 				x="camX || 0"
