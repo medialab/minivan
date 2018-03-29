@@ -90,6 +90,12 @@ angular.module('app.attributes', ['ngRoute'])
     saveAs(blob, $scope.networkData.title + " - Attributes.csv");
   }
 
+  $scope.downloadNodeList = function() {
+  	var csv = csvBuilder.getNodes()
+    var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Nodes.csv");
+  }
+
   function updateLocationPath(){
   	$route.updateParams({panel:$scope.panel});
   }

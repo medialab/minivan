@@ -391,5 +391,25 @@ angular.module('app.services', [])
       return csv
     }
 
+    ns.getNodes = function() {
+      var csv = d3.csvFormat(
+        networkData.g.nodes()
+          .map(function(nid){
+            var n = g.getNodeAttributes(nid)
+            var validElements = {}
+            d3.keys(n).forEach(function(k){
+              var attributeName = k
+              var att = networkData.nodeAttributesIndex[k]
+              if (att && att.name) {
+                attributeName = att.name
+              }
+              validElements[attributeName] = n[k]
+            })
+            return validElements
+          })
+      )
+      return csv
+    }
+
     return ns
   }])
