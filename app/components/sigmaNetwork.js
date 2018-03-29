@@ -105,7 +105,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
         $scope.resetCamera = function(){}
 
         $scope.$on("$destroy", function(){
-          $scope.layout.kill()
+          if ($scope.layout) {
+            $scope.layout.kill()
+          }
+          var sigma = undefined
+          var renderer = undefined
         })
 
         /// Functions
@@ -168,6 +172,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             var container = document.getElementById('sigma-div')
             if (!container) return
+            container.innerHTML = ''
             renderer = new Sigma.WebGLRenderer(container)
             sigma = new Sigma(g, renderer)
 

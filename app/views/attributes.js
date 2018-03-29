@@ -7,27 +7,26 @@ angular.module('app.attributes', ['ngRoute'])
     templateUrl: 'views/attributes.html'
   , controller: 'AttributesController'
   })
-  $routeProvider.when('/attributes/:viewMode', {
-    templateUrl: 'views/attributes.html'
-  , controller: 'AttributesController'
-  })
 }])
 
 .controller('AttributesController', function(
 	$scope,
 	$location,
 	$timeout,
+	$route,
 	$routeParams,
 	networkData,
 	csvBuilder
 ) {
-	$scope.viewMode = $routeParams.viewMode || 'map'
+	$scope.viewMode = $location.search().viewMode || 'map'
 	$scope.networkData = networkData
 	$scope.attributeListDetailLevel = 1
 	$scope.selectedAttId = undefined
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
 	$scope.sizePlusColor = false
+
+	$scope.$watch('viewMode', updateLocationPath)
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
@@ -89,5 +88,9 @@ angular.module('app.attributes', ['ngRoute'])
   	var csv = csvBuilder.getAttributes()
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Attributes.csv");
+  }
+
+  function updateLocationPath(){
+  	$route.updateParams({viewMode:$scope.viewMode});
   }
 })

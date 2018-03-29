@@ -17,6 +17,9 @@ angular.module('app.directives', [])
       },
       templateUrl: 'components/toolbarViewmodeItem.html',
       link: function($scope, el, attrs) {
+        $scope.go = function(){
+          $scope.viewmode = $scope.viewmodeTarget
+        }
       }
     }
   })
