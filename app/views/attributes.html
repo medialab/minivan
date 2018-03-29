@@ -38,7 +38,6 @@
 					</md-toolbar>
 					<!-- Content -->
 					<div flex layout="column" layout-align="center center" style="background-color: #FFF">
-						
 						<md-progress-circular
 							ng-if="networkData.loading"
 							md-mode="indeterminate"
@@ -59,6 +58,7 @@
 							size-att-id="$parent.sizeAttId"
 							color-att-id="$parent.colorAttId"
 							selected-att-id="selectedAttId"
+							search="$parent.search"
 							layout-fill
 						></node-list>
 						

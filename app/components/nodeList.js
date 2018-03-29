@@ -9,6 +9,7 @@ angular.module('app.components.nodeList', [])
     restrict: 'E',
     templateUrl: 'components/nodeList.html',
     scope: {
+      search: '=',
       colorAttId: '=',
       sizeAttId: '=',
       selectedAttId:'='

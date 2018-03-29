@@ -1,16 +1,26 @@
-<md-virtual-repeat-container layout-fill>
-  <md-list layout-fill>
-    <div md-virtual-repeat="node in nodes" md-item-size="88" flex>
-      
-      <div
-        node-list-element
-        get-radius="getRadius"
-        get-color="getColor"
-        node="node"
-        att="att"
-        print-mode="false"
-      ></div>
+<div layout-fill layout="column">
+  <md-input-container class="md-icon-float md-block" style="border-bottom: 1px solid #EEE; margin-bottom: 0px">
+    <!-- Use floating label instead of placeholder -->
+    <label>Search node</label>
+    <md-icon class="name">search</md-icon>
+    <input ng-model="search" type="text">
+  </md-input-container>
+  <div flex>
+    <md-virtual-repeat-container layout-fill>
+      <md-list layout-fill>
+        <div md-virtual-repeat="node in nodes|filter:search" md-item-size="88" flex>
+          
+          <div
+            node-list-element
+            get-radius="getRadius"
+            get-color="getColor"
+            node="node"
+            att="att"
+            print-mode="false"
+          ></div>
 
-    </div>
-  </md-list>
-</md-virtual-repeat-container>
+        </div>
+      </md-list>
+    </md-virtual-repeat-container>
+  </div>
+</div>
