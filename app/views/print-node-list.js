@@ -3,7 +3,7 @@
 angular.module('app.print-node-list', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/print-node-list/:colorAttId/:sizeAttId/:selectedAttId', {
+  $routeProvider.when('/print-node-list', {
     templateUrl: 'views/print-node-list.html'
   , controller: 'PrintNodeListController'
   })
@@ -18,15 +18,11 @@ angular.module('app.print-node-list', ['ngRoute'])
 	scalesUtils
 ) {
 	$scope.networkData = networkData
-	if ($routeParams.colorAttId !== 'undefined') {
-		$scope.colorAttId = $routeParams.colorAttId
-	}
-	if ($routeParams.sizeAttId !== 'undefined') {
-		$scope.sizeAttId = $routeParams.sizeAttId
-	}
-	if ($routeParams.selectedAttId !== 'undefined') {
-		$scope.selectedAttId = $routeParams.selectedAttId
-	}
+
+  $scope.colorAttId = $location.search().color
+  $scope.sizeAttId = $location.search().size
+  $scope.selectedAttId = $location.search().att
+  
 	$scope.$watch('networkData.loading', function(){
 		if ($scope.networkData && $scope.networkData.g) {
 	    var g = $scope.networkData.g
