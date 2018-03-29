@@ -6,6 +6,7 @@ angular.module('app.components', [
     'app.components.sigmaNetworkComponent',
     'app.components.nodeAttributeThumbnail',
     'app.components.nodeAttributeMinimap',
+    'app.components.nodeMinimap',
     'app.components.canvasNetworkMap',
     'app.components.partitionBarChart',
     'app.components.rankingColorChart',
