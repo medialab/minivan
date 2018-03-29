@@ -74,7 +74,7 @@
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-click="sizePlusColor = !sizePlusColor">
+					<md-button class="footer-button" ng-click="$parent.sizePlusColor = !$parent.sizePlusColor">
 						<md-tooltip md-direction="top">Set node size along with color</md-tooltip>
 						<md-icon ng-if="!sizePlusColor">check_box_outline_blank</md-icon>
 						<md-icon ng-if="sizePlusColor">check_box</md-icon>
@@ -84,7 +84,12 @@
 
 				<!-- Footer: LIST -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'list'">
-					
+					<md-button class="footer-button" ng-click="$parent.sizePlusColor = !$parent.sizePlusColor">
+						<md-tooltip md-direction="top">Set node size along with color</md-tooltip>
+						<md-icon ng-if="!sizePlusColor">check_box_outline_blank</md-icon>
+						<md-icon ng-if="sizePlusColor">check_box</md-icon>
+		      	Size + color
+		      </md-button>
 				</div>
 			</div>
 		</div>
