@@ -63,8 +63,9 @@
 						
 					</div>
 				</div>
-				<!-- Footer -->
-				<div class="component-footer" layout="row" layout-align="center center">
+				
+				<!-- Footer: MAP -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'map'">
 					<md-button class="footer-button" ng-click="downloadGEXF()">
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
@@ -79,6 +80,11 @@
 						<md-icon ng-if="sizePlusColor">check_box</md-icon>
 		      	Size + color
 		      </md-button>
+				</div>
+
+				<!-- Footer: LIST -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'list'">
+					
 				</div>
 			</div>
 		</div>

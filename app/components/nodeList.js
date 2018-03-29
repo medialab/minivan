@@ -22,6 +22,10 @@ angular.module('app.components.nodeList', [])
           })
         }
       })
+
+      
     }
   }
 })
+
+
