@@ -1,0 +1,24 @@
+<div class="page-container">
+	<print-button-overlay></print-button-overlay>
+	<div class="a4page" layout="column" style="position: relative" ng-if="networkData.loading">
+		<h2>Loading...</h2>
+	</div>
+	<div class="a4page" layout="column" style="position: relative" ng-if="!networkData.loading">
+		<h1>Attributes</h1>
+  	<div class="thin-h-line"></div>
+  	<div class="thin-h-line"></div>
+		<md-list class="md-dense">
+			<div ng-repeat="node in nodes" md-item-size="88" flex>
+	      <div
+	        node-list-element
+	        get-radius="getRadius"
+	        get-color="getColor"
+	        node="node"
+	        att="att"
+	        print-mode="true"
+	        class="print-no-break"
+	      ></div>
+	    </div>
+		</md-list>
+	</div>
+</div>

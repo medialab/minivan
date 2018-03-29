@@ -85,6 +85,10 @@
 
 				<!-- Footer: LIST -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'list'">
+					<md-button class="footer-button" ng-href="#!/print-node-list/{{colorAttId||'undefined'}}/{{sizeAttId||'undefined'}}/{{selectedAttId||'undefined'}}" target="_blank">
+						<md-tooltip md-direction="top">Print list</md-tooltip>
+		      	<md-icon>print</md-icon>
+		      </md-button>
 					<md-button class="footer-button" ng-click="$parent.sizePlusColor = !$parent.sizePlusColor">
 						<md-tooltip md-direction="top">Set node size along with color</md-tooltip>
 						<md-icon ng-if="!sizePlusColor">check_box_outline_blank</md-icon>
