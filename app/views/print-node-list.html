@@ -4,7 +4,7 @@
 		<h2>Loading...</h2>
 	</div>
 	<div class="a4page" layout="column" style="position: relative" ng-if="!networkData.loading">
-		<h1>Attributes</h1>
+		<h1>Nodes<span ng-if="att" style="opacity: 0.5"> - {{att.name}}</span></h1>
   	<div class="thin-h-line"></div>
   	<div class="thin-h-line"></div>
 		<md-list class="md-dense">
