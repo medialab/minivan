@@ -12,7 +12,8 @@ angular.module('app.components', [
     'app.components.rankingSizeChart',
     'app.components.partitionColorKey',
     'app.components.rankingColorKey',
-    'app.components.rankingSizeKey'
+    'app.components.rankingSizeKey',
+    'app.components.nodeList'
   ])
 
 ;

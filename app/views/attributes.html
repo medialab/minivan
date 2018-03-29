@@ -37,7 +37,7 @@
 				    </div>
 					</md-toolbar>
 					<!-- Content -->
-					<div flex layout="column" layout-align="center center">
+					<div flex layout="column" layout-align="center center" style="background-color: #FFF">
 						
 						<md-progress-circular
 							ng-if="networkData.loading"
@@ -53,6 +53,13 @@
 							get-camera-state="$parent.getCameraState"
 							layout-fill
 						></sigma-network>
+
+						<node-list
+							ng-if="!networkData.loading && panel == 'list'"
+							size-att-id="$parent.sizeAttId"
+							color-att-id="$parent.colorAttId"
+							layout-fill
+						></node-list>
 						
 					</div>
 				</div>
