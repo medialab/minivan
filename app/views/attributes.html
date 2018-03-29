@@ -15,20 +15,27 @@
 					md-colors="{background: 'default-background-200'}"
 				>
 					<!-- Toolbar -->
-					<md-toolbar md-colors="{background: 'default-primary-200-0.2'}">
-						<div class="md-toolbar-tools" layout-align="center">
-				      <md-button style="opacity: 0.4" ng-disabled="true">
-				      	<md-icon>bubble_chart</md-icon>
-				        Map
-				      </md-button>
-				      <md-button style="opacity: 0.4">
-				      	<md-icon>list</md-icon>
-				        Nodes
-				      </md-button>
-				      <md-button style="opacity: 0.4">
-				      	<md-icon>equalizer</md-icon>
-				        Stats
-				      </md-button>
+					<md-toolbar md-colors="{background: 'default-primary-200-0.2'}" style="overflow: hidden">
+						<div class="md-toolbar-tools">
+							<span flex></span>
+
+							<toolbar-viewmode-item
+								viewmode-target="'map'"
+								viewmode="viewMode"
+								icon="'bubble_chart'"
+								label="'Map'"
+								url="'#!/attributes/map'"
+							></toolbar-viewmode-item>
+							
+							<toolbar-viewmode-item
+								viewmode-target="'list'"
+								viewmode="viewMode"
+								icon="'list'"
+								label="'Nodes'"
+								url="'#!/attributes/list'"
+							></toolbar-viewmode-item>
+
+							<span flex></span>
 				    </div>
 					</md-toolbar>
 					<!-- Content -->
@@ -40,7 +47,7 @@
 						></md-progress-circular>
 
 						<sigma-network
-							ng-if="!networkData.loading"
+							ng-if="!networkData.loading && viewMode == 'map'"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
 							size-att-id="$parent.sizeAttId"

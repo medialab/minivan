@@ -4,6 +4,23 @@
 
 angular.module('app.directives', [])
 
+.directive('toolbarViewmodeItem', function(
+  ){
+    return {
+      restrict: 'E',
+      scope: {
+        viewmodeTarget: "=",
+        viewmode: "=",
+        url: "=",
+        icon: "=",
+        label: "="
+      },
+      templateUrl: 'components/toolbarViewmodeItem.html',
+      link: function($scope, el, attrs) {
+      }
+    }
+  })
+
 .directive('printButtonOverlay', function(
   ){
     return {

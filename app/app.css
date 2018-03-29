@@ -84,6 +84,20 @@
   color: grey;
 }
 
+.toolbar-item-as-a-tab {
+  background-color: #FFF;
+  height: 64px;
+  padding: 12px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+
+
+
+
 /* Icon sizes */
 
 .md-icon-6 {

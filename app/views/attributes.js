@@ -7,6 +7,10 @@ angular.module('app.attributes', ['ngRoute'])
     templateUrl: 'views/attributes.html'
   , controller: 'AttributesController'
   })
+  $routeProvider.when('/attributes/:viewMode', {
+    templateUrl: 'views/attributes.html'
+  , controller: 'AttributesController'
+  })
 }])
 
 .controller('AttributesController', function(
@@ -17,6 +21,7 @@ angular.module('app.attributes', ['ngRoute'])
 	networkData,
 	csvBuilder
 ) {
+	$scope.viewMode = $routeParams.viewMode || 'map'
 	$scope.networkData = networkData
 	$scope.attributeListDetailLevel = 1
 	$scope.selectedAttId = undefined
