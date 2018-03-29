@@ -10,7 +10,8 @@ angular.module('app.components.nodeList', [])
     templateUrl: 'components/nodeList.html',
     scope: {
       colorAttId: '=',
-      sizeAttId: '='
+      sizeAttId: '=',
+      selectedAttId:'='
     },
     link: function($scope, el, attrs) {
     	$scope.networkData = networkData
@@ -26,8 +27,10 @@ angular.module('app.components.nodeList', [])
 
       $scope.$watch('colorAttId', update)
       $scope.$watch('sizeAttId', update)
+      $scope.$watch('selectedAttId', update)
 
       function update() {
+        $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
         if ($scope.colorAttId) {
           var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
           if (colorAtt.type == 'partition') {

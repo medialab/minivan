@@ -11,6 +11,7 @@ angular.module('app.directives', [])
       scope: {
         node: '=',
         printMode: '=',
+        att: '=',
         getRadius: '=',
         getColor: '='
       },
