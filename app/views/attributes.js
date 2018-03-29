@@ -18,7 +18,7 @@ angular.module('app.attributes', ['ngRoute'])
 	networkData,
 	csvBuilder
 ) {
-	$scope.viewMode = $location.search().viewMode || 'map'
+	$scope.panel = $location.search().panel || 'map'
 	$scope.networkData = networkData
 	$scope.attributeListDetailLevel = 1
 	$scope.selectedAttId = undefined
@@ -26,7 +26,7 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.colorAttId = undefined
 	$scope.sizePlusColor = false
 
-	$scope.$watch('viewMode', updateLocationPath)
+	$scope.$watch('panel', updateLocationPath)
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
@@ -91,6 +91,6 @@ angular.module('app.attributes', ['ngRoute'])
   }
 
   function updateLocationPath(){
-  	$route.updateParams({viewMode:$scope.viewMode});
+  	$route.updateParams({panel:$scope.panel});
   }
 })
