@@ -6,6 +6,7 @@ angular.module('app.attributes', ['ngRoute'])
   $routeProvider.when('/attributes', {
     templateUrl: 'views/attributes.html'
   , controller: 'AttributesController'
+  , reloadOnSearch: false
   })
 }])
 
@@ -25,7 +26,6 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
 	$scope.sizePlusColor = false
-
 	$scope.$watch('panel', updateLocationPath)
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
