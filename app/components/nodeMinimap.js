@@ -41,7 +41,7 @@ angular.module('app.components.nodeMinimap', [])
 					// Nodes
 					settings.background_node_size = 1.2
 					settings.highlighted_node_size = 2.5
-					settings.background_node_color = 'rgba(180, 180, 180, .1)'
+					settings.background_node_color = 'rgba(180, 180, 180, .2)'
 					settings.highlighted_node_color = '#000'
 
 					var i
