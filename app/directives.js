@@ -56,6 +56,17 @@ angular.module('app.directives', [])
     }
   })
 
+.directive('leftSideBar', function(
+  ){
+    return {
+      restrict: 'E',
+      scope: {
+        title: '='
+      },
+      templateUrl: 'components/leftSideBar.html'
+    }
+  })
+
 .directive('projectTitleBar', function(
   ){
     return {
