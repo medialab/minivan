@@ -98,6 +98,18 @@
 
 
 
+/* Home page */
+.home-block {
+  padding: 12px;
+  font-family: Quicksand, sans serif;
+}
+.home-title {
+  background-color: #000;
+  color: #FFF;
+  font-size: 1.6em;
+  font-weight: 500;
+}
+
 /* Icon sizes */
 
 .md-icon-6 {

@@ -16,6 +16,6 @@ angular.module('app.home', ['ngRoute'])
 	$routeParams,
 	networkData
 ) {
-	$scope.attributes = ['Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie', 'Nombre d\'habitants', 'Nombre de foyers', 'Superficie']
-	
+	$scope.networkData = networkData
+		
 })

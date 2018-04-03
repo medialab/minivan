@@ -1,95 +1,56 @@
-<div layout="row" layout-fill md-colors="{background: 'default-background-500'}">
-	<div layout="column" style="width:32px">
-		
+<div layout-fill layout="row" style="background-color: #FFF; opacity: 0.8">
+	<div flex="70" ng-if="!networkData.loading">
+		<sigma-network
+			start-layout-on-load="false"
+			size-att-id="$parent.sizeAttId"
+			color-att-id="$parent.colorAttId"
+			get-camera-state="$parent.getCameraState"
+			hide-commands="true"
+			layout-fill
+		></sigma-network>
 	</div>
-	<div layout="row" flex>
-
-		<!-- Left part of the screen -->
-		<div layout="column" flex="66">
-			<div layout="column" flex>
-				<!-- Panel -->
-				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-200'}">
-					<!-- Toolbar -->
-					<md-toolbar md-colors="{background: 'default-primary-200-0.3'}">
-						<div class="md-toolbar-tools" layout-align="center">
-				      <md-button style="opacity: 0.4" ng-disabled="true">
-				      	<md-icon>bubble_chart</md-icon>
-				        Map
-				      </md-button>
-				      <md-button style="opacity: 0.4">
-				      	<md-icon>list</md-icon>
-				        Nodes
-				      </md-button>
-				      <md-button style="opacity: 0.4">
-				      	<md-icon>equalizer</md-icon>
-				        Stats
-				      </md-button>
-				    </div>
-					</md-toolbar>
-					<!-- Content -->
-					<div flex layout="column" layout-align="center center">
-						MAP
-					</div>
-				</div>
-				<!-- Footer -->
-				<div class="component-footer" layout="row" layout-align="center center">
-					<md-button class="footer-button">
-		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button">
-		      	<md-icon>print</md-icon>
-		      </md-button>
-				</div>
-			</div>
+</div>
+<div layout-fill layout="row" style="z-index: 2; position: absolute; top: 0; left: 0">
+	<div flex="66">
+	</div>
+	<md-content
+		flex
+		layout="column"
+		class="md-whiteframe-6dp"
+		style="margin-top: 48px; margin-right: 48px; margin-bottom: 48px; background-color: #FFF; overflow: auto"
+	>
+		<div class="home-title home-block">
+			{{networkData.title}}
 		</div>
-
-		<!-- Right part of the screen -->
-		<div layout="column" flex="33">
-			<div layout="column" flex>
-				<!-- Panel -->
-				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-200'}">
-					<!-- Toolbar -->
-					<md-toolbar md-colors="{background: 'default-background-900'}">
-						<div class="md-toolbar-tools" layout-align="start">
-				      <md-button md-truncate>
-				        Long Project Title when unmanaged is often an underlooked source of UI inconsistency
-				      </md-button>
-				    </div>
-					</md-toolbar>
-					<!-- Content -->
-					<div flex>
-						<md-virtual-repeat-container layout-fill>
-				      <div md-virtual-repeat="attribute in attributes" flex>
-				        <div attribute="attribute" layout="column" layout-align="center center" style="height: 80px;">
-				        	{{attribute}}
-				        </div>
-				      </div>
-				    </md-virtual-repeat-container>
-					</div>
-				</div>
-				<!-- Footer -->
-				<div class="component-footer" layout="row" layout-align="center center">
-					<md-button class="footer-button">
-		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button">
-		      	<md-icon>print</md-icon>
-		      </md-button>
-					<md-button class="footer-button">
-						Details
-		      	<md-icon>radio_button_checked</md-icon>
-		      	1
-		      </md-button>
-					<md-button class="footer-button">
-		      	<md-icon>radio_button_unchecked</md-icon>
-						2
-		      </md-button>
-					<md-button class="footer-button">
-		      	<md-icon>radio_button_unchecked</md-icon>
-		      	3
-		      </md-button>
-				</div>
-			</div>
+			<md-button
+				class="md-raised md-accent"
+				ng-href="#!/attributes"
+				style="height: 80px"
+			>
+				<md-icon>arrow_forward</md-icon>
+				Explore
+			</md-button>
+		<div class="home-block">
+			{{networkData.description}}
 		</div>
+		<div class="home-block">
+			<p ng-if="networkData.date">
+				{{networkData.date}}
+			</p>
+			<p>
+				{{networkData.g.order|number}} nodes
+				<br>
+				{{networkData.g.size|number}} edges
+			</p>
+			<p ng-if="networkData.authors && networkData.authors.length > 0">
+				Author{{networkData.authors.length > 1 ? 's' : ''}}:
+				<span ng-repeat="author in networkData.authors"><br/>{{author}}</span>
+			</p>
+			<p class="key-element-p" ng-if="networkData.url" style="word-break: break-all;">
+				<a ng-href="{{networkData.url}}" target="_blank">
+					{{networkData.url}}
+				</a>
+			</p>
+		</md-content>
 	</div>
 </div>

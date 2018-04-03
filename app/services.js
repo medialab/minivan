@@ -15,10 +15,11 @@ angular.module('app.services', [])
         networkProcessor.process(ns, r.data)
 
         // Add metadata
-        ns.title = 'Rio + 20'
+        ns.title = 'Rio + 20 XXXX XXXXXXX XXX XXXXX XX XXXXX XX XXXXXXX XXXXXX XX'
         ns.authors = ["Débora de Carvalho Pereira", "Mathieu Jacomy", "Tommaso Venturini"]
         ns.date = "2013"
         ns.url = "http://www.medialab.sciences-po.fr/wp-content/uploads/2015/06/VisualNetwork_Paper-10.pdf"
+        ns.description = "Bacon ipsum dolor amet kevin jerky leberkas cow pastrami ribeye. Drumstick doner biltong tail ham landjaeger pork pancetta. Ribeye shoulder biltong burgdoggen jowl, picanha short ribs. Drumstick corned beef spare ribs, short loin pork loin turducken pork belly frankfurter cupim pork t-bone ribeye pig meatloaf.\n\nTail leberkas beef ribs ham hock drumstick. Alcatra t-bone buffalo, tri-tip ribeye boudin shankle salami. Turkey jowl salami prosciutto, brisket rump alcatra ham chicken beef venison short ribs buffalo porchetta. Swine pig meatball leberkas strip steak, fatback shank bresaola tongue ribeye. Cupim ribeye pancetta landjaeger. Tongue turkey kielbasa tri-tip swine, kevin shankle.\n\nTail short ribs sausage bresaola picanha meatball pork loin andouille ball tip spare ribs t-bone fatback. Shankle cow shank corned beef, bresaola pork chop sirloin chicken frankfurter ground round strip steak ribeye. Hamburger pastrami kielbasa pork loin. Tenderloin ribeye beef spare ribs jowl venison pancetta andouille picanha. Turkey ground round landjaeger corned beef shank.\n\nSwine andouille tri-tip cow rump shankle bresaola bacon tongue pastrami hamburger pork chop. Bresaola swine ball tip, t-bone cow beef corned beef pork pork loin capicola pastrami shoulder. Hamburger biltong pig chicken. Leberkas cupim tongue, jowl ham hock shankle fatback bresaola. Tenderloin meatball pork loin leberkas.\n\nSpare ribs doner ground round ball tip, kielbasa tongue flank corned beef brisket strip steak fatback buffalo drumstick meatloaf. Biltong porchetta kielbasa alcatra, sirloin fatback pork loin chicken cow. Jerky hamburger pork loin cow pancetta meatball. Alcatra meatball tenderloin bresaola beef, venison tongue short ribs meatloaf."
         ns.bundleVersion = "0.1"
         ns.nodeAttributes = []
         ns.nodeAttributes.push({

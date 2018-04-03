@@ -19,7 +19,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         onNodeClick: '=',
         colorAttId: '=',
         sizeAttId: '=',
-        getCameraState: '='
+        getCameraState: '=',
+        hideCommands: '='
       }
       ,link: function($scope, el, attrs) {
         var sigma
