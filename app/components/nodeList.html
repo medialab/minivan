@@ -1,10 +1,12 @@
 <div layout-fill layout="column">
-  <md-input-container class="md-icon-float md-block" style="border-bottom: 1px solid #EEE; margin-bottom: 0px">
-    <!-- Use floating label instead of placeholder -->
-    <label>Search node</label>
-    <md-icon class="name">search</md-icon>
-    <input ng-model="search" type="text">
-  </md-input-container>
+  <div style="border-bottom: 1px solid #EEE; padding: 0px 12px">
+    <md-input-container class="md-icon-float md-block" style="margin-bottom: 0px">
+      <!-- Use floating label instead of placeholder -->
+      <label>Search node</label>
+      <md-icon class="name">search</md-icon>
+      <input ng-model="search" type="text">
+    </md-input-container>
+  </div>
   <div flex>
     <md-virtual-repeat-container layout-fill>
       <md-list layout-fill>
