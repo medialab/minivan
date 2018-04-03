@@ -14,7 +14,6 @@ angular.module('app.print-network', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	$routeParams,
 	networkData
 ) {
 	$scope.networkData = networkData

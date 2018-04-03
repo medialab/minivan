@@ -13,7 +13,6 @@ angular.module('app.print-node-list', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	$routeParams,
 	networkData,
 	scalesUtils
 ) {

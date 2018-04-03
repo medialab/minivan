@@ -99,7 +99,7 @@ angular.module('app.attributes', ['ngRoute'])
   }
 
   function updateLocationPath(){
-  	$route.updateParams({panel:$scope.panel});
-  	$route.updateParams({q:$scope.search});
+  	$location.search('panel', $scope.panel || null)
+  	$location.search('q', $scope.search || null)
   }
 })

@@ -12,8 +12,6 @@ angular.module('app.print-attributes', ['ngRoute'])
 .controller('PrintAttributesController', function(
 	$scope,
 	$location,
-	$timeout,
-	$routeParams,
 	networkData
 ) {
 	$scope.networkData = networkData
