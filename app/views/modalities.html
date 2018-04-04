@@ -95,21 +95,30 @@
 				<!-- Panel -->
 				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-300'}">
 					<project-title-bar title="networkData.title"></project-title-bar>
-					<!-- Content -->
-					<md-subheader class="md-primary">{{attribute}}</md-subheader>
-					<!-- <md-virtual-repeat-container flex>
+
+					<!-- Attribute toolbar -->
+					<md-toolbar md-scroll-shrink>
+						<div class="md-toolbar-tools">
+							<md-button class="md-icon-button" ng-href="#!/attributes">
+			          <md-icon>arrow_back</md-icon>
+			        </md-button>
+			        <h2 flex md-truncate>{{attribute.name}}</h2>
+						</div>
+					</md-toolbar>
+
+					<!-- Partition: modalities -->
+					<md-virtual-repeat-container flex ng-if="attribute.type == 'partition'">
 						<md-list layout-fill>
-				      <div md-virtual-repeat="att in networkData.nodeAttributes" md-item-size="20" flex>
+				      <div md-virtual-repeat="mod in attribute.modalities" md-item-size="20" flex>
 				        <div
-					        attribute-list-element
-					        att="att"
+					        modality-list-element
+					        mod="mod"
 					        print-mode="false"
-					        detail-level="attributeListDetailLevel"
-					        selected-att-id="$parent.selectedAttId"
+					        detail-level="modalitiesListDetailLevel"
 					      ></div>
 				      </div>
 						</md-list>
-			    </md-virtual-repeat-container> -->
+			    </md-virtual-repeat-container>
 				</div>
 				<!-- Footer -->
 				<div class="component-footer" layout="row" layout-align="center center">

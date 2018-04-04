@@ -115,6 +115,22 @@ angular.module('app.directives', [])
     }
   })
 
+.directive('modalityListElement', function(
+  ){
+    return {
+      restrict: 'A',
+      scope: {
+        mod: '=',
+        printMode: '=',
+        detailLevel: '='
+      },
+      templateUrl: 'components/modalityListElement.html',
+      link: function($scope, el, attrs) {
+        
+      }
+    }
+  })
+
 .directive('vColorKey', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'E',

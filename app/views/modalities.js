@@ -22,9 +22,14 @@ angular.module('app.modalities', ['ngRoute'])
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
 	$scope.networkData = networkData
-	// $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
-	$scope.$watch('panel', updateLocationPath)
-	$scope.$watch('search', updateLocationPath)
+  $scope.$watch('panel', updateLocationPath)
+  $scope.$watch('search', updateLocationPath)
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData.loaded) {
+      $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
+      console.log('attribute', $scope.attribute)
+    }
+  })
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
