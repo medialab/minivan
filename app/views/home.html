@@ -1,5 +1,8 @@
 <div layout-fill layout="row" style="background-color: #FFF; opacity: 0.8">
-	<div flex="70" ng-if="!networkData.loading">
+	<div flex="70" ng-if="!networkData.loaded" layout="row" layout-align="center center">
+		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+	</div>
+	<div flex="70" ng-if="networkData.loaded">
 		<sigma-network
 			start-layout-on-load="false"
 			size-att-id="$parent.sizeAttId"

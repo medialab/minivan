@@ -22,7 +22,7 @@ angular.module('app.print-node-list', ['ngRoute'])
   $scope.sizeAttId = $location.search().size
   $scope.selectedAttId = $location.search().att
   
-	$scope.$watch('networkData.loading', function(){
+	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData && $scope.networkData.g) {
 	    var g = $scope.networkData.g
 	    $scope.nodes = g.nodes().map(function(nid){

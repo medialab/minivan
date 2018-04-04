@@ -1,4 +1,7 @@
-<div class="page-container" ng-if="networkData && !networkData.loading">
+<div class="page-container" ng-if="!networkData.loaded" layout-fill layout="column" layout-align="center center">
+	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
 	<print-button-overlay></print-button-overlay>
 	<div class="a4page-overlay" layout="row" style="height: 100%;">
 		<div flex></div>

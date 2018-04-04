@@ -37,12 +37,12 @@
 					<!-- Content -->
 					<div flex layout="column" layout-align="center center" style="background-color: #FFF">
 						<md-progress-circular
-							ng-if="networkData.loading"
+							ng-if="!networkData.loaded"
 							md-mode="indeterminate"
 						></md-progress-circular>
 
 						<sigma-network
-							ng-if="!networkData.loading && panel == 'map'"
+							ng-if="networkData.loaded && panel == 'map'"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
 							size-att-id="$parent.sizeAttId"
@@ -52,7 +52,7 @@
 						></sigma-network>
 
 						<node-list
-							ng-if="!networkData.loading && panel == 'list'"
+							ng-if="networkData.loaded && panel == 'list'"
 							size-att-id="$parent.sizeAttId"
 							color-att-id="$parent.colorAttId"
 							selected-att-id="selectedAttId"

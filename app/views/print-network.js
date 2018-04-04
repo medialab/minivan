@@ -3,7 +3,6 @@
 angular.module('app.print-network', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  // $routeProvider.when('/print-network/:colorAttId/:sizeAttId/:camX/:camY/:camRatio', {
   $routeProvider.when('/print-network/', {
     templateUrl: 'views/print-network.html'
   , controller: 'PrintNetworkController'

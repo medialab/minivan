@@ -16,8 +16,8 @@ angular.module('app.components.nodeList', [])
     },
     link: function($scope, el, attrs) {
     	$scope.networkData = networkData
-      $scope.$watch('networkData.loading', function(){
-        if ($scope.networkData && !$scope.networkData.loading) {
+      $scope.$watch('networkData.loaded', function(){
+        if ($scope.networkData && $scope.networkData.loaded) {
           var g = $scope.networkData.g
           $scope.nodes = g.nodes().map(function(nid){
             return g.getNodeAttributes(nid)

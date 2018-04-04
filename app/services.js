@@ -4,10 +4,10 @@
 
 angular.module('app.services', [])
 
-	.factory('networkData', ['$http', 'networkProcessor', function($http, networkProcessor){
+	.factory('networkData', ['$http', 'networkProcessor', '$timeout', function($http, networkProcessor, $timeout){
     var ns = {}     // namespace
 
-    ns.loading = true
+    ns.loaded = false
 
     // Demo sample
     $http.get('data/sample rio+20.gexf')
@@ -167,7 +167,10 @@ angular.module('app.services', [])
         // Consolidate
         networkProcessor.consolidate(ns)
 
-        ns.loading = false
+        // Simulate long loading time
+        $timeout(function(){
+          ns.loaded = true
+        }, 500)
       }, function(){
         console.error('Error loading sample network')
       })
