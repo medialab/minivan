@@ -1,0 +1,146 @@
+<div layout="row" layout-fill md-colors="{background: 'default-background-500'}">
+	<left-side-bar></left-side-bar>
+	<div layout="row" flex>
+
+		<!-- Left part of the screen -->
+		<div layout="column" flex="50" flex-md="60" flex-gt-md="66">
+			<div layout="column" flex>
+				<!-- Panel -->
+				<div
+					layout="column"
+					flex
+					class="component-panel top-panel md-whiteframe-6dp"
+					md-colors="{background: 'default-background-200'}"
+				>
+					<!-- Toolbar -->
+					<md-toolbar md-colors="{background: 'default-primary-200-0.2'}" style="overflow: hidden">
+						<div class="md-toolbar-tools">
+							<span flex></span>
+
+							<toolbar-viewmode-item
+								viewmode-target="'map'"
+								viewmode="panel"
+								icon="'bubble_chart'"
+								label="'Map'"
+							></toolbar-viewmode-item>
+							
+							<toolbar-viewmode-item
+								viewmode-target="'list'"
+								viewmode="panel"
+								icon="'list'"
+								label="'Nodes'"
+							></toolbar-viewmode-item>
+
+							<span flex></span>
+				    </div>
+					</md-toolbar>
+					<!-- Content -->
+					<div flex layout="column" layout-align="center center" style="background-color: #FFF">
+						<md-progress-circular
+							ng-if="networkData.loading"
+							md-mode="indeterminate"
+						></md-progress-circular>
+
+						<!-- <sigma-network
+							ng-if="!networkData.loading && panel == 'map'"
+							on-node-click="networkNodeClick"
+							start-layout-on-load="false"
+							size-att-id="$parent.sizeAttId"
+							color-att-id="$parent.colorAttId"
+							get-camera-state="$parent.getCameraState"
+							layout-fill
+						></sigma-network> -->
+
+						<!-- <node-list
+							ng-if="!networkData.loading && panel == 'list'"
+							size-att-id="$parent.sizeAttId"
+							color-att-id="$parent.colorAttId"
+							selected-att-id="selectedAttId"
+							search="$parent.search"
+							layout-fill
+						></node-list> -->
+						
+					</div>
+				</div>
+				
+				<!-- Footer: MAP -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'map'">
+					<!-- <md-button class="footer-button" ng-click="downloadGEXF()">
+						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
+		      	<md-icon>file_download</md-icon>
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-network?color={{colorAttId}}&size={{sizeAttId}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}" target="_blank">
+						<md-tooltip md-direction="top">Print network map</md-tooltip>
+		      	<md-icon>print</md-icon>
+		      </md-button> -->
+				</div>
+
+				<!-- Footer: LIST -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'list'">
+					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
+						<md-tooltip md-direction="top">Download list</md-tooltip>
+		      	<md-icon>file_download</md-icon>
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-node-list?color={{colorAttId}}&size={{sizeAttId}}&att={{selectedAttId}}" target="_blank">
+						<md-tooltip md-direction="top">Print list</md-tooltip>
+		      	<md-icon>print</md-icon>
+		      </md-button> -->
+				</div>
+			</div>
+		</div>
+
+		<!-- Right part of the screen -->
+		<div layout="column" flex="50" flex-md="40" flex-gt-md="33">
+			<div layout="column" flex>
+				<!-- Panel -->
+				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-300'}">
+					<project-title-bar title="networkData.title"></project-title-bar>
+					<!-- Content -->
+					<!-- <md-virtual-repeat-container flex>
+						<md-list layout-fill>
+				      <div md-virtual-repeat="att in networkData.nodeAttributes" md-item-size="20" flex>
+				        <div
+					        attribute-list-element
+					        att="att"
+					        print-mode="false"
+					        detail-level="attributeListDetailLevel"
+					        selected-att-id="$parent.selectedAttId"
+					      ></div>
+				      </div>
+						</md-list>
+			    </md-virtual-repeat-container> -->
+				</div>
+				<!-- Footer -->
+				<div class="component-footer" layout="row" layout-align="center center">
+					<md-button class="footer-button" ng-click="downloadAttributes()">
+						<md-tooltip md-direction="top">Download data</md-tooltip>
+		      	<md-icon>file_download</md-icon>
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-attributes?detail={{attributeListDetailLevel}}" target="_blank">
+						<md-tooltip md-direction="top">Print data visualization</md-tooltip>
+		      	<md-icon>print</md-icon>
+		      </md-button>
+					<!-- <md-button class="footer-button" ng-click="attributeListDetailLevel=1">
+						<md-tooltip md-direction="top">No details</md-tooltip>
+						Details
+		      	<md-icon ng-if="attributeListDetailLevel==1">radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel!=1">radio_button_unchecked</md-icon>
+		      	1
+		      </md-button>
+					<md-button class="footer-button" ng-click="attributeListDetailLevel=2">
+						<md-tooltip md-direction="top">Some details</md-tooltip>
+		      	<md-icon ng-if="attributeListDetailLevel==2">radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel!=2">radio_button_unchecked</md-icon>
+						2
+		      </md-button>
+					<md-button class="footer-button" ng-click="attributeListDetailLevel=3">
+						<md-tooltip md-direction="top">Many details</md-tooltip>
+		      	<md-icon ng-if="attributeListDetailLevel==3">radio_button_checked</md-icon>
+		      	<md-icon ng-if="attributeListDetailLevel!=3">radio_button_unchecked</md-icon>
+		      	3
+		      </md-button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
