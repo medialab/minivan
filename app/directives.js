@@ -68,13 +68,19 @@ angular.module('app.directives', [])
   })
 
 .directive('projectTitleBar', function(
+    $location
   ){
     return {
       restrict: 'E',
       scope: {
         title: '='
       },
-      templateUrl: 'components/projectTitleBar.html'
+      templateUrl: 'components/projectTitleBar.html',
+      link: function($scope, el, attrs){
+        $scope.goHome = function() {
+          $location.url('/')
+        }
+      }
     }
   })
 
