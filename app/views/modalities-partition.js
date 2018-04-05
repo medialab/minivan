@@ -24,6 +24,7 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
 	$scope.networkData = networkData
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
+  $scope.$watch('modalitiesSelection', updateNodeFilter, true)
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
@@ -36,10 +37,10 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
       }
 
       $scope.modalitiesSelection = {}
-      $scope.attribute.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod] = false })
+      $scope.attribute.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod.value] = false })
     }
   })
-
+  
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }
@@ -54,6 +55,19 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
   	var csv = csvBuilder.getNodes()
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Nodes.csv");
+  }
+
+  function updateNodeFilter() {
+    if ($scope.attribute) {
+      if ($scope.attribute.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
+        $scope.nodeFilter = function(nid){
+          return $scope.modalitiesSelection[$scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)]
+        }
+      } else {
+        // All unchecked: show all
+        $scope.nodeFilter = function(){ return true }
+      }
+    }
   }
 
   function updateLocationPath(){

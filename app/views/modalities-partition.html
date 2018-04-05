@@ -50,14 +50,14 @@
 							layout-fill
 						></sigma-network>
 
-						<!-- <node-list
+						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
-							size-att-id="$parent.sizeAttId"
-							color-att-id="$parent.colorAttId"
-							selected-att-id="selectedAttId"
+							color-att-id="$parent.attribute.id"
+							selected-att-id="$parent.attribute.id"
 							search="$parent.search"
+							node-filter="$parent.nodeFilter"
 							layout-fill
-						></node-list> -->
+						></node-list>
 						
 					</div>
 				</div>

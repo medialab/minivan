@@ -12,16 +12,14 @@ angular.module('app.components.nodeList', [])
       search: '=',
       colorAttId: '=',
       sizeAttId: '=',
+      nodeFilter: '=',
       selectedAttId:'='
     },
     link: function($scope, el, attrs) {
     	$scope.networkData = networkData
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
-          var g = $scope.networkData.g
-          $scope.nodes = g.nodes().map(function(nid){
-            return g.getNodeAttributes(nid)
-          })
+          updateNodes()
           update()
         }
       })
@@ -29,6 +27,17 @@ angular.module('app.components.nodeList', [])
       $scope.$watch('colorAttId', update)
       $scope.$watch('sizeAttId', update)
       $scope.$watch('selectedAttId', update)
+      $scope.$watch('nodeFilter', updateNodes)
+
+      function updateNodes() {
+        var g = $scope.networkData.g
+        var nodeFilter = $scope.nodeFilter || function(d){return d}
+        $scope.nodes = g.nodes()
+          .filter(nodeFilter)
+          .map(function(nid){
+            return g.getNodeAttributes(nid)
+          })
+      }
 
       function update() {
         $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
