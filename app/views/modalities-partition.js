@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('app.modalities', ['ngRoute'])
+angular.module('app.modalitiesPartition', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/att/:attribute/modalities', {
-    templateUrl: 'views/modalities.html'
-  , controller: 'ModalitiesController'
+  $routeProvider.when('/partition/:attribute/modalities', {
+    templateUrl: 'views/modalities-partition.html'
+  , controller: 'ModalitiesPartitionController'
   , reloadOnSearch: false
   })
 }])
 
-.controller('ModalitiesController', function(
+.controller('ModalitiesPartitionController', function(
 	$scope,
 	$location,
 	$timeout,
@@ -27,7 +27,11 @@ angular.module('app.modalities', ['ngRoute'])
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
+      // TODO: remove this console log
       console.log('attribute', $scope.attribute)
+      if ($scope.attribute.type !== 'partition') {
+        console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)
+      }
     }
   })
 
