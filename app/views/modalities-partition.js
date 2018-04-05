@@ -27,11 +27,16 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
+      
       // TODO: remove this console log
       console.log('attribute', $scope.attribute)
+      
       if ($scope.attribute.type !== 'partition') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)
       }
+
+      $scope.modalitiesSelection = {}
+      $scope.attribute.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod] = false })
     }
   })
 

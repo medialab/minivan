@@ -115,18 +115,21 @@ angular.module('app.directives', [])
     }
   })
 
-.directive('modalityListElement', function(
+.directive('modalityPartitionListElement', function(
   ){
     return {
       restrict: 'A',
       scope: {
         mod: '=',
         printMode: '=',
-        detailLevel: '='
+        detailLevel: '=',
+        isSelected: '='
       },
-      templateUrl: 'components/modalityListElement.html',
+      templateUrl: 'components/modalityPartitionListElement.html',
       link: function($scope, el, attrs) {
-        
+        $scope.toggleSelection = function(){
+          $scope.isSelected = !$scope.isSelected
+        }
       }
     }
   })

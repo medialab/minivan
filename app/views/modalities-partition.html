@@ -92,8 +92,10 @@
 		<!-- Right part of the screen -->
 		<div layout="column" flex="50" flex-md="40" flex-gt-md="33">
 			<div layout="column" flex>
+
 				<!-- Panel -->
 				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-300'}">
+					
 					<project-title-bar title="networkData.title"></project-title-bar>
 
 					<!-- Attribute toolbar -->
@@ -107,19 +109,22 @@
 					</md-toolbar>
 
 					<!-- Partition: modalities -->
-					<md-virtual-repeat-container flex ng-if="attribute.type == 'partition'">
+					<md-virtual-repeat-container flex>
 						<md-list layout-fill>
 				      <div md-virtual-repeat="mod in attribute.modalities" md-item-size="20" flex>
 				        <div
-					        modality-list-element
+					        modality-partition-list-element
 					        mod="mod"
 					        print-mode="false"
 					        detail-level="modalitiesListDetailLevel"
+					        is-selected="modalitiesSelection[mod.value]"
 					      ></div>
 				      </div>
 						</md-list>
 			    </md-virtual-repeat-container>
+
 				</div>
+
 				<!-- Footer -->
 				<div class="component-footer" layout="row" layout-align="center center">
 					<md-button class="footer-button" ng-click="downloadAttributes()">

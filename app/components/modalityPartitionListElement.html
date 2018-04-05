@@ -1,0 +1,19 @@
+<!-- Detail level 1 -->
+<div
+	ng-class="{'md-whiteframe-3dp': isSelected}"
+>
+	<md-list-item
+		ng-if="detailLevel==1 || true"
+		md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
+		ng-class="{ontop: isSelected}"
+		ng-click="toggleSelection()"
+	>
+			<node-list-pic class="md-avatar" radius="'20'" color="mod.color" style="width: 40px; height: 40px"></node-list-pic>
+			<md-icon style="margin-right: 12px" ng-if="isSelected && !printMode">check_box</md-icon>
+			<md-icon style="margin-right: 12px" ng-if="!isSelected  && !printMode">check_box_outline_blank</md-icon>
+		  <p>{{mod.value}}</p>
+		  <md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected" ng-href="#!/" ng-click="$event.stopPropagation();">
+		<md-icon>arrow_forward</md-icon>
+	</md-button>
+	</md-list-item>
+</div>
