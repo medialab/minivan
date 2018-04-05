@@ -54,7 +54,7 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
   }
 
   $scope.downloadNodeList = function() {
-  	var csv = csvBuilder.getNodes()
+  	var csv = csvBuilder.getNodes($scope.nodeFilter)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Nodes.csv");
   }
