@@ -94,7 +94,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					// Node labels
 					settings.draw_labels = true
 					settings.label_count = Infinity // Limit the number of visible labels
-					settings.label_white_border_thickness = 2.5
+					settings.label_white_border_thickness = 2.5 * (+$scope.labelSize || 10) / 10
 					settings.sized_labels = !!$scope.sizedLabels
 					settings.colored_labels = !!$scope.coloredLabels
 					settings.label_font_min_size = 9 * (+$scope.labelSize || 10) / 10
