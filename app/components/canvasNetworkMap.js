@@ -11,6 +11,7 @@ angular.module('app.components.canvasNetworkMap', [])
     scope: {
     	colorAttId: '=',
     	sizeAttId: '=',
+    	nodeFilter: '=',
     	nodeSize: '=',
     	labelSize: '=',
     	sizedLabels: '=',
@@ -124,6 +125,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					var yScale = xyScales[1]
 					var rScale = scalesUtils.getRScale()
 					var scales = {} // Collect scales to broadcast and inform the network map key
+					var nodeFilter = $scope.nodeFilter || function(d){ return d }
 
 					// Create the canvas
 					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
@@ -158,12 +160,14 @@ angular.module('app.components.canvasNetworkMap', [])
 
 
           // Nodes in the frame
-					var nodesInTheFrame = g.nodes().filter(function(nid){
-						var n = g.getNodeAttributes(nid)
-						var x = xScale(n.x)
-						var y = yScale(n.y)
-						return x >= 0 && x <= width && y >= 0 && y <= height
-					})
+					var nodesInTheFrame = g.nodes()
+						.filter(nodeFilter)
+						.filter(function(nid){
+							var n = g.getNodeAttributes(nid)
+							var x = xScale(n.x)
+							var y = yScale(n.y)
+							return x >= 0 && x <= width && y >= 0 && y <= height
+						})
 
 					// Sizes
 					var nodesDensity = nodesInTheFrame.length / (el[0].offsetWidth * el[0].offsetHeight)
@@ -271,66 +275,70 @@ angular.module('app.components.canvasNetworkMap', [])
 
           // Draw each edge
 					if (settings.draw_edges) {
-						g.edges().forEach(function(eid){
-							var nsid = g.source(eid)
-						  var ns = g.getNodeAttributes(nsid)
-						  var nsx = xScale(ns.x)
-						  var nsy = yScale(ns.y)
-						  var nsvid = vidIndex[nsid]
-						  var ntid = g.target(eid)
-						  var nt = g.getNodeAttributes(ntid)
-						  var ntx = xScale(nt.x)
-						  var nty = yScale(nt.y)
-						  var ntvid = vidIndex[ntid]
-						  var d = Math.sqrt(Math.pow(nsx - ntx, 2) + Math.pow(nsy - nty, 2))
-						  var color = d3.color(settings.edge_color)
+						g.edges()
+							.filter(function(eid){
+								return nodeFilter(g.source(eid)) && nodeFilter(g.target(eid))
+							})
+							.forEach(function(eid){
+								var nsid = g.source(eid)
+							  var ns = g.getNodeAttributes(nsid)
+							  var nsx = xScale(ns.x)
+							  var nsy = yScale(ns.y)
+							  var nsvid = vidIndex[nsid]
+							  var ntid = g.target(eid)
+							  var nt = g.getNodeAttributes(ntid)
+							  var ntx = xScale(nt.x)
+							  var nty = yScale(nt.y)
+							  var ntvid = vidIndex[ntid]
+							  var d = Math.sqrt(Math.pow(nsx - ntx, 2) + Math.pow(nsy - nty, 2))
+							  var color = d3.color(settings.edge_color)
 
-						  // Build path
-						  var path = settings.curved_edges ? getCurvedPath(nsx, nsy, ntx, nty) : getLinePath(nsx, nsy, ntx, nty)
+							  // Build path
+							  var path = settings.curved_edges ? getCurvedPath(nsx, nsy, ntx, nty) : getLinePath(nsx, nsy, ntx, nty)
 
-						  // Set opacity at each path point
-						  path.forEach(function(p){
-						  	var x = p[0]
-						  	var y = p[1]
-						  	var o
-						    var pixi = Math.floor(x) + width * Math.floor(y)
-						    if (!settings.clear_edges_around_nodes || vidPixelMap[pixi] == nsvid || vidPixelMap[pixi] == ntvid || vidPixelMap[pixi] == 0) {
-						      o = 1
-						    } else {
-						      o = dPixelMap[pixi]
-						    }
-						    p[2] = o
-						  })
-						  
-						  // Smoothe path
-						  if (path.length > 5) {
-						    for (i=2; i<path.length-2; i++) {
-						      path[i][2] = 0.15 * path[i-2][2] + 0.25 * path[i-1][2] + 0.2 * path[i][2] + 0.25 * path[i+1][2] + 0.15 * path[i+2][2]
-						    }
-						  }
+							  // Set opacity at each path point
+							  path.forEach(function(p){
+							  	var x = p[0]
+							  	var y = p[1]
+							  	var o
+							    var pixi = Math.floor(x) + width * Math.floor(y)
+							    if (!settings.clear_edges_around_nodes || vidPixelMap[pixi] == nsvid || vidPixelMap[pixi] == ntvid || vidPixelMap[pixi] == 0) {
+							      o = 1
+							    } else {
+							      o = dPixelMap[pixi]
+							    }
+							    p[2] = o
+							  })
+							  
+							  // Smoothe path
+							  if (path.length > 5) {
+							    for (i=2; i<path.length-2; i++) {
+							      path[i][2] = 0.15 * path[i-2][2] + 0.25 * path[i-1][2] + 0.2 * path[i][2] + 0.25 * path[i+1][2] + 0.15 * path[i+2][2]
+							    }
+							  }
 
-						  // Draw path
-						  var lastp
-						  var lastop
-						  path.forEach(function(p, pi){
-						    if (lastp) {
-						      color.opacity = p[2]
-						      ctx.beginPath()
-						      ctx.lineCap="round"
-						      ctx.lineJoin="round"
-						      ctx.strokeStyle = color.toString()
-						      ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-						      ctx.lineWidth = edge_thickness
-						      ctx.moveTo(lastp[0], lastp[1])
-						      ctx.lineTo(p[0], p[1])
-						      ctx.stroke()
-						      ctx.closePath()
-						    }
-						    lastp = p
-						    lastop = color.opacity
-						  })
-						  
-						})
+							  // Draw path
+							  var lastp
+							  var lastop
+							  path.forEach(function(p, pi){
+							    if (lastp) {
+							      color.opacity = p[2]
+							      ctx.beginPath()
+							      ctx.lineCap="round"
+							      ctx.lineJoin="round"
+							      ctx.strokeStyle = color.toString()
+							      ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+							      ctx.lineWidth = edge_thickness
+							      ctx.moveTo(lastp[0], lastp[1])
+							      ctx.lineTo(p[0], p[1])
+							      ctx.stroke()
+							      ctx.closePath()
+							    }
+							    lastp = p
+							    lastop = color.opacity
+							  })
+							  
+							})
 					}
 
 					// Sort nodes

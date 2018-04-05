@@ -67,6 +67,13 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
         // All unchecked: show all
         $scope.nodeFilter = function(){ return true }
       }
+
+      // Node filter imprint (used in URLs)
+      $scope.nodeFilterImprint = $scope.attribute.modalities
+        .map(function(mod){
+          return $scope.modalitiesSelection[mod.value]
+        })
+        .join(',')
     }
   }
 

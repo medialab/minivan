@@ -10,7 +10,8 @@ angular.module('app.components.partitionColorKey', [])
     templateUrl: 'components/partitionColorKey.html',
     scope: {
       att: '=',
-      scales: '='
+      scales: '=',
+      modalityFilter: '='
     },
     link: function($scope, el, attrs) {
     	$scope.elementSize = 30
