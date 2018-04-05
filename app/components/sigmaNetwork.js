@@ -171,6 +171,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             // Default / muted
             g.nodes().forEach(function(nid){
+              g.setNodeAttribute(nid, 'z', 0)
               g.setNodeAttribute(nid, 'size', getSize(nid))
               g.setNodeAttribute(nid, 'color', settings.default_node_color_muted)
             })
@@ -179,6 +180,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             g.nodes()
               .filter(nodeFilter)
               .forEach(function(nid){
+                g.setNodeAttribute(nid, 'z', 1)
                 g.setNodeAttribute(nid, 'color', getColor(nid))
               })
 
@@ -186,6 +188,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             // Default / muted
             g.edges().forEach(function(eid){
+              g.setEdgeAttribute(eid, 'z', 0)
               g.setEdgeAttribute(eid, 'color', settings.default_edge_color_muted)
             })
 
@@ -195,6 +198,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
                 return nodeFilter(g.source(eid)) && nodeFilter(g.target(eid))
               })
               .forEach(function(eid){
+                g.setEdgeAttribute(eid, 'z', 1)
                 g.setEdgeAttribute(eid, 'color', settings.default_edge_color)
               })
           })
