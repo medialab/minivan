@@ -229,7 +229,7 @@ angular.module('app.services', [])
       g.edges().forEach(function(eid){
         var e = g.getEdgeAttributes(eid)
         if (e.color == undefined) {
-          e.color = '#DDD'
+          e.color = '#CCC9C9'
           colorIssues++
         }
       })

@@ -19,6 +19,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         onNodeClick: '=',
         colorAttId: '=',
         sizeAttId: '=',
+        nodeFilter: '=',
         editableAttributes: '=',
         getCameraState: '=',
         hideCommands: '='
@@ -85,6 +86,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
           }
         })
 
+        $scope.$watch('nodeFilter', updateNodeAppearance)
+
         $scope.displayLargeNetwork = function() {
           networkDisplayThreshold = $scope.nodesCount+1
           $scope.tooBig = false
@@ -123,6 +126,13 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             var settings = {}
             settings.default_node_color = '#969390'
+            settings.default_node_color_muted = '#EEE'
+            settings.default_edge_color = '#DDD'
+            settings.default_edge_color_muted = '#FAFAFA'
+
+            var nodeFilter = $scope.nodeFilter || function(d){return d}
+
+            /// NODES
 
             // Size
             var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
@@ -159,10 +169,34 @@ angular.module('app.components.sigmaNetworkComponent', [])
               getColor = function(){ return settings.default_node_color }
             }
 
+            // Default / muted
             g.nodes().forEach(function(nid){
               g.setNodeAttribute(nid, 'size', getSize(nid))
-              g.setNodeAttribute(nid, 'color', getColor(nid))
+              g.setNodeAttribute(nid, 'color', settings.default_node_color_muted)
             })
+
+            // Color (using node filter)
+            g.nodes()
+              .filter(nodeFilter)
+              .forEach(function(nid){
+                g.setNodeAttribute(nid, 'color', getColor(nid))
+              })
+
+            /// EDGES
+
+            // Default / muted
+            g.edges().forEach(function(eid){
+              g.setEdgeAttribute(eid, 'color', settings.default_edge_color_muted)
+            })
+
+            // Color (using node filter)
+            g.edges()
+              .filter(function(eid){
+                return nodeFilter(g.source(eid)) && nodeFilter(g.target(eid))
+              })
+              .forEach(function(eid){
+                g.setEdgeAttribute(eid, 'color', settings.default_edge_color)
+              })
           })
         }
 
