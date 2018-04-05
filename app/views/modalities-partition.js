@@ -53,6 +53,12 @@ angular.module('app.modalitiesPartition', ['ngRoute'])
     saveAs(blob, $scope.networkData.title + ".gexf");
   }
 
+  $scope.downloadModalities = function() {
+    var csv = csvBuilder.getModalities($scope.attribute.id)
+    var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Modalities of " + $scope.attribute.name + ".csv");
+  }
+
   $scope.downloadNodeList = function() {
   	var csv = csvBuilder.getNodes($scope.nodeFilter)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});

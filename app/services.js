@@ -395,6 +395,21 @@ angular.module('app.services', [])
       return csv
     }
 
+    ns.getModalities = function(attributeId) {
+      var attribute = networkData.nodeAttributesIndex[attributeId]
+      var csv = d3.csvFormat(
+        attribute.modalities
+          .map(function(att){
+            var validElements = {}
+            validElements.value = att.value
+            validElements.color = att.color
+            validElements['nodes count'] = att.count
+            return validElements
+          })
+      )
+      return csv
+    }
+
     ns.getNodes = function(nodesFilter) {
       var nodes = networkData.g.nodes()
       if (nodesFilter) {
