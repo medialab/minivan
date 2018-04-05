@@ -19,6 +19,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         onNodeClick: '=',
         colorAttId: '=',
         sizeAttId: '=',
+        editableAttributes: '=',
         getCameraState: '=',
         hideCommands: '='
       }

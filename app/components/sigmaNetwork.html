@@ -125,8 +125,8 @@
         <br>
         {{sizeAtt.name}}
       </div>
-      <div layout="column" layout-align="center center">
-        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.sizeAttId = undefined" style="opacity: 0.6">
+      <div layout="column" layout-align="center center" ng-if="editableAttributes">
+        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.$parent.sizeAttId = undefined" style="opacity: 0.6">
           <md-icon class="md-icon-18">close</md-icon>
         </md-button>
       </div>
@@ -137,8 +137,8 @@
         <br>
         {{colorAtt.name}}
       </div>
-      <div layout="column" layout-align="center center">
-        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.colorAttId = undefined" style="opacity: 0.6">
+      <div layout="column" layout-align="center center" ng-if="editableAttributes">
+        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.$parent.colorAttId = undefined" style="opacity: 0.6">
           <md-icon class="md-icon-18">close</md-icon>
         </md-button>
       </div>
