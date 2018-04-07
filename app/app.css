@@ -94,6 +94,14 @@
   font-size: 14px;
 }
 
+.clickable-panel {
+  cursor: pointer;
+}
+.clickable-panel:focus {
+  outline: none;
+  border: 0;
+}
+
 
 
 

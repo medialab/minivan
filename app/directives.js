@@ -116,6 +116,7 @@ angular.module('app.directives', [])
   })
 
 .directive('modalityPartitionListElement', function(
+    networkData
   ){
     return {
       restrict: 'A',
@@ -130,6 +131,7 @@ angular.module('app.directives', [])
         $scope.toggleSelection = function(){
           $scope.isSelected = !$scope.isSelected
         }
+        $scope.networkData = networkData
       }
     }
   })
