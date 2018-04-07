@@ -30,15 +30,13 @@ angular.module('app.modalities-partition', ['ngRoute'])
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
       
-      // TODO: remove this console log
-      console.log('attribute', $scope.attribute)
-      
       if ($scope.attribute.type !== 'partition') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)
       }
 
       $scope.modalitiesSelection = {}
       $scope.attribute.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod.value] = false })
+      $scope.maxModCount = d3.max($scope.attribute.modalities.map(function(mod){ return mod.count }))
     }
   })
   
