@@ -4,23 +4,6 @@
 
 angular.module('app.directives', [])
 
-.directive('nodeListElement', function(
-  ){
-    return {
-      restrict: 'A',
-      scope: {
-        node: '=',
-        printMode: '=',
-        att: '=',
-        getRadius: '=',
-        getColor: '='
-      },
-      templateUrl: 'components/nodeListElement.html',
-      link: function($scope, el, attrs) {
-      }
-    }
-  })
-
 .directive('toolbarViewmodeItem', function(
   ){
     return {
@@ -80,6 +63,23 @@ angular.module('app.directives', [])
         $scope.goHome = function() {
           $location.url('/')
         }
+      }
+    }
+  })
+
+.directive('nodeListElement', function(
+  ){
+    return {
+      restrict: 'A',
+      scope: {
+        node: '=',
+        printMode: '=',
+        att: '=',
+        getRadius: '=',
+        getColor: '='
+      },
+      templateUrl: 'components/nodeListElement.html',
+      link: function($scope, el, attrs) {
       }
     }
   })
