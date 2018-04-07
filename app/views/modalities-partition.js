@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.modalitiesPartition', ['ngRoute'])
+angular.module('app.modalities-partition', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/partition/:attribute/modalities', {
