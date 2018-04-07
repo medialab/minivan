@@ -21,6 +21,7 @@ angular.module('app.print-modalities-partition', ['ngRoute'])
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData.loaded) {
 			$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
+			$scope.maxModCount = d3.max($scope.attribute.modalities.map(function(mod){ return mod.count }))
 		}
 	})
 	

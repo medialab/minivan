@@ -133,7 +133,7 @@ angular.module('app.directives', [])
           $scope.isSelected = !$scope.isSelected
         }
         $scope.networkData = networkData
-        $scope.labelThreshold = 60
+        $scope.labelThreshold = 40
       }
     }
   })

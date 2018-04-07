@@ -10,12 +10,12 @@
       <div
       	ng-repeat="mod in attribute.modalities"
       	md-item-size="20"
-      	ng-class="{'leftshift-80':isSelected, 'rightshift-80':!isSelected}"
       >
       	<div class="thin-h-line"></div>
         <div
 	        modality-partition-list-element
 	        mod="mod"
+	        max-mod-count="maxModCount"
 	        print-mode="true"
 	        detail-level="modalityListDetailLevel"
 	        class="print-no-break"

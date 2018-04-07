@@ -64,16 +64,11 @@
 				</div>
 			</div>
 		</div>
-		<!-- 
-		<md-icon style="margin-right: 12px" ng-if="isSelected && !printMode">check_box</md-icon>
-		<md-icon style="margin-right: 12px" ng-if="!isSelected  && !printMode">check_box_outline_blank</md-icon>
-	  <p class="md-truncate">{{mod.value}}</p>
-	  
-		 -->
-		<div style="width: 64px" layout="row" layout-align="center center">
+		<div style="width: 64px" layout="row" layout-align="center center" ng-if="!printMode">
 			<md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected" ng-href="#!/" ng-click="$event.stopPropagation();">
 				<md-icon>arrow_forward</md-icon>
 			</md-button>
 		</div>
+		<div style="width: 12px" ng-if="printMode"></div>
 	</md-content>
 </div>

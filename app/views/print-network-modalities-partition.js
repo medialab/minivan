@@ -34,7 +34,7 @@ angular.module('app.print-network-modalities-partition', ['ngRoute'])
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData.loaded) {
 			$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
-
+			
 			// Rebuild node filter
 			$scope.modalitiesSelection = {}
 			var modSelection = $location.search().filter.split(',').map(function(d){ return d=='true' })
