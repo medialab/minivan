@@ -4,7 +4,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 .directive('cardAttributeModularityGroupLinks', function($timeout, networkData, scalesUtils){
   return {
-    restrict: 'E',
+    restrict: 'A',
     templateUrl: 'components/cardAttributeModularityGroupLinks.html',
     scope: {
     	attId: '='

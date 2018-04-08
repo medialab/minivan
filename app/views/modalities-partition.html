@@ -67,25 +67,27 @@
 							layout-fill
 						></node-list>
 						
-						<div
+						<md-content
 							ng-if="networkData.loaded && panel == 'stats'"
 							layout-fill
 							style="overflow: auto"
 							md-colors="{background: 'default-background-200-0.3'}"
 						>
-							<card-attribute-modularity
+							<md-card
+								card-attribute-modularity
 								att-id="$parent.attribute.id"
 								layout="column"
 								layout-align="center center"
-							></card-attribute-modularity>
-							<card-attribute-modularity-group-links
+							></md-card>
+							<md-card
+								card-attribute-modularity-group-links
 								att-id="$parent.attribute.id"
 								layout="column"
 								layout-align="center center"
-							></card-attribute-modularity-group-links>
+							></md-card>
 						</div>
 
-					</div>
+					</md-content>
 				</div>
 				
 				<!-- Footer: MAP -->
