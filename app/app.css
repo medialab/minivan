@@ -255,6 +255,10 @@
     display: none !important;
   }
 }
+.card-for-print {
+  margin: 0px;
+  box-shadow: none;
+}
 
 /* Network map key elements */
 .key-element-label {

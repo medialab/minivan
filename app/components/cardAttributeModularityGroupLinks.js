@@ -29,6 +29,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
       restrict: 'A',
       scope: {
         data: '=',
+        printMode: '=',
         modalitiesSelection: '='
       },
       link: function($scope, el, attrs) {
@@ -110,11 +111,21 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  y.domain([0, modalities.length - 1])
 				  size.domain([0, d3.max(crossings, function(d){return r(d.count)})])
 
-				  var svg = container.append("svg")
-				      .attr("width", width + margin.left + margin.right)
-				      .attr("height", height + margin.top + margin.bottom)
-				    .append("g")
-				      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				  var svg
+				  if ($scope.printMode) {
+				  	var ratio = 610/(width + margin.left + margin.right)
+					  svg = container.append("svg")
+					      .attr("width", Math.floor(ratio * (width + margin.left + margin.right)))
+					      .attr("height", Math.floor(ratio * (height + margin.top + margin.bottom)))
+					    .append("g")
+				  			.attr("transform", "scale(" +ratio+ ", " +ratio+ ") translate(" + margin.left + "," + margin.top + ")");
+				  } else {
+					  svg = container.append("svg")
+					      .attr("width", width + margin.left + margin.right)
+					      .attr("height", height + margin.top + margin.bottom)
+					    .append("g")
+				  			.attr("transform", rescaleTransform + " translate(" + margin.left + "," + margin.top + ")");
+				  }
 
 				  // Horizontal lines
 				  svg.selectAll('line.h')
@@ -125,7 +136,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .attr('y1', function(d){ return y(valueRanking[d]) })
 				      .attr('x2', width)
 				      .attr('y2', function(d){ return y(valueRanking[d]) })
-				      .style("stroke", 'rgba(0, 0, 0, 0.06)')
+				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
+				      .style("fill", 'rgba(255, 255, 255, 0.0)')
 
 				  // Vertical lines
 				  svg.selectAll('line.v')
@@ -136,7 +148,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .attr('y1', 0)
 				      .attr('x2', function(d){ return x(valueRanking[d]) })
 				      .attr('y2', height)
-				      .style("stroke", 'rgba(0, 0, 0, 0.06)')
+				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
+				      .style("fill", 'rgba(255, 255, 255, 0.0)')
 
 				  // Arrow
 				  var arr = svg.append('g')
@@ -222,6 +235,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
       restrict: 'A',
       scope: {
         data: '=',
+        printMode: '=',
         modalitiesSelection: '='
       },
       link: function($scope, el, attrs) {
@@ -304,11 +318,21 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  y.domain([0, modalities.length - 1])
 				  size.domain([0, d3.max(crossings, function(d){return r(Math.max(0, d.nd))})])
 
-				  var svg = container.append("svg")
-				      .attr("width", width + margin.left + margin.right)
-				      .attr("height", height + margin.top + margin.bottom)
-				    .append("g")
-				      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				  var svg
+				  if ($scope.printMode) {
+				  	var ratio = 610/(width + margin.left + margin.right)
+					  svg = container.append("svg")
+					      .attr("width", Math.floor(ratio * (width + margin.left + margin.right)))
+					      .attr("height", Math.floor(ratio * (height + margin.top + margin.bottom)))
+					    .append("g")
+				  			.attr("transform", "scale(" +ratio+ ", " +ratio+ ") translate(" + margin.left + "," + margin.top + ")");
+				  } else {
+					  svg = container.append("svg")
+					      .attr("width", width + margin.left + margin.right)
+					      .attr("height", height + margin.top + margin.bottom)
+					    .append("g")
+				  			.attr("transform", rescaleTransform + " translate(" + margin.left + "," + margin.top + ")");
+				  }
 
 				  // Horizontal lines
 				  svg.selectAll('line.h')
@@ -319,7 +343,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .attr('y1', function(d){ return y(valueRanking[d]) })
 				      .attr('x2', width)
 				      .attr('y2', function(d){ return y(valueRanking[d]) })
-				      .style("stroke", 'rgba(0, 0, 0, 0.06)')
+				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
+				      .style("fill", 'rgba(255, 255, 255, 0.0)')
 
 				  // Vertical lines
 				  svg.selectAll('line.v')
@@ -330,7 +355,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .attr('y1', 0)
 				      .attr('x2', function(d){ return x(valueRanking[d]) })
 				      .attr('y2', height)
-				      .style("stroke", 'rgba(0, 0, 0, 0.06)')
+				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
+				      .style("fill", 'rgba(255, 255, 255, 0.0)')
 
 				  // Arrow
 				  var arr = svg.append('g')

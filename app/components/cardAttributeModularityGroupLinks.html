@@ -11,9 +11,10 @@
   <p ng-if="hiddenModalities" style="text-align: center">
     <em>Note: not all modalities displayed</em>
   </p>
-  <div drag-scroll="true" style="overflow: auto; cursor: move">
+  <div drag-scroll="true" style="overflow: {{printMode ? 'hidden' : 'auto'}}; cursor: move" class="print-no-break">
     <div
       modality-group-to-group-edges-count-chart
+      print-mode="printMode"
       data="attribute.data"
       modalities-selection="modalitiesSelection"
     ></div>
@@ -31,9 +32,10 @@
     <p ng-if="hiddenModalities" style="text-align: center">
       <em>Note: not all modalities displayed</em>
     </p>
-    <div drag-scroll="true" style="overflow: auto; cursor: move">
+    <div drag-scroll="true" style="overflow: {{printMode ? 'hidden' : 'auto'}}; cursor: move" class="print-no-break">
       <div
         modality-group-to-group-normalized-density-chart
+        print-mode="printMode"
         data="attribute.data"
         modalities-selection="modalitiesSelection"
       ></div>
