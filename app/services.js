@@ -187,6 +187,11 @@ angular.module('app.services', [])
       data.nodeAttributes.forEach(function(att){
         data.nodeAttributesIndex[att.id] = att
       })
+
+      // Build each node attribute's data
+      data.nodeAttributes.forEach(function(att){
+        att.data = ns.buildNodeAttData(data.g, att.id)
+      })
     }
 
     ns.process = function(obj, gexf){
@@ -252,6 +257,108 @@ angular.module('app.services', [])
         var heuristicRatio = 5 * Math.sqrt(g.order)
         return candidates.map(function(d){return d * heuristicRatio})
       }
+    }
+
+    // Aggregated attribute data
+    ns.buildNodeAttData = function(g, attributeId) {
+      var attData = {}
+
+      // Aggregate distribution of modalities
+      attData.modalitiesIndex = {}
+      g.nodes().forEach(function(nid){
+        var n = g.getNodeAttributes(nid)
+        if (attData.modalitiesIndex[n[attributeId]]) {
+          attData.modalitiesIndex[n[attributeId]].nodes++
+        } else {
+          attData.modalitiesIndex[n[attributeId]] = {nodes: 1}
+        }
+      })
+      attData.modalities = d3.keys(attData.modalitiesIndex)
+      var modalitiesCounts = d3.values(attData.modalitiesIndex).map(function(d){return d.nodes})
+      /*attData.distributionStats = {}
+      attData.distributionStats.differentModalities = modalitiesCounts.length
+      attData.distributionStats.sizeOfSmallestModality = d3.min(modalitiesCounts)
+      attData.distributionStats.sizeOfBiggestModality = d3.max(modalitiesCounts)
+      attData.distributionStats.medianSize = d3.median(modalitiesCounts)
+      attData.distributionStats.deviation = d3.deviation(modalitiesCounts)
+      attData.distributionStats.modalitiesUnitary = modalitiesCounts.filter(function(d){return d==1}).length
+      attData.distributionStats.modalitiesAbove1Percent = modalitiesCounts.filter(function(d){return d>=g.order*0.01}).length
+      attData.distributionStats.modalitiesAbove10Percent = modalitiesCounts.filter(function(d){return d>=g.order*0.1}).length*/
+
+      // Count edge flow
+      attData.modalityFlow = {}
+      attData.modalities.forEach(function(v1){
+        attData.modalityFlow[v1] = {}
+        attData.modalities.forEach(function(v2){
+          attData.modalityFlow[v1][v2] = {count: 0, expected: 0, nd:0}
+        })
+      })
+      g.edges().forEach(function(eid){ // Edges count
+        var nsid = g.source(eid)
+        var ntid = g.target(eid)
+        attData.modalityFlow[g.getNodeAttribute(nsid, attributeId)][g.getNodeAttribute(ntid, attributeId)].count++
+      })
+      // For normalized density, we use the same version as the one used in Newmans' Modularity
+      // Newman, M. E. J. (2006). Modularity and community structure in networks. Proceedings of the National Academy of …, 103(23), 8577–8582. http://doi.org/10.1073/pnas.0601602103
+      // Here, for a directed network
+      g.nodes().forEach(function(nsid){
+        g.nodes().forEach(function(ntid){
+          var expected = g.outDegree(nsid) * g.inDegree(ntid) / (2 * g.size)
+          attData.modalityFlow[g.getNodeAttribute(nsid, attributeId)][g.getNodeAttribute(ntid, attributeId)].expected += expected
+        })
+      })
+      attData.modalities.forEach(function(v1){
+        attData.modalities.forEach(function(v2){
+          attData.modalityFlow[v1][v2].nd = ( attData.modalityFlow[v1][v2].count - attData.modalityFlow[v1][v2].expected ) / (4 * g.size) 
+        })
+      })
+
+      // Modality stats related to connectivity
+      attData.modalities.forEach(function(v){
+        attData.modalitiesIndex[v].internalLinks = attData.modalityFlow[v][v].count
+        attData.modalitiesIndex[v].internalNDensity = attData.modalityFlow[v][v].nd
+
+        attData.modalitiesIndex[v].inboundLinks = d3.sum(attData.modalities
+            .filter(function(v2){ return v2 != v})
+            .map(function(v2){ return attData.modalityFlow[v2][v].count })
+          )
+
+        attData.modalitiesIndex[v].inboundNDensity = d3.sum(attData.modalities
+            .filter(function(v2){ return v2 != v})
+            .map(function(v2){ return attData.modalityFlow[v2][v].nd })
+          )
+
+        attData.modalitiesIndex[v].outboundLinks = d3.sum(attData.modalities
+            .filter(function(v2){ return v2 != v})
+            .map(function(v2){ return attData.modalityFlow[v][v2].count })
+          )
+
+        attData.modalitiesIndex[v].outboundNDensity = d3.sum(attData.modalities
+            .filter(function(v2){ return v2 != v})
+            .map(function(v2){ return attData.modalityFlow[v][v2].nd })
+          )
+
+        attData.modalitiesIndex[v].externalLinks = attData.modalitiesIndex[v].inboundLinks + attData.modalitiesIndex[v].outboundLinks
+        attData.modalitiesIndex[v].externalNDensity = attData.modalitiesIndex[v].inboundNDensity + attData.modalitiesIndex[v].outboundNDensity
+
+      })
+
+      // Global statistics
+      attData.stats = {}
+
+      // Modularity (based on previous computations)
+      attData.stats.modularity = 0
+      attData.modalities.forEach(function(v1){
+        attData.modalities.forEach(function(v2){
+          if (v1==v2) {
+            attData.stats.modularity += attData.modalityFlow[v1][v2].nd
+          } else {
+            attData.stats.modularity -= attData.modalityFlow[v1][v2].nd
+          }
+        })
+      })
+
+      return attData
     }
 
     return ns
