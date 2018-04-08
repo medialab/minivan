@@ -8,12 +8,16 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
     templateUrl: 'components/cardAttributeModularityGroupLinks.html',
     scope: {
     	attId: '=',
+      modalitiesSelection: '=',
       detailLevel: '=',
     	printMode: '='
     },
     link: function($scope, el, attrs) {
     	var g = networkData.g
     	$scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+    	$scope.$watch('modalitiesSelection', function(){
+	    	$scope.hiddenModalities = d3.values($scope.modalitiesSelection).some(function(d){ return d }) && d3.values($scope.modalitiesSelection).some(function(d){ return !d })
+    	}, true)
 		}
   }
 })
@@ -24,13 +28,15 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
     return {
       restrict: 'A',
       scope: {
-        data: '='
+        data: '=',
+        modalitiesSelection: '='
       },
       link: function($scope, el, attrs) {
 
         el.html('<div>LOADING</div>')
 
         $scope.$watch('data', redraw)
+        $scope.$watch('modalitiesSelection', redraw, true)
 
         window.addEventListener('resize', redraw)
         $scope.$on('$destroy', function(){
@@ -47,22 +53,30 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
         }
 
         function drawFlowMatrix(container, attData) {
+        	var modalities = attData.modalities
+        		.filter(function(mod){
+        			return $scope.modalitiesSelection[mod]
+        		})
+        	if (modalities.length == 0) {
+        		modalities = attData.modalities
+        	}
+
 				  // Compute crossings
 				  var crossings = []
 				  var v1
 				  var v2
-				  for (v1 in attData.modalityFlow) {
-				    for (v2 in attData.modalityFlow[v1]) {
-				      crossings.push({
+				  modalities.forEach(function(v1){
+					  modalities.forEach(function(v2){
+					  	crossings.push({
 				        v1: v1,
 				        v2: v2,
 				        count: attData.modalityFlow[v1][v2].count
 				      })
-				    }
-				  }
+					  })
+				  })
 
 				  // Rank values by count
-				  var sortedValues = attData.modalities.sort(function(v1, v2){
+				  var sortedValues = modalities.sort(function(v1, v2){
 				    return attData.modalitiesIndex[v2].nodes - attData.modalitiesIndex[v1].nodes
 				  })
 				  var valueRanking = {}
@@ -73,7 +87,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  // Draw SVG
 				  var maxR = 32
 				  var margin = {top: 120 + maxR, right: 24 + maxR, bottom: 24 + maxR, left: 180 + maxR}
-				  var width = 2 * maxR * (attData.modalities.length - 1)
+				  var width = 2 * maxR * (modalities.length - 1)
 				  var height = width // square space
 
 				  var x = d3.scaleLinear()
@@ -92,9 +106,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    return Math.sqrt(a/Math.PI)
 				  }
 
-				  x.domain([0, attData.modalities.length - 1])
-				  y.domain([0, attData.modalities.length - 1])
-				  size.domain(d3.extent(crossings, function(d){return r(d.count)}))
+				  x.domain([0, modalities.length - 1])
+				  y.domain([0, modalities.length - 1])
+				  size.domain([0, d3.max(crossings, function(d){return r(d.count)})])
 
 				  var svg = container.append("svg")
 				      .attr("width", width + margin.left + margin.right)
@@ -104,7 +118,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Horizontal lines
 				  svg.selectAll('line.h')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('line')
 				      .attr('class', 'h')
 				      .attr('x1', 0)
@@ -115,7 +129,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Vertical lines
 				  svg.selectAll('line.v')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('line')
 				      .attr('class', 'v')
 				      .attr('x1', function(d){ return x(valueRanking[d]) })
@@ -151,7 +165,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Horizontal labels
 				  svg.selectAll('text.h')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('text')
 				      .attr('class', 'h')
 				      .attr('x', -6-maxR)
@@ -164,7 +178,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Vertical labels
 				  svg.selectAll('text.v')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('text')
 				      .attr('class', 'v')
 				      .attr('x', function(d){ return x(valueRanking[d]) + 3 })
@@ -207,13 +221,15 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
     return {
       restrict: 'A',
       scope: {
-        data: '='
+        data: '=',
+        modalitiesSelection: '='
       },
       link: function($scope, el, attrs) {
 
         el.html('<div>LOADING</div>')
 
         $scope.$watch('data', redraw)
+        $scope.$watch('modalitiesSelection', redraw, true)
 
         window.addEventListener('resize', redraw)
         $scope.$on('$destroy', function(){
@@ -230,23 +246,30 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
         }
 
         function drawNormalizedDensityMatrix(container, attData) {
+        	var modalities = attData.modalities
+        		.filter(function(mod){
+        			return $scope.modalitiesSelection[mod]
+        		})
+        	if (modalities.length == 0) {
+        		modalities = attData.modalities
+        	}
 
 				  // Compute crossings
 				  var crossings = []
 				  var v1
 				  var v2
-				  for (v1 in attData.modalityFlow) {
-				    for (v2 in attData.modalityFlow[v1]) {
-				      crossings.push({
+				  modalities.forEach(function(v1){
+					  modalities.forEach(function(v2){
+					  	crossings.push({
 				        v1: v1,
 				        v2: v2,
 				        nd: attData.modalityFlow[v1][v2].nd
 				      })
-				    }
-				  }
+					  })
+				  })
 
 				  // Rank modalities by count
-				  var sortedValues = attData.modalities.sort(function(v1, v2){
+				  var sortedValues = modalities.sort(function(v1, v2){
 				    return attData.modalitiesIndex[v2].nodes - attData.modalitiesIndex[v1].nodes
 				  })
 				  var valueRanking = {}
@@ -257,7 +280,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  // Draw SVG
 				  var maxR = 32
 				  var margin = {top: 120 + maxR, right: 24 + maxR, bottom: 24 + maxR, left: 180 + maxR}
-				  var width = 2 * maxR * (attData.modalities.length - 1)
+				  var width = 2 * maxR * (modalities.length - 1)
 				  var height = width // square space
 
 				  var x = d3.scaleLinear()
@@ -277,8 +300,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    return Math.sqrt(a/Math.PI)
 				  }
 
-				  x.domain([0, attData.modalities.length - 1])
-				  y.domain([0, attData.modalities.length - 1])
+				  x.domain([0, modalities.length - 1])
+				  y.domain([0, modalities.length - 1])
 				  size.domain([0, d3.max(crossings, function(d){return r(Math.max(0, d.nd))})])
 
 				  var svg = container.append("svg")
@@ -289,7 +312,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Horizontal lines
 				  svg.selectAll('line.h')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('line')
 				      .attr('class', 'h')
 				      .attr('x1', 0)
@@ -300,7 +323,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Vertical lines
 				  svg.selectAll('line.v')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('line')
 				      .attr('class', 'v')
 				      .attr('x1', function(d){ return x(valueRanking[d]) })
@@ -336,7 +359,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Horizontal labels
 				  svg.selectAll('text.h')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('text')
 				      .attr('class', 'h')
 				      .attr('x', -6-maxR)
@@ -349,7 +372,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
 				  // Vertical labels
 				  svg.selectAll('text.v')
-				      .data(attData.modalities)
+				      .data(modalities)
 				    .enter().append('text')
 				      .attr('class', 'v')
 				      .attr('x', function(d){ return x(valueRanking[d]) + 3 })
@@ -389,7 +412,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    .attr("fill", 'rgba(0, 0, 0, 1.0)')
 
 				  function formatDensityNumber(d) {
-				    return d.toFixed(3)
+				  	if (d)
+					    return d.toFixed(3)
+					  return NaN
 				  }
 				}
       }

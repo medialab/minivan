@@ -8,10 +8,14 @@
   <p ng-if="detailLevel>1">
     This matrix displays how many edges there are from a modality group to another (or itself). The modality groups are defined by web entities having the same {{attribute.name}}. The sum of all values is the size of the network, ie. its total number of edges. Note that bigger groups naturally get more links. Columns are ordered by group size.
   </p>
+  <p ng-if="hiddenModalities" style="text-align: center">
+    <em>Note: not all modalities displayed</em>
+  </p>
   <div drag-scroll="true" style="overflow: auto; cursor: move">
     <div
       modality-group-to-group-edges-count-chart
       data="attribute.data"
+      modalities-selection="modalitiesSelection"
     ></div>
   </div>
   <div ng-if="detailLevel>1">
@@ -24,10 +28,14 @@
     <p>
       Modularity ({{attribute.data.stats.modularity|number}} here) equals to the sum of normalized densities inside a same group (green circles) minus the sum of normalized densities from one group to another (red circles). Big green circles indicate the densest groups. Big red circles are remarkable amounts of links from one group to another (considering the size of groups).
     </p>
+    <p ng-if="hiddenModalities" style="text-align: center">
+      <em>Note: not all modalities displayed</em>
+    </p>
     <div drag-scroll="true" style="overflow: auto; cursor: move">
       <div
         modality-group-to-group-normalized-density-chart
         data="attribute.data"
+        modalities-selection="modalitiesSelection"
       ></div>
     </div>
     <p>
