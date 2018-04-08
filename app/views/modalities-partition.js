@@ -23,6 +23,7 @@ angular.module('app.modalities-partition', ['ngRoute'])
 	$scope.search = $location.search().q
 	$scope.networkData = networkData
   $scope.modalityListDetailLevel = 2
+  $scope.statsDetailLevel = 1
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
   $scope.$watch('modalitiesSelection', updateNodeFilter, true)

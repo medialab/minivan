@@ -7,7 +7,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
     restrict: 'A',
     templateUrl: 'components/cardAttributeModularityGroupLinks.html',
     scope: {
-    	attId: '='
+    	attId: '=',
+      detailLevel: '=',
+    	printMode: '='
     },
     link: function($scope, el, attrs) {
     	var g = networkData.g

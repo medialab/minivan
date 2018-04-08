@@ -7,11 +7,13 @@ angular.module('app.components.cardAttributeModularity', [])
     restrict: 'A',
     templateUrl: 'components/cardAttributeModularity.html',
     scope: {
-    	attId: '='
+      attId: '=',
+      detailLevel: '=',
+      printMode: '='
     },
     link: function($scope, el, attrs) {
-    	var g = networkData.g
+      var g = networkData.g
     	$scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
-		}
+	  }
   }
 })
