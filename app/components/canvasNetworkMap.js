@@ -1,7 +1,5 @@
 'use strict';
 
-/* Services */
-
 angular.module('app.components.canvasNetworkMap', [])
 
 .directive('canvasNetworkMap', function($timeout, networkData, scalesUtils){

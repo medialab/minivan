@@ -67,6 +67,20 @@
 							layout-fill
 						></node-list>
 						
+						<div
+							ng-if="networkData.loaded && panel == 'stats'"
+							layout-fill
+							style="overflow: auto"
+							md-colors="{background: 'default-background-200-0.3'}"
+						>
+							<card-attribute-modularity
+								att-id="$parent.attribute.id"
+								layout="column"
+								layout-align="center center"
+							></card-attribute-modularity>
+
+						</div>
+
 					</div>
 				</div>
 				
@@ -92,6 +106,18 @@
 						<md-tooltip md-direction="top">Print list</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
+				</div>
+
+				<!-- Footer: STATS -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'stats'">
+					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
+						<md-tooltip md-direction="top">Download list</md-tooltip>
+		      	<md-icon>file_download</md-icon>
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-node-list-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}" target="_blank">
+						<md-tooltip md-direction="top">Print list</md-tooltip>
+		      	<md-icon>print</md-icon>
+		      </md-button> -->
 				</div>
 			</div>
 		</div>

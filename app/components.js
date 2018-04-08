@@ -14,7 +14,8 @@ angular.module('app.components', [
     'app.components.partitionColorKey',
     'app.components.rankingColorKey',
     'app.components.rankingSizeKey',
-    'app.components.nodeList'
+    'app.components.nodeList',
+    'app.components.cardAttributeModularity'
   ])
 
 ;
