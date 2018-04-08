@@ -8,21 +8,23 @@
   <md-card-content>
     <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="Count">
-        <div
-          modality-group-to-group-edges-count-chart
-          style="overflow: auto"
-          data="attribute.data"
-        ></div>
+        <div drag-scroll="true" style="overflow: auto; cursor: move">
+          <div
+            modality-group-to-group-edges-count-chart
+            data="attribute.data"
+          ></div>
+        </div>
         <p>
           This matrix displays how many edges there are from a modality group to another (or itself). The modality groups are defined by web entities having the same {{attribute.name}}. The sum of all values is the size of the network, ie. its total number of edges. Note that bigger groups naturally get more links. Columns are ordered by group size.
         </p>
       </md-tab>
       <md-tab label="Normalized density">
-        <div
-          modality-group-to-group-normalized-density-chart
-          style="overflow: auto"
-          data="attribute.data"
-        ></div>
+        <div drag-scroll="true" style="overflow: auto; cursor: move">
+          <div
+            modality-group-to-group-normalized-density-chart
+            data="attribute.data"
+          ></div>
+        </div>
         <p>
           This matrix displays how many links there are from a modality group to another (or itself) versus the expected number of links. We call it "normalized density" by analogy with traditional edge density, which is the actual number of edges versus the potential number of edges. The version presented here uses Mark Newman's formula of modularity. Normalized density can therefore be interpreted as the contribution of each pair of modality groups to modularity. Values on the diagonal (green) contribute positively while others (red) contribute negatively.
         </p>

@@ -10,6 +10,7 @@ require('angular-route');
 require('angular-sanitize');
 require('angular-messages');
 require('angular-marked');
+require('angular-drag-scroll');
 
 // Other libraries
 window.d3 = require('d3');
