@@ -60,7 +60,7 @@ angular.module('app.components.rankingColorChart', [])
 	        			nodes: g.nodes().filter(function(nid){
 	        				var val = g.getNodeAttribute(nid, $scope.att.id)
 	        				if (pmax == 1) {
-	        					return val >= min && val <= max
+	        					return val >= min && val <= max * 1.00000000001
 	        				} else {
 	        					return val >= min && val < max
 	        				}
