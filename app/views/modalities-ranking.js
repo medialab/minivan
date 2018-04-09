@@ -94,9 +94,21 @@ angular.module('app.modalities-ranking', ['ngRoute'])
 
   function updateNodeFilter() {
     if ($scope.attribute) {
-      if ($scope.attribute.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
+      if ($scope.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
         $scope.nodeFilter = function(nid){
-          return $scope.modalitiesSelection[$scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)]
+          var nodeValue = $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
+          var matchingModalities = $scope.modalities.filter(function(mod){
+            return (nodeValue >= mod.min && nodeValue < mod.max)
+              || (mod.pmax == 1 && nodeValue == mod.max)
+          })
+          if (matchingModalities.length == 0) {
+            console.error('[Error] node ', nid, 'cannot be found in the scale of ', $scope.attribute.name, nodeValue)
+            return
+          }
+          if (matchingModalities.length > 1) {
+            console.warn('Node ', nid, 'matches several modality ranges of ', $scope.attribute.name, matchingModalities)
+          }
+          return $scope.modalitiesSelection[matchingModalities[0].value]
         }
       } else {
         // All unchecked: show all
@@ -104,7 +116,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
       }
 
       // Node filter imprint (used in URLs)
-      $scope.nodeFilterImprint = $scope.attribute.modalities
+      $scope.nodeFilterImprint = $scope.modalities
         .map(function(mod){
           return $scope.modalitiesSelection[mod.value]
         })

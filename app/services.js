@@ -147,7 +147,7 @@ angular.module('app.services', [])
           name: 'Ranking B',
           type: 'ranking-color',
           min: 0,
-          max: 51,
+          max: 60,
           colorScale: 'interpolateCubehelixDefault'
         })
         ns.nodeAttributes.push({
