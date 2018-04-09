@@ -124,7 +124,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 					      .attr("width", width + margin.left + margin.right)
 					      .attr("height", height + margin.top + margin.bottom)
 					    .append("g")
-				  			.attr("transform", rescaleTransform + " translate(" + margin.left + "," + margin.top + ")");
+				  			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 				  }
 
 				  // Horizontal lines
@@ -331,7 +331,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 					      .attr("width", width + margin.left + margin.right)
 					      .attr("height", height + margin.top + margin.bottom)
 					    .append("g")
-				  			.attr("transform", rescaleTransform + " translate(" + margin.left + "," + margin.top + ")");
+				  			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 				  }
 
 				  // Horizontal lines
