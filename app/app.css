@@ -87,7 +87,9 @@
 .toolbar-item-as-a-tab {
   background-color: #FFF;
   height: 64px;
-  padding: 12px;
+  padding: 3px 0px 0px 0px;
+  min-width: 88px;
+  margin: 0px 8px;
   white-space: nowrap;
   text-transform: uppercase;
   font-weight: 500;
