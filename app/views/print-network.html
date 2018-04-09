@@ -140,8 +140,9 @@
 				<h3 style="margin-bottom: 12px">Node size</h3>
 				<div
 					ranking-size-key
-					att="networkData.nodeAttributesIndex[sizeAttId]"
 					scales="scales"
+					att="sizeAtt"
+					modalities="sizeModalities"
 					layout-fill
 				></div>
 			</div>
@@ -149,17 +150,17 @@
 			<div layout="column" flex="33" ng-if="colorAttId">
 				<h3 style="margin-bottom: 12px">Node color</h3>
 				<div
-					ng-if="networkData.nodeAttributesIndex[colorAttId].type == 'partition'"
+					ng-if="colorAtt.type == 'partition'"
 					partition-color-key
-					att="networkData.nodeAttributesIndex[colorAttId]"
-					scales="scales"
+					att="colorAtt"
+					modalities="colorModalities"
 					layout-fill
 				></div>
 				<div
-					ng-if="networkData.nodeAttributesIndex[colorAttId].type == 'ranking-color'"
+					ng-if="colorAtt.type == 'ranking-color'"
 					ranking-color-key
-					att="networkData.nodeAttributesIndex[colorAttId]"
-					scales="scales"
+					att="colorAtt"
+					modalities="colorModalities"
 					layout-fill
 				></div>
 			</div>

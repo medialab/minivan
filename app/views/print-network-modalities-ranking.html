@@ -110,7 +110,8 @@
 				layout="column"
 				layout-align="center center"
 				layout-fill
-				color-att-id="attributeId"
+				color-att-id="attribute.type == 'ranking-color' ? attribute.id : ''"
+				size-att-id="attribute.type == 'ranking-size' ? attribute.id : ''"
 				node-filter="nodeFilter"
 				node-size="nodeSize"
 				label-size="labelSize"
@@ -136,13 +137,24 @@
   	<div class="thin-h-line"></div>
 		<div layout="row" style="padding-top: 24px">
 
-			<div layout="column" flex="33" ng-if="attributeId">
+			<div layout="column" flex="33" ng-if="attributeId && attribute.type=='ranking-color'">
 				<h3 style="margin-bottom: 12px">Node color</h3>
 				<div
-					partition-color-key
+					ranking-color-key
 					att="attribute"
+					modalities="modalities"
 					modality-filter="modalityFilter"
+					layout-fill
+				></div>
+			</div>
+			<div layout="column" flex="33" ng-if="attributeId && attribute.type=='ranking-size'">
+				<h3 style="margin-bottom: 12px">Node size</h3>
+				<div
+					ranking-size-key
 					scales="scales"
+					att="attribute"
+					modalities="modalities"
+					modality-filter="modalityFilter"
 					layout-fill
 				></div>
 			</div>

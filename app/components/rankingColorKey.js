@@ -10,38 +10,11 @@ angular.module('app.components.rankingColorKey', [])
     templateUrl: 'components/rankingColorKey.html',
     scope: {
       att: '=',
-      scales: '='
+      modalities: '=',
+      modalityFilter: '='
     },
     link: function($scope, el, attrs) {
     	$scope.elementSize = 30
-    	$scope.$watch('att', update)
-    	$scope.$watch('scales', update)
-
-      function update() {
-      	var keyElementsCount = 8
-      	if ($scope.att.integer){
-    			keyElementsCount = Math.min(keyElementsCount, $scope.att.max - $scope.att.min)
-    		}
-      	var keyElements = []
-      	if ($scope.att && $scope.scales) {
-	      	var i
-	      	for (i=0; i<keyElementsCount; i++) {
-	      		keyElements.push(i)
-	      	}
-	      	keyElements = keyElements.map(function(d){
-	      		var val = $scope.att.min + (keyElementsCount - d - 1) * $scope.att.max / (keyElementsCount - 1)
-	      		if ($scope.att.integer){
-	      			val = Math.round(val)
-	      		}
-	      		var color = $scope.scales.colorScale(val)
-	      		return {
-	      			val: val,
-	      			color: color
-	      		}
-	      	})
-      	}
-	      $scope.keyElements = keyElements
-      }
     }
   }
 })
@@ -51,12 +24,12 @@ angular.module('app.components.rankingColorKey', [])
     restrict: 'E',
     template: '<small style="opacity:0.5;">...</small>',
     scope: {
-      keyElement: '='
+      modality: '='
     },
     link: function($scope, el, attrs) {
     	var container = el[0]
 
-    	$scope.$watch('keyElement', redraw)
+    	$scope.$watch('modality', redraw)
 
     	// init
     	redraw()
@@ -80,7 +53,7 @@ angular.module('app.components.rankingColorKey', [])
               .attr('cx', width/2 )
               .attr('cy', height/2 )
               .attr('r', container.offsetWidth/2)
-              .attr('fill', $scope.keyElement.color)
+              .attr('fill', $scope.modality.color)
 	      })
     	}
     }

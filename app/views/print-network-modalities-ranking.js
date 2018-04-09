@@ -13,7 +13,8 @@ angular.module('app.print-network-modalities-ranking', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData
+	networkData,
+	scalesUtils
 ) {
 	$scope.networkData = networkData
 	$scope.attributeId = $location.search().att
@@ -35,15 +36,37 @@ angular.module('app.print-network-modalities-ranking', ['ngRoute'])
 		if ($scope.networkData.loaded) {
 			$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
 			
-			// Rebuild node filter
-			$scope.modalitiesSelection = {}
-			var modSelection = $location.search().filter.split(',').map(function(d){ return d=='true' })
-			$scope.attribute.modalities.forEach(function(mod, i){
+			// Rebuild modalities
+      $scope.modalities = scalesUtils.buildModalities($scope.attribute)
+
+      // Rebuild node filter
+      $scope.modalitiesSelection = {}
+      var modSelection = $location.search().filter.split(',').map(function(d){ return d=='true' })
+      $scope.modalities.forEach(function(mod, i){
         $scope.modalitiesSelection[mod.value] = modSelection[i]
       })
-			if ($scope.attribute.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
+      if ($scope.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
         $scope.nodeFilter = function(nid){
-          return $scope.modalitiesSelection[$scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)]
+          var nodeValue = $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
+          var matchingModalities
+          if ($scope.attribute.integer) {
+            matchingModalities = $scope.modalities.filter(function(mod){
+              return (nodeValue >= mod.min && nodeValue <= mod.max)
+            })
+          } else {
+            matchingModalities = $scope.modalities.filter(function(mod){
+              return (nodeValue >= mod.min && nodeValue < mod.max)
+                || (mod.pmax == 1 && nodeValue >= mod.min && nodeValue <= mod.max * 1.00000000001)
+            })
+          }
+          if (matchingModalities.length == 0) {
+            console.error('[Error] node ', nid, 'cannot be found in the scale of ', $scope.attribute.name, nodeValue)
+            return
+          }
+          if (matchingModalities.length > 1) {
+            console.warn('Node ', nid, 'matches several modality ranges of ', $scope.attribute.name, matchingModalities)
+          }
+          return $scope.modalitiesSelection[matchingModalities[0].value]
         }
         $scope.modalityFilter = function(modValue) {
         	return $scope.modalitiesSelection[modValue]

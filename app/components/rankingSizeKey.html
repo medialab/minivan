@@ -5,17 +5,18 @@
 			<span style="font-weight: 400">{{att.name}}</span>
 		</div>
 	</div>
-	<div layout="row" style="height: {{elementSize}}px; margin-bottom: 6px" ng-repeat="ke in keyElements">
+	<div layout="row" style="height: {{elementSize}}px; margin-bottom: 6px" ng-repeat="mod in modalities" ng-if="!modalityFilter || modalityFilter(mod.value)">
 		<div style="width: {{elementSize}}px;">
 			<ranking-size-key-item
-				key-element="ke"
+				modality="mod"
+				scales="scales"
 				layout-fill
 				layout="column"
 				layout-align="center center"
 			></ranking-size-key-item>
 		</div>
 		<div flex layout="column" layout-align="center" class="key-element-label" md-truncate>
-			{{ke.val|number}}
+			{{mod.label}}
 		</div>
 	</div>
 </div>

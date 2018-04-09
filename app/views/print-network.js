@@ -13,7 +13,8 @@ angular.module('app.print-network', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData
+	networkData,
+	scalesUtils
 ) {
 	$scope.networkData = networkData
 	$scope.colorAttId = $location.search().color
@@ -34,6 +35,30 @@ angular.module('app.print-network', ['ngRoute'])
 
 	$scope.$watch('oversampling', updateResolutionInfo)
 	
+	$scope.$watch('networkData.loaded', function(){
+		if ($scope.networkData.loaded) {
+			if ($scope.colorAttId) {
+				$scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]			
+
+				if ($scope.colorAtt.type == 'partition') {
+					$scope.colorModalities = $scope.colorAtt.modalities
+				} else if ($scope.colorAtt.type == 'ranking-color') {
+					// Rebuild modalities
+		      $scope.colorModalities = scalesUtils.buildModalities($scope.colorAtt)
+				}
+	    }
+
+	    if ($scope.sizeAttId) {
+				$scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]			
+
+				if ($scope.sizeAtt.type == 'ranking-size') {
+					// Rebuild modalities
+		      $scope.sizeModalities = scalesUtils.buildModalities($scope.sizeAtt)
+				}
+	    }
+		}
+	})
+
 	$scope.downloadImage = function() {
 		var canvas = document.querySelector('#cnvs')
 		canvas.toBlob(function(blob) {
