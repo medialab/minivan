@@ -138,6 +138,30 @@ angular.module('app.directives', [])
     }
   })
 
+.directive('modalityRankingListElement', function(
+    networkData
+  ){
+    return {
+      restrict: 'A',
+      scope: {
+        mod: '=',
+        att: '=',
+        maxModCount: '=',
+        printMode: '=',
+        detailLevel: '=',
+        isSelected: '='
+      },
+      templateUrl: 'components/modalityRankingListElement.html',
+      link: function($scope, el, attrs) {
+        $scope.toggleSelection = function(){
+          $scope.isSelected = !$scope.isSelected
+        }
+        $scope.networkData = networkData
+        $scope.labelThreshold = 40
+      }
+    }
+  })
+
 .directive('vColorKey', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'E',

@@ -169,11 +169,12 @@
 					</md-toolbar>
 
 					<!-- Partition: modalities -->
-					<!-- <md-virtual-repeat-container flex>
+					<md-virtual-repeat-container flex>
 						<md-list layout-fill>
-				      <div md-virtual-repeat="mod in attribute.modalities" md-item-size="20" flex>
+				      <div md-virtual-repeat="mod in modalities" md-item-size="20" flex>
 				        <div
-					        modality-partition-list-element
+					        modality-ranking-list-element
+					        att="attribute"
 					        mod="mod"
 					        max-mod-count="maxModCount"
 					        print-mode="false"
@@ -182,7 +183,7 @@
 					      ></div>
 				      </div>
 						</md-list>
-			    </md-virtual-repeat-container> -->
+			    </md-virtual-repeat-container>
 
 				</div>
 
