@@ -97,10 +97,17 @@ angular.module('app.modalities-ranking', ['ngRoute'])
       if ($scope.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
         $scope.nodeFilter = function(nid){
           var nodeValue = $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
-          var matchingModalities = $scope.modalities.filter(function(mod){
-            return (nodeValue >= mod.min && nodeValue < mod.max)
-              || (mod.pmax == 1 && nodeValue >= mod.min && nodeValue <= mod.max * 1.00000000001)
-          })
+          var matchingModalities
+          if ($scope.attribute.integer) {
+            matchingModalities = $scope.modalities.filter(function(mod){
+              return (nodeValue >= mod.min && nodeValue <= mod.max)
+            })
+          } else {
+            matchingModalities = $scope.modalities.filter(function(mod){
+              return (nodeValue >= mod.min && nodeValue < mod.max)
+                || (mod.pmax == 1 && nodeValue >= mod.min && nodeValue <= mod.max * 1.00000000001)
+            })
+          }
           if (matchingModalities.length == 0) {
             console.error('[Error] node ', nid, 'cannot be found in the scale of ', $scope.attribute.name, nodeValue)
             return
