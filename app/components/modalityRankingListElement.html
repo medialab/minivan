@@ -42,15 +42,15 @@
 		</div>
 		<div flex style="margin-left: 12px; padding: 6px 0px" layout="row">
 			<div
-				style="background-color: rgba(160, 160, 160, 0.5); height:100%; width: {{(100*mod.count/maxModCount)|number:1}}%; padding-right: 6px"
+				style="background-color: rgba(160, 160, 160, 0.5); height:100%; width: {{(100*mod.count/maxModCount)|number:1}}%"
 				layout="column" layout-align="center end"
 			>
 				<div
 					md-truncate
-					style="max-width: 100%; font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 0.9em"
+					style="max-width: 100%; font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 0.9em; margin-right: 6px"
 					ng-if="100*mod.count/maxModCount>labelThreshold"
 				>
-					{{mod.value}}
+					{{mod.label}}
 				</div>
 			</div>
 			<div flex style="height: 100%">
@@ -60,7 +60,7 @@
 					ng-if="100*mod.count/maxModCount<=labelThreshold"
 					layout="column" layout-align="center start"
 				>
-					<div>{{mod.value}}</div>
+					<div>{{mod.label}}</div>
 				</div>
 			</div>
 		</div>
