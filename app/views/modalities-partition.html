@@ -121,10 +121,10 @@
 
 				<!-- Footer: STATS -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'stats'">
-					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
-						<md-tooltip md-direction="top">Download list</md-tooltip>
+					<md-button class="footer-button" ng-click="downloadStats()">
+						<md-tooltip md-direction="top">Download statistics</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button> -->
+		      </md-button>
 					<md-button class="footer-button" ng-href="#!/print-stats-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&detail={{statsDetailLevel}}" target="_blank">
 						<md-tooltip md-direction="top">Print statistics</md-tooltip>
 		      	<md-icon>print</md-icon>

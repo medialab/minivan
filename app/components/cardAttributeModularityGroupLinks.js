@@ -76,13 +76,13 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 					  })
 				  })
 
-				  // Rank values by count
-				  var sortedValues = modalities.sort(function(v1, v2){
+				  // Rank modalities by count
+				  var sortedModalities = modalities.sort(function(v1, v2){
 				    return attData.modalitiesIndex[v2].nodes - attData.modalitiesIndex[v1].nodes
 				  })
-				  var valueRanking = {}
-				  sortedValues.forEach(function(v, i){
-				    valueRanking[v] = i
+				  var modalityRanking = {}
+				  sortedModalities.forEach(function(v, i){
+				    modalityRanking[v] = i
 				  })
 
 				  // Draw SVG
@@ -133,9 +133,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    .enter().append('line')
 				      .attr('class', 'h')
 				      .attr('x1', 0)
-				      .attr('y1', function(d){ return y(valueRanking[d]) })
+				      .attr('y1', function(d){ return y(modalityRanking[d]) })
 				      .attr('x2', width)
-				      .attr('y2', function(d){ return y(valueRanking[d]) })
+				      .attr('y2', function(d){ return y(modalityRanking[d]) })
 				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
 				      .style("fill", 'rgba(255, 255, 255, 0.0)')
 
@@ -144,9 +144,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .data(modalities)
 				    .enter().append('line')
 				      .attr('class', 'v')
-				      .attr('x1', function(d){ return x(valueRanking[d]) })
+				      .attr('x1', function(d){ return x(modalityRanking[d]) })
 				      .attr('y1', 0)
-				      .attr('x2', function(d){ return x(valueRanking[d]) })
+				      .attr('x2', function(d){ return x(modalityRanking[d]) })
 				      .attr('y2', height)
 				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
 				      .style("fill", 'rgba(255, 255, 255, 0.0)')
@@ -182,7 +182,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    .enter().append('text')
 				      .attr('class', 'h')
 				      .attr('x', -6-maxR)
-				      .attr('y', function(d){ return y(valueRanking[d]) + 3 })
+				      .attr('y', function(d){ return y(modalityRanking[d]) + 3 })
 				      .text( function (d) { return d })
 				      .style('text-anchor', 'end')
 				      .attr("font-family", "sans-serif")
@@ -194,7 +194,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .data(modalities)
 				    .enter().append('text')
 				      .attr('class', 'v')
-				      .attr('x', function(d){ return x(valueRanking[d]) + 3 })
+				      .attr('x', function(d){ return x(modalityRanking[d]) + 3 })
 				      .attr('y', -6-maxR)
 				      .text( function (d) { return d })
 				      .style('text-anchor', 'end')
@@ -211,13 +211,13 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  dot.append("circle")
 				    .attr("class", "dot")
 				    .attr("r", function(d) { return size( r(d.count) ) })
-				    .attr("cx", function(d) { return x(valueRanking[d.v2]) })
-				    .attr("cy", function(d) { return y(valueRanking[d.v1]) })
+				    .attr("cx", function(d) { return x(modalityRanking[d.v2]) })
+				    .attr("cy", function(d) { return y(modalityRanking[d.v1]) })
 				    .style("fill", 'rgba(120, 120, 120, 0.3)')
 
 				  dot.append('text')
-				    .attr('x', function(d){ return x(valueRanking[d.v2]) })
-				    .attr('y', function(d){ return y(valueRanking[d.v1]) + 4 })
+				    .attr('x', function(d){ return x(modalityRanking[d.v2]) })
+				    .attr('y', function(d){ return y(modalityRanking[d.v1]) + 4 })
 				    .text( function (d) { return d.count })
 				    .style('text-anchor', 'middle')
 				    .attr("font-family", "sans-serif")
@@ -283,12 +283,12 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  })
 
 				  // Rank modalities by count
-				  var sortedValues = modalities.sort(function(v1, v2){
+				  var sortedModalities = modalities.sort(function(v1, v2){
 				    return attData.modalitiesIndex[v2].nodes - attData.modalitiesIndex[v1].nodes
 				  })
-				  var valueRanking = {}
-				  sortedValues.forEach(function(v, i){
-				    valueRanking[v] = i
+				  var modalityRanking = {}
+				  sortedModalities.forEach(function(v, i){
+				    modalityRanking[v] = i
 				  })
 
 				  // Draw SVG
@@ -340,9 +340,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    .enter().append('line')
 				      .attr('class', 'h')
 				      .attr('x1', 0)
-				      .attr('y1', function(d){ return y(valueRanking[d]) })
+				      .attr('y1', function(d){ return y(modalityRanking[d]) })
 				      .attr('x2', width)
-				      .attr('y2', function(d){ return y(valueRanking[d]) })
+				      .attr('y2', function(d){ return y(modalityRanking[d]) })
 				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
 				      .style("fill", 'rgba(255, 255, 255, 0.0)')
 
@@ -351,9 +351,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .data(modalities)
 				    .enter().append('line')
 				      .attr('class', 'v')
-				      .attr('x1', function(d){ return x(valueRanking[d]) })
+				      .attr('x1', function(d){ return x(modalityRanking[d]) })
 				      .attr('y1', 0)
-				      .attr('x2', function(d){ return x(valueRanking[d]) })
+				      .attr('x2', function(d){ return x(modalityRanking[d]) })
 				      .attr('y2', height)
 				      .style("stroke", 'rgba(220, 220, 220, 0.5)')
 				      .style("fill", 'rgba(255, 255, 255, 0.0)')
@@ -389,7 +389,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    .enter().append('text')
 				      .attr('class', 'h')
 				      .attr('x', -6-maxR)
-				      .attr('y', function(d){ return y(valueRanking[d]) + 3 })
+				      .attr('y', function(d){ return y(modalityRanking[d]) + 3 })
 				      .text( function (d) { return d })
 				      .style('text-anchor', 'end')
 				      .attr("font-family", "sans-serif")
@@ -401,7 +401,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				      .data(modalities)
 				    .enter().append('text')
 				      .attr('class', 'v')
-				      .attr('x', function(d){ return x(valueRanking[d]) + 3 })
+				      .attr('x', function(d){ return x(modalityRanking[d]) + 3 })
 				      .attr('y', -6-maxR)
 				      .text( function (d) { return d })
 				      .style('text-anchor', 'end')
@@ -418,8 +418,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				  dot.append("circle")
 				    .attr("class", "dot")
 				    .attr("r", function(d) { return size( r(Math.max(0, d.nd)) ) })
-				    .attr("cx", function(d) { return x(valueRanking[d.v2]) })
-				    .attr("cy", function(d) { return y(valueRanking[d.v1]) })
+				    .attr("cx", function(d) { return x(modalityRanking[d.v2]) })
+				    .attr("cy", function(d) { return y(modalityRanking[d.v1]) })
 				    .style("fill", function(d){
 				      if (d.v1 == d.v2) {
 				        return 'rgba(70, 220, 70, 0.3)'
@@ -429,8 +429,8 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    })
 
 				  dot.append('text')
-				    .attr('x', function(d){ return x(valueRanking[d.v2]) })
-				    .attr('y', function(d){ return y(valueRanking[d.v1]) + 4 })
+				    .attr('x', function(d){ return x(modalityRanking[d.v2]) })
+				    .attr('y', function(d){ return y(modalityRanking[d.v1]) + 4 })
 				    .text( function (d) { return formatDensityNumber(d.nd) })
 				    .style('text-anchor', 'middle')
 				    .attr("font-family", "sans-serif")

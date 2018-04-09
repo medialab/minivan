@@ -517,6 +517,57 @@ angular.module('app.services', [])
       return csv
     }
 
+    ns.getModalityLinks = function(attributeId, modSelection) {
+      return ns._getModalityCrossings(attributeId, modSelection, 'count')
+    }
+
+    ns.getModalityNormalizedDensities = function(attributeId, modSelection) {
+      return ns._getModalityCrossings(attributeId, modSelection, 'nd')
+    }
+
+    ns._getModalityCrossings = function(attributeId, modSelection, modalityAtt) {
+      var attribute = networkData.nodeAttributesIndex[attributeId]
+      var rows = []
+
+      // Fix modSelection
+      if (modSelection === undefined || !d3.values(modSelection).some(function(d){return d})) {
+        modSelection = {}
+        var mod
+        for (mod in attribute.data.modalityFlow) {
+          modSelection[mod] = true
+        }
+      }
+
+      // Select modalities
+      var modalities = attribute.data.modalities
+        .filter(function(mod){
+          return modSelection[mod]
+        })
+
+      // Rank modalities by count
+      var sortedModalities = modalities.sort(function(v1, v2){
+        return attribute.data.modalitiesIndex[v2].nodes - attribute.data.modalitiesIndex[v1].nodes
+      })
+
+      var headRow = ['']
+      sortedModalities.forEach(function(mod){
+        headRow.push(mod)
+      })
+      rows.push(headRow)
+
+      var row
+      sortedModalities.forEach(function(mod){
+        row = [mod]
+        sortedModalities.forEach(function(mod2){
+          row.push(+attribute.data.modalityFlow[mod][mod2][modalityAtt])
+        })
+        rows.push(row)
+      })
+      
+      var csv = d3.csvFormatRows(rows)
+      return csv
+    }
+
     ns.getNodes = function(nodesFilter) {
       var nodes = networkData.g.nodes()
       if (nodesFilter) {

@@ -22,7 +22,7 @@ angular.module('app.modalities-partition', ['ngRoute'])
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
 	$scope.networkData = networkData
-  $scope.modalityListDetailLevel = 2
+  $scope.modalityListDetailLevel = 1
   $scope.statsDetailLevel = 1
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
@@ -57,6 +57,20 @@ angular.module('app.modalities-partition', ['ngRoute'])
     var csv = csvBuilder.getModalities($scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Modalities of " + $scope.attribute.name + ".csv");
+  }
+
+  $scope.downloadStats = function() {
+    var csv1 = csvBuilder.getModalityLinks($scope.attribute.id, $scope.modalitiesSelection)
+    var blob = new Blob([csv1], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Links between modalities of " + $scope.attribute.name + ".csv");
+
+    if ($scope.statsDetailLevel>1) {
+      $timeout(function(){
+        var csv2 = csvBuilder.getModalityNormalizedDensities($scope.attribute.id, $scope.modalitiesSelection)
+        var blob = new Blob([csv2], {'type':'text/csv;charset=utf-8'});
+        saveAs(blob, $scope.networkData.title + " - Norm densities between modalities of " + $scope.attribute.name + ".csv");
+      }, 1000)
+    }
   }
 
   $scope.downloadNodeList = function() {
