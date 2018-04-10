@@ -506,7 +506,7 @@ angular.module('app.services', [])
             min: min,
             max: max,
             average: (min + max) / 2,
-            radius: 20 * rScale(areaScale((min + max) / 2)),
+            radiusRatio: rScale(areaScale((min + max) / 2)),
             color: '#999',
             nodes: g.nodes().filter(function(nid){
               var val = g.getNodeAttribute(nid, attribute.id)
@@ -689,7 +689,7 @@ angular.module('app.services', [])
             validElements['Average'] = att.average
             validElements['Nodes count'] = att.count
             validElements['Label'] = att.label
-            validElements.radius = att.radius
+            validElements.radius = att.radiusRatio
             validElements.color = att.color.toString()
             return validElements
           })

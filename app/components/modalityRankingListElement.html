@@ -8,7 +8,7 @@
 		ng-class="{ontop: isSelected}"
 		ng-click="toggleSelection()"
 	>
-		<node-list-pic class="md-avatar" radius="mod.radius" color="mod.color" style="width: 40px; height: 40px"></node-list-pic>
+		<node-list-pic class="md-avatar" radius="20*mod.radiusRatio" color="mod.color" style="width: 40px; height: 40px"></node-list-pic>
 		<md-icon style="margin-right: 12px" ng-if="isSelected && !printMode">check_box</md-icon>
 		<md-icon style="margin-right: 12px" ng-if="!isSelected  && !printMode">check_box_outline_blank</md-icon>
 	  <p class="md-truncate">{{mod.label}}</p>
@@ -34,7 +34,7 @@
 		style="height: 56px; padding-left: 8px"
 	>
 		<div style="width: 56px" layout="row" layout-align="center center">
-			<node-list-pic radius="mod.radius" color="mod.color" style="width: 40px; height: 40px"></node-list-pic>
+			<node-list-pic radius="20*mod.radiusRatio" color="mod.color" style="width: 40px; height: 40px"></node-list-pic>
 		</div>
 		<div style="width: 56px; font-family: 'Quicksand', sans-serif; font-weight: 500" layout="column" layout-align="center end">
 			<div style="font-size: 0.7em; text-align:right;" md-truncate>{{mod.count|number}} nodes</div>
