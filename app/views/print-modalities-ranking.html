@@ -8,12 +8,13 @@
   	<div class="thin-h-line"></div>
 		<md-list>
       <div
-      	ng-repeat="mod in attribute.modalities"
+      	ng-repeat="mod in modalities"
       	md-item-size="20"
       >
       	<div class="thin-h-line"></div>
-        <div
-	        modality-partition-list-element
+	      <div
+	        modality-ranking-list-element
+	        att="attribute"
 	        mod="mod"
 	        max-mod-count="maxModCount"
 	        print-mode="true"

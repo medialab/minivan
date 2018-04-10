@@ -12,7 +12,8 @@ angular.module('app.print-modalities-ranking', ['ngRoute'])
 .controller('PrintModalitiesRankingController', function(
 	$scope,
 	$location,
-	networkData
+	networkData,
+	scalesUtils
 ) {
 	$scope.networkData = networkData
 	$scope.printMode = true
@@ -21,12 +22,13 @@ angular.module('app.print-modalities-ranking', ['ngRoute'])
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData.loaded) {
 			$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
-			$scope.maxModCount = d3.max($scope.attribute.modalities.map(function(mod){ return mod.count }))
+			$scope.modalities = scalesUtils.buildModalities($scope.attribute)
+			$scope.maxModCount = d3.max($scope.modalities.map(function(mod){ return mod.count }))
 		}
 	})
 	
 	$scope.modalityListDetailLevel = $location.search().detail || 1
-	if ($scope.modalityListDetailLevel != 1 && $scope.modalityListDetailLevel != 2 && $scope.modalityListDetailLevel != 3) {
+	if ($scope.modalityListDetailLevel != 1 && $scope.modalityListDetailLevel != 2) {
 		$scope.modalityListDetailLevel = 1
 	}
 })
