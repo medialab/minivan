@@ -36,7 +36,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
 	$scope.networkData = networkData
   $scope.statsDetailLevel = 1
   $scope.modalityListDetailLevel = 1
-  $scope.decileMode = true
+  $scope.decileMode = false
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
   $scope.$watch('modalitiesSelection', updateNodeFilter, true)
