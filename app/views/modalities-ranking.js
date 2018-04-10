@@ -34,22 +34,20 @@ angular.module('app.modalities-ranking', ['ngRoute'])
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
 	$scope.networkData = networkData
-  $scope.modalityListDetailLevel = 1
   $scope.statsDetailLevel = 1
+  $scope.modalityListDetailLevel = 1
+  $scope.decileMode = true
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
   $scope.$watch('modalitiesSelection', updateNodeFilter, true)
+  $scope.$watch('decileMode', updateModalities, true)
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
       if ($scope.attribute.type !== 'ranking-size' && $scope.attribute.type !== 'ranking-color') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "ranking-size" or "ranking-color".', $scope.attribute)
       }
-
-      $scope.modalities = scalesUtils.buildModalities($scope.attribute)
-      $scope.modalitiesSelection = {}
-      $scope.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod.value] = false })
-      $scope.maxModCount = d3.max($scope.modalities.map(function(mod){ return mod.count }))
+      updateModalities()
     }
   })
   
@@ -89,6 +87,15 @@ angular.module('app.modalities-ranking', ['ngRoute'])
   	var csv = csvBuilder.getNodes($scope.nodeFilter)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Nodes.csv");
+  }
+
+  function updateModalities() {
+    if ($scope.networkData.loaded) {
+      $scope.modalities = scalesUtils.buildModalities($scope.attribute, $scope.decileMode)
+      $scope.modalitiesSelection = {}
+      $scope.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod.value] = false })
+      $scope.maxModCount = d3.max($scope.modalities.map(function(mod){ return mod.count }))
+    }
   }
 
   function updateNodeFilter() {

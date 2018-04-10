@@ -197,6 +197,12 @@
 						<md-tooltip md-direction="top">Print data visualization</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
+		      <md-button class="footer-button" ng-click="decileMode = !decileMode">
+						<md-tooltip md-direction="top">Use deciles for modalities</md-tooltip>
+						<md-icon ng-if="!decileMode">check_box_outline_blank</md-icon>
+						<md-icon ng-if="decileMode">check_box</md-icon>
+		      	Deciles
+		      </md-button>
 					<md-button class="footer-button" ng-click="modalityListDetailLevel=1">
 						<md-tooltip md-direction="top">No details</md-tooltip>
 						Details
