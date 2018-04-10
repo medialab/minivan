@@ -677,6 +677,26 @@ angular.module('app.services', [])
       return csv
     }
 
+    ns.getRankingModalities = function(modalities) {
+      var csv = d3.csvFormat(
+        modalities
+          .map(function(att){
+            var validElements = {}
+            validElements['Percent Min'] = att.pmin
+            validElements['Percent Max'] = att.pmax
+            validElements['Minimum'] = att.min
+            validElements['Maximum'] = att.max
+            validElements['Average'] = att.average
+            validElements['Nodes count'] = att.count
+            validElements['Label'] = att.label
+            validElements.radius = att.radius
+            validElements.color = att.color.toString()
+            return validElements
+          })
+      )
+      return csv
+    }
+
     ns.getModalityLinks = function(attributeId, modSelection) {
       return ns._getModalityCrossings(attributeId, modSelection, 'count')
     }

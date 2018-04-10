@@ -67,7 +67,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
   }
 
   $scope.downloadModalities = function() {
-    var csv = csvBuilder.getModalities($scope.attribute.id)
+    var csv = csvBuilder.getRankingModalities($scope.modalities)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Modalities of " + $scope.attribute.name + ".csv");
   }
