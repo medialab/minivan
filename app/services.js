@@ -484,7 +484,9 @@ angular.module('app.services', [])
     ns.buildModalities_size = function(attribute) {
       // Size scales
       var areaScale = ns.getAreaScale(attribute.min, attribute.max, attribute.areaScaling.min, attribute.areaScaling.max, attribute.areaScaling.interpolation)
+      console.log('areaScale\n', attribute.min, '->', areaScale(attribute.min), '\n', attribute.max, '->', areaScale(attribute.max))
       var rScale = ns.getRScale()
+      console.log('rScale\n', attribute.min, '->', rScale(areaScale(attribute.min)), '\n', attribute.max, '->', rScale(areaScale(attribute.max)))
 
       var minRadius = rScale(attribute.areaScaling.min/attribute.areaScaling.max)
       var maxRadius = rScale(1)
@@ -506,7 +508,7 @@ angular.module('app.services', [])
             min: min,
             max: max,
             average: (min + max) / 2,
-            radiusRatio: rScale(areaScale((min + max) / 2)),
+            radius: rScale(areaScale((min + max) / 2)),
             color: '#999',
             nodes: g.nodes().filter(function(nid){
               var val = g.getNodeAttribute(nid, attribute.id)
@@ -519,6 +521,12 @@ angular.module('app.services', [])
           }
         })
         .reverse()
+
+      // Radius ratio: relative to the max radius
+      var radiusExtent = d3.extent(data, function(d){ return d.radius })
+      data.forEach(function(d){
+        d.radiusRatio = d.radius/radiusExtent[1]
+      })
 
       data.forEach(function(d){
         d.count = d.nodes.length
