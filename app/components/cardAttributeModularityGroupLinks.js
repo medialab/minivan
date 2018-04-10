@@ -438,7 +438,7 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
 				    .attr("fill", 'rgba(0, 0, 0, 1.0)')
 
 				  function formatDensityNumber(d) {
-				  	if (d)
+				  	if (d !== undefined)
 					    return d.toFixed(3)
 					  return NaN
 				  }
