@@ -111,7 +111,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
           } else {
             matchingModalities = $scope.modalities.filter(function(mod){
               return (nodeValue >= mod.min && nodeValue < mod.max)
-                || (mod.pmax == 1 && nodeValue >= mod.min && nodeValue <= mod.max * 1.00000000001)
+                || (mod.highest && nodeValue >= mod.min && nodeValue <= mod.max * 1.0000000001)
             })
           }
           if (matchingModalities.length == 0) {

@@ -473,15 +473,15 @@ angular.module('app.services', [])
     }
 
     // Build virtual modalities for ranking attributes
-    ns.buildModalities = function(attribute) {
+    ns.buildModalities = function(attribute, useDeciles) {
       if (attribute.type == 'ranking-size') {
-        return ns.buildModalities_size(attribute)
+        return ns.buildModalities_size(attribute, useDeciles)
       } else if (attribute.type == 'ranking-color') {
-        return ns.buildModalities_color(attribute)
+        return ns.buildModalities_color(attribute, useDeciles)
       }
     }
 
-    ns.buildModalities_size = function(attribute) {
+    ns.buildModalities_size = function(attribute, useDeciles) {
       // Size scales
       var areaScale = ns.getAreaScale(attribute.min, attribute.max, attribute.areaScaling.min, attribute.areaScaling.max, attribute.areaScaling.interpolation)
       var rScale = ns.getRScale()
@@ -489,36 +489,83 @@ angular.module('app.services', [])
       var minRadius = rScale(attribute.areaScaling.min/attribute.areaScaling.max)
       var maxRadius = rScale(1)
 
-      var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        .map(function(d){
-          // Percent
-          var pmin = d/10
-          var pmax = (d+1)/10
-          // Radius value
-          var rmin = minRadius + pmin * (maxRadius - minRadius)
-          var rmax = minRadius + pmax * (maxRadius - minRadius)
+      var data
+      if (useDeciles) {
+        var values = g.nodes()
+          .map(function(nid){ return +g.getNodeAttribute(nid, attribute.id) })
+        values.sort(function(a, b){ return a-b })
+        var maxValue = d3.max(values)
+        var deciles = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+          .map(function(d){ return d3.quantile(values, d) })
+
+        // Remove duplicates
+        var existing = {}
+        var deciles = deciles.filter(function(d){
+          if (existing[d]) return false
+          existing[d] = true
+          return true
+        })
+
+        data = deciles.map(function(d, i){
           // Value
-          var min = areaScale.invert(rScale.invert(rmin))
-          var max = areaScale.invert(rScale.invert(rmax))
-          return {
-            pmin: pmin,
-            pmax: pmax,
-            min: min,
-            max: max,
-            average: (min + max) / 2,
-            radius: rScale(areaScale((min + max) / 2)),
-            color: '#999',
-            nodes: g.nodes().filter(function(nid){
+          var min = d
+          var max = deciles[i+1] || maxValue
+          // Nodes
+          var nodes = g.nodes()
+            .filter(function(nid){
               var val = g.getNodeAttribute(nid, attribute.id)
-              if (pmax == 1) {
+              if (i == deciles.length - 1) {
                 return val >= min && val <= max * 1.00000000001
               } else {
                 return val >= min && val < max
               }
+              return false
             })
+
+          return {
+            min: min,
+            max: max,
+            average: (min + max) / 2,
+            nodes: nodes
           }
         })
         .reverse()
+      } else {
+        data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+          .map(function(d){
+            // Percent
+            var pmin = d/10
+            var pmax = (d+1)/10
+            // Radius value
+            var rmin = minRadius + pmin * (maxRadius - minRadius)
+            var rmax = minRadius + pmax * (maxRadius - minRadius)
+            // Value
+            var min = areaScale.invert(rScale.invert(rmin))
+            var max = areaScale.invert(rScale.invert(rmax))
+            return {
+              pmin: pmin,
+              pmax: pmax,
+              min: min,
+              max: max,
+              average: (min + max) / 2,
+              nodes: g.nodes().filter(function(nid){
+                var val = g.getNodeAttribute(nid, attribute.id)
+                if (pmax == 1) {
+                  return val >= min && val <= max * 1.00000000001
+                } else {
+                  return val >= min && val < max
+                }
+              })
+            }
+          })
+          .reverse()
+      }
+
+      data.forEach(function(d, i){
+        d.radius = rScale(areaScale((d.min + d.max) / 2)),
+        d.color = '#999'
+        d.highest = i == 0
+      })
 
       // Radius ratio: relative to the max radius
       var radiusExtent = d3.extent(data, function(d){ return d.radius })
@@ -566,37 +613,85 @@ angular.module('app.services', [])
       return data
     }
 
-    ns.buildModalities_color = function(attribute) {
+    ns.buildModalities_color = function(attribute, useDeciles) {
       // Color scales
       var colorScale = ns.getColorScale(attribute.min, attribute.max, attribute.colorScale)
 
-      var data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        .map(function(d){
-          // Percent
-          var pmin = d/10
-          var pmax = (d+1)/10
+      var data
+      if (useDeciles) {
+        var values = g.nodes()
+          .map(function(nid){ return +g.getNodeAttribute(nid, attribute.id) })
+        values.sort(function(a, b){ return a-b })
+        var maxValue = d3.max(values)
+        var deciles = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+          .map(function(d){ return d3.quantile(values, d) })
+        // Remove duplicates
+        var existing = {}
+        var deciles = deciles.filter(function(d){
+          if (existing[d]) return false
+          existing[d] = true
+          return true
+        })
+
+        data = deciles.map(function(d, i){
           // Value
-          var min = attribute.min + pmin * (attribute.max - attribute.min)
-          var max = attribute.min + pmax * (attribute.max - attribute.min)
-          return {
-            pmin: pmin,
-            pmax: pmax,
-            min: min,
-            max: max,
-            average: (min + max) / 2,
-            radius: 20,
-            color: colorScale((min + max) / 2),
-            nodes: g.nodes().filter(function(nid){
+          var min = d
+          var max = deciles[i+1] || maxValue
+          // Nodes
+          var nodes = g.nodes()
+            .filter(function(nid){
               var val = g.getNodeAttribute(nid, attribute.id)
-              if (pmax == 1) {
+              if (i == deciles.length - 1) {
                 return val >= min && val <= max * 1.00000000001
               } else {
                 return val >= min && val < max
               }
+              return false
             })
+
+          return {
+            min: min,
+            max: max,
+            average: (min + max) / 2,
+            nodes: nodes
           }
         })
         .reverse()
+
+      } else {
+        data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+          .map(function(d){
+            // Percent
+            var pmin = d/10
+            var pmax = (d+1)/10
+            // Value
+            var min = attribute.min + pmin * (attribute.max - attribute.min)
+            var max = attribute.min + pmax * (attribute.max - attribute.min)
+            return {
+              pmin: pmin,
+              pmax: pmax,
+              min: min,
+              max: max,
+              average: (min + max) / 2,
+              nodes: g.nodes().filter(function(nid){
+                var val = g.getNodeAttribute(nid, attribute.id)
+                if (pmax == 1) {
+                  return val >= min && val <= max * 1.00000000001
+                } else {
+                  return val >= min && val < max
+                }
+              })
+            }
+          })
+          .reverse()
+      }
+
+      data.forEach(function(d, i){
+        d.radius = 20
+        d.radiusRatio = 1
+        d.color = colorScale(d.average)
+        d.highest = i==0
+      })
 
       data.forEach(function(d){
         d.count = d.nodes.length
@@ -688,8 +783,6 @@ angular.module('app.services', [])
         modalities
           .map(function(att){
             var validElements = {}
-            validElements['Percent Min'] = att.pmin
-            validElements['Percent Max'] = att.pmax
             validElements['Minimum'] = att.min
             validElements['Maximum'] = att.max
             validElements['Average'] = att.average
