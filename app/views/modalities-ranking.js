@@ -90,7 +90,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
   }
 
   function updateModalities() {
-    if ($scope.networkData.loaded) {
+    if ($scope.networkData.loaded && $scope.attribute) {
       $scope.modalities = scalesUtils.buildModalities($scope.attribute, $scope.decileMode)
       $scope.modalitiesSelection = {}
       $scope.modalities.forEach(function(mod){ $scope.modalitiesSelection[mod.value] = false })

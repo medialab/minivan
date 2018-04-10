@@ -18,11 +18,12 @@ angular.module('app.print-modalities-ranking', ['ngRoute'])
 	$scope.networkData = networkData
 	$scope.printMode = true
 	$scope.attributeId = $location.search().att
+	$scope.decileMode = $location.search().decile == 'true'
 
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData.loaded) {
 			$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
-			$scope.modalities = scalesUtils.buildModalities($scope.attribute)
+			$scope.modalities = scalesUtils.buildModalities($scope.attribute, $scope.decileMode)
 			$scope.maxModCount = d3.max($scope.modalities.map(function(mod){ return mod.count }))
 		}
 	})

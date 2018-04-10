@@ -6,6 +6,10 @@
 	<div class="a4page" layout="column" style="position: relative">
 		<h1>Modalities of {{attribute.name}}</h1>
   	<div class="thin-h-line"></div>
+  	<div ng-if="decileMode">
+	  	<p><em>Deciles are used for the distribution</em></p>
+	  	<div class="thin-h-line"></div>
+	  </div>
 		<md-list>
       <div
       	ng-repeat="mod in modalities"
