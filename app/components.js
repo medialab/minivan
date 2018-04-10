@@ -16,7 +16,8 @@ angular.module('app.components', [
     'app.components.rankingSizeKey',
     'app.components.nodeList',
     'app.components.cardAttributeModularity',
-    'app.components.cardAttributeModularityGroupLinks'
+    'app.components.cardAttributeModularityGroupLinks',
+    'app.components.cardAttributeRankingDistribution'
   ])
 
 ;
