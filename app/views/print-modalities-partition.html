@@ -6,12 +6,13 @@
 	<div class="a4page" layout="column" style="position: relative">
 		<h1>Modalities of {{attribute.name}}</h1>
   	<div class="thin-h-line"></div>
+  	<div class="thin-h-line" ng-if="modalityListDetailLevel>1"></div>
 		<md-list>
       <div
       	ng-repeat="mod in attribute.modalities"
       	md-item-size="20"
       >
-      	<div class="thin-h-line"></div>
+      	<div class="thin-h-line" ng-if="modalityListDetailLevel==1"></div>
         <div
 	        modality-partition-list-element
 	        mod="mod"

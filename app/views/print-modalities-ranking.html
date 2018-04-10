@@ -9,13 +9,14 @@
   	<div ng-if="decileMode">
 	  	<p><em>Deciles are used for the distribution</em></p>
 	  	<div class="thin-h-line"></div>
+	  	<div class="thin-h-line" ng-if="modalityListDetailLevel>1"></div>
 	  </div>
 		<md-list>
       <div
       	ng-repeat="mod in modalities"
       	md-item-size="20"
       >
-      	<div class="thin-h-line"></div>
+      	<div class="thin-h-line" ng-if="modalityListDetailLevel==1"></div>
 	      <div
 	        modality-ranking-list-element
 	        att="attribute"
