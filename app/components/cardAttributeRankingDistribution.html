@@ -3,15 +3,16 @@
     <span class="md-headline">Distribution of {{attribute.name}}</span>
   </md-card-title-text>
 </md-card-title>
-<md-card-content>
+<md-card-content style="width: 100%">
   <p ng-if="detailLevel>1">
     TODO: explanation
   </p>
-  <div drag-scroll="true" style="overflow: {{printMode ? 'hidden' : 'auto'}}; cursor: move" class="print-no-break">
+  <div style="overflow: hidden" class="print-no-break">
     <div
       ranking-distribution-chart
       print-mode="printMode"
       attribute="attribute"
+      style="height: 300px; width: 100%"
     ></div>
   </div>
 </md-card-content>
