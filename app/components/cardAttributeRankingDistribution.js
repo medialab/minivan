@@ -96,7 +96,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
         	}
 
         	// set the dimensions and margins of the graph
-					var margin = {top: 12, right: 12, bottom: 48, left: 12},
+					var margin = {top: 12, right: 12, bottom: 24, left: 12},
 					    width = container.offsetWidth - margin.left - margin.right,
 					    height = container.offsetHeight - margin.top - margin.bottom;
 

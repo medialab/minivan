@@ -4,9 +4,6 @@
   </md-card-title-text>
 </md-card-title>
 <md-card-content style="width: 100%">
-  <p ng-if="detailLevel>1">
-    Count of nodes per range of {{attribute.name}}
-  </p>
   <div style="overflow: hidden" class="print-no-break">
     <div
       ranking-distribution-chart
@@ -15,4 +12,7 @@
       style="height: 300px; width: 100%"
     ></div>
   </div>
+  <p ng-if="detailLevel>1">
+    Nodes count per range of {{attribute.name}}.
+  </p>
 </md-card-content>
