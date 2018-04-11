@@ -40,16 +40,16 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         $scope.stateOnSuspendLayout = ($scope.startLayoutOnLoad === undefined || $scope.startLayoutOnLoad)
 
-        $scope.$watch('networkData', function(){
-          $scope.loaded = false
-          if ( $scope.networkData.g === undefined ) return
-          $timeout(function(){
-            $scope.loaded = true
-            $scope.nodesCount = $scope.networkData.g.order
-            $scope.edgesCount = $scope.networkData.g.size
-            $scope.tooBig = $scope.nodesCount > networkDisplayThreshold
-            refreshSigma()
-          })
+        $scope.$watch('networkData.loaded', function(){
+          if ( $scope.networkData.loaded ) {
+            $timeout(function(){
+              $scope.loaded = true
+              $scope.nodesCount = $scope.networkData.g.order
+              $scope.edgesCount = $scope.networkData.g.size
+              $scope.tooBig = $scope.nodesCount > networkDisplayThreshold
+              refreshSigma()
+            })
+          }
         })
 
         $scope.$watch('colorAttId', function(){

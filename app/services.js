@@ -213,7 +213,7 @@ angular.module('app.services', [])
           n.y = c[1]
           coordinateIssues++
         }
-        if (!isNumeric(n.size)) {
+        if (!isNumeric(n.size) || n.size == 0) {
           n.size = 1
         }
         if (n.color == undefined) {
