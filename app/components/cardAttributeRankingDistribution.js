@@ -54,54 +54,54 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
         function draw(container, attribute) {
 
         	var settings = {}
-	        settings.maxBandsCount = container.offsetWidth < 400 ? 30 : 50
+	        settings.maxBandsCount = container.offsetWidth < 500 ? 30 : 50
 	        settings.bar_spacing = 3
 
         	var values = g.nodes().map(function(nid){ return g.getNodeAttribute(nid, attribute.id) })
         	var valuesExtent = d3.extent(values)
         	var startFromZero = 0 <= valuesExtent[0]/valuesExtent[1] && valuesExtent[0]/valuesExtent[1] < 0.2
-        	var lowerRoundBound
+        	var lowerBound
         	if (startFromZero) {
-        		lowerRoundBound = 0
+        		lowerBound = 0
         	} else {
-	        	lowerRoundBound = Math.pow(10, Math.floor(Math.log(valuesExtent[0])/Math.log(10)))
+	        	lowerBound = valuesExtent[0]
         	}
-        	var upperRoundBound = Math.pow(10, Math.ceil(Math.log(valuesExtent[1])/Math.log(10)))
-        	var bandWidth = (upperRoundBound - lowerRoundBound) / settings.maxBandsCount
+        	var upperBound = valuesExtent[1]
+        	var bandWidth = (upperBound - lowerBound) / settings.maxBandsCount
         	// Lower the bandWidth to closest round number
         	bandWidth = Math.pow(10, Math.floor(Math.log(bandWidth)/Math.log(10)))
         	// Rise it up to round multiple
-        	if ( (upperRoundBound - lowerRoundBound) / (bandWidth*2) <= settings.maxBandsCount ) {
+        	if ( (upperBound - lowerBound) / (bandWidth*2) <= settings.maxBandsCount ) {
         		bandWidth *= 2
-        	} else if( (upperRoundBound - lowerRoundBound) / (bandWidth*5) <= settings.maxBandsCount ) {
+        	} else if( (upperBound - lowerBound) / (bandWidth*5) <= settings.maxBandsCount ) {
 						bandWidth *= 5
         	} else {
         		bandWidth *= 10
         	}
-        	lowerRoundBound -= lowerRoundBound%bandWidth
-        	if (upperRoundBound%bandWidth > 0) {
-	        	upperRoundBound += bandWidth - upperRoundBound%bandWidth
+        	lowerBound -= lowerBound%bandWidth
+        	if (upperBound%bandWidth > 0) {
+	        	upperBound += bandWidth - upperBound%bandWidth
          	}
         	var data = []
         	var i
-        	for (i=lowerRoundBound; i<upperRoundBound; i += bandWidth) {
+        	for (i=lowerBound; i<upperBound; i += bandWidth) {
         		var d = {}
         		d.min = i
         		d.max = i + bandWidth
         		d.average = (d.min+d.max)/2
         		d.count = values.filter(function(v){
-        			return v >= d.min && (v<d.max || ( i == upperRoundBound - bandWidth && v<=d.max ))
+        			return v >= d.min && (v<d.max || ( i == upperBound - bandWidth && v<=d.max ))
         		}).length
         		data.push(d)
         	}
 
         	// set the dimensions and margins of the graph
-					var margin = {top: 12, right: 6, bottom: 48, left: 6},
+					var margin = {top: 12, right: 12, bottom: 48, left: 12},
 					    width = container.offsetWidth - margin.left - margin.right,
 					    height = container.offsetHeight - margin.top - margin.bottom;
 
         	var x = d3.scaleLinear()
-        		.domain([lowerRoundBound, upperRoundBound])
+        		.domain([lowerBound, upperBound])
         		.range([0, width])
 
         	var y = d3.scaleLinear()
@@ -122,16 +122,25 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				  // bar
 				  bars.enter().append('rect')
 				      .attr('class', 'bar')
-				      .attr('x', function(d) { return x(d.min) + 1 } )
-				      .attr('y', function(d) { return height-y(d.count)} )
+				      .attr('x', function(d) { return x(d.min) + 1 })
+				      .attr('y', function(d) { return height - y(d.count) })
 				      .attr('height', function(d) { return y(d.count) })
 				      .attr('width', x(bandWidth) - 2)
 				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
 
-				  
+				  // labels
+				  var labels = bars.enter().append('text')
+				      .attr('x', function(d) { return x(d.average) })
+				      .attr('y', function(d) { return height - y(d.count) - 3 })
+				      .text( function (d) { return d.count ? d.count : '' })
+				      .attr('text-anchor', 'middle')
+				      .attr('font-family', 'Quicksand, sans-serif')
+              .attr('font-weight', '400')
+              .attr('font-size', '12px')
+              .attr('fill', 'black')
+              
 
 				  var xAxis = d3.axisBottom(x)
-				  	//.tickValues(x.domain().filter(function(d,i){ return !(i%5)}));
 				  
 				  svg.append("g")
 			      .attr("class", "axis axis--x")
