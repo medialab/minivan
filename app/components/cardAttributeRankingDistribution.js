@@ -90,7 +90,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
         		d.max = i + bandWidth
         		d.average = (d.min+d.max)/2
         		d.count = values.filter(function(v){
-        			return v >= d.min && (v<d.max || ( i==upperRoundBound-bandWidth && v<=d.max ))
+        			return v >= d.min && (v<d.max || ( i == upperRoundBound - bandWidth && v<=d.max ))
         		}).length
         		data.push(d)
         	}
@@ -100,8 +100,8 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 					    width = container.offsetWidth - margin.left - margin.right,
 					    height = container.offsetHeight - margin.top - margin.bottom;
 
-        	var x = d3.scaleBand()
-        		.domain(data.map(function(d) { return d.average }))
+        	var x = d3.scaleLinear()
+        		.domain([lowerRoundBound, upperRoundBound])
         		.range([0, width])
 
         	var y = d3.scaleLinear()
@@ -119,16 +119,19 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				  var bars = svg.selectAll('.bar')
 				      .data(data)
 
+				  // bar
 				  bars.enter().append('rect')
 				      .attr('class', 'bar')
-				      .attr('x', function(d) { return x(d.average) } )
+				      .attr('x', function(d) { return x(d.min) + 1 } )
 				      .attr('y', function(d) { return height-y(d.count)} )
 				      .attr('height', function(d) { return y(d.count) })
-				      .attr('width', x.bandwidth() - settings.bar_spacing)
+				      .attr('width', x(bandWidth) - 2)
 				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
 
+				  
+
 				  var xAxis = d3.axisBottom(x)
-				  	.tickValues(x.domain().filter(function(d,i){ return !(i%5)}));
+				  	//.tickValues(x.domain().filter(function(d,i){ return !(i%5)}));
 				  
 				  svg.append("g")
 			      .attr("class", "axis axis--x")
