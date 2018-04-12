@@ -1,6 +1,10 @@
-<!-- <node-list-pic class="md-avatar" radius="getRadius(node)" color="getColor(node)" style="width: 40px; height: 40px"></node-list-pic> -->
-<div layout="row">
-  <div ng-style="{width: headlineSize+'px'}" md-truncate>
+<div layout="row" ng-style="{height: cellSize+'px'}">
+  <div
+    ng-style="{width: headlineSize+'px'}"
+    class="matrix-label"
+    md-truncate
+    style="padding-left: 3px"
+  >
     {{ node.label }}
   </div>
   <div flex>
@@ -14,7 +18,8 @@
       >
         <div
           ng-style="{width: cellSize+'px', height: cellSize+'px'}"
-          md-colors="{background: edge ? 'default-primary-200' : 'default-primary-200-0.0'}"
+          md-colors="{background: edge ? 'default-background-500' : 'default-background-200-0.3'}"
+          style="border: 0.5px solid #FFF"
         >
         </div>
       </div>

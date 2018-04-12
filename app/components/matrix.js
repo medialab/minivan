@@ -18,7 +18,7 @@ angular.module('app.components.matrix', [])
     },
     link: function($scope, el, attrs) {
       $scope.headlineSize = 200
-      $scope.cellSize = 20
+      $scope.cellSize = 16
     	$scope.networkData = networkData
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {

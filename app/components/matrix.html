@@ -1,20 +1,27 @@
 <div layout-fill style="position: relative">
+
   <!-- Matrix -->
   <div layout-fill layout="column" style="user-select: none">
     <div ng-style="{height: headlineSize+'px'}">
-      <div layout-fill layout="row">
+      <div layout-fill layout="row" >
         <div ng-style="{width: headlineSize+'px'}" md-truncate>
         </div>
         <div flex>
           <md-virtual-repeat-container layout-fill md-orient-horizontal="true" class="scroll-target-x md-virtual-repeat-no-scroll-bar">
             <div
               md-virtual-repeat="nid in nodes"
-              md-item-size="cellSize"
-              style="display: inline-block"
-              ng-style="{'max-width': cellSize+'px'}"
+              md-item-size="16"
+              ng-style="{'width': cellSize+'px', 'height': headlineSize+'px'}"
+              style="display: inline-block; padding-top: 3px"
               flex
             >
-              {{nid}}
+              <div
+                class="matrix-label"
+                ng-style="{'width': cellSize+'px', 'height': headlingSize+'px'}"
+                style="writing-mode: vertical-rl; text-orientation: sideways;"
+              >
+                {{networkData.g.getNodeAttribute(nid, 'label')}}
+              </div>
             </div>
           </md-virtual-repeat-container>
         </div>
@@ -22,7 +29,7 @@
     </div>
     <div flex>
       <md-virtual-repeat-container layout-fill class="scroll-target-y md-virtual-repeat-no-scroll-bar">
-        <div md-virtual-repeat="nid in nodes" md-item-size="20" flex>
+        <div md-virtual-repeat="nid in nodes" md-item-size="16" flex>
           
           <div
             matrix-line

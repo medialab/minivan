@@ -108,6 +108,11 @@
   overflow: hidden !important;
 }
 
+.matrix-label {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+}
+
 
 
 
