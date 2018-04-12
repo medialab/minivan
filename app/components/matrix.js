@@ -52,6 +52,36 @@ angular.module('app.components.matrix', [])
         var nodeFilter = $scope.nodeFilter || function(d){return d}
         $scope.nodes = g.nodes()
           .filter(nodeFilter)
+
+        if ($scope.selectedAttId) {
+          if ($scope.att) {
+            if ($scope.att.type == 'partition') {
+              var modalitiesIndex = {}
+              $scope.att.modalities.forEach(function(mod, i){
+                modalitiesIndex[mod.value] = i
+              })
+              $scope.nodes.sort(function(a, b){
+                var aModIndex = modalitiesIndex[g.getNodeAttribute(a, $scope.selectedAttId)]
+                var bModIndex = modalitiesIndex[g.getNodeAttribute(b, $scope.selectedAttId)]
+                return aModIndex - bModIndex
+              })
+            } else if ($scope.att.type == 'ranking-size' || $scope.att.type == 'ranking-color') {
+              $scope.nodes.sort(function(a, b){
+                var aValue = +g.getNodeAttribute(a, $scope.selectedAttId)
+                var bValue = +g.getNodeAttribute(b, $scope.selectedAttId)
+                return bValue - aValue
+              })
+            }
+          }
+        } else {
+          $scope.nodes.sort(function(a, b){
+            var alabel = g.getNodeAttribute(a, 'label')
+            var blabel = g.getNodeAttribute(b, 'label')
+            if (alabel > blabel) return 1
+            else if (alabel < blabel) return -1
+            return 0
+          })
+        }
       }
 
       function update() {
@@ -95,11 +125,52 @@ angular.module('app.components.matrix', [])
             return 16
           }
         }
+
+        updateNodes()
       }
 
 
     }
   }
 })
+
+/*.directive('matrixSvg', function($timeout, networkData, scalesUtils){
+  return {
+    restrict: 'E',
+    templateUrl: 'components/matrix.html',
+    scope: {
+      onNodeClick: '=',
+      onEdgeClick: '=',
+      sizeAttId: '=',
+      colorAttId: '=',
+      nodeFilter: '=',
+      selectedAttId:'='
+    },
+    link: function($scope, el, attrs) {
+      $scope.headlineSize = 200
+      $scope.cellSize = 16
+
+      $scope.networkData = networkData
+      $scope.$watch('networkData.loaded', function(){
+        if ($scope.networkData && $scope.networkData.loaded) {
+          updateNodes()
+          update()
+        }
+      })
+
+      $scope.$watch('colorAttId', update)
+      $scope.$watch('sizeAttId', update)
+      $scope.$watch('selectedAttId', update)
+      $scope.$watch('nodeFilter', updateNodes)
+      
+      function updateNodes() {
+        var g = $scope.networkData.g
+        var nodeFilter = $scope.nodeFilter || function(d){return d}
+        $scope.nodes = g.nodes()
+          .filter(nodeFilter)
+      }
+    })
+  }
+})*/
 
 
