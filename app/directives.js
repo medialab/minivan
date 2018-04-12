@@ -84,33 +84,6 @@ angular.module('app.directives', [])
     }
   })
 
-.directive('matrixLine', function(
-    networkData
-  ){
-    return {
-      restrict: 'A',
-      scope: {
-        nodeId: '=',
-        nodes: '=',
-        printMode: '=',
-        att: '=',
-        getRadius: '=',
-        getColor: '=',
-        cellSize: '=',
-        headlineSize: '='
-      },
-      templateUrl: 'components/matrixLine.html',
-      link: function($scope, el, attrs) {
-        $scope.$watch('nodeId', function(){
-          $scope.node = networkData.g.getNodeAttributes($scope.nodeId)
-          $scope.edges = $scope.nodes.map(function(nid){
-            return networkData.g.edge($scope.nodeId, nid)
-          })
-        })
-      }
-    }
-  })
-
 .directive('attributeListElement', function(
   ){
     return {
