@@ -137,44 +137,85 @@ angular.module('app.components.matrix', [])
   }
 })
 
-/*.directive('matrixSvg', function($timeout, networkData, scalesUtils){
+.directive('matrixSvg', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'E',
-    templateUrl: 'components/matrix.html',
+    template: '<small style="opacity:0.5;">loading</small>',
     scope: {
-      onNodeClick: '=',
-      onEdgeClick: '=',
-      sizeAttId: '=',
-      colorAttId: '=',
-      nodeFilter: '=',
-      selectedAttId:'='
+      nodes: '='
     },
     link: function($scope, el, attrs) {
+      
       $scope.headlineSize = 200
       $scope.cellSize = 16
 
       $scope.networkData = networkData
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
-          updateNodes()
-          update()
+          redraw()
         }
       })
 
-      $scope.$watch('colorAttId', update)
-      $scope.$watch('sizeAttId', update)
-      $scope.$watch('selectedAttId', update)
-      $scope.$watch('nodeFilter', updateNodes)
-      
-      function updateNodes() {
-        var g = $scope.networkData.g
-        var nodeFilter = $scope.nodeFilter || function(d){return d}
-        $scope.nodes = g.nodes()
-          .filter(nodeFilter)
+      $scope.$watch('nodes', redraw)
+
+      function redraw() {
+        if ($scope.nodes !== undefined){
+          $timeout(function(){
+            el.html('');
+            draw(el[0])
+          })
+        }
       }
-    })
+
+      function draw(container) {
+
+        var settings = {}
+        settings.display_labels = true
+
+        var g = $scope.networkData.g
+        var data = []
+        $scope.nodes.forEach(function(n1id){
+          $scope.nodes.forEach(function(n2id){
+            var e = g.edge(n1id, n2id)
+            if (e) {
+              data.push({source:n1id, target:n2id})
+            }
+          })
+        })
+        
+        var margin = {top: $scope.headlineSize, right: 0, bottom: 0, left: $scope.headlineSize}
+        var width = $scope.nodes.length * $scope.cellSize
+        var height = width // square space
+
+        var x = d3.scaleBand()
+          .range([0, width])
+          .domain($scope.nodes)
+
+        var ratio = Math.min(container.offsetWidth, container.offsetHeight)/(width + margin.left + margin.right)
+        console.log(ratio)
+        var svg = d3.select(container).append("svg")
+            .attr("width", Math.floor(ratio * (width + margin.left + margin.right)))
+            .attr("height", Math.floor(ratio * (height + margin.top + margin.bottom)))
+          .append("g")
+            .attr("transform", "scale(" +ratio+ ", " +ratio+ ") translate(" + margin.left + "," + margin.top + ")");
+
+        // append the cells
+        var cells = svg.selectAll('.cell')
+            .data(data)
+
+        cells.enter().append('rect')
+            .attr('class', 'cell')
+            .attr('width', $scope.cellSize )
+            .attr('height', $scope.cellSize )
+            .attr('x', function(d) { return x(d.target); })
+            .attr('y', function(d) { return x(d.source); })
+            .attr('fill', 'rgba(40, 40, 40, 0.8)')
+
+      }
+     
+    }
   }
-})*/
+})
 
 .directive('matrixLine', function(
     networkData
