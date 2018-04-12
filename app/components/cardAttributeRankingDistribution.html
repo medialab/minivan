@@ -31,7 +31,7 @@
         data="distributionData"
         style="height: 300px; width: 100%"
       ></div>
-      <p>
+      <p ng-if="detailLevel>1">
         This chart plots the node count for ranges of {{attribute.name}}.
         <span ng-if="attribute.integer">Actual modalities are not used because there are too many of them.</span>
         <span ng-if="!attribute.integer">Ranges are used because the modalities are not integer and as a consequence do not aggregate naturally.</span>

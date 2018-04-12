@@ -70,17 +70,9 @@ angular.module('app.modalities-ranking', ['ngRoute'])
   }
 
   $scope.downloadStats = function() {
-    var csv1 = csvBuilder.getModalityLinks($scope.attribute.id, $scope.modalitiesSelection)
-    var blob = new Blob([csv1], {'type':'text/csv;charset=utf-8'});
-    saveAs(blob, $scope.networkData.title + " - Links between modalities of " + $scope.attribute.name + ".csv");
-
-    if ($scope.statsDetailLevel>1) {
-      $timeout(function(){
-        var csv2 = csvBuilder.getModalityNormalizedDensities($scope.attribute.id, $scope.modalitiesSelection)
-        var blob = new Blob([csv2], {'type':'text/csv;charset=utf-8'});
-        saveAs(blob, $scope.networkData.title + " - Norm densities between modalities of " + $scope.attribute.name + ".csv");
-      }, 1000)
-    }
+    var csv = d3.csvFormat($scope.distributionData)
+    var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Distribution of " + $scope.attribute.name + ".csv");
   }
 
   $scope.downloadNodeList = function() {

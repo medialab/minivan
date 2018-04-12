@@ -10,6 +10,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
     	attId: '=',
       modalitiesSelection: '=',
       detailLevel: '=',
+      data: '=',
     	printMode: '='
     },
     link: function($scope, el, attrs) {
@@ -26,6 +27,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 	    	var nonNullModalities = $scope.naturalModalities.filter(function(m){ return m.count > 0 })
 	    	if (nonNullModalities.length < 70 && nonUnitaryModalities.length > nonNullModalities.length * 0.5) {
 	    		$scope.useNaturalModalities = true
+	    		$scope.data = $scope.naturalModalities
 	    	} else {
 	    		$scope.useNaturalModalities = false
 	    	}
@@ -44,6 +46,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
     	} else {
 
       	$scope.distributionData = scalesUtils.buildRankingDistribution($scope.attribute, 70, true)
+      	$scope.data = scalesUtils.buildRankingDistribution($scope.attribute, 70, true)
 
       	// Does log plot make sense?
 	    	var avgExtent = d3.extent($scope.distributionData, function(d){ return d.average })
