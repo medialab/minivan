@@ -23,7 +23,8 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 })
 
 .directive('rankingDistributionChart', function(
-    $timeout
+    $timeout,
+    scalesUtils
   ){
     return {
       restrict: 'A',
@@ -54,46 +55,12 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
         function draw(container, attribute) {
 
         	var settings = {}
-	        settings.maxBandsCount = container.offsetWidth < 500 ? 30 : 50
+	        settings.max_bands_count = container.offsetWidth < 500 ? 30 : 50
 	        settings.bar_spacing = 3
 
-        	var values = g.nodes().map(function(nid){ return g.getNodeAttribute(nid, attribute.id) })
-        	var valuesExtent = d3.extent(values)
+	        var data = scalesUtils.buildRankingDistribution(attribute, settings.max_bands_count, true)
+	        var valuesExtent = [d3.min(data, function(d){ return d.min }), d3.max(data, function(d){ return d.max })]
         	var startFromZero = 0 <= valuesExtent[0]/valuesExtent[1] && valuesExtent[0]/valuesExtent[1] < 0.2
-        	var lowerBound
-        	if (startFromZero) {
-        		lowerBound = 0
-        	} else {
-	        	lowerBound = valuesExtent[0]
-        	}
-        	var upperBound = valuesExtent[1]
-        	var bandWidth = (upperBound - lowerBound) / settings.maxBandsCount
-        	// Lower the bandWidth to closest round number
-        	bandWidth = Math.pow(10, Math.floor(Math.log(bandWidth)/Math.log(10)))
-        	// Rise it up to round multiple
-        	if ( (upperBound - lowerBound) / (bandWidth*2) <= settings.maxBandsCount ) {
-        		bandWidth *= 2
-        	} else if( (upperBound - lowerBound) / (bandWidth*5) <= settings.maxBandsCount ) {
-						bandWidth *= 5
-        	} else {
-        		bandWidth *= 10
-        	}
-        	lowerBound -= lowerBound%bandWidth
-        	if (upperBound%bandWidth > 0) {
-	        	upperBound += bandWidth - upperBound%bandWidth
-         	}
-        	var data = []
-        	var i
-        	for (i=lowerBound; i<upperBound; i += bandWidth) {
-        		var d = {}
-        		d.min = i
-        		d.max = i + bandWidth
-        		d.average = (d.min+d.max)/2
-        		d.count = values.filter(function(v){
-        			return v >= d.min && (v<d.max || ( i == upperBound - bandWidth && v<=d.max ))
-        		}).length
-        		data.push(d)
-        	}
 
         	// set the dimensions and margins of the graph
 					var margin = {top: 12, right: 12, bottom: 24, left: 12},
@@ -101,7 +68,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 					    height = container.offsetHeight - margin.top - margin.bottom;
 
         	var x = d3.scaleLinear()
-        		.domain([lowerBound, upperBound])
+        		.domain([startFromZero ? 0 : valuesExtent[0], valuesExtent[1]])
         		.range([0, width])
 
         	var y = d3.scaleLinear()
@@ -125,7 +92,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('x', function(d) { return x(d.min) + 1 })
 				      .attr('y', function(d) { return height - y(d.count) })
 				      .attr('height', function(d) { return y(d.count) })
-				      .attr('width', x(bandWidth) - 2)
+				      .attr('width', function(d) { return x(d.max) - x(d.min) - 2 })
 				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
 
 				  // labels

@@ -733,6 +733,46 @@ angular.module('app.services', [])
       return data
     }
 
+    // Build data for distribution of ranking
+    ns.buildRankingDistribution = function(attribute, bandsCount, niceScale) {
+      var values = g.nodes().map(function(nid){ return g.getNodeAttribute(nid, attribute.id) })
+      var valuesExtent = d3.extent(values)
+      var lowerBound = valuesExtent[0]
+      var upperBound = valuesExtent[1]
+      var bandWidth = (upperBound - lowerBound) / bandsCount
+      
+      if (niceScale) {
+        // Lower the bandWidth to closest round number
+        bandWidth = Math.pow(10, Math.floor(Math.log(bandWidth)/Math.log(10)))
+        // Rise it up to round multiple
+        if ( (upperBound - lowerBound) / (bandWidth*2) <= bandsCount ) {
+          bandWidth *= 2
+        } else if( (upperBound - lowerBound) / (bandWidth*5) <= bandsCount ) {
+          bandWidth *= 5
+        } else {
+          bandWidth *= 10
+        }
+        lowerBound -= lowerBound%bandWidth
+        if (upperBound%bandWidth > 0) {
+          upperBound += bandWidth - upperBound%bandWidth
+        }
+      }
+
+      var data = []
+      var i
+      for (i=lowerBound; i<upperBound; i += bandWidth) {
+        var d = {}
+        d.min = i
+        d.max = i + bandWidth
+        d.average = (d.min+d.max)/2
+        d.count = values.filter(function(v){
+          return v >= d.min && (v<d.max || ( i == upperBound - bandWidth && v<=d.max ))
+        }).length
+        data.push(d)
+      }
+      return data
+    }
+
     return ns
   })
 
