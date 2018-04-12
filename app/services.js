@@ -773,6 +773,35 @@ angular.module('app.services', [])
       return data
     }
 
+    // Get natural modalities for a ranking, comparable to buildRankingDistribution
+    ns.getIntegerRankingModalities = function(attribute) {
+      var modalitiesIndex = {}
+      var min = Infinity
+      var max = -Infinity
+      g.nodes().forEach(function(nid){
+        var modValue = g.getNodeAttribute(nid, attribute.id)
+        min = Math.min(min, modValue)
+        max = Math.max(max, modValue)
+        var modObj = modalitiesIndex[modValue] || {value: modValue, count: 0}
+        modObj.count++
+        modalitiesIndex[modValue] = modObj
+      })
+      // We assume that the attribute is an integer.
+      // We will fill the blanks in the modalities index.
+      // This will purposefully produce data points with count==0.
+      var i
+      for (i=Math.floor(min); i<=max; i++) {
+        if (modalitiesIndex[i] === undefined) {
+          modalitiesIndex[i] = {value:i, count:0}
+        }
+      }
+      var data = Object.values(modalitiesIndex)
+      data.sort(function(a, b){
+        return a.value - b.value
+      })
+      return data
+    }
+
     return ns
   })
 
