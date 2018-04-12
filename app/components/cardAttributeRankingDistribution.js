@@ -92,7 +92,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('x', function(d) { return x(d.min) + 1 })
 				      .attr('y', function(d) { return height - y(d.count) })
 				      .attr('height', function(d) { return y(d.count) })
-				      .attr('width', function(d) { return x(d.max) - x(d.min) - 2 })
+				      .attr('width', function(d) { return Math.max(6, x(d.max) - x(d.min) - 2) })
 				      .attr('fill', 'rgba(160, 160, 160, 0.5)')
 
 				  // labels
