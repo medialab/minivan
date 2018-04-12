@@ -91,6 +91,7 @@ angular.module('app.directives', [])
       restrict: 'A',
       scope: {
         nodeId: '=',
+        nodes: '=',
         printMode: '=',
         att: '=',
         getRadius: '=',
@@ -100,9 +101,11 @@ angular.module('app.directives', [])
       },
       templateUrl: 'components/matrixLine.html',
       link: function($scope, el, attrs) {
-        $scope.node = networkData.g.getNodeAttributes($scope.nodeId)
-        $scope.edges = networkData.g.nodes().map(function(nid){
-          return networkData.g.edge($scope.nodeId, nid)
+        $scope.$watch('nodeId', function(){
+          $scope.node = networkData.g.getNodeAttributes($scope.nodeId)
+          $scope.edges = $scope.nodes.map(function(nid){
+            return networkData.g.edge($scope.nodeId, nid)
+          })
         })
       }
     }
