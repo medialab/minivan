@@ -1,0 +1,23 @@
+<!-- <node-list-pic class="md-avatar" radius="getRadius(node)" color="getColor(node)" style="width: 40px; height: 40px"></node-list-pic> -->
+<div layout="row">
+  <div ng-style="{width: headlineSize+'px'}" md-truncate>
+    {{ node.label }}
+  </div>
+  <div flex>
+    <md-virtual-repeat-container layout-fill md-orient-horizontal class="scroll-target-x md-virtual-repeat-no-scroll-bar">
+      <div
+        md-virtual-repeat="edge in edges"
+        md-item-size="cellSize"
+        style="display: inline-block"
+        ng-style="{'width': cellSize+'px'}"
+        flex
+      >
+        <div
+          ng-style="{width: cellSize+'px', height: cellSize+'px'}"
+          md-colors="{background: edge ? 'default-primary-200' : 'default-primary-200-0.0'}"
+        >
+        </div>
+      </div>
+    </md-virtual-repeat-container>
+  </div>
+</div>

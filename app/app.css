@@ -104,6 +104,10 @@
   border: 0;
 }
 
+.md-virtual-repeat-no-scroll-bar .md-virtual-repeat-scroller{
+  overflow: hidden !important;
+}
+
 
 
 

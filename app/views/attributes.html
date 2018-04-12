@@ -23,6 +23,13 @@
 								icon="'bubble_chart'"
 								label="'Map'"
 							></toolbar-viewmode-item>
+
+							<toolbar-viewmode-item
+								viewmode-target="'matrix'"
+								viewmode="panel"
+								icon="'apps'"
+								label="'Matrix'"
+							></toolbar-viewmode-item>
 							
 							<toolbar-viewmode-item
 								viewmode-target="'list'"
@@ -52,6 +59,15 @@
 							layout-fill
 						></sigma-network>
 
+						<matrix
+							ng-if="networkData.loaded && panel == 'matrix'"
+							on-node-click="networkNodeClick"
+							on-edge-click="networkEdgeClick"
+							size-att-id="$parent.sizeAttId"
+							color-att-id="$parent.colorAttId"
+							layout-fill
+						></matrix>
+
 						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
 							size-att-id="$parent.sizeAttId"
@@ -80,6 +96,18 @@
 						<md-icon ng-if="sizePlusColor">check_box</md-icon>
 		      	Size + color
 		      </md-button>
+				</div>
+
+				<!-- Footer: MATRIX -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'matrix'">
+					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
+						<md-tooltip md-direction="top">Download list</md-tooltip>
+		      	<md-icon>file_download</md-icon>
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-href="#!/print-node-list?color={{colorAttId}}&size={{sizeAttId}}&att={{selectedAttId}}" target="_blank">
+						<md-tooltip md-direction="top">Print list</md-tooltip>
+		      	<md-icon>print</md-icon>
+		      </md-button> -->
 				</div>
 
 				<!-- Footer: LIST -->

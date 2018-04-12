@@ -1,0 +1,66 @@
+<div layout-fill style="position: relative">
+  <!-- Matrix -->
+  <div layout-fill layout="column" style="user-select: none">
+    <div ng-style="{height: headlineSize+'px'}">
+      <div layout-fill layout="row">
+        <div ng-style="{width: headlineSize+'px'}" md-truncate>
+        </div>
+        <div flex>
+          <md-virtual-repeat-container layout-fill md-orient-horizontal="true" class="scroll-target-x md-virtual-repeat-no-scroll-bar">
+            <div
+              md-virtual-repeat="nid in nodes"
+              md-item-size="cellSize"
+              style="display: inline-block"
+              ng-style="{'max-width': cellSize+'px'}"
+              flex
+            >
+              {{nid}}
+            </div>
+          </md-virtual-repeat-container>
+        </div>
+      </div>
+    </div>
+    <div flex>
+      <md-virtual-repeat-container layout-fill class="scroll-target-y md-virtual-repeat-no-scroll-bar">
+        <div md-virtual-repeat="nid in nodes" md-item-size="20" flex>
+          
+          <div
+            matrix-line
+            get-radius="getRadius"
+            get-color="getColor"
+            node-id="nid"
+            headline-size="headlineSize"
+            cell-size="cellSize"
+            att="att"
+            print-mode="false"
+            style="height: {{cellSize}}px"
+          ></div>
+
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+
+  <!-- Scroll overlay -->
+  <div
+    layout-fill
+    style="position: absolute; left: 0px; top: 0px;"
+    layout="column"
+  >
+    <div ng-style="{'height':headlineSize+'px'}">
+    </div>
+    <div flex layout="row">
+      <div ng-style="{'width':headlineSize+'px'}">
+      </div>
+      <div flex>
+        <div layout-fill>
+          <div layout-fill style="overflow: scroll; cursor: move" drag-scroll="true" id="scroll-source">
+            <div ng-style="{'width':(cellSize*nodes.length)+'px', 'height':(cellSize*nodes.length)+'px'}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
