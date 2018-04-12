@@ -13,9 +13,23 @@
               md-item-size="16"
               ng-style="{'width': cellSize+'px', 'height': headlineSize+'px'}"
               style="display: inline-block; padding-top: 3px"
+              layout="column"
               flex
             >
               <div
+                layout="column"
+                layout-align="center center"
+                ng-style="{'width': cellSize+'px', 'height': cellSize+'px'}"
+              >
+                <node-list-pic
+                  class="md-avatar"
+                  radius="getRadius(nid)"
+                  color="getColor(nid)"
+                  layout-fill
+                ></node-list-pic>
+              </div>
+              <div
+                flex
                 class="matrix-label"
                 ng-style="{'width': cellSize+'px', 'height': headlingSize+'px'}"
                 style="writing-mode: vertical-rl; text-orientation: sideways;"

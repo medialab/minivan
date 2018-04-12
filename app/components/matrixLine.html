@@ -4,8 +4,23 @@
     class="matrix-label"
     md-truncate
     style="padding-left: 3px"
+    layout="row"
   >
-    {{ node.label }}
+    <div
+      layout="column"
+      layout-align="center center"
+      ng-style="{'width': cellSize+'px', 'height': cellSize+'px'}"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="getRadius(nodeId)"
+        color="getColor(nodeId)"
+        layout-fill
+      ></node-list-pic>
+    </div>
+    <div flex>
+      {{ node.label }}
+    </div>
   </div>
   <div flex>
     <md-virtual-repeat-container layout-fill md-orient-horizontal class="scroll-target-x md-virtual-repeat-no-scroll-bar">

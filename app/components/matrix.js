@@ -11,8 +11,6 @@ angular.module('app.components.matrix', [])
     scope: {
       onNodeClick: '=',
       onEdgeClick: '=',
-      sizeAttId: '=',
-      colorAttId: '=',
       nodeFilter: '=',
       selectedAttId:'='
     },
@@ -85,44 +83,49 @@ angular.module('app.components.matrix', [])
       }
 
       function update() {
-        $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
-        if ($scope.colorAttId) {
-          var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
-          if (colorAtt.type == 'partition') {
+        if ($scope.selectedAttId) {
+          $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
+          // Color
+          if ($scope.att.type == 'partition') {
             var colorByModality = {}
-            colorAtt.modalities.forEach(function(m){
+            $scope.att.modalities.forEach(function(m){
               colorByModality[m.value] = m.color
             })
             var colorScale = function(val) {
               return colorByModality[val] || '#999'
             }
-            $scope.getColor = function(n) {
-              return colorScale(n[$scope.colorAttId])
+            $scope.getColor = function(nid) {
+              return colorScale($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId))
             }
-          } else if (colorAtt.type == 'ranking-color') {
-            var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
+          } else if ($scope.att.type == 'ranking-color') {
+            var colorScale = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
             var colorScale_string = function(val){ return colorScale(val).toString() }
-            $scope.getColor = function(n){ return colorScale_string(n[$scope.colorAttId]) }
+            $scope.getColor = function(nid){ return colorScale_string($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId)) }
           } else {
-            console.error('Unknown color attribute type:', colorAtt.type)
+            $scope.getColor = function(nid) {
+              return '#999'
+            }
+          }
+
+          // Size
+          if ($scope.att.type == 'ranking-size') {
+            var areaScale = scalesUtils.getAreaScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
+            var rScale = scalesUtils.getRScale()
+            var rMax = rScale(1)
+            $scope.getRadius = function(nid) {
+              return rScale(areaScale($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId))) * ($scope.cellSize/2 - 2) / rMax
+            }
+          } else {
+            $scope.getRadius = function(nid) {
+              return ($scope.cellSize/2 - 2)
+            }
           }
         } else {
-          $scope.getColor = function(n) {
+          $scope.getColor = function(nid) {
             return '#999'
           }
-        }
-
-        if ($scope.sizeAttId) {
-          var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
-          var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
-          var rScale = scalesUtils.getRScale()
-          var rMax = rScale(1)
           $scope.getRadius = function(n) {
-            return rScale(areaScale(n[$scope.sizeAttId])) * 20 / rMax
-          }
-        } else {
-          $scope.getRadius = function(n) {
-            return 16
+            return ($scope.cellSize/2 - 2)
           }
         }
 
