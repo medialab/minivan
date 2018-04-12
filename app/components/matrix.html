@@ -47,18 +47,8 @@
     style="position: absolute; left: 0px; top: 0px;"
     layout="column"
   >
-    <div ng-style="{'height':headlineSize+'px'}">
-    </div>
-    <div flex layout="row">
-      <div ng-style="{'width':headlineSize+'px'}">
-      </div>
-      <div flex>
-        <div layout-fill>
-          <div layout-fill style="overflow: scroll; cursor: move" drag-scroll="true" id="scroll-source">
-            <div ng-style="{'width':(cellSize*nodes.length)+'px', 'height':(cellSize*nodes.length)+'px'}">
-            </div>
-          </div>
-        </div>
+    <div layout-fill style="overflow: scroll; cursor: move" drag-scroll="true" id="scroll-source">
+      <div ng-style="{'width':(headlineSize + cellSize*nodes.length)+'px', 'height':(headlineSize + cellSize*nodes.length)+'px'}">
       </div>
     </div>
   </div>
