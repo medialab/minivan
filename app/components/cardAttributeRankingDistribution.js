@@ -15,6 +15,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
     },
     link: function($scope, el, attrs) {
     	var g = networkData.g
+    	var maxBandCount = 50
     	$scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
     	$scope.$watch('modalitiesSelection', function(){
 	    	$scope.hiddenModalities = d3.values($scope.modalitiesSelection).some(function(d){ return d }) && d3.values($scope.modalitiesSelection).some(function(d){ return !d })
@@ -25,7 +26,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
     		$scope.naturalModalities = scalesUtils.getIntegerRankingModalities($scope.attribute) // Contains data points with count==0
 	    	var nonUnitaryModalities = $scope.naturalModalities.filter(function(m){ return m.count > 1 })
 	    	var nonNullModalities = $scope.naturalModalities.filter(function(m){ return m.count > 0 })
-	    	if (nonNullModalities.length < 70 && nonUnitaryModalities.length > nonNullModalities.length * 0.5) {
+	    	if (nonNullModalities.length < maxBandCount && nonUnitaryModalities.length > nonNullModalities.length * 0.5) {
 	    		$scope.useNaturalModalities = true
 	    		$scope.data = $scope.naturalModalities
 	    	} else {
@@ -45,8 +46,8 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 
     	} else {
 
-      	$scope.distributionData = scalesUtils.buildRankingDistribution($scope.attribute, 70, true)
-      	$scope.data = scalesUtils.buildRankingDistribution($scope.attribute, 70, true)
+      	$scope.distributionData = scalesUtils.buildRankingDistribution($scope.attribute, maxBandCount, true)
+      	$scope.data = $scope.distributionData
 
       	// Does log plot make sense?
 	    	var avgExtent = d3.extent($scope.distributionData, function(d){ return d.average })
@@ -139,7 +140,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('text-anchor', 'middle')
 				      .attr('font-family', 'Quicksand, sans-serif')
               .attr('font-weight', '400')
-              .attr('font-size', '12px')
+              .attr('font-size', '11px')
               .attr('fill', 'black')
 
 				  var xAxis = d3.axisBottom(x)
@@ -231,7 +232,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('text-anchor', 'middle')
 				      .attr('font-family', 'Quicksand, sans-serif')
               .attr('font-weight', '400')
-              .attr('font-size', '12px')
+              .attr('font-size', '11px')
               .attr('fill', 'black')
 
 				  var xAxis = d3.axisBottom(x)
@@ -339,7 +340,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('y', -12)
 				      .text('NODES COUNT')
 				      .attr('text-anchor', 'middle')
-	            .attr('font-size', '12px')
+	            .attr('font-size', '11px')
 	            .attr('fill', 'black')
 
 	        svg.append("text")
@@ -347,7 +348,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('y', height + 36)
 				      .text(attribute.name.toUpperCase())
 				      .attr('text-anchor', 'end')
-	            .attr('font-size', '12px')
+	            .attr('font-size', '11px')
 	            .attr('fill', 'black')
 				}
       }
@@ -446,7 +447,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('y', -12)
 				      .text('NODES COUNT')
 				      .attr('text-anchor', 'middle')
-	            .attr('font-size', '12px')
+	            .attr('font-size', '11px')
 	            .attr('fill', 'black')
 
 	        svg.append("text")
@@ -454,7 +455,7 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
 				      .attr('y', height + 36)
 				      .text(attribute.name.toUpperCase())
 				      .attr('text-anchor', 'end')
-	            .attr('font-size', '12px')
+	            .attr('font-size', '11px')
 	            .attr('fill', 'black')
 				}
       }
