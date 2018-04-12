@@ -4,7 +4,7 @@
 
 angular.module('app.components.partitionColorKey', [])
 
-.directive('partitionColorKey', function($timeout, networkData, scalesUtils, $filter){
+.directive('partitionColorKey', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/partitionColorKey.html',

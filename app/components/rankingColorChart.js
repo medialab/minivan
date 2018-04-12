@@ -4,7 +4,7 @@
 
 angular.module('app.components.rankingColorChart', [])
 
-.directive('rankingColorChart', function($timeout, networkData, scalesUtils, $filter){
+.directive('rankingColorChart', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'A',
     template: '<small style="opacity:0.5;">loading</small>',

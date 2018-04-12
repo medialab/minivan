@@ -5,14 +5,30 @@
 </md-card-title>
 <md-card-content style="width: 100%">
   <div style="overflow: hidden" class="print-no-break">
+    <h2 ng-if="detailLevel>1">Nodes count per range of {{attribute.name}}</h2>
     <div
       ranking-distribution-chart
       print-mode="printMode"
       attribute="attribute"
+      data="distributionData"
       style="height: 300px; width: 100%"
     ></div>
   </div>
-  <p ng-if="detailLevel>1">
-    Nodes count per range of {{attribute.name}}.
-  </p>
+  <div ng-if="detailLevel>1 && logPlot">
+    <br>
+    <br>
+    <h2>Nodes count per range of {{attribute.name}}, LOG scale</h2>
+    <div style="overflow: hidden" class="print-no-break">
+      <div
+        ranking-distribution-log-chart
+        print-mode="printMode"
+        attribute="attribute"
+        data="distributionData"
+        style="height: 300px; width: 100%"
+      ></div>
+    </div>
+    <p>
+      This plots the exact same data, but differently. Though intervals are represented as dots, they represent groups of nodes in the corresponding range of {{attribute.name}}. Using a logarithmic scale is useful when the distribution follows a <a href="https://en.wikipedia.org/wiki/Power_law" target="_blank">power law</a>. The degree of real world networks often has such a distribution.
+    </p>
+  </div>
 </md-card-content>

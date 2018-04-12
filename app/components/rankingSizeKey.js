@@ -4,7 +4,7 @@
 
 angular.module('app.components.rankingSizeKey', [])
 
-.directive('rankingSizeKey', function($timeout, networkData, scalesUtils, $filter){
+.directive('rankingSizeKey', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/rankingSizeKey.html',
