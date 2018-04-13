@@ -150,10 +150,10 @@ angular.module('app.components.matrix', [])
       function updateViewBox() {
         var scrollSource = el[0].querySelector('#scroll-source')
         $scope.viewBox = {
-          x: scrollSource.scrollLeft / $scope.viewSize,
-          y: scrollSource.scrollTop / $scope.viewSize,
-          w: el[0].offsetWidth / $scope.viewSize,
-          h: el[0].offsetHeight / $scope.viewSize
+          x: scrollSource.scrollLeft / ($scope.viewSize - $scope.headlineSize),
+          y: scrollSource.scrollTop / ($scope.viewSize - $scope.headlineSize),
+          w: (el[0].offsetWidth - $scope.headlineSize) / ($scope.viewSize - $scope.headlineSize),
+          h: (el[0].offsetHeight - $scope.headlineSize) / ($scope.viewSize - $scope.headlineSize)
         }
       }
 
