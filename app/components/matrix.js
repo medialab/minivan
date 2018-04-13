@@ -43,20 +43,17 @@ angular.module('app.components.matrix', [])
           n.childNodes[0].scrollTop = Math.round(scrollSource.scrollTop)
         })
 
-        // Update view box
-        $timeout(function(){
-          $scope.viewBox = {
-            x: scrollSource.scrollLeft / $scope.viewSize,
-            y: scrollSource.scrollTop / $scope.viewSize,
-            w: el[0].offsetWidth / $scope.viewSize,
-            h: el[0].offsetHeight / $scope.viewSize
-          }
-        })
+        updateViewBox()
       })
       $scope.$on('$destroy', function(){
         scrollSource.removeEventListener('scroll', redraw)
       })
 
+      // Update view box on resize
+      window.addEventListener('resize', updateViewBox)
+      $scope.$on('$destroy', function(){
+        window.removeEventListener('resize', updateViewBox)
+      })
 
       function updateNodes() {
         var g = $scope.networkData.g
@@ -67,13 +64,7 @@ angular.module('app.components.matrix', [])
         $scope.viewSize = $scope.headlineSize + $scope.nodes.length * $scope.cellSize
 
         // Init view box
-        var scrollSource = el[0].querySelector('#scroll-source')
-        $scope.viewBox = {
-          x: scrollSource.scrollLeft / $scope.viewSize,
-          y: scrollSource.scrollTop / $scope.viewSize,
-          w: el[0].offsetWidth / $scope.viewSize,
-          h: el[0].offsetHeight / $scope.viewSize
-        }
+        updateViewBox()
 
         if ($scope.selectedAttId) {
           if ($scope.att) {
@@ -156,6 +147,15 @@ angular.module('app.components.matrix', [])
         updateNodes()
       }
 
+      function updateViewBox() {
+        var scrollSource = el[0].querySelector('#scroll-source')
+        $scope.viewBox = {
+          x: scrollSource.scrollLeft / $scope.viewSize,
+          y: scrollSource.scrollTop / $scope.viewSize,
+          w: el[0].offsetWidth / $scope.viewSize,
+          h: el[0].offsetHeight / $scope.viewSize
+        }
+      }
 
     }
   }
@@ -181,6 +181,11 @@ angular.module('app.components.matrix', [])
       })
 
       $scope.$watch('nodes', redraw)
+
+      window.addEventListener('resize', redraw)
+      $scope.$on('$destroy', function(){
+        window.removeEventListener('resize', redraw)
+      })
 
       function redraw() {
         if ($scope.nodes !== undefined){
