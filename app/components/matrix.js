@@ -249,7 +249,7 @@ angular.module('app.components.matrix', [])
 .directive('matrixViewBox', function($timeout, scalesUtils){
   return {
     restrict: 'E',
-    template: '<small style="opacity:0.5;">[]</small>',
+    template: '',
     scope: {
       viewBox: '='
     },
