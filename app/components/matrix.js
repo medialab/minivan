@@ -53,6 +53,9 @@ angular.module('app.components.matrix', [])
           }
         })
       })
+      $scope.$on('$destroy', function(){
+        scrollSource.removeEventListener('scroll', redraw)
+      })
 
 
       function updateNodes() {
