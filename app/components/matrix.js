@@ -271,6 +271,9 @@ angular.module('app.components.matrix', [])
 
       function draw(container) {
 
+        var settings = {}
+        settings.border_size = 3
+
         var margin = {top: 0, right: 0, bottom: 0, left: 0}
         var width = container.offsetWidth
         var height = width // square space
@@ -286,13 +289,13 @@ angular.module('app.components.matrix', [])
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg.append('rect')
-            .attr('x', x($scope.viewBox.x))
-            .attr('y', x($scope.viewBox.y))
-            .attr('width', x($scope.viewBox.w))
-            .attr('height', x($scope.viewBox.h))
+            .attr('x', x($scope.viewBox.x) - settings.border_size/2)
+            .attr('y', x($scope.viewBox.y) - settings.border_size/2)
+            .attr('width', x($scope.viewBox.w) + settings.border_size)
+            .attr('height', x($scope.viewBox.h) + settings.border_size)
             .attr('fill', 'none')
             .attr('stroke', '#239dfe')
-            .attr('stroke-width', 3)
+            .attr('stroke-width', settings.border_size)
 
       }
      
