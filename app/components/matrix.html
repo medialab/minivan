@@ -81,25 +81,7 @@
     </div>
   </div>
 
-  <!-- Scroll overlay 2: viewbox -->
-  <div
-    layout-fill
-    style="position: absolute; left: 0px; top: 0px;"
-    layout="column"
-  >
-    <div
-      layout="column"
-      layout-align="center center"
-      ng-style="{'width':headlineSize+'px', 'height':headlineSize+'px'}"
-    >
-      <matrix-view-box
-        view-box="viewBox"
-        layout-fill
-      ></matrix-view-box>
-    </div>
-  </div>
-
-  <!-- Scroll overlay 3: drag div -->
+  <!-- Scroll overlay 2: drag div -->
   <div
     layout-fill
     style="position: absolute; left: 0px; top: 0px;"
@@ -110,5 +92,23 @@
       </div>
     </div>
   </div>
+
+  <!-- Scroll overlay 3: viewbox -->
+  <div
+    style="position: absolute; left: 0px; top: 0px;"
+    ng-style="{'width':headlineSize+'px', 'height':headlineSize+'px'}"
+  >
+    <div
+      layout="column"
+      layout-align="center center"
+      layout-fill
+    >
+      <matrix-view-box
+        view-box="viewBox"
+        layout-fill
+      ></matrix-view-box>
+    </div>
+  </div>
+
 
 </div>
