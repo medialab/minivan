@@ -42,6 +42,16 @@ angular.module('app.components.matrix', [])
         targetsY.forEach(function(n){
           n.childNodes[0].scrollTop = Math.round(scrollSource.scrollTop)
         })
+
+        // Update view box
+        $timeout(function(){
+          $scope.viewBox = {
+            x: scrollSource.scrollLeft / $scope.viewSize,
+            y: scrollSource.scrollTop / $scope.viewSize,
+            w: el[0].offsetWidth / $scope.viewSize,
+            h: el[0].offsetHeight / $scope.viewSize
+          }
+        })
       })
 
 
@@ -50,6 +60,17 @@ angular.module('app.components.matrix', [])
         var nodeFilter = $scope.nodeFilter || function(d){return d}
         $scope.nodes = g.nodes()
           .filter(nodeFilter)
+
+        $scope.viewSize = $scope.headlineSize + $scope.nodes.length * $scope.cellSize
+
+        // Init view box
+        var scrollSource = el[0].querySelector('#scroll-source')
+        $scope.viewBox = {
+          x: scrollSource.scrollLeft / $scope.viewSize,
+          y: scrollSource.scrollTop / $scope.viewSize,
+          w: el[0].offsetWidth / $scope.viewSize,
+          h: el[0].offsetHeight / $scope.viewSize
+        }
 
         if ($scope.selectedAttId) {
           if ($scope.att) {
@@ -192,7 +213,7 @@ angular.module('app.components.matrix', [])
           .domain($scope.nodes)
 
         var ratio = Math.min(container.offsetWidth, container.offsetHeight)/(width + margin.left + margin.right)
-        console.log(ratio)
+
         var svg = d3.select(container).append("svg")
             .attr("width", Math.floor(ratio * (width + margin.left + margin.right)))
             .attr("height", Math.floor(ratio * (height + margin.top + margin.bottom)))
@@ -210,6 +231,60 @@ angular.module('app.components.matrix', [])
             .attr('x', function(d) { return x(d.target); })
             .attr('y', function(d) { return x(d.source); })
             .attr('fill', 'rgba(40, 40, 40, 0.8)')
+
+      }
+     
+    }
+  }
+})
+
+.directive('matrixViewBox', function($timeout, scalesUtils){
+  return {
+    restrict: 'E',
+    template: '<small style="opacity:0.5;">[]</small>',
+    scope: {
+      viewBox: '='
+    },
+    link: function($scope, el, attrs) {
+      
+      $scope.headlineSize = 200
+      $scope.cellSize = 16
+
+      $scope.$watch('viewBox', redraw)
+
+      function redraw() {
+        if ($scope.viewBox) {
+          $timeout(function(){
+            el.html('');
+            draw(el[0])
+          })
+        }
+      }
+
+      function draw(container) {
+
+        var margin = {top: 0, right: 0, bottom: 0, left: 0}
+        var width = container.offsetWidth
+        var height = width // square space
+
+        var x = d3.scaleLinear()
+          .range([0, width])
+          .domain([0, 1])
+
+        var svg = d3.select(container).append("svg")
+            .attr("width", Math.floor(width + margin.left + margin.right))
+            .attr("height", Math.floor(height + margin.top + margin.bottom))
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.append('rect')
+            .attr('x', x($scope.viewBox.x))
+            .attr('y', x($scope.viewBox.y))
+            .attr('width', x($scope.viewBox.w))
+            .attr('height', x($scope.viewBox.h))
+            .attr('fill', 'none')
+            .attr('stroke', '#239dfe')
+            .attr('stroke-width', 3)
 
       }
      
