@@ -25,7 +25,7 @@
   <div flex>
     <md-virtual-repeat-container layout-fill md-orient-horizontal class="scroll-target-x md-virtual-repeat-no-scroll-bar">
       <div
-        md-virtual-repeat="edge in edges"
+        md-virtual-repeat="nid in nodes"
         md-item-size="cellSize"
         style="display: inline-block"
         ng-style="{'width': cellSize+'px'}"
@@ -33,7 +33,7 @@
       >
         <div
           ng-style="{width: cellSize+'px', height: cellSize+'px'}"
-          md-colors="{background: edge ? 'default-background-500' : 'default-background-200-0.3'}"
+          md-colors="{background: edgeIndex[nodeId][nid] ? 'default-background-500' : 'default-background-200-0.3'}"
           style="border: 0.5px solid #FFF"
         >
         </div>

@@ -74,7 +74,20 @@ angular.module('app.components.matrix', [])
         // Init view box
         updateViewBox()
 
-        // Nodes color and size
+        // Compute edges index
+        $scope.edgeIndex = {}
+        $scope.nodes.forEach(function(nid){
+          $scope.edgeIndex[nid] = {}
+        })
+        g.edges().forEach(function(eid){
+          var nsid = g.source(eid)
+          var ntid = g.target(eid)
+          if ($scope.edgeIndex[nsid] && $scope.edgeIndex[ntid]){
+            $scope.edgeIndex[nsid][ntid] = eid
+          }
+        })
+
+        // Nodes sort
         if ($scope.selectedAttId) {
           if ($scope.att) {
             if ($scope.att.type == 'partition') {
@@ -182,7 +195,8 @@ angular.module('app.components.matrix', [])
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
     scope: {
-      nodes: '='
+      nodes: '=',
+      edgeIndex: '='
     },
     link: function($scope, el, attrs) {
       
@@ -197,6 +211,7 @@ angular.module('app.components.matrix', [])
       })
 
       $scope.$watch('nodes', redraw)
+      $scope.$watch('edgeIndex', redraw)
 
       window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
@@ -204,7 +219,7 @@ angular.module('app.components.matrix', [])
       })
 
       function redraw() {
-        if ($scope.nodes !== undefined){
+        if ($scope.nodes !== undefined && $scope.edgeIndex !== undefined){
           $timeout(function(){
             el.html('');
             draw(el[0])
@@ -219,14 +234,12 @@ angular.module('app.components.matrix', [])
 
         var g = $scope.networkData.g
         var data = []
-        $scope.nodes.forEach(function(n1id){
-          $scope.nodes.forEach(function(n2id){
-            var e = g.edge(n1id, n2id)
-            if (e) {
-              data.push({source:n1id, target:n2id})
-            }
-          })
-        })
+        var nsid, ntid
+        for (nsid in $scope.edgeIndex) {
+          for (ntid in $scope.edgeIndex[nsid]) {
+            data.push({source:nsid, target:ntid})
+          }
+        }
         
         var margin = {top: 0, right: 0, bottom: 0, left: 0}
         var width = $scope.nodes.length * $scope.cellSize
@@ -362,6 +375,7 @@ angular.module('app.components.matrix', [])
       scope: {
         nodeId: '=',
         nodes: '=',
+        edgeIndex: '=',
         printMode: '=',
         att: '=',
         getRadius: '=',
@@ -373,9 +387,6 @@ angular.module('app.components.matrix', [])
       link: function($scope, el, attrs) {
         $scope.$watch('nodeId', function(){
           $scope.node = networkData.g.getNodeAttributes($scope.nodeId)
-          $scope.edges = $scope.nodes.map(function(nid){
-            return networkData.g.edge($scope.nodeId, nid)
-          })
         })
       }
     }
