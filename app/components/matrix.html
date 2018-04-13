@@ -1,4 +1,14 @@
-<div layout-fill style="position: relative">
+<!-- Details: level 1 -->
+<div layout-fill style="position: relative" layout="column" layout-align="center center" ng-if="detailLevel == 1">
+  <matrix-svg
+    nodes="nodes"
+    edge-index="edgeIndex"
+    layout-fill
+  ></matrix-svg>
+</div>
+
+<!-- Details: level 2 -->
+<div layout-fill style="position: relative" ng-if="detailLevel == 2">
 
   <!-- Matrix -->
   <div layout-fill layout="column" style="user-select: none">
@@ -95,7 +105,7 @@
     </div>
   </div>
 
-  <!-- Scroll overlay 3: viewbox -->
+  <!-- Scroll overlay 3: view box -->
   <div
     style="position: absolute; left: 0px; top: 0px;"
     ng-style="{'width':headlineSize+'px', 'height':headlineSize+'px'}"
@@ -106,8 +116,8 @@
       layout-fill
     >
       <matrix-view-box
-        view-box="viewBox"
-        view-box-dragged="minimapViewBox"
+        view-box="$parent.viewBox"
+        view-box-dragged="$parent.minimapViewBox"
         layout-fill
       ></matrix-view-box>
     </div>

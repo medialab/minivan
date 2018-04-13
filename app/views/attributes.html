@@ -64,6 +64,7 @@
 							on-node-click="networkNodeClick"
 							on-edge-click="networkEdgeClick"
 							selected-att-id="selectedAttId"
+							detail-level="matrixDetailLevel"
 							layout-fill
 						></matrix>
 
@@ -107,6 +108,19 @@
 						<md-tooltip md-direction="top">Print list</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button> -->
+		      <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=1">
+						<md-tooltip md-direction="top">No details</md-tooltip>
+						Details
+		      	<md-icon ng-if="matrixDetailLevel==1">radio_button_checked</md-icon>
+		      	<md-icon ng-if="matrixDetailLevel!=1">radio_button_unchecked</md-icon>
+		      	1
+		      </md-button>
+					<md-button class="footer-button" ng-click="$parent.matrixDetailLevel=2">
+						<md-tooltip md-direction="top">Some details</md-tooltip>
+		      	<md-icon ng-if="matrixDetailLevel==2">radio_button_checked</md-icon>
+		      	<md-icon ng-if="matrixDetailLevel!=2">radio_button_unchecked</md-icon>
+						2
+		      </md-button>
 				</div>
 
 				<!-- Footer: LIST -->

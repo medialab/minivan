@@ -12,7 +12,8 @@ angular.module('app.components.matrix', [])
       onNodeClick: '=',
       onEdgeClick: '=',
       nodeFilter: '=',
-      selectedAttId:'='
+      selectedAttId:'=',
+      detailLevel: '='
     },
     link: function($scope, el, attrs) {
       $scope.headlineSize = 200
@@ -25,18 +26,40 @@ angular.module('app.components.matrix', [])
         }
       })
 
+      var scrollSource
+
       $scope.$watch('colorAttId', update)
       $scope.$watch('sizeAttId', update)
       $scope.$watch('selectedAttId', update)
       $scope.$watch('nodeFilter', updateNodes)
       $scope.$watch('minimapViewBox', updateScrollSource)
-
-      // Scroll listening
-      var scrollSource = el[0].querySelector('#scroll-source')
-      scrollSource.addEventListener('scroll', updateScroll)
-      $scope.$on('$destroy', function(){
-        scrollSource.removeEventListener('scroll', updateScroll)
+      $scope.$watch('detailLevel', function(){
+        if ($scope.detailLevel == 2) {
+          // Update view box on resize
+          window.addEventListener('resize', updateViewBox)
+          $scope.$on('$destroy', function(){
+            window.removeEventListener('resize', updateViewBox)
+          })
+          updateScrollListening()
+          updateViewBox()
+        } else {
+          try {
+            window.removeEventListener('resize', updateViewBox)
+            scrollSource.removeEventListener('scroll', updateScroll)
+          } catch(e) {}
+        }
       })
+
+      function updateScrollListening() {
+        scrollSource = el[0].querySelector('#scroll-source')
+        if (scrollSource) {
+          scrollSource.addEventListener('scroll', updateScroll)
+          $scope.$on('$destroy', function(){
+            scrollSource.removeEventListener('scroll', updateScroll)
+          })
+        }
+      }
+
       function updateScroll() {
         var targetsX = el[0].querySelectorAll('.scroll-target-x')
         targetsX.forEach(function(n){
@@ -49,6 +72,7 @@ angular.module('app.components.matrix', [])
         })
         updateViewBox()
       }
+
       function updateScrollSource(){
         if ($scope.minimapViewBox) {
           scrollSource.scrollLeft = $scope.minimapViewBox.x * ($scope.viewSize - $scope.headlineSize)
@@ -56,12 +80,6 @@ angular.module('app.components.matrix', [])
           updateScroll()
         }
       }
-
-      // Update view box on resize
-      window.addEventListener('resize', updateViewBox)
-      $scope.$on('$destroy', function(){
-        window.removeEventListener('resize', updateViewBox)
-      })
 
       function updateNodes() {
         var g = $scope.networkData.g
@@ -177,12 +195,14 @@ angular.module('app.components.matrix', [])
       }
 
       function updateViewBox() {
-        var scrollSource = el[0].querySelector('#scroll-source')
-        $scope.viewBox = {
-          x: scrollSource.scrollLeft / ($scope.viewSize - $scope.headlineSize),
-          y: scrollSource.scrollTop / ($scope.viewSize - $scope.headlineSize),
-          w: (el[0].offsetWidth - $scope.headlineSize) / ($scope.viewSize - $scope.headlineSize),
-          h: (el[0].offsetHeight - $scope.headlineSize) / ($scope.viewSize - $scope.headlineSize)
+        scrollSource = el[0].querySelector('#scroll-source')
+        if (scrollSource) {
+          $scope.viewBox = {
+            x: scrollSource.scrollLeft / ($scope.viewSize - $scope.headlineSize),
+            y: scrollSource.scrollTop / ($scope.viewSize - $scope.headlineSize),
+            w: (el[0].offsetWidth - $scope.headlineSize) / ($scope.viewSize - $scope.headlineSize),
+            h: (el[0].offsetHeight - $scope.headlineSize) / ($scope.viewSize - $scope.headlineSize)
+          }
         }
       }
 

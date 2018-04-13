@@ -23,6 +23,7 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.search = $location.search().q
 	$scope.networkData = networkData
 	$scope.attributeListDetailLevel = 1
+	$scope.matrixDetailLevel = 1
 	$scope.selectedAttId = undefined
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
