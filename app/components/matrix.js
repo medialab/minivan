@@ -29,10 +29,15 @@ angular.module('app.components.matrix', [])
       $scope.$watch('sizeAttId', update)
       $scope.$watch('selectedAttId', update)
       $scope.$watch('nodeFilter', updateNodes)
+      $scope.$watch('minimapViewBox', updateScrollSource)
 
       // Scroll listening
       var scrollSource = el[0].querySelector('#scroll-source')
-      scrollSource.addEventListener('scroll', function(e){
+      scrollSource.addEventListener('scroll', updateScroll)
+      $scope.$on('$destroy', function(){
+        scrollSource.removeEventListener('scroll', updateScroll)
+      })
+      function updateScroll() {
         var targetsX = el[0].querySelectorAll('.scroll-target-x')
         targetsX.forEach(function(n){
           n.childNodes[0].scrollLeft = Math.round(scrollSource.scrollLeft)
@@ -42,12 +47,15 @@ angular.module('app.components.matrix', [])
         targetsY.forEach(function(n){
           n.childNodes[0].scrollTop = Math.round(scrollSource.scrollTop)
         })
-
         updateViewBox()
-      })
-      $scope.$on('$destroy', function(){
-        scrollSource.removeEventListener('scroll', redraw)
-      })
+      }
+      function updateScrollSource(){
+        if ($scope.minimapViewBox) {
+          scrollSource.scrollLeft = $scope.minimapViewBox.x * ($scope.viewSize - $scope.headlineSize)
+          scrollSource.scrollTop = $scope.minimapViewBox.y * ($scope.viewSize - $scope.headlineSize)
+          updateScroll()
+        }
+      }
 
       // Update view box on resize
       window.addEventListener('resize', updateViewBox)
@@ -251,7 +259,8 @@ angular.module('app.components.matrix', [])
     restrict: 'E',
     template: '',
     scope: {
-      viewBox: '='
+      viewBox: '=',
+      viewBoxDragged: '='
     },
     link: function($scope, el, attrs) {
       
@@ -259,6 +268,40 @@ angular.module('app.components.matrix', [])
       $scope.cellSize = 16
 
       $scope.$watch('viewBox', redraw)
+
+      // Click interactions
+      var drag = false
+      el[0].addEventListener('click', moveViewBox)
+      el[0].addEventListener('touchmove', moveViewBox)
+      el[0].addEventListener('mousedown', startDrag)
+      el[0].addEventListener('mouseup', stopDrag)
+      el[0].addEventListener('mouseleave', stopDrag)
+      el[0].addEventListener('mousemove', moveViewBoxIfDrag)
+      $scope.$on('$destroy', function(){
+        el[0].removeEventListener('click', moveViewBox)
+        el[0].removeEventListener('touchmove', moveViewBox)
+        el[0].removeEventListener('mousedown', startDrag)
+        el[0].removeEventListener('mouseup', stopDrag)
+        el[0].removeEventListener('mouseleave', stopDrag)
+        el[0].removeEventListener('mousemove', moveViewBoxIfDrag)
+      })
+      function startDrag(e){ drag = true; e.preventDefault ? e.preventDefault() : e.returnValue = false }
+      function stopDrag(){ drag = false }
+      function moveViewBoxIfDrag(e){ if(drag){ moveViewBox(e) } }
+      function moveViewBox(e) {
+        var x = e.offsetX / $scope.headlineSize - $scope.viewBox.w/2
+        var y = e.offsetY / $scope.headlineSize - $scope.viewBox.h/2
+        x = Math.max(0, Math.min(1 - $scope.viewBox.w, x))
+        y = Math.max(0, Math.min(1 - $scope.viewBox.h, y))
+        $timeout(function(){
+          $scope.viewBoxDragged = {
+            x: x,
+            y: y,
+            w: $scope.viewBox.w,
+            h: $scope.viewBox.h
+          }
+        })
+      }
 
       function redraw() {
         if ($scope.viewBox) {
