@@ -207,7 +207,7 @@ angular.module('app.components.matrix', [])
       function draw(container) {
 
         var settings = {}
-        settings.display_labels = true
+        settings.display_labels = false
 
         var g = $scope.networkData.g
         var data = []
@@ -220,7 +220,7 @@ angular.module('app.components.matrix', [])
           })
         })
         
-        var margin = {top: $scope.headlineSize, right: 0, bottom: 0, left: $scope.headlineSize}
+        var margin = {top: 0, right: 0, bottom: 0, left: 0}
         var width = $scope.nodes.length * $scope.cellSize
         var height = width // square space
 
