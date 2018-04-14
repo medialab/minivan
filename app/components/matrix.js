@@ -277,17 +277,25 @@ angular.module('app.components.matrix', [])
           .append("g")
             .attr("transform", "scale(" +ratio+ ", " +ratio+ ") translate(" + margin.left + "," + margin.top + ")");
 
+        // Background
+        svg.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', width )
+            .attr('height', height )
+            .attr('fill', 'rgba(238, 238, 238, 0.3)')
+
         // append the cells
         var cells = svg.selectAll('.cell')
             .data(data)
 
         cells.enter().append('rect')
             .attr('class', 'cell')
-            .attr('width', $scope.cellSize )
-            .attr('height', $scope.cellSize )
             .attr('x', function(d) { return x(d.target); })
             .attr('y', function(d) { return x(d.source); })
-            .attr('fill', 'rgba(40, 40, 40, 0.8)')
+            .attr('width', $scope.cellSize )
+            .attr('height', $scope.cellSize )
+            .attr('fill', 'rgba(0, 0, 0, 0.9)')
 
       }
      
