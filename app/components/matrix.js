@@ -142,11 +142,11 @@ angular.module('app.components.matrix', [])
             var rScale = scalesUtils.getRScale()
             var rMax = rScale(1)
             $scope.getRadius = function(nid) {
-              return rScale(areaScale($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId))) * ($scope.cellSize/2 - 2) / rMax
+              return rScale(areaScale($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId))) / rMax
             }
           } else {
             $scope.getRadius = function(nid) {
-              return ($scope.cellSize/2 - 2)
+              return 1
             }
           }
         } else {
@@ -154,7 +154,7 @@ angular.module('app.components.matrix', [])
             return '#999'
           }
           $scope.getRadius = function(n) {
-            return ($scope.cellSize/2 - 2)
+            return 1
           }
         }
 
@@ -183,7 +183,10 @@ angular.module('app.components.matrix', [])
     template: '<small style="opacity:0.5;">loading</small>',
     scope: {
       nodes: '=',
-      edgeIndex: '='
+      edgeIndex: '=',
+      getRadius: '=',
+      getColor: '=',
+      headlines: '='
     },
     link: function($scope, el, attrs) {
       
@@ -217,7 +220,8 @@ angular.module('app.components.matrix', [])
       function draw(container) {
 
         var settings = {}
-        settings.display_labels = false
+        settings.display_headlines = !!$scope.headlines
+        settings.headline_thickness = $scope.headlineSize
 
         var g = $scope.networkData.g
         var data = []
@@ -228,7 +232,7 @@ angular.module('app.components.matrix', [])
           }
         }
         
-        var margin = {top: 0, right: 0, bottom: 0, left: 0}
+        var margin = {top: settings.display_headlines ? settings.headline_thickness : 0, right: 0, bottom: 0, left: settings.display_headlines ? settings.headline_thickness : 0}
         var width = $scope.nodes.length * $scope.cellSize
         var height = width // square space
 
@@ -243,6 +247,26 @@ angular.module('app.components.matrix', [])
             .attr("height", Math.floor(ratio * (height + margin.top + margin.bottom)))
           .append("g")
             .attr("transform", "scale(" +ratio+ ", " +ratio+ ") translate(" + margin.left + "," + margin.top + ")");
+
+        // Top headline
+        if (settings.display_headlines) {
+          var topHeadCells = svg.selectAll('.cell')
+              .data($scope.nodes)
+          topHeadCells.enter().append('rect')
+              .attr('x', function(nid, i){ return i * $scope.cellSize })
+              .attr('y', function(nid){ return -$scope.getRadius(nid) * settings.headline_thickness })
+              .attr('width', $scope.cellSize )
+              .attr('height', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
+              .attr('fill', function(nid){ return $scope.getColor(nid) })
+          var leftHeadCells = svg.selectAll('.cell')
+              .data($scope.nodes)
+          leftHeadCells.enter().append('rect')
+              .attr('y', function(nid, i){ return i * $scope.cellSize })
+              .attr('x', function(nid){ return -$scope.getRadius(nid) * settings.headline_thickness })
+              .attr('height', $scope.cellSize )
+              .attr('width', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
+              .attr('fill', function(nid){ return $scope.getColor(nid) })
+        }
 
         // Background
         svg.append('rect')

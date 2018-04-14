@@ -9,6 +9,9 @@
   <matrix-svg
     nodes="nodes"
     edge-index="edgeIndex"
+    headlines="true"
+    get-radius="getRadius"
+    get-color="getColor"
     layout-fill
     layout="column"
     layout-align="center center"
@@ -41,7 +44,7 @@
               >
                 <node-list-pic
                   class="md-avatar"
-                  radius="$parent.getRadius(nid)"
+                  radius="$parent.getRadius(nid) * cellSize / 2 - 1"
                   color="$parent.getColor(nid)"
                   layout-fill
                 ></node-list-pic>
@@ -96,6 +99,7 @@
       <matrix-svg
         nodes="nodes"
         edge-index="edgeIndex"
+        headlines="false"
         layout-fill
       ></matrix-svg>
     </div>
