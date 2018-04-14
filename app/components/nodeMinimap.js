@@ -36,7 +36,7 @@ angular.module('app.components.nodeMinimap', [])
 					settings.oversampling = $scope.printMode ? 4 : 1
 					settings.width =  container.offsetWidth
 					settings.height = container.offsetHeight
-					settings.margin = 0
+					settings.margin = 2.5
 
 					// Nodes
 					settings.background_node_size = 1.2
