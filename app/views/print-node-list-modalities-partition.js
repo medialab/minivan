@@ -46,9 +46,10 @@ angular.module('app.print-node-list-modalities-partition', ['ngRoute'])
 	    var g = $scope.networkData.g
 	    $scope.nodes = g.nodes()
         .filter($scope.nodeFilter)
-        .map(function(nid){
-  	      return g.getNodeAttributes(nid)
-  	    })
+      scalesUtils.sortNodes($scope.nodes, $scope.attributeId)
+      $scope.nodes = $scope.nodes.map(function(nid){
+          return g.getNodeAttributes(nid)
+        })
 
 	    update()
 	  }

@@ -25,7 +25,9 @@ angular.module('app.print-node-list', ['ngRoute'])
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData && $scope.networkData.g) {
 	    var g = $scope.networkData.g
-	    $scope.nodes = g.nodes().map(function(nid){
+	    $scope.nodes = g.nodes().slice(0)
+      scalesUtils.sortNodes($scope.nodes)
+      $scope.nodes = $scope.nodes.map(function(nid){
 	      return g.getNodeAttributes(nid)
 	    })
 	    update()
