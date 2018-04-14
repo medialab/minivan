@@ -55,7 +55,8 @@ angular.module('app.components.matrix', [])
         if (scrollSource) {
           scrollSource.addEventListener('scroll', updateScroll)
           $scope.$on('$destroy', function(){
-            scrollSource.removeEventListener('scroll', updateScroll)
+            if (scrollSource)
+              scrollSource.removeEventListener('scroll', updateScroll)
           })
         }
       }
