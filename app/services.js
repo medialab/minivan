@@ -802,6 +802,49 @@ angular.module('app.services', [])
       return data
     }
 
+    // Sort the nodes, by default or by an attribute
+    ns.sortNodes = function(nodes, attributeId) {
+      if (attributeId) {
+        if (networkData.loaded) {
+          var att = networkData.nodeAttributesIndex[attributeId]
+          if (att.type == 'partition') {
+            var modalitiesIndex = {}
+            att.modalities.forEach(function(mod, i){
+              modalitiesIndex[mod.value] = i
+            })
+            nodes.sort(function(a, b){
+              var aModIndex = modalitiesIndex[g.getNodeAttribute(a, attributeId)]
+              var bModIndex = modalitiesIndex[g.getNodeAttribute(b, attributeId)]
+              var diff = aModIndex - bModIndex
+              if (diff == 0) {
+                var alabel = g.getNodeAttribute(a, 'label')
+                var blabel = g.getNodeAttribute(b, 'label')
+                if (alabel > blabel) return 1
+                else if (alabel < blabel) return -1
+                return 0
+              } else return diff
+            })
+          } else if (att.type == 'ranking-size' || att.type == 'ranking-color') {
+            nodes.sort(function(a, b){
+              var aValue = +g.getNodeAttribute(a, attributeId)
+              var bValue = +g.getNodeAttribute(b, attributeId)
+              return bValue - aValue
+            })
+          }
+        } else {
+          console.log('[ERROR] Network data must be loaded before using sortNodes().')
+        }
+      } else {
+        nodes.sort(function(a, b){
+          var alabel = g.getNodeAttribute(a, 'label')
+          var blabel = g.getNodeAttribute(b, 'label')
+          if (alabel > blabel) return 1
+          else if (alabel < blabel) return -1
+          return 0
+        })
+      }
+    }
+
     return ns
   })
 

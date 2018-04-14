@@ -34,12 +34,16 @@ angular.module('app.components.nodeList', [])
         var nodeFilter = $scope.nodeFilter || function(d){return d}
         $scope.nodes = g.nodes()
           .filter(nodeFilter)
-          .map(function(nid){
+
+        scalesUtils.sortNodes($scope.nodes, $scope.selectedAttId)
+          
+        $scope.nodes = $scope.nodes.map(function(nid){
             return g.getNodeAttributes(nid)
           })
       }
 
       function update() {
+        updateNodes()
         $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
         if ($scope.colorAttId) {
           var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]

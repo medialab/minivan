@@ -106,41 +106,8 @@ angular.module('app.components.matrix', [])
         })
 
         // Nodes sort
-        if ($scope.selectedAttId) {
-          if ($scope.att) {
-            if ($scope.att.type == 'partition') {
-              var modalitiesIndex = {}
-              $scope.att.modalities.forEach(function(mod, i){
-                modalitiesIndex[mod.value] = i
-              })
-              $scope.nodes.sort(function(a, b){
-                var aModIndex = modalitiesIndex[g.getNodeAttribute(a, $scope.selectedAttId)]
-                var bModIndex = modalitiesIndex[g.getNodeAttribute(b, $scope.selectedAttId)]
-                var diff = aModIndex - bModIndex
-                if (diff == 0) {
-                  var alabel = g.getNodeAttribute(a, 'label')
-                  var blabel = g.getNodeAttribute(b, 'label')
-                  if (alabel > blabel) return 1
-                  else if (alabel < blabel) return -1
-                  return 0
-                } else return diff
-              })
-            } else if ($scope.att.type == 'ranking-size' || $scope.att.type == 'ranking-color') {
-              $scope.nodes.sort(function(a, b){
-                var aValue = +g.getNodeAttribute(a, $scope.selectedAttId)
-                var bValue = +g.getNodeAttribute(b, $scope.selectedAttId)
-                return bValue - aValue
-              })
-            }
-          }
-        } else {
-          $scope.nodes.sort(function(a, b){
-            var alabel = g.getNodeAttribute(a, 'label')
-            var blabel = g.getNodeAttribute(b, 'label')
-            if (alabel > blabel) return 1
-            else if (alabel < blabel) return -1
-            return 0
-          })
+        if (!$scope.selectedAttId || $scope.networkData.loaded) {
+          scalesUtils.sortNodes($scope.nodes, $scope.selectedAttId)
         }
       }
 
