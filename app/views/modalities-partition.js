@@ -22,6 +22,7 @@ angular.module('app.modalities-partition', ['ngRoute'])
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
 	$scope.networkData = networkData
+  $scope.matrixDetailLevel = 1
   $scope.modalityListDetailLevel = 1
   $scope.statsDetailLevel = 1
   $scope.$watch('panel', updateLocationPath)

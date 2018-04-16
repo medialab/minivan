@@ -15,7 +15,8 @@ angular.module('app.components.matrix', [])
       selectedAttId:'=',
       detailLevel: '=',
       printMode: '=',
-      viewBox: '='
+      viewBox: '=',
+      nodeFilter: '='
     },
     link: function($scope, el, attrs) {
       $scope.headlineSize = 200
