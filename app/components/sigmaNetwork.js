@@ -22,7 +22,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         nodeFilter: '=',
         editableAttributes: '=',
         getCameraState: '=',
-        hideCommands: '='
+        hideCommands: '=',
+        enableLayout: '='
       }
       ,link: function($scope, el, attrs) {
         var sigma

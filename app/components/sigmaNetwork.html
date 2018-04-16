@@ -60,7 +60,7 @@
   >
     <md-progress-circular
       class="md-accent"
-      ng-if="layout.running"
+      ng-if="layout.running && enableLayout"
       md-mode="indeterminate"
       style="position: absolute; top: -4px; left: 2px;"
       md-diameter="48"
@@ -69,7 +69,7 @@
       class="md-icon-button md-accent md-mini sigma-button"
       aria-label="Pause Layout"
       ng-click="stopLayout()"
-      ng-if="layout.running"
+      ng-if="layout.running && enableLayout"
     >
       <md-tooltip md-direction="right">Pause Layout</md-tooltip>
       <md-icon>pause</md-icon>
@@ -78,7 +78,7 @@
       class="md-icon-button md-primary md-mini sigma-button"
       aria-label="Start Layout"
       ng-click="startLayout()"
-      ng-if="!layout.running"
+      ng-if="!layout.running && enableLayout"
     >
       <md-tooltip md-direction="right">Start Layout</md-tooltip>
       <md-icon>play_arrow</md-icon>
