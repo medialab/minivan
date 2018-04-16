@@ -15,7 +15,7 @@ angular.module('app.services', [])
         networkProcessor.process(ns, r.data)
 
         // Add metadata
-        ns.title = 'Rio + 20 XXXX XXXXXXX XXX XXXXX XX XXXXX XX XXXXXXX XXXXXX XX'
+        ns.title = 'Rio + 20'
         ns.authors = ["Débora de Carvalho Pereira", "Mathieu Jacomy", "Tommaso Venturini"]
         ns.date = "2013"
         ns.url = "http://www.medialab.sciences-po.fr/wp-content/uploads/2015/06/VisualNetwork_Paper-10.pdf"
