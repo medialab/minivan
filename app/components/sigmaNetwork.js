@@ -213,7 +213,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
             var container = document.getElementById('sigma-div')
             if (!container) return
             container.innerHTML = ''
-            renderer = new Sigma.WebGLRenderer(container)
+            renderer = new Sigma.WebGLRenderer(container, {
+              labelFont: "Quicksand",
+              labelWeight: '400',
+              labelSize: 12
+            })
             sigma = new Sigma(g, renderer)
 
             $scope.zoomIn = function(){
@@ -231,21 +235,16 @@ angular.module('app.components.sigmaNetworkComponent', [])
             $scope.resetCamera = function(){
               var camera = renderer.getCamera()
               var state = camera.getState()
-              camera.animate({ratio: settings.default_ratio, x:0, y:0})
+              camera.animate({ratio: settings.default_ratio, x:0.5, y:0.5})
             }
 
             // Defaults to some unzoom
             var camera = renderer.getCamera()
             var state = camera.getState()
-            camera.animate({ratio: settings.default_ratio, x:0, y:0})
+            camera.animate({ratio: settings.default_ratio, x:0.5, y:0.5})
 
             $scope.getCameraState = function() {
-              var state = camera.getState()
-              return {
-                x: state.x / +container.offsetWidth,
-                y: state.y / +container.offsetHeight,
-                ratio: state.ratio
-              }
+              return camera.getState()
             }
 
             if ($scope.layout) {

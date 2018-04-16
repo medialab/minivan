@@ -441,7 +441,7 @@ angular.module('app.services', [])
       var xScale = d3.scaleLinear()
         .range([offset, width - offset])
       var yScale = d3.scaleLinear()
-        .range([offset, height - offset])
+        .range([height - offset, offset])
 
       var xExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'x') })
       var yExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'y') })
@@ -457,9 +457,9 @@ angular.module('app.services', [])
     ns.getXYScales_camera = function(width, height, offset, x, y, ratio) {
       var g = networkData.g
       var xScale = d3.scaleLinear()
-        .range([offset - x * width / ratio, width - offset - x * width / ratio])
+        .range([offset - (x-0.5) * width / ratio, width - offset - (x-0.5) * width / ratio])
       var yScale = d3.scaleLinear()
-        .range([offset - y * height / ratio, height - offset - y * height / ratio])
+        .range([height - offset + (y-0.5) * height / ratio, offset + (y-0.5) * height / ratio])
 
       var xExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'x') })
       var yExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'y') })
