@@ -11,23 +11,23 @@
   overflow: hidden;
 }
 .footer-button {
-  font-size: 10px;
-  height: 20px;
-  min-width: 20px;
-  min-height: 20px;
-  line-height: 20px;
+  font-size: 11px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 24px;
+  line-height: 24px;
   margin-top: 0px;
-  margin-left: 3px;
-  margin-right: 3px;
+  margin-left: 4px;
+  margin-right: 4px;
   opacity: 0.7;
 }
 .footer-button md-icon {
-  font-size: 14px;
-  line-height: 14px;
-  width: 16px;
-  height: 16px;
-  min-width: 16px;
-  min-height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
 }
 
 .md-button.md-icon-button.sigma-button {
