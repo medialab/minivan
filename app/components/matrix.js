@@ -57,11 +57,13 @@ angular.module('app.components.matrix', [])
         // if a view box is passed at initialization, use it
         $timeout(function(){
           scrollSource = el[0].querySelector('#scroll-source')
-          // the view box size may not be the same
-          var initCenterX = initViewBox.x + initViewBox.w/2
-          var initCenterY = initViewBox.y + initViewBox.h/2
-          scrollSource.scrollLeft = Math.round(initCenterX * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetWidth - $scope.headlineSize)/2)
-          scrollSource.scrollTop = Math.round(initCenterY * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetHeight - $scope.headlineSize)/2)
+          if (scrollSource) {
+            // the view box size may not be the same
+            var initCenterX = initViewBox.x + initViewBox.w/2
+            var initCenterY = initViewBox.y + initViewBox.h/2
+            scrollSource.scrollLeft = Math.round(initCenterX * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetWidth - $scope.headlineSize)/2)
+            scrollSource.scrollTop = Math.round(initCenterY * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetHeight - $scope.headlineSize)/2)
+          }
         }, 250)
       }
 

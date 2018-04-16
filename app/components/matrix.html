@@ -33,8 +33,7 @@
               md-virtual-repeat="nid in nodes"
               md-item-size="16"
               ng-style="{'width': cellSize+'px', 'height': headlineSize+'px'}"
-              style="display: inline-block; padding-top: 3px"
-              layout="column"
+              style="display: inline-block; padding-top: 3px; overflow: hidden"
               flex
             >
               <div
@@ -52,8 +51,7 @@
               <div
                 flex
                 class="matrix-label"
-                ng-style="{'width': cellSize+'px', 'height': headlingSize+'px'}"
-                style="writing-mode: vertical-rl; text-orientation: sideways;"
+                style="writing-mode: vertical-rl; text-orientation: sideways; overflow: hidden"
               >
                 {{networkData.g.getNodeAttribute(nid, 'label')}}
               </div>
