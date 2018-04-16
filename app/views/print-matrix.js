@@ -29,12 +29,39 @@ angular.module('app.print-matrix', ['ngRoute'])
   
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData && $scope.networkData.g) {
-	    var g = $scope.networkData.g
 	    update()
 	  }
 	})
 
 	function update() {
-    $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
+    $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
+
+    // Rebuild node filter
+    // All unchecked / default: show all
+    $scope.nodeFilter = function(){ return true }
+    $scope.modalityFilter = function(){ return true }
+    if ($scope.attribute.type == 'partition') {
+      $scope.modalitiesSelection = {}
+      var modSelection = $location.search().filter.split(',').map(function(d){ return d=='true' })
+      $scope.attribute.modalities.forEach(function(mod, i){
+        $scope.modalitiesSelection[mod.value] = modSelection[i]
+      })
+      if ($scope.attribute.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
+        $scope.nodeFilter = function(nid){
+          return $scope.modalitiesSelection[$scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)]
+        }
+        $scope.modalityFilter = function(modValue) {
+          return $scope.modalitiesSelection[modValue]
+        }
+      }
+    }
+
+    var g = $scope.networkData.g
+    $scope.nodes = g.nodes()
+      .filter($scope.nodeFilter)
+    scalesUtils.sortNodes($scope.nodes, $scope.attributeId)
+    $scope.nodes = $scope.nodes.map(function(nid){
+        return g.getNodeAttributes(nid)
+      })
   }
 })

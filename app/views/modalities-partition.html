@@ -131,10 +131,10 @@
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<!-- <md-button class="footer-button" ng-href="#!/print-matrix?att={{selectedAttId}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}" target="_blank">
 						<md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button> -->
+		      </md-button>
 		      <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=1">
 						<md-tooltip md-direction="top">No details</md-tooltip>
 						Details
