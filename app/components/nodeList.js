@@ -94,13 +94,13 @@ angular.module('app.components.nodeList', [])
 .directive('nodeListPic', function($timeout){
   return {
     restrict: 'E',
-    template: '<small style="opacity:0.5;">...</small>',
+    templateUrl: 'components/nodeListPic.html',
     scope: {
       radius: "=",
       color: "="
     },
     link: function($scope, el, attrs) {
-      var container = el[0]
+      /*var container = el[0]
 
       $scope.$watch('radius', redraw)
       $scope.$watch('color', redraw)
@@ -129,7 +129,7 @@ angular.module('app.components.nodeList', [])
               .attr('r', $scope.radius)
               .attr('fill', $scope.color)
         })
-      }
+      }*/
     }
   }
 })
