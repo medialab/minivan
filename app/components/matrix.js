@@ -62,7 +62,7 @@ angular.module('app.components.matrix', [])
           var initCenterY = initViewBox.y + initViewBox.h/2
           scrollSource.scrollLeft = Math.round(initCenterX * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetWidth - $scope.headlineSize)/2)
           scrollSource.scrollTop = Math.round(initCenterY * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetHeight - $scope.headlineSize)/2)
-        }, 1000)
+        }, 250)
       }
 
       function updateScrollListening() {
@@ -77,6 +77,11 @@ angular.module('app.components.matrix', [])
       }
 
       function updateScroll() {
+        // Use the top index to trigger the updates
+        $scope.topIndexX = Math.floor(scrollSource.scrollLeft / $scope.cellSize)
+        $scope.topIndexY = Math.floor(scrollSource.scrollTop / $scope.cellSize)
+
+        // Actuall scroll
         var targetsX = el[0].querySelectorAll('.scroll-target-x')
         targetsX.forEach(function(n){
           n.childNodes[0].scrollLeft = Math.round(scrollSource.scrollLeft)
@@ -416,7 +421,8 @@ angular.module('app.components.matrix', [])
         getRadius: '=',
         getColor: '=',
         cellSize: '=',
-        headlineSize: '='
+        headlineSize: '=',
+        topIndexX: '='
       },
       templateUrl: 'components/matrixLine.html',
       link: function($scope, el, attrs) {
