@@ -20,6 +20,12 @@ angular.module('app.print-matrix', ['ngRoute'])
 
   $scope.selectedAttId = $location.search().att
   $scope.matrixDetailLevel = +$location.search().detail
+  $scope.viewBox = {
+    x: +$location.search().x,
+    y: +$location.search().y,
+    w: +$location.search().w,
+    h: +$location.search().h,
+  }
   
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData && $scope.networkData.g) {

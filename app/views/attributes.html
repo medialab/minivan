@@ -58,13 +58,14 @@
 							editable-attributes="true"
 							layout-fill
 						></sigma-network>
-
+						
 						<matrix
 							ng-if="networkData.loaded && panel == 'matrix'"
 							on-node-click="networkNodeClick"
 							on-edge-click="networkEdgeClick"
 							selected-att-id="selectedAttId"
 							detail-level="matrixDetailLevel"
+							view-box="$parent.viewBox"
 							layout-fill
 						></matrix>
 
@@ -104,7 +105,7 @@
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button> -->
-					<md-button class="footer-button" ng-href="#!/print-matrix?att={{selectedAttId}}&detail={{matrixDetailLevel}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-matrix?att={{selectedAttId}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}" target="_blank">
 						<md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>

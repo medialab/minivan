@@ -13,7 +13,9 @@ angular.module('app.components.matrix', [])
       onEdgeClick: '=',
       nodeFilter: '=',
       selectedAttId:'=',
-      detailLevel: '='
+      detailLevel: '=',
+      printMode: '=',
+      viewBox: '='
     },
     link: function($scope, el, attrs) {
       $scope.headlineSize = 200
@@ -49,6 +51,19 @@ angular.module('app.components.matrix', [])
           } catch(e) {}
         }
       })
+
+      if ($scope.viewBox) {
+        var initViewBox = $scope.viewBox
+        // if a view box is passed at initialization, use it
+        $timeout(function(){
+          scrollSource = el[0].querySelector('#scroll-source')
+          // the view box size may not be the same
+          var initCenterX = initViewBox.x + initViewBox.w/2
+          var initCenterY = initViewBox.y + initViewBox.h/2
+          scrollSource.scrollLeft = Math.round(initCenterX * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetWidth - $scope.headlineSize)/2)
+          scrollSource.scrollTop = Math.round(initCenterY * ($scope.viewSize - $scope.headlineSize) - (el[0].offsetHeight - $scope.headlineSize)/2)
+        }, 1000)
+      }
 
       function updateScrollListening() {
         scrollSource = el[0].querySelector('#scroll-source')
