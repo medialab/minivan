@@ -53,6 +53,12 @@ angular.module('app.modalities-partition', ['ngRoute'])
     saveAs(blob, $scope.networkData.title + ".gexf");
   }
 
+  $scope.downloadMatrix = function() {
+    var csv = csvBuilder.getAdjacencyMatrix($scope.attribute.id, $scope.nodeFilter)
+    var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Adjacency Matrix.csv");
+  }
+
   $scope.downloadModalities = function() {
     var csv = csvBuilder.getModalities($scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
