@@ -110,7 +110,7 @@
     style="position: absolute; left: 0px; top: 0px;"
     layout="column"
   >
-    <div layout-fill style="overflow: scroll; cursor: move" drag-scroll="true" id="scroll-source">
+    <div layout-fill style="cursor: move" ng-style="{overflow:printMode ? 'hidden' : 'scroll'}" drag-scroll="true" id="scroll-source">
       <div ng-style="{'width':(headlineSize + cellSize*nodes.length)+'px', 'height':(headlineSize + cellSize*nodes.length)+'px'}">
       </div>
     </div>
