@@ -848,7 +848,7 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('csvBuilder', function(networkData){
+  .factory('csvBuilder', function(networkData, scalesUtils){
     var ns = {} // Namespace
 
     ns.getAttributes = function() {
@@ -980,6 +980,33 @@ angular.module('app.services', [])
             return validElements
           })
       )
+      return csv
+    }
+
+    ns.getAdjacencyMatrix = function(attributeId, nodesFilter) {
+      var nodes = networkData.g.nodes()
+      if (nodesFilter) {
+        nodes = nodes.filter(nodesFilter)
+      }
+      scalesUtils.sortNodes(nodes, attributeId)
+
+      var rows = []
+      var headRow = ['']
+      nodes.forEach(function(nid){
+        headRow.push(nid)
+      })
+      rows.push(headRow)
+
+      var row
+      nodes.forEach(function(nsid){
+        row = [nsid]
+        nodes.forEach(function(ntid){
+          row.push(networkData.g.edge(nsid, ntid)===undefined ? 0 : 1)
+        })
+        rows.push(row)
+      })
+      
+      var csv = d3.csvFormatRows(rows)
       return csv
     }
 

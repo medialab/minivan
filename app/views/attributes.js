@@ -87,6 +87,12 @@ angular.module('app.attributes', ['ngRoute'])
     saveAs(blob, $scope.networkData.title + ".gexf");
   }
 
+  $scope.downloadMatrix = function() {
+  	var csv = csvBuilder.getAdjacencyMatrix($scope.selectedAttId)
+    var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
+    saveAs(blob, $scope.networkData.title + " - Adjacency Matrix.csv");
+  }
+
   $scope.downloadAttributes = function() {
   	var csv = csvBuilder.getAttributes()
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});

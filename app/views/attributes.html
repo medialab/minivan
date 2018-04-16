@@ -101,10 +101,10 @@
 
 				<!-- Footer: MATRIX -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'matrix'">
-					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
+					<md-button class="footer-button" ng-click="downloadMatrix()">
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button> -->
+		      </md-button>
 					<md-button class="footer-button" ng-href="#!/print-matrix?att={{selectedAttId}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}" target="_blank">
 						<md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
 		      	<md-icon>print</md-icon>
