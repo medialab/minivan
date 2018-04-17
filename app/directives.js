@@ -121,6 +121,7 @@ angular.module('app.directives', [])
     return {
       restrict: 'A',
       scope: {
+        attributeId: '=',
         mod: '=',
         maxModCount: '=',
         printMode: '=',

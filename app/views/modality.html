@@ -55,7 +55,7 @@
 							md-mode="indeterminate"
 						></md-progress-circular>
 
-						<sigma-network
+						<!-- <sigma-network
 							ng-if="networkData.loaded && panel == 'map'"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
@@ -63,9 +63,9 @@
 							get-camera-state="$parent.getCameraState"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></sigma-network>
+						></sigma-network> -->
 
-						<matrix
+						<!-- <matrix
 							ng-if="networkData.loaded && panel == 'matrix'"
 							on-node-click="networkNodeClick"
 							on-edge-click="networkEdgeClick"
@@ -74,18 +74,18 @@
 							view-box="$parent.viewBox"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></matrix>
+						></matrix> -->
 
-						<node-list
+						<!-- <node-list
 							ng-if="networkData.loaded && panel == 'list'"
 							color-att-id="$parent.attribute.id"
 							selected-att-id="$parent.attribute.id"
 							search="$parent.search"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></node-list>
+						></node-list> -->
 						
-						<md-content
+						<!-- <md-content
 							ng-if="networkData.loaded && panel == 'stats'"
 							layout-fill
 							style="overflow: auto"
@@ -108,83 +108,83 @@
 								layout="column"
 								layout-align="center center"
 							></md-card>
-						</md-content>
+						</md-content> -->
 
 					</div>
 				</div>
 				
 				<!-- Footer: MAP -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'map'">
-					<md-button class="footer-button" ng-click="downloadGEXF()">
+					<!-- <md-button class="footer-button" ng-click="downloadGEXF()">
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-network-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}" target="_blank">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-href="#!/print-network-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button>
+		      </md-button> -->
 				</div>
 
 				<!-- Footer: MATRIX -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'matrix'">
-					<md-button class="footer-button" ng-click="downloadMatrix()">
+					<!-- <md-button class="footer-button" ng-click="downloadMatrix()">
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}" target="_blank">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-href="#!/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}" target="_blank">
 						<md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button>
-		      <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=1">
+		      </md-button> -->
+		      <!-- <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=1">
 						<md-tooltip md-direction="top">No details</md-tooltip>
 						Details
 		      	<md-icon ng-if="matrixDetailLevel==1">radio_button_checked</md-icon>
 		      	<md-icon ng-if="matrixDetailLevel!=1">radio_button_unchecked</md-icon>
 		      	1
-		      </md-button>
-					<md-button class="footer-button" ng-click="$parent.matrixDetailLevel=2">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=2">
 						<md-tooltip md-direction="top">Some details</md-tooltip>
 		      	<md-icon ng-if="matrixDetailLevel==2">radio_button_checked</md-icon>
 		      	<md-icon ng-if="matrixDetailLevel!=2">radio_button_unchecked</md-icon>
 						2
-		      </md-button>
+		      </md-button> -->
 				</div>
 
 				<!-- Footer: LIST -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'list'">
-					<md-button class="footer-button" ng-click="downloadNodeList()">
+					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-node-list-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}" target="_blank">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-href="#!/print-node-list-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}" target="_blank">
 						<md-tooltip md-direction="top">Print list</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button>
+		      </md-button> -->
 				</div>
 
 				<!-- Footer: STATS -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'stats'">
-					<md-button class="footer-button" ng-click="downloadStats()">
+					<!-- <md-button class="footer-button" ng-click="downloadStats()">
 						<md-tooltip md-direction="top">Download statistics</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-stats-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&detail={{statsDetailLevel}}" target="_blank">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-href="#!/print-stats-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&detail={{statsDetailLevel}}" target="_blank">
 						<md-tooltip md-direction="top">Print statistics</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button>
-		      <md-button class="footer-button" ng-click="$parent.statsDetailLevel=1">
+		      </md-button> -->
+		      <!-- <md-button class="footer-button" ng-click="$parent.statsDetailLevel=1">
 						<md-tooltip md-direction="top">No details</md-tooltip>
 						Details
 		      	<md-icon ng-if="statsDetailLevel==1">radio_button_checked</md-icon>
 		      	<md-icon ng-if="statsDetailLevel!=1">radio_button_unchecked</md-icon>
 		      	1
-		      </md-button>
-					<md-button class="footer-button" ng-click="$parent.statsDetailLevel=2">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-click="$parent.statsDetailLevel=2">
 						<md-tooltip md-direction="top">More details</md-tooltip>
 		      	<md-icon ng-if="statsDetailLevel==2">radio_button_checked</md-icon>
 		      	<md-icon ng-if="statsDetailLevel!=2">radio_button_unchecked</md-icon>
 						2
-		      </md-button>
+		      </md-button> -->
 				</div>
 			</div>
 		</div>
@@ -209,12 +209,11 @@
 					</md-toolbar>
 
 					<!-- Partition: modalities -->
-					<md-virtual-repeat-container flex>
+					<!-- <md-virtual-repeat-container flex>
 						<md-list layout-fill>
 				      <div md-virtual-repeat="mod in attribute.modalities" md-item-size="20" flex>
 				        <div
 					        modality-partition-list-element
-					        attribute-id="attribute.id"
 					        mod="mod"
 					        max-mod-count="maxModCount"
 					        print-mode="false"
@@ -223,33 +222,33 @@
 					      ></div>
 				      </div>
 						</md-list>
-			    </md-virtual-repeat-container>
+			    </md-virtual-repeat-container> -->
 
 				</div>
 
 				<!-- Footer -->
 				<div class="component-footer" layout="row" layout-align="center center">
-					<md-button class="footer-button" ng-click="downloadModalities()">
+					<!-- <md-button class="footer-button" ng-click="downloadModalities()">
 						<md-tooltip md-direction="top">Download data</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-modalities-partition?att={{attribute.id}}&detail={{modalityListDetailLevel}}" target="_blank">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-href="#!/print-modalities-partition?att={{attribute.id}}&detail={{modalityListDetailLevel}}" target="_blank">
 						<md-tooltip md-direction="top">Print data visualization</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button>
-					<md-button class="footer-button" ng-click="modalityListDetailLevel=1">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-click="modalityListDetailLevel=1">
 						<md-tooltip md-direction="top">No details</md-tooltip>
 						Details
 		      	<md-icon ng-if="modalityListDetailLevel==1">radio_button_checked</md-icon>
 		      	<md-icon ng-if="modalityListDetailLevel!=1">radio_button_unchecked</md-icon>
 		      	1
-		      </md-button>
-					<md-button class="footer-button" ng-click="modalityListDetailLevel=2">
+		      </md-button> -->
+					<!-- <md-button class="footer-button" ng-click="modalityListDetailLevel=2">
 						<md-tooltip md-direction="top">More details</md-tooltip>
 		      	<md-icon ng-if="modalityListDetailLevel==2">radio_button_checked</md-icon>
 		      	<md-icon ng-if="modalityListDetailLevel!=2">radio_button_unchecked</md-icon>
 						2
-		      </md-button>
+		      </md-button> -->
 				</div>
 			</div>
 		</div>
