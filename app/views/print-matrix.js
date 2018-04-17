@@ -40,7 +40,7 @@ angular.module('app.print-matrix', ['ngRoute'])
     // All unchecked / default: show all
     $scope.nodeFilter = function(){ return true }
     $scope.modalityFilter = function(){ return true }
-    if ($scope.attribute.type == 'partition') {
+    if ($scope.attribute && $scope.attribute.type == 'partition') {
       $scope.modalitiesSelection = {}
       var modSelection = $location.search().filter.split(',').map(function(d){ return d=='true' })
       $scope.attribute.modalities.forEach(function(mod, i){
@@ -54,7 +54,7 @@ angular.module('app.print-matrix', ['ngRoute'])
           return $scope.modalitiesSelection[modValue]
         }
       }
-    } else if($scope.attribute.type == 'ranking-size' || $scope.attribute.type == 'ranking-color') {
+    } else if($scope.attribute && $scope.attribute.type == 'ranking-size' || $scope.attribute.type == 'ranking-color') {
       // Rebuild modalities
       $scope.modalities = scalesUtils.buildModalities($scope.attribute)
 
