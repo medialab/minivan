@@ -62,6 +62,8 @@
 							color-att-id="attribute.id"
 							get-camera-state="$parent.getCameraState"
 							node-filter="$parent.nodeFilter"
+							hard-filter="true"
+							enable-layout="true"
 							layout-fill
 						></sigma-network>
 
@@ -115,14 +117,14 @@
 				
 				<!-- Footer: MAP -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'map'">
-					<!-- <md-button class="footer-button" ng-click="downloadGEXF()">
+					<md-button class="footer-button" ng-click="downloadGEXF()">
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button> -->
-					<!-- <md-button class="footer-button" ng-href="#!/print-network-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}" target="_blank">
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-network-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button> -->
+		      </md-button>
 				</div>
 
 				<!-- Footer: MATRIX -->
