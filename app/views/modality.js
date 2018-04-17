@@ -30,7 +30,7 @@ angular.module('app.modality', ['ngRoute'])
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
-      $scope.modality = $scope.attributes.modalities.filter(function(mod){return mod.value == $routeParams.modalityValue})[0]
+      $scope.modality = $scope.attribute.modalities.filter(function(mod){return mod.value == $routeParams.modalityValue})[0]
       if ($scope.attribute.type !== 'partition') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)
       }

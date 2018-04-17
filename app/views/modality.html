@@ -199,12 +199,22 @@
 					<project-title-bar title="networkData.title"></project-title-bar>
 
 					<!-- Attribute toolbar -->
-					<md-toolbar style="z-index: 0">
+					<md-toolbar style="z-index: 0" class="md-hue-1">
 						<div class="md-toolbar-tools">
 							<md-button class="md-icon-button" ng-href="#!/attributes">
 			          <md-icon>arrow_back</md-icon>
 			        </md-button>
 			        <h2 flex md-truncate>{{attribute.name}}</h2>
+						</div>
+					</md-toolbar>
+
+					<!-- Modality toolbar -->
+					<md-toolbar style="z-index: 0">
+						<div class="md-toolbar-tools">
+							<md-button class="md-icon-button" ng-href="#!/partition/{{attribute.id}}/modalities">
+			          <md-icon>arrow_back</md-icon>
+			        </md-button>
+			        <h2 flex md-truncate>{{modality.value}}</h2>
 						</div>
 					</md-toolbar>
 
