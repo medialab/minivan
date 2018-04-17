@@ -208,9 +208,13 @@
 
 /* A4 page for printing */
 @media print {
+  body {
+    background-color: #FFF !important;
+  }
   .page-container {
     -webkit-print-color-adjust: exact;
     /*overflow: hidden;*/
+    background-color: #FFF;
   }
 }
 @media screen {
