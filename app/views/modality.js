@@ -34,6 +34,7 @@ angular.module('app.modality', ['ngRoute'])
       if ($scope.attribute.type !== 'partition') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)
       }
+      updateNodeFilter()
     }
   })
   
@@ -67,19 +68,14 @@ angular.module('app.modality', ['ngRoute'])
 
   function updateNodeFilter() {
     if ($scope.attribute) {
-      if ($scope.attribute.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
-        $scope.nodeFilter = function(nid){
-          return $scope.modalitiesSelection[$scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)]
-        }
-      } else {
-        // All unchecked: show all
-        $scope.nodeFilter = function(){ return true }
+      $scope.nodeFilter = function(nid){
+        return $scope.modality.value == $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
       }
 
       // Node filter imprint (used in URLs)
       $scope.nodeFilterImprint = $scope.attribute.modalities
         .map(function(mod){
-          return $scope.modalitiesSelection[mod.value]
+          return mod.value == $scope.modality.value
         })
         .join(',')
     }

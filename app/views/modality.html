@@ -55,7 +55,7 @@
 							md-mode="indeterminate"
 						></md-progress-circular>
 
-						<!-- <sigma-network
+						<sigma-network
 							ng-if="networkData.loaded && panel == 'map'"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
@@ -63,7 +63,7 @@
 							get-camera-state="$parent.getCameraState"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></sigma-network> -->
+						></sigma-network>
 
 						<!-- <matrix
 							ng-if="networkData.loaded && panel == 'matrix'"
@@ -204,7 +204,7 @@
 							<md-button class="md-icon-button" ng-href="#!/attributes">
 			          <md-icon>arrow_back</md-icon>
 			        </md-button>
-			        <h2 flex md-truncate>{{attribute.name}}</h2>
+			        <h2 flex md-truncate>{{attribute.name}}:</h2>
 						</div>
 					</md-toolbar>
 
