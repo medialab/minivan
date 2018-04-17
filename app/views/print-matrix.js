@@ -54,7 +54,7 @@ angular.module('app.print-matrix', ['ngRoute'])
           return $scope.modalitiesSelection[modValue]
         }
       }
-    } else if($scope.attribute && $scope.attribute.type == 'ranking-size' || $scope.attribute.type == 'ranking-color') {
+    } else if($scope.attribute && ($scope.attribute.type == 'ranking-size' || $scope.attribute.type == 'ranking-color')) {
       // Rebuild modalities
       $scope.modalities = scalesUtils.buildModalities($scope.attribute)
 
