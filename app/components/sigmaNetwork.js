@@ -23,7 +23,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         editableAttributes: '=',
         getCameraState: '=',
         hideCommands: '=',
-        enableLayout: '='
+        enableLayout: '=',
+        hardFilter: '='
       }
       ,link: function($scope, el, attrs) {
         var sigma
@@ -43,33 +44,25 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         $scope.$watch('networkData.loaded', function(){
           if ( $scope.networkData.loaded ) {
-            $timeout(function(){
-              $scope.loaded = true
-              $scope.nodesCount = $scope.networkData.g.order
-              $scope.edgesCount = $scope.networkData.g.size
-              $scope.tooBig = $scope.nodesCount > networkDisplayThreshold
-              refreshSigma()
-            })
+            $scope.g = networkData.g.copy()
+            $scope.loaded = true
+            $scope.nodesCount = $scope.g.order
+            $scope.edgesCount = $scope.g.size
+            $scope.tooBig = $scope.nodesCount > networkDisplayThreshold
+            updateColorFilter()
+            updateSizeFilter()
+            updateNodeAppearance()
+            refreshSigma()
           }
         })
 
         $scope.$watch('colorAttId', function(){
-          if ( $scope.networkData.g === undefined ) return
-          if ($scope.colorAttId) {
-            $scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
-          } else {
-            $scope.colorAtt = undefined
-          }
+          updateColorFilter()
           $timeout(updateNodeAppearance, 120)
         })
 
         $scope.$watch('sizeAttId', function(){
-          if ( $scope.networkData.g === undefined ) return
-          if ($scope.sizeAttId) {
-            $scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
-          } else {
-            $scope.sizeAtt = undefined
-          }
+          updateSizeFilter()
           $timeout(updateNodeAppearance, 120)
         })
 
@@ -120,10 +113,28 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         /// Functions
 
-        function updateNodeAppearance() {
-          $timeout(function(){
+        function updateColorFilter(){
+          if ( $scope.g === undefined ) return
+          if ($scope.colorAttId) {
+            $scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
+          } else {
+            $scope.colorAtt = undefined
+          }
+        }
 
-            var g = $scope.networkData.g
+        function updateSizeFilter(){
+          if ( $scope.g === undefined ) return
+          if ($scope.sizeAttId) {
+            $scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
+          } else {
+            $scope.sizeAtt = undefined
+          }
+        }
+
+        function updateNodeAppearance() {
+          if ($scope.networkData.loaded) {
+
+            var g = $scope.g
 
             var settings = {}
             settings.default_node_color = '#969390'
@@ -131,9 +142,20 @@ angular.module('app.components.sigmaNetworkComponent', [])
             settings.default_edge_color = '#DDD'
             settings.default_edge_color_muted = '#FAFAFA'
 
-            var nodeFilter = $scope.nodeFilter || function(d){return d}
 
             /// NODES
+
+            // Filter
+            var nodeFilter
+            if ($scope.hardFilter) {
+              g.dropNodes(g.nodes().filter(function(nid){
+                return !$scope.nodeFilter(nid)
+              }))
+
+              nodeFilter = function(d){return d}
+            } else {
+              nodeFilter = $scope.nodeFilter || function(d){return d}
+            }
 
             // Size
             var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
@@ -202,7 +224,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
                 g.setEdgeAttribute(eid, 'z', 1)
                 g.setEdgeAttribute(eid, 'color', settings.default_edge_color)
               })
-          })
+          }
         }
 
         function refreshSigma() {
@@ -219,7 +241,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
               labelWeight: '400',
               labelSize: 12
             })
-            sigma = new Sigma(g, renderer)
+            sigma = new Sigma($scope.g, renderer)
 
             $scope.zoomIn = function(){
               var camera = renderer.getCamera()
@@ -251,7 +273,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             if ($scope.layout) {
               $scope.layout.kill()
             }
-            $scope.layout = new Graph.library.FA2Layout(g, {
+            $scope.layout = new Graph.library.FA2Layout($scope.g, {
               settings: {
                 barnesHutOptimize: g.order > 2000,
                 strongGravityMode: true,
