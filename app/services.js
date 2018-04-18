@@ -1012,3 +1012,37 @@ angular.module('app.services', [])
 
     return ns
   })
+
+  .factory('layoutCache', function(){
+    var ns = {} // Namespace
+
+    ns.cache = {}
+    ns.running = {} // Is the layout running?
+
+    ns.store = function(key, g, running) {
+      var index = {}
+      g.nodes().forEach(function(nid){
+        index[nid] = [g.getNodeAttribute(nid, 'x'), g.getNodeAttribute(nid, 'y')]
+      })
+      ns.cache[key] = index
+      ns.running[key] = running
+    }
+
+    ns.recall = function(key, g) {
+      var index = ns.cache[key]
+      if (index) {
+        g.nodes().forEach(function(nid){
+          var xy = index[nid]
+          if (xy) {
+            g.setNodeAttribute(nid, 'x', xy[0])
+            g.setNodeAttribute(nid, 'y', xy[1])
+          }
+        })
+      }
+      return ns.running[key]
+    }
+
+    return ns
+  })
+
+  

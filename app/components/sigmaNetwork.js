@@ -7,7 +7,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
   .directive('sigmaNetwork', function(
     $timeout,
     networkData,
-    scalesUtils
+    scalesUtils,
+    layoutCache
   ){
     return {
       restrict: 'E'
@@ -19,12 +20,13 @@ angular.module('app.components.sigmaNetworkComponent', [])
         onNodeClick: '=',
         colorAttId: '=',
         sizeAttId: '=',
-        nodeFilter: '=',
-        editableAttributes: '=',
+        nodeFilter: '=',                // Optional. Used to display only certain nodes (the others are present but muted)
+        hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
+        editableAttributes: '=',        // Optional. Allows to unset color and size attributes (close buttons)
         getCameraState: '=',
         hideCommands: '=',
         enableLayout: '=',
-        hardFilter: '='
+        layoutCacheKey: '='             // Optional. Used to cache and recall layout.
       }
       ,link: function($scope, el, attrs) {
         var sigma
@@ -91,6 +93,9 @@ angular.module('app.components.sigmaNetworkComponent', [])
         $scope.stopLayout = function(){
           if ($scope.layout === undefined) { return }
           $scope.layout.stop()
+          if ($scope.layoutCacheKey) {
+            layoutCache.store($scope.layoutCacheKey, $scope.g, $scope.layout.running)
+          }
         }
 
         $scope.startLayout = function(){
@@ -155,6 +160,16 @@ angular.module('app.components.sigmaNetworkComponent', [])
               nodeFilter = function(d){return d}
             } else {
               nodeFilter = $scope.nodeFilter || function(d){return d}
+            }
+
+            // Update positions from cache
+            if ($scope.layoutCacheKey) {
+              var wasRunning = layoutCache.recall($scope.layoutCacheKey, g)
+              if (wasRunning && $scope.enableLayout && $scope.layout && !$scope.layout.running) {
+                $scope.startLayout()
+              } else if (wasRunning == false && $scope.layout && $scope.layout.running) {
+                $scope.stopLayout()
+              }
             }
 
             // Size
