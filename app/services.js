@@ -1046,6 +1046,11 @@ angular.module('app.services', [])
       return storage.get('layout:'+key+':running')
     }
 
+    ns.clear = function(key) {
+      storage.clear('layout:'+key+':cache')
+      storage.clear('layout:'+key+':running')
+    }
+
     return ns
   })
 
@@ -1058,6 +1063,10 @@ angular.module('app.services', [])
 
     ns.get = function(key){
       return angular.fromJson(sessionStorage[key])
+    }
+
+    ns.clear = function(key) {
+      delete sessionStorage[key]
     }
 
     return ns

@@ -90,7 +90,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
           refreshSigma()
         }
 
-        $scope.stopLayout = function(){
+        $scope.stopLayout = function() {
           if ($scope.layout === undefined) { return }
           $scope.layout.stop()
           if ($scope.layoutCacheKey) {
@@ -98,9 +98,20 @@ angular.module('app.components.sigmaNetworkComponent', [])
           }
         }
 
-        $scope.startLayout = function(){
+        $scope.startLayout = function() {
           if ($scope.layout === undefined) { return }
           $scope.layout.start()
+        }
+
+        $scope.restoreOriginalLayout = function() {
+          // $scope.g = networkData.g.copy()
+          layoutCache.clear($scope.layoutCacheKey)
+          if ($scope.layout === undefined) { return }
+          $scope.layout.stop()
+          $scope.g.nodes().forEach(function(nid){
+            $scope.g.setNodeAttribute(nid, 'x', networkData.g.getNodeAttribute(nid, 'x'))
+            $scope.g.setNodeAttribute(nid, 'y', networkData.g.getNodeAttribute(nid, 'y'))
+          })
         }
 
         // These functions will be initialized at Sigma creation

@@ -85,6 +85,15 @@
     </md-button>
     <md-button
       class="md-icon-button md-mini sigma-button"
+      aria-label="Restore original layout"
+      ng-click="restoreOriginalLayout()"
+      ng-if="enableLayout"
+    >
+      <md-tooltip md-direction="right">Restore original layout</md-tooltip>
+      <md-icon>restore</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
       aria-label="Zoom In"
       ng-click="zoomIn()"
     >
