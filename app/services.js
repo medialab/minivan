@@ -971,7 +971,6 @@ angular.module('app.services', [])
         nodes
           .map(function(nid){
             var n = g.getNodeAttributes(nid)
-            console.log(n.label)
             var validElements = {}
             d3.keys(n).forEach(function(k){
               var attributeName = k
