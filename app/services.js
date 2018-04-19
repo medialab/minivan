@@ -1013,23 +1013,27 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('layoutCache', function(){
+  .factory('layoutCache', function(storage){
     var ns = {} // Namespace
 
-    ns.cache = {}
-    ns.running = {} // Is the layout running?
+    // ns.cache = {}
+    // ns.running = {} // Is the layout running?
 
     ns.store = function(key, g, running) {
       var index = {}
       g.nodes().forEach(function(nid){
         index[nid] = [g.getNodeAttribute(nid, 'x'), g.getNodeAttribute(nid, 'y')]
       })
-      ns.cache[key] = index
-      ns.running[key] = running
+      // ns.cache[key] = index
+      // ns.running[key] = running
+      storage.set('layout:'+key+':cache', index)
+      storage.set('layout:'+key+':running', running)
     }
 
     ns.recall = function(key, g) {
-      var index = ns.cache[key]
+      // var index = ns.cache[key]
+      var index = storage.get('layout:'+key+':cache')
+      console.log(index)
       if (index) {
         g.nodes().forEach(function(nid){
           var xy = index[nid]
@@ -1039,10 +1043,26 @@ angular.module('app.services', [])
           }
         })
       }
-      return ns.running[key]
+      // return ns.running[key]
+      return storage.get('layout:'+key+':running')
     }
 
     return ns
   })
+
+  .factory('storage', ['$rootScope', function ($rootScope) {
+    var ns = {}
+
+    ns.set = function(key, obj) {
+      sessionStorage[key] = angular.toJson(obj)
+    }
+
+    ns.get = function(key){
+      return angular.fromJson(sessionStorage[key])
+    }
+
+    return ns
+
+  }]);
 
   
