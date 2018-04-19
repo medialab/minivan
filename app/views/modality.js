@@ -53,7 +53,7 @@ angular.module('app.modality', ['ngRoute'])
   $scope.downloadMatrix = function() {
     var csv = csvBuilder.getAdjacencyMatrix($scope.attribute.id, $scope.nodeFilter)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
-    saveAs(blob, $scope.networkData.title + " - Adjacency Matrix.csv");
+    saveAs(blob, $scope.networkData.title + " - Adjacency Matrix - " + $scope.modality.value + ".csv");
   }
 
   $scope.downloadStats = function() {
@@ -63,7 +63,7 @@ angular.module('app.modality', ['ngRoute'])
   $scope.downloadNodeList = function() {
   	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
-    saveAs(blob, $scope.networkData.title + " - Nodes.csv");
+    saveAs(blob, $scope.networkData.title + " - " + $scope.modality.value + " - Nodes.csv");
   }
 
   function updateNodeFilter() {
