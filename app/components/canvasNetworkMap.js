@@ -2,7 +2,12 @@
 
 angular.module('app.components.canvasNetworkMap', [])
 
-.directive('canvasNetworkMap', function($timeout, networkData, scalesUtils){
+.directive('canvasNetworkMap', function(
+	$timeout,
+	networkData,
+	scalesUtils,
+	layoutCache
+){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -10,6 +15,7 @@ angular.module('app.components.canvasNetworkMap', [])
     	colorAttId: '=',
     	sizeAttId: '=',
     	nodeFilter: '=',
+    	hardFilter: '=',
     	nodeSize: '=',
     	labelSize: '=',
     	sizedLabels: '=',
@@ -21,7 +27,8 @@ angular.module('app.components.canvasNetworkMap', [])
     	x: '=',
     	y: '=',
     	ratio: '=',
-    	scales: '='
+    	scales: '=',
+    	layoutCacheKey: '='
     },
     link: function($scope, el, attrs) {
     	var redraw = debounce(_redraw, 100) // Prevents multiple triggers in a row
@@ -42,15 +49,12 @@ angular.module('app.components.canvasNetworkMap', [])
         window.removeEventListener('resize', redraw)
       })
 
-      var g = networkData.g
-
       var container = el[0]
 
       function _redraw(){
 
       	// Postpone if network data not loaded
-      	g = networkData.g
-      	if (g === undefined) {
+      	if (!networkData.loaded) {
       		$timeout(redraw, 500)
       		return
       	}
@@ -62,8 +66,6 @@ angular.module('app.components.canvasNetworkMap', [])
       	
       	// Actual redraw
       	$timeout(function(){
-
-          container.innerHTML = '';
 
           var settings = {}
 
@@ -104,6 +106,26 @@ angular.module('app.components.canvasNetworkMap', [])
 					settings.label_color_min_L = 2
 					settings.label_color_max_L = 35
 
+					var g = networkData.g.copy()
+          container.innerHTML = '';
+
+          // Hard filter
+          var nodeFilter
+          if ($scope.hardFilter) {
+            g.dropNodes(g.nodes().filter(function(nid){
+              return !$scope.nodeFilter(nid)
+            }))
+
+            nodeFilter = function(d){return d}
+          } else {
+            nodeFilter = $scope.nodeFilter || function(d){return d}
+          }
+
+					// Update positions from cache
+          if ($scope.layoutCacheKey) {
+            layoutCache.recall($scope.layoutCacheKey, g)
+          }
+
 					var i
 					var x
 					var y
@@ -118,13 +140,12 @@ angular.module('app.components.canvasNetworkMap', [])
 					var label_white_border_thickness = settings.oversampling * settings.label_white_border_thickness
 					var label_font_min_size = settings.oversampling * settings.label_font_min_size
 					var label_font_max_size = settings.oversampling * settings.label_font_max_size
-					var xyScales = scalesUtils.getXYScales_camera(width, height, margin, +$scope.x, +$scope.y, +$scope.ratio)
+					var xyScales = scalesUtils.getXYScales_camera(width, height, margin, +$scope.x, +$scope.y, +$scope.ratio, g)
 					var xScale = xyScales[0]
 					var yScale = xyScales[1]
 					var rScale = scalesUtils.getRScale()
 					var scales = {} // Collect scales to broadcast and inform the network map key
-					var nodeFilter = $scope.nodeFilter || function(d){ return d }
-
+					
 					// Create the canvas
 					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
 					var canvas = container.querySelector('#cnvs')

@@ -48,6 +48,11 @@ angular.module('app.print-network-modalities-partition', ['ngRoute'])
         $scope.modalityFilter = function(modValue) {
         	return $scope.modalitiesSelection[modValue]
         }
+	      var modalities = $scope.attribute.modalities.filter(function(mod){ return $scope.modalitiesSelection[mod.value]})
+	      if (modalities.length == 1) {
+	      	$scope.modality = modalities[0]
+	      }
+
       } else {
         // All unchecked: show all
         $scope.nodeFilter = function(){ return true }

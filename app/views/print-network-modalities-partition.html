@@ -102,7 +102,8 @@
 		</div>
 	</div>
 	<div class="a4page" layout="column">
-		<h1>Modalities of {{attribute.name}}</h1>
+		<h1 ng-if="modality">{{attribute.name}}: {{modality.value}}</h1>
+		<h1 ng-if="!modality">Modalities of {{attribute.name}}</h1>
   	<div class="thin-h-line"></div>
   	<div class="thin-h-line"></div>
   	<div style="width: 170mm; height: 170mm">
@@ -112,6 +113,7 @@
 				layout-fill
 				color-att-id="attributeId"
 				node-filter="nodeFilter"
+				hard-filter="modality !== undefined"
 				node-size="nodeSize"
 				label-size="labelSize"
 				sized-labels="sizedLabels"
@@ -120,6 +122,7 @@
 				curved-edges="curvedEdges"
 				oversampling="oversampling"
 				clear-edges-around-nodes="highQuality"
+				layout-cache-key="attribute.id+':'+modality.value"
 				scales="scales"
 				x="camX || 0"
 				y="camY || 0"

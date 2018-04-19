@@ -436,8 +436,8 @@ angular.module('app.services', [])
       return colorScale
     }
 
-    ns.getXYScales = function(width, height, offset) {
-      var g = networkData.g
+    ns.getXYScales = function(width, height, offset, _g) {
+      var g = _g || networkData.g
       var xScale = d3.scaleLinear()
         .range([offset, width - offset])
       var yScale = d3.scaleLinear()
@@ -454,8 +454,8 @@ angular.module('app.services', [])
       return [xScale, yScale]
     }
 
-    ns.getXYScales_camera = function(width, height, offset, x, y, ratio) {
-      var g = networkData.g
+    ns.getXYScales_camera = function(width, height, offset, x, y, ratio, _g) {
+      var g = _g || networkData.g
       var xScale = d3.scaleLinear()
         .range([offset - (x-0.5) * width / ratio, width - offset - (x-0.5) * width / ratio])
       var yScale = d3.scaleLinear()
