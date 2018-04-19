@@ -68,7 +68,7 @@
 							layout-fill
 						></sigma-network>
 
-						<!-- <matrix
+						<matrix
 							ng-if="networkData.loaded && panel == 'matrix'"
 							on-node-click="networkNodeClick"
 							on-edge-click="networkEdgeClick"
@@ -77,7 +77,7 @@
 							view-box="$parent.viewBox"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></matrix> -->
+						></matrix>
 
 						<!-- <node-list
 							ng-if="networkData.loaded && panel == 'list'"
@@ -130,27 +130,27 @@
 
 				<!-- Footer: MATRIX -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'matrix'">
-					<!-- <md-button class="footer-button" ng-click="downloadMatrix()">
+					<md-button class="footer-button" ng-click="downloadMatrix()">
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button> -->
-					<!-- <md-button class="footer-button" ng-href="#!/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}" target="_blank">
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}" target="_blank">
 						<md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button> -->
-		      <!-- <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=1">
+		      </md-button>
+		      <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=1">
 						<md-tooltip md-direction="top">No details</md-tooltip>
 						Details
 		      	<md-icon ng-if="matrixDetailLevel==1">radio_button_checked</md-icon>
 		      	<md-icon ng-if="matrixDetailLevel!=1">radio_button_unchecked</md-icon>
 		      	1
-		      </md-button> -->
-					<!-- <md-button class="footer-button" ng-click="$parent.matrixDetailLevel=2">
+		      </md-button>
+					<md-button class="footer-button" ng-click="$parent.matrixDetailLevel=2">
 						<md-tooltip md-direction="top">Some details</md-tooltip>
 		      	<md-icon ng-if="matrixDetailLevel==2">radio_button_checked</md-icon>
 		      	<md-icon ng-if="matrixDetailLevel!=2">radio_button_unchecked</md-icon>
 						2
-		      </md-button> -->
+		      </md-button>
 				</div>
 
 				<!-- Footer: LIST -->

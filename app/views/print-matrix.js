@@ -53,6 +53,10 @@ angular.module('app.print-matrix', ['ngRoute'])
         $scope.modalityFilter = function(modValue) {
           return $scope.modalitiesSelection[modValue]
         }
+        var modalities = $scope.attribute.modalities.filter(function(mod){ return $scope.modalitiesSelection[mod.value]})
+        if (modalities.length == 1) {
+          $scope.modality = modalities[0]
+        }
       }
     } else if($scope.attribute && ($scope.attribute.type == 'ranking-size' || $scope.attribute.type == 'ranking-color')) {
       // Rebuild modalities
