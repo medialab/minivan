@@ -1033,7 +1033,6 @@ angular.module('app.services', [])
     ns.recall = function(key, g) {
       // var index = ns.cache[key]
       var index = storage.get('layout:'+key+':cache')
-      console.log(index)
       if (index) {
         g.nodes().forEach(function(nid){
           var xy = index[nid]

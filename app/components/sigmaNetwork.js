@@ -109,11 +109,15 @@ angular.module('app.components.sigmaNetworkComponent', [])
         $scope.resetCamera = function(){}
 
         $scope.$on("$destroy", function(){
+          if ($scope.layoutCacheKey) {
+            layoutCache.store($scope.layoutCacheKey, $scope.g, $scope.layout.running)
+          }
           if ($scope.layout) {
             $scope.layout.kill()
           }
           var sigma = undefined
           var renderer = undefined
+
         })
 
         /// Functions
