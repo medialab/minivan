@@ -79,14 +79,14 @@
 							layout-fill
 						></matrix>
 
-						<!-- <node-list
+						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
 							color-att-id="$parent.attribute.id"
 							selected-att-id="$parent.attribute.id"
 							search="$parent.search"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></node-list> -->
+						></node-list>
 						
 						<!-- <md-content
 							ng-if="networkData.loaded && panel == 'stats'"
@@ -155,14 +155,14 @@
 
 				<!-- Footer: LIST -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'list'">
-					<!-- <md-button class="footer-button" ng-click="downloadNodeList()">
+					<md-button class="footer-button" ng-click="downloadNodeList()">
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
-		      </md-button> -->
-					<!-- <md-button class="footer-button" ng-href="#!/print-node-list-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}" target="_blank">
+		      </md-button>
+					<md-button class="footer-button" ng-href="#!/print-node-list-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}" target="_blank">
 						<md-tooltip md-direction="top">Print list</md-tooltip>
 		      	<md-icon>print</md-icon>
-		      </md-button> -->
+		      </md-button>
 				</div>
 
 				<!-- Footer: STATS -->
