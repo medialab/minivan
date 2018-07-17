@@ -18,7 +18,8 @@ angular.module('app.components', [
     'app.components.matrix',
     'app.components.cardAttributeModularity',
     'app.components.cardAttributeModularityGroupLinks',
-    'app.components.cardAttributeRankingDistribution'
+    'app.components.cardAttributeRankingDistribution',
+    'app.components.cardModalitySummary'
   ])
 
 ;

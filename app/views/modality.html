@@ -88,30 +88,22 @@
 							layout-fill
 						></node-list>
 						
-						<!-- <md-content
+						<md-content
 							ng-if="networkData.loaded && panel == 'stats'"
 							layout-fill
 							style="overflow: auto"
 							md-colors="{background: 'default-background-200-0.3'}"
 						>
 							<md-card
-								card-attribute-modularity
+								card-modality-summary
 								att-id="$parent.attribute.id"
+								mod-value="$parent.modality.value"
 								detail-level="$parent.statsDetailLevel"
 								print-mode="false"
 								layout="column"
 								layout-align="center center"
 							></md-card>
-							<md-card
-								card-attribute-modularity-group-links
-								att-id="$parent.attribute.id"
-								modalities-selection="$parent.modalitiesSelection"
-								detail-level="$parent.statsDetailLevel"
-								print-mode="false"
-								layout="column"
-								layout-align="center center"
-							></md-card>
-						</md-content> -->
+						</md-content>
 
 					</div>
 				</div>
@@ -131,7 +123,7 @@
 				<!-- Footer: MATRIX -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'matrix'">
 					<md-button class="footer-button" ng-click="downloadMatrix()">
-						<md-tooltip md-direction="top">Download list</md-tooltip>
+						<md-tooltip md-direction="top">Download adjacency matrix (CSV)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
 					<md-button class="footer-button" ng-href="#!/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}" target="_blank">
@@ -146,7 +138,7 @@
 		      	1
 		      </md-button>
 					<md-button class="footer-button" ng-click="$parent.matrixDetailLevel=2">
-						<md-tooltip md-direction="top">Some details</md-tooltip>
+						<md-tooltip md-direction="top">Zoomed matrix</md-tooltip>
 		      	<md-icon ng-if="matrixDetailLevel==2">radio_button_checked</md-icon>
 		      	<md-icon ng-if="matrixDetailLevel!=2">radio_button_unchecked</md-icon>
 						2

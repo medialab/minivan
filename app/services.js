@@ -186,6 +186,15 @@ angular.module('app.services', [])
       data.nodeAttributesIndex = {}
       data.nodeAttributes.forEach(function(att){
         data.nodeAttributesIndex[att.id] = att
+
+        // Modalities index
+        if (att.modalities) {
+          att.modalitiesIndex = {}
+          att.modalities.forEach(function(m){
+            att.modalitiesIndex[m.value] = m
+          })
+        }
+
       })
 
       // Build each node attribute's data
