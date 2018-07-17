@@ -22,7 +22,8 @@ angular.module('app.components', [
     'app.components.cardModalitySummary',
     'app.components.cardModalityInternalExternal',
     'app.components.cardModalityInOut',
-    'app.components.cardModalityConnectivityBalance'
+    'app.components.cardModalityConnectivityBalance',
+    'app.components.cardModalityRemarkableNodes'
   ])
 
 ;
