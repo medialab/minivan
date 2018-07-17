@@ -29,7 +29,6 @@ angular.module('app.components.sigmaNetworkComponent', [])
         layoutCacheKey: '='             // Optional. Used to cache and recall layout.
       }
       ,link: function($scope, el, attrs) {
-        var sigma
         var renderer
         var networkDisplayThreshold = 1000
 
@@ -266,13 +265,12 @@ angular.module('app.components.sigmaNetworkComponent', [])
             var container = document.getElementById('sigma-div')
             if (!container) return
             container.innerHTML = ''
-            renderer = new Sigma.WebGLRenderer(container, {
+            renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: "Quicksand",
               labelWeight: '400',
               labelSize: 12
             })
-            sigma = new Sigma($scope.g, renderer)
-
+            
             $scope.zoomIn = function(){
               var camera = renderer.getCamera()
               var state = camera.getState()
@@ -325,7 +323,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         }
 
         function updateMouseEvents() {
-          if (sigma === undefined || renderer === undefined) {
+          if (renderer === undefined) {
             return
           }
 
