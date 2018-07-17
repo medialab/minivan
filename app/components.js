@@ -21,7 +21,8 @@ angular.module('app.components', [
     'app.components.cardAttributeRankingDistribution',
     'app.components.cardModalitySummary',
     'app.components.cardModalityInternalExternal',
-    'app.components.cardModalityInOut'
+    'app.components.cardModalityInOut',
+    'app.components.cardModalityConnectivityBalance'
   ])
 
 ;
