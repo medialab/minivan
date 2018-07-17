@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('app.components.cardModalityInternalExternal', [])
+angular.module('app.components.cardModalityInOut', [])
 
-.directive('cardModalityInternalExternal', function($timeout, networkData, scalesUtils){
+.directive('cardModalityInOut', function($timeout, networkData, scalesUtils){
   return {
     restrict: 'A',
-    templateUrl: 'components/cardModalityInternalExternal.html',
+    templateUrl: 'components/cardModalityInOut.html',
     scope: {
       attId: '=',
       modValue: '=',
@@ -22,7 +22,7 @@ angular.module('app.components.cardModalityInternalExternal', [])
   }
 })
 
-.directive('modalityInternalExternalChart', function(
+.directive('modalityInOutChart', function(
   $timeout
 ){
   return {
@@ -48,26 +48,26 @@ angular.module('app.components.cardModalityInternalExternal', [])
         if ($scope.data !== undefined){
           $timeout(function(){
             el.html('');
-            drawValueInternalExternal(d3.select(el[0]), $scope.data, $scope.modalityValue)
+            drawValueInboundOutbound(d3.select(el[0]), $scope.data, $scope.modalityValue)
           })
         }
       }
 
-      function drawValueInternalExternal(container, attData, v) {
+      function drawValueInboundOutbound(container, attData, v) {
         
         var data = [
           {
-            label: 'INTERNAL',
-            nd: attData.modalitiesIndex[v].internalNDensity,
-            color: 'rgba(70, 220, 70, 0.3)'
+            label: 'INBOUND',
+            nd: attData.modalitiesIndex[v].inboundNDensity,
+            count: attData.modalitiesIndex[v].inboundLinks
           },
           {
-            label: 'EXTERNAL',
-            nd: attData.modalitiesIndex[v].externalNDensity,
-            color: 'rgba(220, 70, 70, 0.3)'
+            label: 'OUTBOUND',
+            nd: attData.modalitiesIndex[v].outboundNDensity,
+            count: attData.modalitiesIndex[v].outboundLinks
           }
         ]
-        window.container = container
+        
         var barHeight = 32
         var margin = {top: 24, right: 120, bottom: 24, left: 120}
         var width = container.node().getBoundingClientRect().width  - margin.left - margin.right
@@ -90,7 +90,7 @@ angular.module('app.components.cardModalityInternalExternal', [])
             .attr("transform", 
                 "translate(" + margin.left + "," + margin.top + ")")
 
-        x.domain([0, d3.max(data, function(d) { return d.nd })])
+        x.domain([0, Math.max(0.01, d3.max(data, function(d) { return d.nd }))])
         y.domain(data.map(function(d){return d.label}))
 
         svg.append("g")
@@ -116,7 +116,7 @@ angular.module('app.components.cardModalityInternalExternal', [])
             .attr("class", "bar")
 
         bar.append("rect")
-            .style("fill", function(d){ return d.color })
+            .style("fill", 'rgba(120, 120, 120, 0.5)')
             .attr("x", 0)
             .attr("y", function(d) { return y(d.label) })
             .attr("width", function(d) { return x(Math.max(0, d.nd)) })
@@ -124,7 +124,15 @@ angular.module('app.components.cardModalityInternalExternal', [])
 
         bar.append('text')
             .attr('x', function(d) { return 6 + x(Math.max(0, d.nd)) })
-            .attr('y', function(d) { return y(d.label) + 18 })
+            .attr('y', function(d) { return y(d.label) + 12 })
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', '10px')
+            .attr('fill', 'rgba(0, 0, 0, 0.8)')
+            .text(function(d){ return d.count + ' links'})
+
+        bar.append('text')
+            .attr('x', function(d) { return 6 + x(Math.max(0, d.nd)) })
+            .attr('y', function(d) { return y(d.label) + 24 })
             .attr('font-family', 'sans-serif')
             .attr('font-size', '10px')
             .attr('fill', 'rgba(0, 0, 0, 0.8)')

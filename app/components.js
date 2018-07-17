@@ -20,7 +20,8 @@ angular.module('app.components', [
     'app.components.cardAttributeModularityGroupLinks',
     'app.components.cardAttributeRankingDistribution',
     'app.components.cardModalitySummary',
-    'app.components.cardModalityInternalExternal'
+    'app.components.cardModalityInternalExternal',
+    'app.components.cardModalityInOut'
   ])
 
 ;
