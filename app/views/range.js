@@ -42,7 +42,7 @@ angular.module('app.range', ['ngRoute'])
       if ($scope.attribute.type !== 'ranking-size' && $scope.attribute.type !== 'ranking-color') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "ranking-size" or "ranking-color".', $scope.attribute)
       }
-      // updateNodeFilter()
+      updateNodeFilter()
       // buildAllSortedNodes()
     }
   })
@@ -65,7 +65,7 @@ angular.module('app.range', ['ngRoute'])
     saveAs(blob, $scope.networkData.title + " - Adjacency Matrix - " + $scope.modality.value + ".csv");
   }
 
-  $scope.downloadStats = function() {
+  /*$scope.downloadStats = function() {
     // Density
     var density
     if (g.type == 'directed') {
@@ -232,7 +232,7 @@ angular.module('app.range', ['ngRoute'])
 
     var blob = new Blob(mdLines, {'type':'text;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Statistics of " + $scope.attribute.name + " = " + $scope.modality.value + ".txt");
-  }
+  }*/
 
   $scope.downloadNodeList = function() {
   	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
@@ -250,15 +250,12 @@ angular.module('app.range', ['ngRoute'])
   function updateNodeFilter() {
     if ($scope.attribute) {
       $scope.nodeFilter = function(nid){
-        return $scope.modality.value == $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
+        var val = +$scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
+        return $scope.rangeMin <= val && val <= $scope.rangeMax
       }
 
       // Node filter imprint (used in URLs)
-      $scope.nodeFilterImprint = $scope.attribute.modalities
-        .map(function(mod){
-          return mod.value == $scope.modality.value
-        })
-        .join(',')
+      $scope.nodeFilterImprint = $scope.rangeMin + ',' + $scope.rangeMax
     }
   }
 

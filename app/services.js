@@ -507,9 +507,9 @@ angular.module('app.services', [])
         var values = g.nodes()
           .map(function(nid){ return +g.getNodeAttribute(nid, attribute.id) })
         values.sort(function(a, b){ return a-b })
-        var maxValue = d3.max(values)
         var deciles = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
           .map(function(d){ return d3.quantile(values, d) })
+        var maxValue = d3.max(values)
 
         // Remove duplicates
         var existing = {}
@@ -544,6 +544,7 @@ angular.module('app.services', [])
         })
         .reverse()
       } else {
+        var valuesExtent = d3.extent(g.nodes(), function(nid){ return +g.getNodeAttribute(nid, attribute.id) })
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
           .map(function(d){
             // Percent
@@ -553,8 +554,8 @@ angular.module('app.services', [])
             var rmin = minRadius + pmin * (maxRadius - minRadius)
             var rmax = minRadius + pmax * (maxRadius - minRadius)
             // Value
-            var min = areaScale.invert(rScale.invert(rmin))
-            var max = areaScale.invert(rScale.invert(rmax))
+            var min = (pmax==0) ? (valuesExtent[0]) : (areaScale.invert(rScale.invert(rmin)))
+            var max = (pmax==1) ? (valuesExtent[1]) : (areaScale.invert(rScale.invert(rmax)))
             return {
               pmin: pmin,
               pmax: pmax,
@@ -672,14 +673,15 @@ angular.module('app.services', [])
         .reverse()
 
       } else {
+        var valuesExtent = d3.extent(g.nodes(), function(nid){ return +g.getNodeAttribute(nid, attribute.id) })
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
           .map(function(d){
             // Percent
             var pmin = d/10
             var pmax = (d+1)/10
             // Value
-            var min = attribute.min + pmin * (attribute.max - attribute.min)
-            var max = attribute.min + pmax * (attribute.max - attribute.min)
+            var min = (pmax==0) ? (valuesExtent[0]) : (attribute.min + pmin * (attribute.max - attribute.min))
+            var max = (pmax==1) ? (valuesExtent[1]) : (attribute.min + pmax * (attribute.max - attribute.min))
             return {
               pmin: pmin,
               pmax: pmax,
