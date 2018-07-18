@@ -1066,7 +1066,7 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('storage', ['$rootScope', function ($rootScope) {
+  .factory('storage', function ($rootScope) {
     var ns = {}
 
     ns.set = function(key, obj) {
@@ -1082,7 +1082,137 @@ angular.module('app.services', [])
     }
 
     return ns
+  })
 
-  }]);
+  .factory('remarkableNodes', function ($rootScope, networkData) {
+    var ns = {}
+
+    ns.attribute = undefined
+    ns.modality = undefined
+    ns.topCut = undefined
+
+    ns.getData = function(attribute, modality, topCut){
+      ns.attribute = attribute
+      ns.modality = modality
+      ns.topCut = topCut
+      var g = networkData.g
+      var sortedNodes = {
+        inside: {
+          citedFromInside: [],
+          citedFromOutside: [],
+          pointingToInside: [],
+          pointingToOutside: [],
+          connectedInside: [],
+          connectedOutside: []
+        },
+        outside: {
+          citedFromInside: [],
+          citedFromOutside: [],
+          pointingToInside: [],
+          pointingToOutside: [],
+          connectedInside: [],
+          connectedOutside: []
+        }
+      }
+      if (g.type == 'directed' || g.type == 'mixed') {
+        sortedNodes.inside.citedFromInside = ns.buildSortedNodes('INSIDE', 'CITED_FROM', 'INSIDE')
+        sortedNodes.inside.citedFromOutside = ns.buildSortedNodes('INSIDE', 'CITED_FROM', 'OUTSIDE')
+        sortedNodes.inside.pointingToInside = ns.buildSortedNodes('INSIDE', 'POINTING_TO', 'INSIDE')
+        sortedNodes.inside.pointingToOutside = ns.buildSortedNodes('INSIDE', 'POINTING_TO', 'OUTSIDE')
+        sortedNodes.outside.citedFromInside = ns.buildSortedNodes('OUTSIDE', 'CITED_FROM', 'INSIDE')
+        // sortedNodes.outside.citedFromOutside = ns.buildSortedNodes('OUTSIDE', 'CITED_FROM', 'OUTSIDE')
+        sortedNodes.outside.pointingToInside = ns.buildSortedNodes('OUTSIDE', 'POINTING_TO', 'INSIDE')
+        // sortedNodes.outside.pointingToOutside = ns.buildSortedNodes('OUTSIDE', 'POINTING_TO', 'OUTSIDE')
+      }
+      if (g.type == 'undirected' || g.type == 'mixed') {
+        sortedNodes.inside.connectedInside = ns.buildSortedNodes('INSIDE', 'CONNECTED', 'INSIDE')
+        sortedNodes.inside.connectedOutside = ns.buildSortedNodes('INSIDE', 'CONNECTED', 'OUTSIDE')
+        sortedNodes.outside.connectedInside = ns.buildSortedNodes('OUTSIDE', 'CONNECTED', 'INSIDE')
+        // sortedNodes.outside.connectedOutside = ns.buildSortedNodes('OUTSIDE', 'CONNECTED', 'OUTSIDE')
+      }
+
+      return sortedNodes
+    }
+
+    ns.buildSortedNodes = function(pool, mode, extremity_pool) {
+      var g = networkData.g
+      var result = g.nodes()
+      var pool_condition
+      var extremity_pool_condition
+
+      // Filter pool
+      if (pool == 'INSIDE') {
+        pool_condition = function(nid) {
+          return g.getNodeAttribute(nid, ns.attribute.id) == ns.modality.value
+        }
+      } else {
+        pool_condition = function(nid) {
+          return g.getNodeAttribute(nid, ns.attribute.id) != ns.modality.value
+        }
+      }
+      result = result.filter(function(nid){
+        return pool_condition(nid)
+      })
+
+      // Results items
+      result = result.map(function(nid){
+        return {
+          id: nid,
+          node: g.getNodeAttributes(nid)
+        }
+      })
+
+      // Compute edge scores
+      if (extremity_pool == 'INSIDE') {
+        extremity_pool_condition = function(nid) {
+          return g.getNodeAttribute(nid, ns.attribute.id) == ns.modality.value
+        }
+      } else {
+        extremity_pool_condition = function(nid) {
+          return g.getNodeAttribute(nid, ns.attribute.id) != ns.modality.value
+        }
+      }
+      if (mode == 'CITED_FROM') {
+        result.forEach(function(item){
+          item.score = g.inEdges(item.id)
+            .filter(function(eid){
+              return extremity_pool_condition(g.source(eid))
+            })
+            .length
+        })
+      } else if (mode == 'POINTING_TO') {
+        result.forEach(function(item){
+          item.score = g.outEdges(item.id)
+            .filter(function(eid){
+              return extremity_pool_condition(g.target(eid))
+            })
+            .length
+        })
+      } else {
+        result.forEach(function(item){
+          item.score = g.edges(item.id)
+            .filter(function(eid){
+              return extremity_pool_condition(g.opposite(eid))
+            })
+            .length
+        })
+      }
+      result = result.filter(function(item){ return item.score > 0 }) // Ignore if 0 edges
+      result.sort(function(a, b){
+        return b.score - a.score
+      })
+
+      if (result.length > ns.topCut) {
+        result = result.filter(function(item, i){
+          return i < ns.topCut || item.score == result[ns.topCut - 1].score
+        })
+      }
+      return result
+    }
+
+    return ns
+  })
+
+
 
   
