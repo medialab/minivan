@@ -16,6 +16,7 @@ angular.module('app.range', ['ngRoute'])
 	$timeout,
 	$route,
 	$routeParams,
+  $filter,
 	networkData,
 	csvBuilder,
   remarkableNodes
@@ -56,7 +57,7 @@ angular.module('app.range', ['ngRoute'])
     g2.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
   	var xml = Graph.library.gexf.write(g2);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
-    saveAs(blob, $scope.networkData.title + " - " + $scope.modality.value + ".gexf");
+    saveAs(blob, $scope.networkData.title + " - " + $scope.modality.value + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + ".gexf");
   }
 
   $scope.downloadMatrix = function() {
