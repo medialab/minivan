@@ -55,20 +55,21 @@
 							md-mode="indeterminate"
 						></md-progress-circular>
 
-						<!-- <sigma-network
+						<sigma-network
 							ng-if="networkData.loaded && panel == 'map'"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="true"
-							color-att-id="attribute.id"
+							color-att-id="attribute.type == 'ranking-color' ? $parent.attribute.id : undefined"
+							size-att-id="attribute.type == 'ranking-size' ? $parent.attribute.id : undefined"
 							get-camera-state="$parent.getCameraState"
 							node-filter="$parent.nodeFilter"
 							layout-cache-key="attribute.id+':'+modality.value"
 							hard-filter="true"
 							enable-layout="true"
 							layout-fill
-						></sigma-network> -->
+						></sigma-network>
 
-						<!-- <matrix
+						<matrix
 							ng-if="networkData.loaded && panel == 'matrix'"
 							on-node-click="networkNodeClick"
 							on-edge-click="networkEdgeClick"
@@ -77,7 +78,7 @@
 							view-box="$parent.viewBox"
 							node-filter="$parent.nodeFilter"
 							layout-fill
-						></matrix> -->
+						></matrix>
 
 						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
