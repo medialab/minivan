@@ -59,8 +59,6 @@ angular.module('app.modality', ['ngRoute'])
   }
 
   $scope.downloadStats = function() {
-    console.log('$scope.attribute', $scope.attribute)
-    console.log('$scope.modality', $scope.modality)
     // Density
     var density
     if (g.type == 'directed') {
