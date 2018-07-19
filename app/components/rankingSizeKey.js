@@ -36,38 +36,6 @@ angular.module('app.components.rankingSizeKey', [])
 
       var rScale = scalesUtils.getRScale()
 
-      /*
-      $scope.$watch('att', update)
-      $scope.$watch('scales', update)
-
-
-      function update() {
-        var keyElementsCount = 5
-        if ($scope.att.integer){
-          keyElementsCount = Math.min(keyElementsCount, $scope.att.max - $scope.att.min)
-        }
-        var keyElements = []
-        if ($scope.att && $scope.scales) {
-          var i
-          for (i=0; i<keyElementsCount; i++) {
-            keyElements.push(i)
-          }
-          keyElements = keyElements.map(function(d){
-            var val = $scope.att.min + (keyElementsCount - d - 1) * $scope.att.max / (keyElementsCount - 1)
-            if ($scope.att.integer){
-              val = Math.round(val)
-            }
-            var r = $scope.scales.rFactor * rScale($scope.scales.areaScale(val))
-            return {
-              val: val,
-              r: r
-            }
-          })
-        }
-        $scope.keyElements = keyElements
-      }
-      */
-
     	// init
     	redraw()
     	
@@ -80,6 +48,8 @@ angular.module('app.components.rankingSizeKey', [])
   					    width = container.offsetWidth - margin.left - margin.right,
   					    height = container.offsetHeight - margin.top - margin.bottom;
   					
+            var r = $scope.scales.rFactor * rScale($scope.scales.areaScale($scope.modality.average))
+
   					var svg = d3.select(container).append('svg')
   					    .attr('width', width + margin.left + margin.right)
   					    .attr('height', height + margin.top + margin.bottom)
@@ -88,9 +58,9 @@ angular.module('app.components.rankingSizeKey', [])
   					          'translate(' + margin.left + ',' + margin.top + ')');
 
   					svg.append('circle')
-  				      .attr('cx', width/2 )
-  				      .attr('cy', height/2 )
-  				      .attr('r', $scope.scales.rFactor * rScale($scope.scales.areaScale($scope.modality.average)))
+  				      .attr('cx', (r<width/2)?(width/2):(width-r) )
+  				      .attr('cy', height/2)
+  				      .attr('r', r)
   				      .attr('fill', '#999')
   	      })
         }
