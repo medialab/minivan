@@ -238,7 +238,7 @@ angular.module('app.range', ['ngRoute'])
   $scope.downloadNodeList = function() {
   	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
-    saveAs(blob, $scope.networkData.title + " - " + $scope.modality.value + " - Nodes.csv");
+    saveAs(blob, $scope.networkData.title + " - " + $scope.attribute.id + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + " - Nodes.csv");
   }
 
   function buildAllSortedNodes(){
