@@ -27,8 +27,7 @@ angular.module('app.range', ['ngRoute'])
   $scope.matrixDetailLevel = 1
   $scope.modalityListDetailLevel = 1
   $scope.statsDetailLevel = 1
-  // $scope.statsTopCut
-  // $scope.sortedNodes
+
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
   $scope.$watch('statsDetailLevel', buildAllSortedNodes)
@@ -41,6 +40,7 @@ angular.module('app.range', ['ngRoute'])
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "ranking-size" or "ranking-color".', $scope.attribute)
       }
       updateNodeFilter()
+      // Subgraph
       var g = $scope.networkData.g
       $scope.subgraph = g.copy()
       $scope.subgraph.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
@@ -62,175 +62,6 @@ angular.module('app.range', ['ngRoute'])
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Adjacency Matrix - " + $scope.attribute.id + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + ".csv");
   }
-
-  /*$scope.downloadStats = function() {
-    // Density
-    var density
-    if (g.type == 'directed') {
-      density = Graph.library.metrics.density.directedDensity($scope.modality.count, $scope.modalityFlow.count)
-    } else if(g.type == 'undirected') {
-      density = Graph.library.metrics.density.undirectedDensity($scope.modality.count, $scope.modalityFlow.count)
-    } else if(g.type == 'mixed') {
-      density = Graph.library.metrics.density.mixedDensity($scope.modality.count, $scope.modalityFlow.count)
-    }
-
-    var mdLines = []
-    mdLines.push('# Modality statistics')
-    mdLines.push('\n')
-    mdLines.push('\nAttribute: ' + $scope.attribute.name)
-    mdLines.push('\nModality:  ' + $scope.modality.value)
-    mdLines.push('\n')
-    mdLines.push('\n## Profile of the modality subgraph')
-    mdLines.push('\n')
-    mdLines.push('\nNodes:   ' + $scope.modality.count)
-    mdLines.push('\nEdges:   ' + $scope.modalityFlow.count)
-    mdLines.push('\nDensity: ' + density)
-    mdLines.push('\nNormalized internal density: ' + $scope.modalityFlow.nd)
-    mdLines.push('\n')
-    mdLines.push('\n## Internal vs. External connectivity')
-    mdLines.push('\n')
-    mdLines.push('\nInternal: ' + $scope.attribute.data.modalitiesIndex[$scope.modality.value].internalNDensity)
-    mdLines.push('\nExternal: ' + $scope.attribute.data.modalitiesIndex[$scope.modality.value].externalNDensity)
-    mdLines.push('\n')
-    mdLines.push('\n## Inbound vs. Outbound connectivity')
-    mdLines.push('\n')
-    mdLines.push('\n### Number of links')
-    mdLines.push('\nInbound links:  ' + $scope.attribute.data.modalitiesIndex[$scope.modality.value].inboundLinks)
-    mdLines.push('\nOutbound links: ' + $scope.attribute.data.modalitiesIndex[$scope.modality.value].outboundLinks)
-    mdLines.push('\n')
-    mdLines.push('\n### Normalized density (ND)')
-    mdLines.push('\nInbound ND:  ' + $scope.attribute.data.modalitiesIndex[$scope.modality.value].inboundNDensity)
-    mdLines.push('\nOutbound ND: ' + $scope.attribute.data.modalitiesIndex[$scope.modality.value].outboundNDensity)
-    mdLines.push('\n')
-    mdLines.push('\n## Connectivity Balance Breakdown')
-    mdLines.push('\nWhich other modalities cite and are cited by ' + $scope.modality.value + '.')
-    mdLines.push('\nExpressed both in number of links and normalized density (ND).')
-    mdLines.push('\n')
-    mdLines.push('\nNote: tab separated, can be copy-pasted in a spreadsheet')
-    mdLines.push('\n')
-    mdLines.push('\nOther modality\tEdges to original modality\tND to original modality\tEdges from original modality\tND from original modality')
-    var sortedValues = $scope.attribute.data.modalities.slice(0).sort(function(v1, v2){
-      return $scope.attribute.data.modalitiesIndex[v2].nodes - $scope.attribute.data.modalitiesIndex[v1].nodes
-    })
-    sortedValues
-      .filter(function(v2){ return v2 != $scope.modality.value })
-      .map(function(v2){
-        return {
-          label: v2,
-          ndToVal: $scope.attribute.data.modalityFlow[v2][$scope.modality.value].nd,
-          linksToVal: $scope.attribute.data.modalityFlow[v2][$scope.modality.value].count,
-          ndFromVal: $scope.attribute.data.modalityFlow[$scope.modality.value][v2].nd,
-          linksFromVal: $scope.attribute.data.modalityFlow[$scope.modality.value][v2].count
-        }
-      })
-      .forEach(function(d){
-        mdLines.push('\n' + d.label + '\t' + d.linksToVal + '\t' + d.ndToVal + '\t' + d.linksFromVal + '\t' + d.ndFromVal + '')
-      })
-    mdLines.push('\n')
-    mdLines.push('\n## Remarkable nodes')
-    mdLines.push('\n')
-    if ($scope.sortedNodes.inside.citedFromInside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' ENDO-CITED - Nodes of original modality most cited from original modality')
-      $scope.sortedNodes.inside.citedFromInside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nEdges from original modality: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.inside.citedFromOutside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' EXO-CITED - Nodes of original modality most cited from other modalities')
-      $scope.sortedNodes.inside.citedFromOutside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nEdges from other modalities: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.inside.pointingToInside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' ENDO-CITING - Nodes of original modality most pointing to original modality')
-      $scope.sortedNodes.inside.pointingToInside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nEdges to original modality: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.inside.pointingToOutside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' EXO-CITING - Nodes of original modality most pointing to other modalities')
-      $scope.sortedNodes.inside.pointingToOutside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nEdges to other modalities: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.inside.connectedInside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' ENDO-CONNECTED - Nodes of original modality most tied to original modality')
-      $scope.sortedNodes.inside.connectedInside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nEdges with original modality: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.inside.connectedOutside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' EXO-CONNECTED - Nodes of original modality most tied to other modalities')
-      $scope.sortedNodes.inside.connectedOutside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nEdges with other modalities: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.outside.citedFromInside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' EXTERNAL-TARGETS - Nodes of other modalities most cited from original modality')
-      $scope.sortedNodes.outside.citedFromInside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nModality:   ' + d.node[$scope.attribute.id])
-        mdLines.push('\nEdges from original modality: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.outside.pointingToInside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' EXTERNAL-SOURCES - Nodes of other modalities most pointing to original modality')
-      $scope.sortedNodes.outside.pointingToInside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nModality:   ' + d.node[$scope.attribute.id])
-        mdLines.push('\nEdges to original modality: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    if ($scope.sortedNodes.outside.connectedInside.length > 0) {
-      mdLines.push('\n')
-      mdLines.push('\n### Top ' + $scope.statsTopCut + ' EXTERNAL-NEIGHBORS - Nodes of other modalities most tied to original modality')
-      $scope.sortedNodes.outside.connectedInside.forEach(function(d){
-        mdLines.push('\n')
-        mdLines.push('\nNode label: ' + d.node.label)
-        mdLines.push('\nModality:   ' + d.node[$scope.attribute.id])
-        mdLines.push('\nEdges edges with original modality: ' + d.score)
-      })
-      mdLines.push('\n')
-    }
-    mdLines.push('\n')
-    mdLines.push('\n')
-    mdLines.push('\n')
-    mdLines.push('\n')
-    mdLines.push('\n')
-
-    var blob = new Blob(mdLines, {'type':'text;charset=utf-8'});
-    saveAs(blob, $scope.networkData.title + " - Statistics of " + $scope.attribute.name + " = " + $scope.modality.value + ".txt");
-  }*/
 
   $scope.downloadNodeList = function() {
   	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
