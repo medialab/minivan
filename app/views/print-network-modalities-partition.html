@@ -122,7 +122,7 @@
 				curved-edges="curvedEdges"
 				oversampling="oversampling"
 				clear-edges-around-nodes="highQuality"
-				layout-cache-key="attribute.id+':'+modality.value"
+				layout-cache-key="useLayoutCache ? attribute.id+':'+modality.value : undefined"
 				scales="scales"
 				x="camX || 0"
 				y="camY || 0"

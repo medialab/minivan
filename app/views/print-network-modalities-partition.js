@@ -20,6 +20,7 @@ angular.module('app.print-network-modalities-partition', ['ngRoute'])
 	$scope.camX = $location.search().x
 	$scope.camY = $location.search().y
 	$scope.camRatio = $location.search().r
+	$scope.useLayoutCache = $location.search().layoutcache == 'true'
 
 	$scope.oversampling = 2
 	$scope.nodeSize = 10

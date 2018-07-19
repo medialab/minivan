@@ -256,7 +256,7 @@ angular.module('app.range', ['ngRoute'])
       }
 
       // Node filter imprint (used in URLs)
-      $scope.nodeFilterImprint = $scope.rangeMin + ',' + $scope.rangeMax
+      $scope.nodeFilterImprint = JSON.stringify([[$scope.rangeMin,$scope.rangeMax]])
     }
   }
 
