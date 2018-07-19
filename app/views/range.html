@@ -63,7 +63,7 @@
 							size-att-id="attribute.type == 'ranking-size' ? $parent.attribute.id : undefined"
 							get-camera-state="$parent.getCameraState"
 							node-filter="$parent.nodeFilter"
-							layout-cache-key="attribute.id+':'+modality.value"
+							layout-cache-key="attribute.id+':'+rangeMin+'-'+rangeMax"
 							hard-filter="true"
 							enable-layout="true"
 							layout-fill
