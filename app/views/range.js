@@ -44,7 +44,9 @@ angular.module('app.range', ['ngRoute'])
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "ranking-size" or "ranking-color".', $scope.attribute)
       }
       updateNodeFilter()
-      // buildAllSortedNodes()
+      var g = $scope.networkData.g
+      $scope.subgraph = g.copy()
+      $scope.subgraph.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
     }
   })
   
@@ -53,9 +55,7 @@ angular.module('app.range', ['ngRoute'])
   }
 
   $scope.downloadGEXF = function() {
-    var g2 = $scope.networkData.g.copy()
-    g2.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
-  	var xml = Graph.library.gexf.write(g2);
+    var xml = Graph.library.gexf.write($scope.subgraph);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - " + $scope.attribute.id + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + ".gexf");
   }
