@@ -125,9 +125,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
           if ($scope.layout) {
             $scope.layout.kill()
           }
-          var sigma = undefined
-          var renderer = undefined
-
+          renderer.kill()
         })
 
         /// Functions
