@@ -37,9 +37,6 @@ angular.module('app.range', ['ngRoute'])
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
       $scope.rangeMin = +$routeParams.rangeMin
       $scope.rangeMax = +$routeParams.rangeMax
-      console.log('attribute', $scope.attribute)
-      // $scope.modality = $scope.attribute.modalities.filter(function(mod){return mod.value == $routeParams.modalityValue})[0]
-      // $scope.modalityFlow = $scope.attribute.data.modalityFlow[$scope.modality.value][$scope.modality.value]
       if ($scope.attribute.type !== 'ranking-size' && $scope.attribute.type !== 'ranking-color') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "ranking-size" or "ranking-color".', $scope.attribute)
       }
