@@ -122,11 +122,15 @@ angular.module('app.modalities-ranking', ['ngRoute'])
       }
 
       // Node filter imprint (used in URLs)
-      $scope.nodeFilterImprint = $scope.modalities
-        .map(function(mod){
+      var arrayOfRanges = $scope.modalities
+        .filter(function(mod){
           return $scope.modalitiesSelection[mod.value]
         })
-        .join(',')
+        .map(function(mod){
+          return [mod.min, mod.max]
+        })
+      // Note: here we could simplify the array of ranges
+      $scope.nodeFilterImprint = JSON.stringify(arrayOfRanges)
     }
   }
 

@@ -38,43 +38,20 @@ angular.module('app.print-network-modalities-ranking', ['ngRoute'])
 			
 			// Rebuild modalities
       $scope.modalities = scalesUtils.buildModalities($scope.attribute)
+			$scope.modalityFilter = function(){ return true } // Legend shows all sizes anyway
 
       // Rebuild node filter
-      $scope.modalitiesSelection = {}
-      var modSelection = $location.search().filter.split(',').map(function(d){ return d=='true' })
-      $scope.modalities.forEach(function(mod, i){
-        $scope.modalitiesSelection[mod.value] = modSelection[i]
-      })
-      if ($scope.modalities.some(function(mod){ return $scope.modalitiesSelection[mod.value]})) {
-        $scope.nodeFilter = function(nid){
-          var nodeValue = $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
-          var matchingModalities
-          if ($scope.attribute.integer) {
-            matchingModalities = $scope.modalities.filter(function(mod){
-              return (nodeValue >= mod.min && nodeValue <= mod.max)
-            })
-          } else {
-            matchingModalities = $scope.modalities.filter(function(mod){
-              return (nodeValue >= mod.min && nodeValue < mod.max)
-                || (mod.pmax == 1 && nodeValue >= mod.min && nodeValue <= mod.max * 1.00000000001)
-            })
-          }
-          if (matchingModalities.length == 0) {
-            console.error('[Error] node ', nid, 'cannot be found in the scale of ', $scope.attribute.name, nodeValue)
-            return
-          }
-          if (matchingModalities.length > 1) {
-            console.warn('Node ', nid, 'matches several modality ranges of ', $scope.attribute.name, matchingModalities)
-          }
-          return $scope.modalitiesSelection[matchingModalities[0].value]
-        }
-        $scope.modalityFilter = function(modValue) {
-        	return $scope.modalitiesSelection[modValue]
-        }
+			$scope.ranges = JSON.parse($location.search().filter)
+      if ($scope.ranges.length > 0) {
+				$scope.nodeFilter = function(nid){
+					var nodeValue = $scope.networkData.g.getNodeAttribute(nid, $scope.attribute.id)
+					return $scope.ranges.some(function(range){
+						return nodeValue >= range[0] && nodeValue <= range[1]
+					})
+				}
       } else {
-        // All unchecked: show all
+      	// All unchecked: show all
         $scope.nodeFilter = function(){ return true }
-        $scope.modalityFilter = function(){ return true }
       }
 		}
 	})
