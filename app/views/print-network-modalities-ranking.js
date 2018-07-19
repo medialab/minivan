@@ -37,7 +37,7 @@ angular.module('app.print-network-modalities-ranking', ['ngRoute'])
 			$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
 			
 			// Rebuild modalities
-      $scope.modalities = scalesUtils.buildModalities($scope.attribute)
+      $scope.modalities = scalesUtils.buildModalities($scope.attribute, $location.search().deciles == 'true')
 			$scope.modalityFilter = function(){ return true } // Legend shows all sizes anyway
 
       // Rebuild node filter
