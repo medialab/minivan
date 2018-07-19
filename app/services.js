@@ -4,10 +4,15 @@
 
 angular.module('app.services', [])
 
-	.factory('networkData', ['$http', 'networkProcessor', '$timeout', function($http, networkProcessor, $timeout){
+	.factory('networkData', function($http, networkProcessor, $timeout, netBundleManager){
     var ns = {}     // namespace
 
     ns.loaded = false
+
+    // Test
+    netBundleManager.importGEXF('data/sample rio+20.gexf', function(){
+      
+    })
 
     // Demo sample
     $http.get('data/sample rio+20.gexf')
@@ -176,7 +181,7 @@ angular.module('app.services', [])
       })
 
     return ns
-  }])
+  })
 
   .factory('networkProcessor', function(){
     var ns = {}     // namespace
