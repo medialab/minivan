@@ -4,7 +4,7 @@
 
 angular.module('minivan.netBundleManager', [])
 
-	.factory('netBundleManager', function($http, $timeout){
+	.factory('netBundleManager', function($http, $timeout, paletteGenerator){
     var ns = {}     // namespace
     ns.bundleVersion = '0.1alpha'
 
@@ -30,6 +30,9 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns.importGEXF = function(fileLocation, callback, verbose) {
+    	var settings = {}
+    	settings.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
+
     	$http.get(fileLocation)
       .then(function(r){
       	var bundle = {}
@@ -47,9 +50,111 @@ angular.module('minivan.netBundleManager', [])
 	      ns.setBundleAttribute(bundle, 'description', 		bundle.g._attributes.description, verbose)
 	      ns.setBundleAttribute(bundle, 'bundleVersion', 	ns.bundleVersion, verbose)
 
-	      // Add the node attributes
+	      // Index all node attributes from GEXF
+	      var nodeAttributesIndex = {}
+	      var g = bundle.g
+	      g.nodes().forEach(function(nid){
+	      	var n = g.getNodeAttributes(nid)
+	      	d3.keys(n).forEach(function(k){
+	      		if (nodeAttributesIndex[k]) {
+	      			nodeAttributesIndex[k].count++
+	      		} else {
+	      			nodeAttributesIndex[k] = {count:1}
+	      		}
+	      	})
+	      })
+
+      	// Analyze the data of each node attribute
+      	d3.keys(nodeAttributesIndex).forEach(function(k){
+      		var attData = nodeAttributesIndex[k]
+      		if(settings.ignored_node_attributes.indexOf(k) >= 0) {
+      			attData.type = 'ignore'
+      			return
+      		}
+
+      		// Gather variable types from the nodes
+      		attData.modalityTypes = {}
+					g.nodes().forEach(function(nid){
+						var t = getType(g.getNodeAttribute(nid, k))
+						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
+					})
+
+					// Infer a data type
+					if (attData.modalityTypes.string !== undefined) {
+						attData.dataType = 'string'
+					} else if (attData.modalityTypes.float !== undefined) {
+						attData.dataType = 'float'
+					} else if (attData.modalityTypes.integer !== undefined) {
+						attData.dataType = 'integer'
+					} else {
+						attData.dataType = 'error'
+					}
+
+					// Aggregate the distribution of modalities
+					attData.modalities = {}
+					g.nodes().forEach(function(nid){
+						var v = g.getNodeAttribute(nid, k)
+						attData.modalities[v] = (attData.modalities[v] || 0) + 1
+					})
+
+					// Build stats for the distribution
+					attData.stats = {}
+					var modalityCountsArray = d3.values(attData.modalities)
+					attData.stats.differentModalities = modalityCountsArray.length
+					attData.stats.sizeOfSmallestModality = d3.min(modalityCountsArray)
+					attData.stats.sizeOfBiggestModality = d3.max(modalityCountsArray)
+					attData.stats.medianSize = d3.median(modalityCountsArray)
+					attData.stats.deviation = d3.deviation(modalityCountsArray)
+					attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(d){return d==1}).length
+					attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.01}).length
+					attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.1}).length
+					
+					// Decide what how the attribute should be visualized
+					if (attData.dataType == 'string') {
+						if (attData.stats.modalitiesAbove10Percent == 0) {
+							attData.type = 'ignore'
+						} else {
+							attData.type = 'partition'
+						}
+					} else if (attData.dataType == 'float') {
+						attData.type = 'ranking-size'
+					} else if (attData.dataType == 'integer') {
+						attData.type = 'ranking-size'
+					} else {
+						attData.type = 'ignore'
+					}
+      	})
+
+      	// Create metadata for node attributes
 	      bundle.nodeAttributes = []
-	      console.log(bundle)
+	      d3.keys(nodeAttributesIndex).forEach(function(k){
+	      	var attData = nodeAttributesIndex[k]
+	      	if (attData.type != 'ignore') {
+	      		var na = {
+	      			id: k,
+	      			name: toTitleCase(k),
+	      			count: attData.count,
+	      			type: attData.type
+	      		}
+	      		// Default settings for partition
+	      		if (na.type == 'partition') {
+	      			na.modalities = d3.keys(attData.modalities).map(function(m){
+	      				return {
+	      					value: m,
+	      					count: attData.modalities[m],
+	      					color: '#000' // TODO
+	      				}
+	      			})
+	      			var colors = getColors(na.modalities.length)
+	      		}
+	      		bundle.nodeAttributes.push(na)
+	      	}
+      	})
+
+
+	      console.log('nodeAttributesIndex', nodeAttributesIndex)
+
+	      console.log('bundle', bundle)
 
 	    	callback(bundle)
 
@@ -272,6 +377,49 @@ angular.module('minivan.netBundleManager', [])
         return candidates.map(function(d){return d * heuristicRatio})
       }
     }
+
+    function toTitleCase(str) {
+	    return str.replace(
+        /\w\S*/g,
+        function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+	    )
+		}
+
+		function getType(str){
+			// Adapted from http://stackoverflow.com/questions/16775547/javascript-guess-data-type-from-string
+			if(str === undefined) str = 'undefined';
+		  if (typeof str !== 'string') str = str.toString();
+		  var nan = isNaN(Number(str));
+		  var isfloat = /^\d*(\.|,)\d*$/;
+		  var commaFloat = /^(\d{0,3}(,)?)+\.\d*$/;
+		  var dotFloat = /^(\d{0,3}(\.)?)+,\d*$/;
+		  if (!nan){
+		      if (parseFloat(str) === parseInt(str)) return "integer";
+		      else return "float";
+		  }
+		  else if (isfloat.test(str) || commaFloat.test(str) || dotFloat.test(str)) return "float";
+		  else return "string";
+		}
+
+		function getColors(count) {
+			// Generate colors (as Chroma.js objects)
+			var colors = paletteGenerator.generate(
+			  count, // Colors
+			  function(color){ // This function filters valid colors
+			    var hcl = color.hcl();
+			    return hcl[1]>=25.59 && hcl[1]<=55.59
+			      	&& hcl[2]>=60.94 && hcl[2]<=90.94;
+			  },
+			  false, // Using Force Vector instead of k-Means
+			  50, // Steps (quality)
+			  false, // Ultra precision
+			  'Default' // Color distance type (colorblindness)
+			);
+			// Sort colors by differenciation first
+			colors = paletteGenerator.diffSort(colors, 'Default')
+		}
 
     return ns
   })
