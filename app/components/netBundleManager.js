@@ -146,6 +146,12 @@ angular.module('minivan.netBundleManager', [])
 	      				}
 	      			})
 	      			var colors = getColors(na.modalities.length)
+	      			na.modalities.sort(function(a, b){
+	      				return b.count - a.count
+	      			})
+	      			na.modalities.forEach(function(m, i){
+	      				m.color = colors[i].toString()
+	      			})
 	      		}
 	      		bundle.nodeAttributes.push(na)
 	      	}
@@ -408,9 +414,9 @@ angular.module('minivan.netBundleManager', [])
 			var colors = paletteGenerator.generate(
 			  count, // Colors
 			  function(color){ // This function filters valid colors
-			    var hcl = color.hcl();
-			    return hcl[1]>=25.59 && hcl[1]<=55.59
-			      	&& hcl[2]>=60.94 && hcl[2]<=90.94;
+			    var hcl = d3.hcl(color)
+			    return hcl.c>=25.59 && hcl.c<=55.59
+			      	&& hcl.l>=60.94 && hcl.l<=90.94;
 			  },
 			  false, // Using Force Vector instead of k-Means
 			  50, // Steps (quality)
@@ -419,6 +425,7 @@ angular.module('minivan.netBundleManager', [])
 			);
 			// Sort colors by differenciation first
 			colors = paletteGenerator.diffSort(colors, 'Default')
+			return colors
 		}
 
     return ns

@@ -8,7 +8,7 @@ angular.module('iwanthue.paletteGenerator', [])
 	var ns = {}     // namespace
 
 	ns.generate = function(colorsCount, checkColor, forceMode, quality, ultra_precision, distanceType) {
-		var i
+		var i, j, l, a, b
 
 		// Default
 		if (colorsCount === undefined)
@@ -28,8 +28,8 @@ angular.module('iwanthue.paletteGenerator', [])
 			
 			// It will be necessary to check if a Lab color exists in the rgb space.
 			function checkLab(lab){
-				var color = chroma.lab(lab[0], lab[1], lab[2])
-				return ns.validateLab(lab) && checkColor(color)
+				var rgb = d3.rgb(d3.lab(lab[0], lab[1], lab[2]))
+				return ns.validateLab(lab) && checkColor(rgb)
 			}
 			
 			// Init
@@ -82,6 +82,7 @@ angular.module('iwanthue.paletteGenerator', [])
 					}
 				}
 				// Apply Force
+				var candidateLab
 				for (i=0; i<colors.length; i++) {
 					var color = colors[i]
 					var displacement = speed * Math.sqrt(Math.pow(vectors[i].dl, 2)+Math.pow(vectors[i].da, 2)+Math.pow(vectors[i].db, 2))
@@ -94,16 +95,14 @@ angular.module('iwanthue.paletteGenerator', [])
 					}
 				}
 			}
-			return colors.map(function(lab){ return chroma.lab(lab[0], lab[1], lab[2]) })
+			return colors.map(function(lab){ return d3.lab(lab[0], lab[1], lab[2]).rgb() })
 			
 		} else {
 			
 			// K-Means Mode
 			function checkColor2(lab){
 				// Check that a color is valid: it must verify our checkColor condition, but also be in the color space
-				var color = chroma.lab(lab)
-				var hcl = color.hcl()
-				return ns.validateLab(lab) && checkColor(color)
+				return ns.validateLab(lab) && checkColor(d3.rgb(d3.lab(lab[0], lab[1], lab[2])))
 			}
 			
 			var kMeans = []
@@ -216,21 +215,26 @@ angular.module('iwanthue.paletteGenerator', [])
 					})
 				}
 			}
-			return kMeans.map(function(lab){ return chroma.lab(lab[0], lab[1], lab[2]) })
+			return kMeans.map(function(lab){ return d3.lab(lab[0], lab[1], lab[2]).rgb() })
 		}
 	}
 
 	ns.diffSort = function(colorsToSort, distanceType){
+		var i
+
 		// Sort
 		var diffColors = [colorsToSort.shift()]
 		while(colorsToSort.length>0){
 			var index = -1
 			var maxDistance = -1
+			var candidate_index
 			for (candidate_index=0; candidate_index<colorsToSort.length; candidate_index++) {
 				var d = Infinity
 				for (i=0; i<diffColors.length; i++) {
-					var colorA = colorsToSort[candidate_index].lab()
-					var colorB = diffColors[i].lab()
+					var d3labA = d3.lab(colorsToSort[candidate_index])
+					var colorA = [d3labA.l, d3labA.a, d3labA.b]
+					var d3labB = d3.lab(diffColors[i])
+					var colorB = [d3labB.l, d3labB.a, d3labB.b]
 					var d = ns.getColorDistance(colorA, colorB, distanceType)
 				}
 				if (d > maxDistance) {
@@ -240,7 +244,7 @@ angular.module('iwanthue.paletteGenerator', [])
 			}
 			var color = colorsToSort[index]
 			diffColors.push(color)
-			colorsToSort = colorsToSort.filter(function(c,i){ return i!=index })
+			colorsToSort = colorsToSort.filter(function(c, i){ return i!=index })
 		}
 		return diffColors
 	}
@@ -368,7 +372,7 @@ angular.module('iwanthue.paletteGenerator', [])
 		var confuse_yint = ns.confusionLines[type].yint;
 
 		// Code adapted from http://galacticmilk.com/labs/Color-Vision/Javascript/Color.Vision.Simulate.js
-		var color = chroma.lab(lab[0], lab[1], lab[2]);
+		var color = d3.lab(lab[0], lab[1], lab[2]).rgb()
 		var sr = color.rgb()[0];
 		var sg = color.rgb()[1];
 		var sb = color.rgb()[2];
@@ -428,8 +432,9 @@ angular.module('iwanthue.paletteGenerator', [])
 		dr = sr * (1.0 - amount) + dr * amount; 
 		dg = sg * (1.0 - amount) + dg * amount;
 		db = sb * (1.0 - amount) + db * amount;
-		var dcolor = chroma.rgb(dr, dg, db);
-		var result = dcolor.lab()
+		var dcolor = d3.rgb(dr, dg, db);
+		var resultd3lab = d3.lab(dcolor)
+		var result = [resultd3lab.l, resultd3lab.a, resultd3lab.b]
 		ns.simulate_cache[key] = result
 		return result
 	}
