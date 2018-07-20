@@ -134,15 +134,15 @@ angular.module('minivan.netBundleManager', [])
 	      			id: k,
 	      			name: toTitleCase(k),
 	      			count: attData.count,
-	      			type: attData.type
+	      			type: attData.type,
+	      			integer: attData.dataType == 'integer'
 	      		}
-	      		// Default settings for partition
 	      		if (na.type == 'partition') {
+		      		// Default settings for partition
 	      			na.modalities = d3.keys(attData.modalities).map(function(m){
 	      				return {
 	      					value: m,
-	      					count: attData.modalities[m],
-	      					color: '#000' // TODO
+	      					count: attData.modalities[m]
 	      				}
 	      			})
 	      			var colors = getColors(na.modalities.length)
@@ -152,6 +152,16 @@ angular.module('minivan.netBundleManager', [])
 	      			na.modalities.forEach(function(m, i){
 	      				m.color = colors[i].toString()
 	      			})
+	      		} else if (na.type == 'ranking-color') {
+	      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
+	      			na.min = extent[0]
+	      			na.max = extent[1]
+    					na.colorScale = getRandomColorScale()
+	      		} else if (na.type == 'ranking-size') {
+	      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
+	      			na.min = extent[0]
+	      			na.max = extent[1]
+    					na.areaScaling = {min:10, max: 100, interpolation: 'linear'}
 	      		}
 	      		bundle.nodeAttributes.push(na)
 	      	}
@@ -167,148 +177,6 @@ angular.module('minivan.netBundleManager', [])
 	    	return
 
 	    	// TODO: translate that in the code above
-        ns.nodeAttributes = []
-        ns.nodeAttributes.push({
-          id: 'Category',
-          name: 'Category',
-          type: 'partition',
-          modalities: [
-            {
-              value: 'Social Ecology',
-              count: 134,
-              color: '#dcb1d5'
-            },{
-              value: 'Green-economy',
-              count: 120,
-              color: '#9adbc1'
-            },{
-              value: 'Deep Ecology',
-              count: 85,
-              color: '#dac899'
-            },{
-              value: 'New Ecologism',
-              count: 20,
-              color: '#84c9e9'
-            },{
-              value: 'Others',
-              count: 7,
-              color: '#AAAAAA'
-            }
-          ]
-        })
-        ns.nodeAttributes.push({
-          id: 'Language',
-          name: 'Language',
-          type: 'partition',
-          modalities: [
-            {
-              value: 'English',
-              count: 153,
-              color: '#e4a3d6'
-            },{
-              value: 'Portuguese',
-              count: 120,
-              color: '#6bdcc2'
-            },{
-              value: 'All',
-              count: 63,
-              color: '#e7b27c'
-            },{
-              value: 'Spanish',
-              count: 18,
-              color: '#78c3ec'
-            },{
-              value: 'French',
-              count: 12,
-              color: '#bad68d'
-            }
-          ]
-        })
-        ns.nodeAttributes.push({
-          id: 'Nature of institution:',
-          name: 'Nature of institution',
-          type: 'partition',
-          modalities: [
-            {
-              value: 'NGO',
-              count: 171,
-              color: '#e4a3d6'
-            },{
-              value: 'Trans-institutional',
-              count: 42,
-              color: '#6bdcc2'
-            },{
-              value: 'Individual',
-              count: 32,
-              color: '#e7b27c'
-            },{
-              value: 'Educational',
-              count: 25,
-              color: '#78c3ec'
-            },{
-              value: 'Social Movement',
-              count: 23,
-              color: '#bad68d'
-            },{
-              value: 'Event',
-              count: 22,
-              color: '#AAAAAA'
-            },{
-              value: 'Media',
-              count: 20,
-              color: '#AAAAAA'
-            },{
-              value: 'Governmental',
-              count: 15,
-              color: '#AAAAAA'
-            },{
-              value: 'Business',
-              count: 9,
-              color: '#AAAAAA'
-            },{
-              value: 'Religious',
-              count: 6,
-              color: '#AAAAAA'
-            },{
-              value: 'Politic',
-              count: 1,
-              color: '#AAAAAA'
-            }
-          ]
-        })
-        ns.nodeAttributes.push({
-          id: 'indegree',
-          name: 'Ranking A',
-          type: 'ranking-size',
-          min: 0,
-          max: 51,
-          areaScaling: {
-            min: 6,
-            max: 36,
-            interpolation: 'linear'
-          }
-        })
-        ns.nodeAttributes.push({
-          id: 'degree',
-          name: 'Ranking B',
-          type: 'ranking-color',
-          min: 0,
-          max: 60,
-          colorScale: 'interpolateCubehelixDefault'
-        })
-        ns.nodeAttributes.push({
-          id: 'outdegree',
-          name: 'Ranking C',
-          type: 'ranking-size',
-          integer: true,
-          min: 0,
-          max: 47,
-          areaScaling: {
-            min: 2,
-            max: 100,
-            interpolation: 'pow-2'
-          }
-        })
 
         // Consolidate
         networkProcessor.consolidate(ns)
@@ -426,6 +294,20 @@ angular.module('minivan.netBundleManager', [])
 			// Sort colors by differenciation first
 			colors = paletteGenerator.diffSort(colors, 'Default')
 			return colors
+		}
+
+		function getRandomColorScale() {
+			var scales = [
+				'interpolatePuRd',
+				'interpolateYlGnBu',
+				'interpolateYlOrBr',
+				'interpolateGnBu',
+				'interpolateCubehelixDefault',
+				'interpolateMagma',
+				'interpolateInferno',
+				'interpolateViridis'
+			]
+			return scales[Math.floor(Math.random() * scales.length)]
 		}
 
     return ns
