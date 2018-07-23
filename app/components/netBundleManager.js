@@ -124,11 +124,7 @@ angular.module('minivan.netBundleManager', [])
         // Consolidate (indexes...)
 	      ns._consolidateBundle(bundle)
 
-	      console.log('bundle', bundle)
-
 	    	callback(bundle)
-
-	    	return
       }, function(){
         console.error('Error loading file at location:', fileLocation)
       })
@@ -190,6 +186,13 @@ angular.module('minivan.netBundleManager', [])
 		}
 
     ns._createAttributeMetaData = function(g, attributesIndex, attributes) {
+    	var settings = {}
+    	settings.max_colors = 10
+    	settings.min_proportion_for_a_color = 0.01
+    	settings.default_color = '#AAA'
+    	settings.min_node_size = 1
+    	settings.max_node_size = 10
+
       d3.keys(attributesIndex).forEach(function(k){
       	var attData = attributesIndex[k]
       	if (attData.type != 'ignore') {
@@ -208,12 +211,21 @@ angular.module('minivan.netBundleManager', [])
       					count: attData.modalities[m]
       				}
       			})
-      			var colors = ns.getColors(att.modalities.length)
+      			var colors = ns.getColors(
+      				Math.min(
+      					settings.max_colors,
+      					att.modalities
+      						.filter(function(m){
+      							return m.count/g.order >= settings.min_proportion_for_a_color
+      						})
+      						.length
+      				)
+    				)
       			att.modalities.sort(function(a, b){
       				return b.count - a.count
       			})
       			att.modalities.forEach(function(m, i){
-      				m.color = colors[i].toString()
+      				m.color = (colors[i] || settings.default_color).toString()
       			})
       		} else if (att.type == 'ranking-color') {
       			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
@@ -224,7 +236,11 @@ angular.module('minivan.netBundleManager', [])
       			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
       			att.min = extent[0]
       			att.max = extent[1]
-  					att.areaScaling = {min:10, max: 100, interpolation: 'linear'}
+  					att.areaScaling = {
+  						min: settings.min_node_size,
+  						max: settings.max_node_size,
+  						interpolation: 'linear'
+  					}
       		}
       		attributes.push(att)
       	}
