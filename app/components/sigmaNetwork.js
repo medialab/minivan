@@ -301,11 +301,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
             }
             $scope.layout = new Graph.library.FA2Layout($scope.g, {
               settings: {
-                barnesHutOptimize: g.order > 2000,
+                barnesHutOptimize: $scope.g.order > 2000,
                 strongGravityMode: true,
                 gravity: 0.05,
                 scalingRatio: 10,
-                slowDown: 1 + Math.log(g.order)
+                slowDown: 1 + Math.log($scope.g.order)
               }
             });
             if (

@@ -129,13 +129,6 @@ angular.module('minivan.netBundleManager', [])
 	    	callback(bundle)
 
 	    	return
-
-	    	// TODO: translate that in the code above
-
-        // Simulate long loading time
-        $timeout(function(){
-          ns.loaded = true
-        }, 500)
       }, function(){
         console.error('Error loading file at location:', fileLocation)
       })

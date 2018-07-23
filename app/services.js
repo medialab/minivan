@@ -9,13 +9,19 @@ angular.module('app.services', [])
 
     ns.loaded = false
 
-    // Test
-    netBundleManager.importGEXF('data/sample rio+20.gexf', function(){
-      
+    // Demo sample via bundle manager
+    netBundleManager.importGEXF('data/sample rio+20.gexf', function(bundle){
+      // Simulate long loading time
+      $timeout(function(){
+        d3.keys(bundle).forEach(function(k){
+          ns[k] = bundle[k]
+        })
+        ns.loaded = true
+      }, 500)
     })
 
     // Demo sample
-    $http.get('data/sample rio+20.gexf')
+    /*$http.get('data/sample rio+20.gexf')
       .then(function(r){
         networkProcessor.process(ns, r.data)
 
@@ -178,7 +184,7 @@ angular.module('app.services', [])
         }, 500)
       }, function(){
         console.error('Error loading sample network')
-      })
+      })*/
 
     return ns
   })
@@ -500,6 +506,8 @@ angular.module('app.services', [])
     }
 
     ns.buildModalities_size = function(attribute, useDeciles) {
+      var g = networkData.g
+
       // Size scales
       var areaScale = ns.getAreaScale(attribute.min, attribute.max, attribute.areaScaling.min, attribute.areaScaling.max, attribute.areaScaling.interpolation)
       var rScale = ns.getRScale()
@@ -633,6 +641,8 @@ angular.module('app.services', [])
     }
 
     ns.buildModalities_color = function(attribute, useDeciles) {
+      var g = networkData.g
+
       // Color scales
       var colorScale = ns.getColorScale(attribute.min, attribute.max, attribute.colorScale)
 
@@ -755,6 +765,7 @@ angular.module('app.services', [])
 
     // Build data for distribution of ranking
     ns.buildRankingDistribution = function(attribute, bandsCount, niceScale) {
+      var g = networkData.g
       var values = g.nodes().map(function(nid){ return g.getNodeAttribute(nid, attribute.id) })
       var valuesExtent = d3.extent(values)
       var lowerBound = valuesExtent[0]
@@ -795,6 +806,7 @@ angular.module('app.services', [])
 
     // Get natural modalities for a ranking, comparable to buildRankingDistribution
     ns.getIntegerRankingModalities = function(attribute) {
+      var g = networkData.g
       var modalitiesIndex = {}
       var min = Infinity
       var max = -Infinity
@@ -824,6 +836,7 @@ angular.module('app.services', [])
 
     // Sort the nodes, by default or by an attribute
     ns.sortNodes = function(nodes, attributeId) {
+      var g = networkData.g
       if (attributeId) {
         if (networkData.loaded) {
           var att = networkData.nodeAttributesIndex[attributeId]
