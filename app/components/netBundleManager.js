@@ -32,6 +32,7 @@ angular.module('minivan.netBundleManager', [])
     ns.importGEXF = function(fileLocation, callback, verbose) {
     	var settings = {}
     	settings.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
+    	settings.ignored_edge_attributes = ['label', 'color']
 
     	$http.get(fileLocation)
       .then(function(r){
@@ -78,97 +79,50 @@ angular.module('minivan.netBundleManager', [])
 						var t = getType(g.getNodeAttribute(nid, k))
 						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
 					})
-
-					// Infer a data type
-					if (attData.modalityTypes.string !== undefined) {
-						attData.dataType = 'string'
-					} else if (attData.modalityTypes.float !== undefined) {
-						attData.dataType = 'float'
-					} else if (attData.modalityTypes.integer !== undefined) {
-						attData.dataType = 'integer'
-					} else {
-						attData.dataType = 'error'
-					}
-
-					// Aggregate the distribution of modalities
-					attData.modalities = {}
-					g.nodes().forEach(function(nid){
-						var v = g.getNodeAttribute(nid, k)
-						attData.modalities[v] = (attData.modalities[v] || 0) + 1
-					})
-
-					// Build stats for the distribution
-					attData.stats = {}
-					var modalityCountsArray = d3.values(attData.modalities)
-					attData.stats.differentModalities = modalityCountsArray.length
-					attData.stats.sizeOfSmallestModality = d3.min(modalityCountsArray)
-					attData.stats.sizeOfBiggestModality = d3.max(modalityCountsArray)
-					attData.stats.medianSize = d3.median(modalityCountsArray)
-					attData.stats.deviation = d3.deviation(modalityCountsArray)
-					attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(d){return d==1}).length
-					attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.01}).length
-					attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.1}).length
-					
-					// Decide what how the attribute should be visualized
-					if (attData.dataType == 'string') {
-						if (attData.stats.modalitiesAbove10Percent == 0) {
-							attData.type = 'ignore'
-						} else {
-							attData.type = 'partition'
-						}
-					} else if (attData.dataType == 'float') {
-						attData.type = 'ranking-size'
-					} else if (attData.dataType == 'integer') {
-						attData.type = 'ranking-size'
-					} else {
-						attData.type = 'ignore'
-					}
-      	})
+				})
+      	ns._analyseAttributeIndex(g, nodeAttributesIndex, settings.ignored_node_attributes)
 
       	// Create metadata for node attributes
 	      bundle.nodeAttributes = []
-	      d3.keys(nodeAttributesIndex).forEach(function(k){
-	      	var attData = nodeAttributesIndex[k]
-	      	if (attData.type != 'ignore') {
-	      		var na = {
-	      			id: k,
-	      			name: toTitleCase(k),
-	      			count: attData.count,
-	      			type: attData.type,
-	      			integer: attData.dataType == 'integer'
-	      		}
-	      		if (na.type == 'partition') {
-		      		// Default settings for partition
-	      			na.modalities = d3.keys(attData.modalities).map(function(m){
-	      				return {
-	      					value: m,
-	      					count: attData.modalities[m]
-	      				}
-	      			})
-	      			var colors = getColors(na.modalities.length)
-	      			na.modalities.sort(function(a, b){
-	      				return b.count - a.count
-	      			})
-	      			na.modalities.forEach(function(m, i){
-	      				m.color = colors[i].toString()
-	      			})
-	      		} else if (na.type == 'ranking-color') {
-	      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
-	      			na.min = extent[0]
-	      			na.max = extent[1]
-    					na.colorScale = getRandomColorScale()
-	      		} else if (na.type == 'ranking-size') {
-	      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
-	      			na.min = extent[0]
-	      			na.max = extent[1]
-    					na.areaScaling = {min:10, max: 100, interpolation: 'linear'}
-	      		}
-	      		bundle.nodeAttributes.push(na)
-	      	}
-      	})
+	      ns._createAttributeMetaData(g, nodeAttributesIndex, bundle.nodeAttributes)
 
+      	// Index all edge attributes from GEXF
+	      var edgeAttributesIndex = {}
+	      var g = bundle.g
+	      g.edges().forEach(function(eid){
+	      	var e = g.getEdgeAttributes(eid)
+	      	d3.keys(e).forEach(function(k){
+	      		if (edgeAttributesIndex[k]) {
+	      			edgeAttributesIndex[k].count++
+	      		} else {
+	      			edgeAttributesIndex[k] = {count:1}
+	      		}
+	      	})
+	      })
+
+      	// Analyze the data of each edge attribute
+      	d3.keys(edgeAttributesIndex).forEach(function(k){
+      		var attData = edgeAttributesIndex[k]
+      		if(settings.ignored_edge_attributes.indexOf(k) >= 0) {
+      			attData.type = 'ignore'
+      			return
+      		}
+
+      		// Gather variable types from the nodes
+      		attData.modalityTypes = {}
+					g.edges().forEach(function(eid){
+						var t = getType(g.getEdgeAttribute(eid, k))
+						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
+					})
+				})
+      	ns._analyseAttributeIndex(g, edgeAttributesIndex, settings.ignored_edge_attributes)
+
+      	// Create metadata for node attributes
+	      bundle.edgeAttributes = []
+	      ns._createAttributeMetaData(g, edgeAttributesIndex, bundle.edgeAttributes)
 
 	      console.log('nodeAttributesIndex', nodeAttributesIndex)
+	      console.log('edgeAttributesIndex', edgeAttributesIndex)
 
 	      console.log('bundle', bundle)
 
@@ -188,6 +142,103 @@ angular.module('minivan.netBundleManager', [])
       }, function(){
         console.error('Error loading file at location:', fileLocation)
       })
+    }
+
+		ns._analyseAttributeIndex = function(g, attributesIndex, ignored_attributes){
+			d3.keys(attributesIndex).forEach(function(k){
+    		var attData = attributesIndex[k]
+    		if(ignored_attributes.indexOf(k) >= 0) {
+    			attData.type = 'ignore'
+    			return
+    		}
+
+				// Infer a data type
+				if (attData.modalityTypes.string !== undefined) {
+					attData.dataType = 'string'
+				} else if (attData.modalityTypes.float !== undefined) {
+					attData.dataType = 'float'
+				} else if (attData.modalityTypes.integer !== undefined) {
+					attData.dataType = 'integer'
+				} else {
+					attData.dataType = 'error'
+				}
+
+				// Aggregate the distribution of modalities
+				attData.modalities = {}
+				g.nodes().forEach(function(nid){
+					var v = g.getNodeAttribute(nid, k)
+					attData.modalities[v] = (attData.modalities[v] || 0) + 1
+				})
+
+				// Build stats for the distribution
+				attData.stats = {}
+				var modalityCountsArray = d3.values(attData.modalities)
+				attData.stats.differentModalities = modalityCountsArray.length
+				attData.stats.sizeOfSmallestModality = d3.min(modalityCountsArray)
+				attData.stats.sizeOfBiggestModality = d3.max(modalityCountsArray)
+				attData.stats.medianSize = d3.median(modalityCountsArray)
+				attData.stats.deviation = d3.deviation(modalityCountsArray)
+				attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(d){return d==1}).length
+				attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.01}).length
+				attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.1}).length
+				
+				// Decide what how the attribute should be visualized
+				if (attData.dataType == 'string') {
+					if (attData.stats.modalitiesAbove10Percent == 0) {
+						attData.type = 'ignore'
+					} else {
+						attData.type = 'partition'
+					}
+				} else if (attData.dataType == 'float') {
+					attData.type = 'ranking-size'
+				} else if (attData.dataType == 'integer') {
+					attData.type = 'ranking-size'
+				} else {
+					attData.type = 'ignore'
+				}
+    	})
+		}
+
+    ns._createAttributeMetaData = function(g, attributesIndex, attributes) {
+      d3.keys(attributesIndex).forEach(function(k){
+      	var attData = attributesIndex[k]
+      	if (attData.type != 'ignore') {
+      		var att = {
+      			id: k,
+      			name: toTitleCase(k),
+      			count: attData.count,
+      			type: attData.type,
+      			integer: attData.dataType == 'integer'
+      		}
+      		if (att.type == 'partition') {
+	      		// Default settings for partition
+      			att.modalities = d3.keys(attData.modalities).map(function(m){
+      				return {
+      					value: m,
+      					count: attData.modalities[m]
+      				}
+      			})
+      			var colors = getColors(att.modalities.length)
+      			att.modalities.sort(function(a, b){
+      				return b.count - a.count
+      			})
+      			att.modalities.forEach(function(m, i){
+      				m.color = colors[i].toString()
+      			})
+      		} else if (att.type == 'ranking-color') {
+      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
+      			att.min = extent[0]
+      			att.max = extent[1]
+  					att.colorScale = getRandomColorScale()
+      		} else if (att.type == 'ranking-size') {
+      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
+      			att.min = extent[0]
+      			att.max = extent[1]
+  					att.areaScaling = {min:10, max: 100, interpolation: 'linear'}
+      		}
+      		attributes.push(att)
+      	}
+    	})
     }
 
     ns._addMissingVisualizationData = function(g) {
