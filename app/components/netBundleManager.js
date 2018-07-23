@@ -76,7 +76,7 @@ angular.module('minivan.netBundleManager', [])
       		// Gather variable types from the nodes
       		attData.modalityTypes = {}
 					g.nodes().forEach(function(nid){
-						var t = getType(g.getNodeAttribute(nid, k))
+						var t = ns.getType(g.getNodeAttribute(nid, k))
 						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
 					})
 				})
@@ -111,7 +111,7 @@ angular.module('minivan.netBundleManager', [])
       		// Gather variable types from the nodes
       		attData.modalityTypes = {}
 					g.edges().forEach(function(eid){
-						var t = getType(g.getEdgeAttribute(eid, k))
+						var t = ns.getType(g.getEdgeAttribute(eid, k))
 						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
 					})
 				})
@@ -205,7 +205,7 @@ angular.module('minivan.netBundleManager', [])
       	if (attData.type != 'ignore') {
       		var att = {
       			id: k,
-      			name: toTitleCase(k),
+      			name: ns.toTitleCase(k),
       			count: attData.count,
       			type: attData.type,
       			integer: attData.dataType == 'integer'
@@ -218,7 +218,7 @@ angular.module('minivan.netBundleManager', [])
       					count: attData.modalities[m]
       				}
       			})
-      			var colors = getColors(att.modalities.length)
+      			var colors = ns.getColors(att.modalities.length)
       			att.modalities.sort(function(a, b){
       				return b.count - a.count
       			})
@@ -229,7 +229,7 @@ angular.module('minivan.netBundleManager', [])
       			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
       			att.min = extent[0]
       			att.max = extent[1]
-  					att.colorScale = getRandomColorScale()
+  					att.colorScale = ns.getRandomColorScale()
       		} else if (att.type == 'ranking-size') {
       			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
       			att.min = extent[0]
@@ -303,7 +303,7 @@ angular.module('minivan.netBundleManager', [])
       }
     }
 
-    function toTitleCase(str) {
+    ns.toTitleCase = function(str) {
 	    return str.replace(
         /\w\S*/g,
         function(txt) {
@@ -312,7 +312,7 @@ angular.module('minivan.netBundleManager', [])
 	    )
 		}
 
-		function getType(str){
+		ns.getType = function(str){
 			// Adapted from http://stackoverflow.com/questions/16775547/javascript-guess-data-type-from-string
 			if(str === undefined) str = 'undefined';
 		  if (typeof str !== 'string') str = str.toString();
@@ -328,7 +328,12 @@ angular.module('minivan.netBundleManager', [])
 		  else return "string";
 		}
 
-		function getColors(count) {
+		ns.getColors = function(count) {
+			if (count == 0) {
+				return []
+			} else if (count == 1) {
+				return ['#666']
+			}
 			// Generate colors (as Chroma.js objects)
 			var colors = paletteGenerator.generate(
 			  count, // Colors
@@ -347,7 +352,7 @@ angular.module('minivan.netBundleManager', [])
 			return colors
 		}
 
-		function getRandomColorScale() {
+		ns.getRandomColorScale = function() {
 			var scales = [
 				'interpolatePuRd',
 				'interpolateYlGnBu',
