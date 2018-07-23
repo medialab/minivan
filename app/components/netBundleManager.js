@@ -121,8 +121,8 @@ angular.module('minivan.netBundleManager', [])
 	      bundle.edgeAttributes = []
 	      ns._createAttributeMetaData(g, edgeAttributesIndex, bundle.edgeAttributes)
 
-	      console.log('nodeAttributesIndex', nodeAttributesIndex)
-	      console.log('edgeAttributesIndex', edgeAttributesIndex)
+        // Consolidate (indexes...)
+	      ns._consolidateBundle(bundle)
 
 	      console.log('bundle', bundle)
 
@@ -131,9 +131,6 @@ angular.module('minivan.netBundleManager', [])
 	    	return
 
 	    	// TODO: translate that in the code above
-
-        // Consolidate
-        networkProcessor.consolidate(ns)
 
         // Simulate long loading time
         $timeout(function(){
@@ -301,6 +298,169 @@ angular.module('minivan.netBundleManager', [])
         var heuristicRatio = 5 * Math.sqrt(g.order)
         return candidates.map(function(d){return d * heuristicRatio})
       }
+    }
+
+    ns._consolidateBundle = function(bundle) {
+    	ns.setBundleAttribute(bundle, 'consolidated', true)
+
+      // Node attributes index
+      bundle.nodeAttributesIndex = {}
+      bundle.nodeAttributes.forEach(function(att){
+        bundle.nodeAttributesIndex[att.id] = att
+
+        // Modalities index
+        if (att.modalities) {
+          att.modalitiesIndex = {}
+          att.modalities.forEach(function(m){
+            att.modalitiesIndex[m.value] = m
+          })
+        }
+
+      })
+
+      // Build each node attribute's data
+      bundle.nodeAttributes.forEach(function(att){
+        att.data = ns._buildNodeAttData(bundle.g, att.id, att.type)
+      })
+
+      // Edge attributes index
+      bundle.edgeAttributesIndex = {}
+      bundle.edgeAttributes.forEach(function(att){
+        bundle.edgeAttributesIndex[att.id] = att
+
+        // Modalities index
+        if (att.modalities) {
+          att.modalitiesIndex = {}
+          att.modalities.forEach(function(m){
+            att.modalitiesIndex[m.value] = m
+          })
+        }
+
+      })
+
+      // Build each edge attribute's data
+      bundle.edgeAttributes.forEach(function(att){
+        att.data = ns._buildEdgeAttData(bundle.g, att.id, att.type)
+      })
+    }
+
+    ns._buildNodeAttData = function(g, attributeId, attributeType) {
+      var attData = {}
+
+      if (attributeType == 'partition') {
+        // Aggregate distribution of modalities
+        attData.modalitiesIndex = {}
+        g.nodes().forEach(function(nid){
+          var n = g.getNodeAttributes(nid)
+          if (attData.modalitiesIndex[n[attributeId]]) {
+            attData.modalitiesIndex[n[attributeId]].nodes++
+          } else {
+            attData.modalitiesIndex[n[attributeId]] = {nodes: 1}
+          }
+        })
+        attData.modalities = d3.keys(attData.modalitiesIndex)
+        var modalitiesCounts = d3.values(attData.modalitiesIndex).map(function(d){return d.nodes})
+        
+        // Count edge flow
+        attData.modalityFlow = {}
+        attData.modalities.forEach(function(v1){
+          attData.modalityFlow[v1] = {}
+          attData.modalities.forEach(function(v2){
+            attData.modalityFlow[v1][v2] = {count: 0, expected: 0, nd:0}
+          })
+        })
+        g.edges().forEach(function(eid){ // Edges count
+          var nsid = g.source(eid)
+          var ntid = g.target(eid)
+          attData.modalityFlow[g.getNodeAttribute(nsid, attributeId)][g.getNodeAttribute(ntid, attributeId)].count++
+        })
+        // For normalized density, we use the same version as the one used in Newmans' Modularity
+        // Newman, M. E. J. (2006). Modularity and community structure in networks. Proceedings of the National Academy of …, 103(23), 8577–8582. http://doi.org/10.1073/pnas.0601602103
+        // Here, for a directed network
+        g.nodes().forEach(function(nsid){
+          g.nodes().forEach(function(ntid){
+            var expected = g.outDegree(nsid) * g.inDegree(ntid) / (2 * g.size)
+            attData.modalityFlow[g.getNodeAttribute(nsid, attributeId)][g.getNodeAttribute(ntid, attributeId)].expected += expected
+          })
+        })
+        attData.modalities.forEach(function(v1){
+          attData.modalities.forEach(function(v2){
+            attData.modalityFlow[v1][v2].nd = ( attData.modalityFlow[v1][v2].count - attData.modalityFlow[v1][v2].expected ) / (4 * g.size) 
+          })
+        })
+
+        // Modality stats related to connectivity
+        attData.modalities.forEach(function(v){
+          attData.modalitiesIndex[v].internalLinks = attData.modalityFlow[v][v].count
+          attData.modalitiesIndex[v].internalNDensity = attData.modalityFlow[v][v].nd
+
+          attData.modalitiesIndex[v].inboundLinks = d3.sum(attData.modalities
+              .filter(function(v2){ return v2 != v})
+              .map(function(v2){ return attData.modalityFlow[v2][v].count })
+            )
+
+          attData.modalitiesIndex[v].inboundNDensity = d3.sum(attData.modalities
+              .filter(function(v2){ return v2 != v})
+              .map(function(v2){ return attData.modalityFlow[v2][v].nd })
+            )
+
+          attData.modalitiesIndex[v].outboundLinks = d3.sum(attData.modalities
+              .filter(function(v2){ return v2 != v})
+              .map(function(v2){ return attData.modalityFlow[v][v2].count })
+            )
+
+          attData.modalitiesIndex[v].outboundNDensity = d3.sum(attData.modalities
+              .filter(function(v2){ return v2 != v})
+              .map(function(v2){ return attData.modalityFlow[v][v2].nd })
+            )
+
+          attData.modalitiesIndex[v].externalLinks = attData.modalitiesIndex[v].inboundLinks + attData.modalitiesIndex[v].outboundLinks
+          attData.modalitiesIndex[v].externalNDensity = attData.modalitiesIndex[v].inboundNDensity + attData.modalitiesIndex[v].outboundNDensity
+
+        })
+
+        // Global statistics
+        attData.stats = {}
+
+        // Modularity (based on previous computations)
+        attData.stats.modularity = 0
+        attData.modalities.forEach(function(v1){
+          attData.modalities.forEach(function(v2){
+            if (v1==v2) {
+              attData.stats.modularity += attData.modalityFlow[v1][v2].nd
+            } else {
+              attData.stats.modularity -= attData.modalityFlow[v1][v2].nd
+            }
+          })
+        })
+      } else {
+        // We do not need to precompute data for ranking types so far
+      }
+
+      return attData
+    }
+
+    ns._buildEdgeAttData = function(g, attributeId, attributeType) {
+      var attData = {}
+
+      if (attributeType == 'partition') {
+        // Aggregate distribution of modalities
+        attData.modalitiesIndex = {}
+        g.edges().forEach(function(eid){
+          var e = g.getEdgeAttributes(eid)
+          if (attData.modalitiesIndex[e[attributeId]]) {
+            attData.modalitiesIndex[e[attributeId]].edges++
+          } else {
+            attData.modalitiesIndex[e[attributeId]] = {edges: 1}
+          }
+        })
+        attData.modalities = d3.keys(attData.modalitiesIndex)
+        
+      } else {
+        // We do not need to precompute data for ranking types so far
+      }
+
+      return attData
     }
 
     ns.toTitleCase = function(str) {
