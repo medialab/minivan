@@ -190,8 +190,8 @@ angular.module('minivan.netBundleManager', [])
     	settings.max_colors = 10
     	settings.min_proportion_for_a_color = 0.01
     	settings.default_color = '#AAA'
-    	settings.min_node_size = 1
-    	settings.max_node_size = 10
+    	settings.min_node_size = 10
+    	settings.max_node_size = 100
 
       d3.keys(attributesIndex).forEach(function(k){
       	var attData = attributesIndex[k]
