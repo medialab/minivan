@@ -8,7 +8,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
     $timeout,
     networkData,
     scalesUtils,
-    layoutCache
+    layoutCache,
+    storage
   ){
     return {
       restrict: 'E'
@@ -31,7 +32,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
       }
       ,link: function($scope, el, attrs) {
         var renderer
-        var networkDisplayThreshold = 1000
+        var networkDisplayThreshold = storage.get('networkDisplayThreshold') || 1000
 
         $scope.networkData = networkData
         $scope.nodesCount
@@ -86,6 +87,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         $scope.displayLargeNetwork = function() {
           networkDisplayThreshold = $scope.nodesCount+1
+          storage.set('networkDisplayThreshold', networkDisplayThreshold)
           $scope.tooBig = false
           refreshSigma()
         }

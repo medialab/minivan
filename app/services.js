@@ -1211,7 +1211,7 @@ angular.module('app.services', [])
         result.forEach(function(item){
           item.score = g.edges(item.id)
             .filter(function(eid){
-              return extremity_pool_condition(g.opposite(eid))
+              return extremity_pool_condition(g.opposite(item.id, eid))
             })
             .length
         })
