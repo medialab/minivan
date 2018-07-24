@@ -11,7 +11,7 @@ angular.module('minivan.netBundleManager', [])
     // Sets the passed value and if none sets a default value if the attribute is required
     ns.setBundleAttribute = function(bundle, attribute, value, verbose) {
     	var defaults = {}
-    	defaults.title = 'My network'
+    	defaults.title = 'Untitled Network'
     	defaults.authors = []
     	defaults.date = 'Unknown'
     	defaults.url = undefined
@@ -44,7 +44,8 @@ angular.module('minivan.netBundleManager', [])
 	      // window.g = bundle.g
 
 	      // Add default attributes when necessary
-	      ns.setBundleAttribute(bundle, 'title', 					undefined, verbose)
+    		var title = ns.toTitleCase(fileLocation.substring(fileLocation.lastIndexOf('/')+1).replace(/\..*/gi, ''))
+	      ns.setBundleAttribute(bundle, 'title', 					title, verbose)
 	      ns.setBundleAttribute(bundle, 'authors', 				undefined, verbose)
 	      ns.setBundleAttribute(bundle, 'date', 					bundle.g._attributes.lastModifiedDate, verbose)
 	      ns.setBundleAttribute(bundle, 'url', 						undefined, verbose)
