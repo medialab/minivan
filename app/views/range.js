@@ -30,7 +30,6 @@ angular.module('app.range', ['ngRoute'])
 
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
-  $scope.$watch('statsDetailLevel', buildAllSortedNodes)
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
@@ -67,13 +66,6 @@ angular.module('app.range', ['ngRoute'])
   	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - " + $scope.attribute.id + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + " - Nodes.csv");
-  }
-
-  function buildAllSortedNodes(){
-    if (!$scope.attribute && !$scope.modality) { return }
-
-    $scope.statsTopCut = ($scope.statsDetailLevel > 1) ? (10) : (3)
-    $scope.sortedNodes = remarkableNodes.getData($scope.attribute, $scope.modality, $scope.statsTopCut)
   }
 
   function updateNodeFilter() {
