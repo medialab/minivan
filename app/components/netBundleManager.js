@@ -122,6 +122,9 @@ angular.module('minivan.netBundleManager', [])
 	      bundle.edgeAttributes = []
 	      ns._createAttributeMetaData(g, edgeAttributesIndex, bundle.edgeAttributes)
 
+	      // Set default node and edges size and color (for Home page)
+	      ns._setDefaultAttributes(g, bundle)
+
         // Consolidate (indexes...)
 	      ns._consolidateBundle(bundle)
 
@@ -131,7 +134,7 @@ angular.module('minivan.netBundleManager', [])
       })
     }
 
-		ns._analyseAttributeIndex = function(g, attributesIndex, ignored_attributes){
+		ns._analyseAttributeIndex = function(g, attributesIndex, ignored_attributes) {
 			d3.keys(attributesIndex).forEach(function(k){
     		var attData = attributesIndex[k]
     		if(ignored_attributes.indexOf(k) >= 0) {
@@ -245,6 +248,64 @@ angular.module('minivan.netBundleManager', [])
       		}
       		attributes.push(att)
       	}
+    	})
+    }
+
+    ns._setDefaultAttributes = function(g, bundle) {
+    	// Is there a node attribute partition?
+    	bundle.nodeAttributes.some(function(na){
+    		if (na.type == 'partition') {
+    			bundle.defaultNodeColor = na.id
+    			return true
+    		} else return false
+    	})
+  		
+  		// If not, is there a ranking-color?
+    	if (!bundle.defaultNodeColor) {
+	    	bundle.nodeAttributes.some(function(na){
+	    		if (na.type == 'ranking-color') {
+	    			bundle.defaultNodeColor = na.id
+	    			return true
+	    		} else return false
+	    	})
+    	}
+    	
+    	// Is there a node attribute ranking-size?
+    	bundle.nodeAttributes.some(function(na){
+    		if (na.type == 'ranking-size') {
+    			bundle.defaultNodeSize = na.id
+    			return true
+    		} else return false
+    	})
+
+    	// If no node color, look for edge colors
+    	// (we do not want too much color)
+    	if (!bundle.defaultNodeColor) {
+	    	// Is there an edge attribute partition?
+	    	bundle.edgeAttributes.some(function(ea){
+	    		if (ea.type == 'partition') {
+	    			bundle.defaultEdgeColor = ea.id
+	    			return true
+	    		} else return false
+	    	})
+	  		
+	  		// If not, is there a ranking-color?
+	    	if (!bundle.defaultEdgeColor) {
+		    	bundle.edgeAttributes.some(function(ea){
+		    		if (ea.type == 'ranking-color') {
+		    			bundle.defaultEdgeColor = ea.id
+		    			return true
+		    		} else return false
+		    	})
+	    	}
+    	}
+
+    	// Is there an edge attribute ranking-size?
+    	bundle.edgeAttributes.some(function(ea){
+    		if (ea.type == 'ranking-size') {
+    			bundle.defaultEdgeSize = ea.id
+    			return true
+    		} else return false
     	})
     }
 

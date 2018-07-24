@@ -6,8 +6,8 @@
 		<div flex="70" ng-if="networkData.loaded">
 			<sigma-network
 				start-layout-on-load="false"
-				size-att-id="$parent.sizeAttId"
-				color-att-id="$parent.colorAttId"
+				size-att-id="networkData.defaultNodeSize"
+				color-att-id="networkData.defaultNodeColor"
 				get-camera-state="$parent.getCameraState"
 				hide-commands="true"
 				layout
