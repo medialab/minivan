@@ -7,8 +7,8 @@ angular.module('iwanthue.paletteGenerator', [])
 .factory('paletteGenerator', function($http, $timeout){
 	var ns = {}     // namespace
 
-	ns.generate = function(colorsCount, checkColor, forceMode, quality, ultra_precision, distanceType) {
-		var i, j, l, a, b
+	ns.generate = function(colorsCount, checkColor, forceMode, quality, ultra_precision, distanceType, randomSeed) {
+		var i, j, l, a, b, RNG, random
 
 		// Default
 		if (colorsCount === undefined)
@@ -20,6 +20,15 @@ angular.module('iwanthue.paletteGenerator', [])
 		if (quality === undefined)
 			quality = 50
 		ultra_precision = ultra_precision || false
+		if (randomSeed === undefined) {
+			random = Math.random
+		} else {
+			var intseed = d3.sum((''+randomSeed).split('').map(function(d){return d.charCodeAt(0)}))
+			RNG = new ns.Random(intseed)
+			random = function() {
+				return RNG.nextFloat()
+			}
+		}
 
 		if (forceMode) {
 			// Force Vector Mode
@@ -36,9 +45,9 @@ angular.module('iwanthue.paletteGenerator', [])
 			var vectors = {}
 			for (i=0; i<colorsCount; i++) {
 				// Find a valid Lab color
-				var color = [100*Math.random(), 100*(2*Math.random()-1), 100*(2*Math.random()-1)]
+				var color = [100*random(), 100*(2*random()-1), 100*(2*random()-1)]
 				while (!checkLab(color)) {
-					color = [100*Math.random(), 100*(2*Math.random()-1), 100*(2*Math.random()-1)]
+					color = [100*random(), 100*(2*random()-1), 100*(2*random()-1)]
 				}
 				colors.push(color)
 			}
@@ -75,9 +84,9 @@ angular.module('iwanthue.paletteGenerator', [])
 							vectors[j].db -= db * force / d
 						} else {
 							// Jitter
-							vectors[j].dl += 2 - 4 * Math.random()
-							vectors[j].da += 2 - 4 * Math.random()
-							vectors[j].db += 2 - 4 * Math.random()
+							vectors[j].dl += 2 - 4 * random()
+							vectors[j].da += 2 - 4 * random()
+							vectors[j].db += 2 - 4 * random()
 						}
 					}
 				}
@@ -107,9 +116,9 @@ angular.module('iwanthue.paletteGenerator', [])
 			
 			var kMeans = []
 			for (i=0; i<colorsCount; i++) {
-				var lab = [100*Math.random(),100*(2*Math.random()-1),100*(2*Math.random()-1)]
+				var lab = [100*random(),100*(2*random()-1),100*(2*random()-1)]
 				while(!checkColor2(lab)){
-					lab = [100*Math.random(),100*(2*Math.random()-1),100*(2*Math.random()-1)]
+					lab = [100*random(),100*(2*random()-1),100*(2*random()-1)]
 				}
 				kMeans.push(lab)
 			}
@@ -485,6 +494,34 @@ angular.module('iwanthue.paletteGenerator', [])
 		  return (t > LAB_CONSTANTS.t1) ? (t * t * t) : ( LAB_CONSTANTS.t2 * (t - LAB_CONSTANTS.t0) )
 		}
 	}
+
+	// From https://gist.github.com/blixt/f17b47c62508be59987b
+	/**
+	 * Creates a pseudo-random value generator. The seed must be an integer.
+	 *
+	 * Uses an optimized version of the Park-Miller PRNG.
+	 * http://www.firstpr.com.au/dsp/rand31/
+	 */
+	ns.Random = function(seed) {
+	  this._seed = seed % 2147483647;
+	  if (this._seed <= 0) this._seed += 2147483646;
+	}
+
+	/**
+	 * Returns a pseudo-random value between 1 and 2^32 - 2.
+	 */
+	ns.Random.prototype.next = function () {
+	  return this._seed = this._seed * 16807 % 2147483647;
+	};
+
+
+	/**
+	 * Returns a pseudo-random floating point number in range [0, 1).
+	 */
+	ns.Random.prototype.nextFloat = function (opt_minOrMax, opt_max) {
+	  // We know that result of next() will be 1 to 2147483646 (inclusive).
+	  return (this.next() - 1) / 2147483646;
+	};
 
 	return ns
 })

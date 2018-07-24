@@ -223,7 +223,8 @@ angular.module('minivan.netBundleManager', [])
       							return m.count/g.order >= settings.min_proportion_for_a_color
       						})
       						.length
-      				)
+      				),
+      				att.id // random seed
     				)
       			att.modalities.sort(function(a, b){
       				return b.count - a.count
@@ -559,7 +560,7 @@ angular.module('minivan.netBundleManager', [])
 		  else return "string";
 		}
 
-		ns.getColors = function(count) {
+		ns.getColors = function(count, randomSeed) {
 			if (count == 0) {
 				return []
 			} else if (count == 1) {
@@ -576,7 +577,8 @@ angular.module('minivan.netBundleManager', [])
 			  false, // Using Force Vector instead of k-Means
 			  50, // Steps (quality)
 			  false, // Ultra precision
-			  'Default' // Color distance type (colorblindness)
+			  'Default', // Color distance type (colorblindness)
+			  randomSeed // Random seed. Undefined = Math.random
 			);
 			// Sort colors by differenciation first
 			colors = paletteGenerator.diffSort(colors, 'Default')
