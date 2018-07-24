@@ -8,19 +8,8 @@
     layout="column"
     layout-align="center center"
   >
-    <div style="height: 24px"><!-- For visual balance --></div>
     <div><strong>{{nodesCount|number}} NODES</strong></div>
     <div><strong>{{edgesCount|number}} EDGES</strong></div>
-    <div>
-      <md-button
-        aria-label="Download GEXF file"
-        ng-click="downloadNetwork()"
-      >
-        <md-tooltip md-direction="right">Download GEXF file</md-tooltip>
-        <md-icon style="color: #FFF">file_download</md-icon>
-        Download
-      </md-button>
-    </div>
   </div>
   
   <!-- Message -->

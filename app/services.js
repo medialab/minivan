@@ -4,17 +4,21 @@
 
 angular.module('app.services', [])
 
-	.factory('networkData', function($http, networkProcessor, $timeout, netBundleManager){
+	.factory('networkData', function($http, /*networkProcessor, */$timeout, netBundleManager){
     var ns = {}     // namespace
 
     ns.loaded = false
 
     // Demo sample via bundle manager
-    netBundleManager.importGEXF('data/sample rio+20.gexf', function(bundle){
+    // netBundleManager.importGEXF('data/SiS Words.gexf', function(data){
+    netBundleManager.importGEXF('data/Eleonoras Network with tags v2.gexf', function(data){
+    // netBundleManager.importGEXF('data/sample rio+20.gexf', function(data){
+    // netBundleManager.importGEXF('data/migration-network.gexf', function(data){
       // Simulate long loading time
       $timeout(function(){
-        d3.keys(bundle).forEach(function(k){
-          ns[k] = bundle[k]
+        console.log('data from bundle', data)
+        d3.keys(data).forEach(function(k){
+          ns[k] = data[k]
         })
         ns.loaded = true
       }, 500)
@@ -189,7 +193,7 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('networkProcessor', function(){
+  /*.factory('networkProcessor', function(){
     var ns = {}     // namespace
 
     ns.consolidate = function(data) {
@@ -296,16 +300,7 @@ angular.module('app.services', [])
         })
         attData.modalities = d3.keys(attData.modalitiesIndex)
         var modalitiesCounts = d3.values(attData.modalitiesIndex).map(function(d){return d.nodes})
-        /*attData.distributionStats = {}
-        attData.distributionStats.differentModalities = modalitiesCounts.length
-        attData.distributionStats.sizeOfSmallestModality = d3.min(modalitiesCounts)
-        attData.distributionStats.sizeOfBiggestModality = d3.max(modalitiesCounts)
-        attData.distributionStats.medianSize = d3.median(modalitiesCounts)
-        attData.distributionStats.deviation = d3.deviation(modalitiesCounts)
-        attData.distributionStats.modalitiesUnitary = modalitiesCounts.filter(function(d){return d==1}).length
-        attData.distributionStats.modalitiesAbove1Percent = modalitiesCounts.filter(function(d){return d>=g.order*0.01}).length
-        attData.distributionStats.modalitiesAbove10Percent = modalitiesCounts.filter(function(d){return d>=g.order*0.1}).length*/
-
+        
         // Count edge flow
         attData.modalityFlow = {}
         attData.modalities.forEach(function(v1){
@@ -386,7 +381,7 @@ angular.module('app.services', [])
     }
 
     return ns
-  })
+  })*/
 
   .factory('scalesUtils', function(networkData, $filter){
     var ns = {} // Namespace

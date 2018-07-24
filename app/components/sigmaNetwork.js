@@ -26,7 +26,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         getCameraState: '=',
         hideCommands: '=',
         enableLayout: '=',
-        layoutCacheKey: '='             // Optional. Used to cache and recall layout.
+        layoutCacheKey: '=',            // Optional. Used to cache and recall layout.
+        neverTooBig: '='                // Optional. When enabled, the warning nerver shows
       }
       ,link: function($scope, el, attrs) {
         var renderer
@@ -49,7 +50,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             $scope.loaded = true
             $scope.nodesCount = $scope.g.order
             $scope.edgesCount = $scope.g.size
-            $scope.tooBig = $scope.nodesCount > networkDisplayThreshold
+            $scope.tooBig = !$scope.neverTooBig && $scope.nodesCount > networkDisplayThreshold
             updateColorFilter()
             updateSizeFilter()
             updateNodeAppearance()
