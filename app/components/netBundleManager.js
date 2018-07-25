@@ -44,7 +44,7 @@ angular.module('minivan.netBundleManager', [])
 	      // window.g = bundle.g
 
 	      // Add default attributes when necessary
-    		var title = ns.toTitleCase(fileLocation.substring(fileLocation.lastIndexOf('/')+1).replace(/\..*/gi, ''))
+    		var title = ns._toTitleCase(fileLocation.substring(fileLocation.lastIndexOf('/')+1).replace(/\..*/gi, ''))
 	      ns.setBundleAttribute(bundle, 'title', 					title, verbose)
 	      ns.setBundleAttribute(bundle, 'authors', 				undefined, verbose)
 	      ns.setBundleAttribute(bundle, 'date', 					bundle.g._attributes.lastModifiedDate, verbose)
@@ -77,7 +77,7 @@ angular.module('minivan.netBundleManager', [])
       		// Gather variable types from the nodes
       		attData.modalityTypes = {}
 					g.nodes().forEach(function(nid){
-						var t = ns.getType(g.getNodeAttribute(nid, k))
+						var t = ns._getType(g.getNodeAttribute(nid, k))
 						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
 					})
 				})
@@ -112,7 +112,7 @@ angular.module('minivan.netBundleManager', [])
       		// Gather variable types from the nodes
       		attData.modalityTypes = {}
 					g.edges().forEach(function(eid){
-						var t = ns.getType(g.getEdgeAttribute(eid, k))
+						var t = ns._getType(g.getEdgeAttribute(eid, k))
 						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
 					})
 				})
@@ -202,7 +202,7 @@ angular.module('minivan.netBundleManager', [])
       	if (attData.type != 'ignore') {
       		var att = {
       			id: k,
-      			name: ns.toTitleCase(k),
+      			name: ns._toTitleCase(k),
       			count: attData.count,
       			type: attData.type,
       			integer: attData.dataType == 'integer'
@@ -215,7 +215,7 @@ angular.module('minivan.netBundleManager', [])
       					count: attData.modalities[m]
       				}
       			})
-      			var colors = ns.getColors(
+      			var colors = ns._getColors(
       				Math.min(
       					settings.max_colors,
       					att.modalities
@@ -236,7 +236,7 @@ angular.module('minivan.netBundleManager', [])
       			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
       			att.min = extent[0]
       			att.max = extent[1]
-  					att.colorScale = ns.getRandomColorScale()
+  					att.colorScale = ns._getRandomColorScale()
       		} else if (att.type == 'ranking-size') {
       			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
       			att.min = extent[0]
@@ -535,7 +535,7 @@ angular.module('minivan.netBundleManager', [])
       return attData
     }
 
-    ns.toTitleCase = function(str) {
+    ns._toTitleCase = function(str) {
 	    return str.replace(
         /\w\S*/g,
         function(txt) {
@@ -544,7 +544,7 @@ angular.module('minivan.netBundleManager', [])
 	    )
 		}
 
-		ns.getType = function(str){
+		ns._getType = function(str){
 			// Adapted from http://stackoverflow.com/questions/16775547/javascript-guess-data-type-from-string
 			if(str === undefined) str = 'undefined';
 		  if (typeof str !== 'string') str = str.toString();
@@ -560,7 +560,7 @@ angular.module('minivan.netBundleManager', [])
 		  else return "string";
 		}
 
-		ns.getColors = function(count, randomSeed) {
+		ns._getColors = function(count, randomSeed) {
 			if (count == 0) {
 				return []
 			} else if (count == 1) {
@@ -585,7 +585,7 @@ angular.module('minivan.netBundleManager', [])
 			return colors
 		}
 
-		ns.getRandomColorScale = function() {
+		ns._getRandomColorScale = function() {
 			var scales = [
 				'interpolatePuRd',
 				'interpolateYlGnBu',
