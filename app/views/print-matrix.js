@@ -17,7 +17,8 @@ angular.module('app.print-matrix', ['ngRoute'])
 	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+  $scope.bundleLocation = $routeParams.bundle
+  $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.selectedAttId = $location.search().att
   $scope.matrixDetailLevel = +$location.search().detail

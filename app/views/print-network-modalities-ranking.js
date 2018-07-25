@@ -17,7 +17,8 @@ angular.module('app.print-network-modalities-ranking', ['ngRoute'])
 	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+	$scope.bundleLocation = $routeParams.bundle
+	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.attributeId = $location.search().att
 	$scope.camX = $location.search().x
 	$scope.camY = $location.search().y

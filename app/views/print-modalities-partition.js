@@ -15,7 +15,8 @@ angular.module('app.print-modalities-partition', ['ngRoute'])
 	$routeParams,
 	dataLoader
 ) {
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+	$scope.bundleLocation = $routeParams.bundle
+	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.printMode = true
 	$scope.attributeId = $location.search().att
 

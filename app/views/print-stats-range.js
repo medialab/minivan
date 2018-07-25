@@ -18,7 +18,8 @@ angular.module('app.print-stats-range', ['ngRoute'])
 	scalesUtils,
   remarkableNodes
 ) {
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+  $scope.bundleLocation = $routeParams.bundle
+  $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.attributeId = $location.search().att
   $scope.rangeMin = $location.search().rangeMin

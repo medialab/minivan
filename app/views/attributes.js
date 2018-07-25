@@ -21,7 +21,8 @@ angular.module('app.attributes', ['ngRoute'])
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+	$scope.bundleLocation = $routeParams.bundle
+	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.attributeListDetailLevel = 1
 	$scope.matrixDetailLevel = 1
 	$scope.selectedAttId = undefined

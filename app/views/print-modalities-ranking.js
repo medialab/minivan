@@ -16,7 +16,8 @@ angular.module('app.print-modalities-ranking', ['ngRoute'])
 	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+	$scope.bundleLocation = $routeParams.bundle
+	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.printMode = true
 	$scope.attributeId = $location.search().att
 	$scope.decileMode = $location.search().decile == 'true'

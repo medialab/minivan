@@ -17,7 +17,8 @@ angular.module('app.print-node-list', ['ngRoute'])
 	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = dataLoader.get($routeParams.bundle)
+  $scope.bundleLocation = $routeParams.bundle
+  $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.colorAttId = $location.search().color
   $scope.sizeAttId = $location.search().size
