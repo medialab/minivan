@@ -196,7 +196,7 @@
 					<!-- Attribute toolbar -->
 					<md-toolbar style="z-index: 0" class="md-hue-1">
 						<div class="md-toolbar-tools">
-							<md-button class="md-icon-button" ng-href="#!/attributes?bundle={{bundleLocation}}">
+							<md-button class="md-icon-button" ng-href="#!/attributes?panel={{panel}}&bundle={{bundleLocation}}">
 			          <md-icon>arrow_back</md-icon>
 			        </md-button>
 			        <h2 flex md-truncate>{{attribute.name}}</h2>
@@ -210,6 +210,7 @@
 				        <div
 					        modality-ranking-list-element
 					        att="attribute"
+					        panel="panel"
 					        mod="mod"
 					        max-mod-count="maxModCount"
 					        print-mode="false"

@@ -792,7 +792,7 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('remarkableNodes', function ($rootScope) {
+  .factory('remarkableNodes', function ($rootScope, dataLoader) {
     var ns = {}
 
     ns.attribute = undefined

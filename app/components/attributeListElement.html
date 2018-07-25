@@ -8,7 +8,7 @@
 	<md-icon ng-if="isSelected && !printMode">radio_button_checked</md-icon>
 	<md-icon ng-if="!isSelected  && !printMode">radio_button_unchecked</md-icon>
   <p>{{att.name}}</p>
-  <md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-if="isSelected" ng-href="#!/{{att.type}}/{{att.id}}/modalities?bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
+  <md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-if="isSelected" ng-href="#!/{{att.type}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
 		<md-icon>arrow_forward</md-icon>
 	</md-button>
 </md-list-item>
@@ -95,7 +95,7 @@
 			</div>
 		</md-content>
 		<div style="min-width: 80px" layout="column" layout-align="center center">
-			<md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-href="#!/{{att.type}}/{{att.id}}/modalities?bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
+			<md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-href="#!/{{att.type}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
 				<md-icon>arrow_forward</md-icon>
 			</md-button>
 		</div>
@@ -140,7 +140,7 @@
 			</div>
 		</md-content>
 		<div style="min-width: 80px" layout="column" layout-align="center center">
-			<md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-href="#!/{{att.type}}/{{att.id}}/modalities?bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
+			<md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-href="#!/{{att.type}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
 				<md-icon>arrow_forward</md-icon>
 			</md-button>
 		</div>

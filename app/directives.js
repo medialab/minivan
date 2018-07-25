@@ -95,7 +95,8 @@ angular.module('app.directives', [])
     return {
       restrict: 'A',
       scope: {
-      	att: '=',
+        att: '=',
+      	panel: '=',
       	printMode: '=',
       	detailLevel: '=',
       	selectedAttId: '='
@@ -129,6 +130,7 @@ angular.module('app.directives', [])
       restrict: 'A',
       scope: {
         attributeId: '=',
+        panel: '=',
         mod: '=',
         maxModCount: '=',
         printMode: '=',
@@ -155,6 +157,7 @@ angular.module('app.directives', [])
       scope: {
         mod: '=',
         att: '=',
+        panel: '=',
         maxModCount: '=',
         printMode: '=',
         detailLevel: '=',
