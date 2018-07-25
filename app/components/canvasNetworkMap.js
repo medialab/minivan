@@ -45,10 +45,10 @@ angular.module('app.components.canvasNetworkMap', [])
     	$scope.$watch('curvedEdges', redraw)
     	$scope.$watch('showEdges', redraw)
 
-      window.addEventListener('resize', redraw)
+      /*window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
         window.removeEventListener('resize', redraw)
-      })
+      })*/
 
       var container = el[0]
 
