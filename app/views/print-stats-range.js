@@ -13,11 +13,12 @@ angular.module('app.print-stats-range', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData,
+  $routeParams,
+	dataLoader,
 	scalesUtils,
   remarkableNodes
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 
   $scope.attributeId = $location.search().att
   $scope.rangeMin = $location.search().rangeMin

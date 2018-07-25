@@ -2,7 +2,7 @@
 
 angular.module('app.components.cardRangeInOut', [])
 
-.directive('cardRangeInOut', function($timeout, networkData, scalesUtils){
+.directive('cardRangeInOut', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/cardRangeInOut.html',
@@ -14,14 +14,14 @@ angular.module('app.components.cardRangeInOut', [])
       printMode: '='
     },
     link: function($scope, el, attrs) {
-      $scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+      $scope.attribute = dataLoader.get().nodeAttributesIndex[$scope.attId]
 	  }
   }
 })
 
 .directive('rangeInOutChart', function(
   $timeout,
-  networkData
+  dataLoader
 ){
   return {
     restrict: 'A',
@@ -50,7 +50,7 @@ angular.module('app.components.cardRangeInOut', [])
       }
 
       function drawValueInboundOutbound(container) {
-        var g = networkData.g
+        var g = dataLoader.get().g
         var sg = $scope.subgraph
         var sgIndex = {}
         var inboundCount = 0

@@ -2,7 +2,7 @@
 
 angular.module('app.components.cardAttributeModularityGroupLinks', [])
 
-.directive('cardAttributeModularityGroupLinks', function($timeout, networkData, scalesUtils){
+.directive('cardAttributeModularityGroupLinks', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/cardAttributeModularityGroupLinks.html',
@@ -13,8 +13,9 @@ angular.module('app.components.cardAttributeModularityGroupLinks', [])
     	printMode: '='
     },
     link: function($scope, el, attrs) {
-    	var g = networkData.g
-    	$scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+    	$scope.networkData = dataLoader.get()
+    	var g = $scope.networkData.g
+    	$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
     	$scope.$watch('modalitiesSelection', function(){
 	    	$scope.hiddenModalities = d3.values($scope.modalitiesSelection).some(function(d){ return d }) && d3.values($scope.modalitiesSelection).some(function(d){ return !d })
     	}, true)

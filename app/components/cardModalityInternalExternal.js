@@ -2,7 +2,7 @@
 
 angular.module('app.components.cardModalityInternalExternal', [])
 
-.directive('cardModalityInternalExternal', function($timeout, networkData, scalesUtils){
+.directive('cardModalityInternalExternal', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/cardModalityInternalExternal.html',
@@ -13,8 +13,9 @@ angular.module('app.components.cardModalityInternalExternal', [])
       printMode: '='
     },
     link: function($scope, el, attrs) {
-      var g = networkData.g
-      $scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+      $scope.networkData = dataLoader.get()
+      var g = $scope.networkData.g
+      $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
       $scope.modality = $scope.attribute.modalitiesIndex[$scope.modValue]
       $scope.modalityFlow = $scope.attribute.data.modalityFlow[$scope.modValue][$scope.modValue]
       

@@ -26,14 +26,14 @@ angular.module('app.modalities-ranking', ['ngRoute'])
 	$timeout,
 	$route,
 	$routeParams,
-	networkData,
+	dataLoader,
 	csvBuilder,
   scalesUtils,
   $filter
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
   $scope.matrixDetailLevel = 1
   $scope.statsDetailLevel = 1
   $scope.modalityListDetailLevel = 1

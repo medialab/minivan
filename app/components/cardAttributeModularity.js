@@ -2,7 +2,7 @@
 
 angular.module('app.components.cardAttributeModularity', [])
 
-.directive('cardAttributeModularity', function($timeout, networkData, scalesUtils){
+.directive('cardAttributeModularity', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/cardAttributeModularity.html',
@@ -12,8 +12,9 @@ angular.module('app.components.cardAttributeModularity', [])
       printMode: '='
     },
     link: function($scope, el, attrs) {
-      var g = networkData.g
-    	$scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+      $scope.networkData = dataLoader.get()
+      var g = $scope.networkData.g
+    	$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
 	  }
   }
 })

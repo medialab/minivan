@@ -13,10 +13,11 @@ angular.module('app.print-matrix', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData,
+  $routeParams,
+	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 
   $scope.selectedAttId = $location.search().att
   $scope.matrixDetailLevel = +$location.search().detail

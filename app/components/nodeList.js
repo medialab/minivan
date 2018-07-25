@@ -4,7 +4,7 @@
 
 angular.module('app.components.nodeList', [])
 
-.directive('nodeList', function($timeout, networkData, scalesUtils){
+.directive('nodeList', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     templateUrl: 'components/nodeList.html',
@@ -16,7 +16,7 @@ angular.module('app.components.nodeList', [])
       selectedAttId:'='
     },
     link: function($scope, el, attrs) {
-    	$scope.networkData = networkData
+    	$scope.networkData = dataLoader.get()
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
           updateNodes()

@@ -12,9 +12,10 @@ angular.module('app.print-modalities-partition', ['ngRoute'])
 .controller('PrintModalitiesPartitionController', function(
 	$scope,
 	$location,
-	networkData
+	$routeParams,
+	dataLoader
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 	$scope.printMode = true
 	$scope.attributeId = $location.search().att
 

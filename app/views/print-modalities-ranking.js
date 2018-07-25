@@ -12,10 +12,11 @@ angular.module('app.print-modalities-ranking', ['ngRoute'])
 .controller('PrintModalitiesRankingController', function(
 	$scope,
 	$location,
-	networkData,
+	$routeParams,
+	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 	$scope.printMode = true
 	$scope.attributeId = $location.search().att
 	$scope.decileMode = $location.search().decile == 'true'

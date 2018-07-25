@@ -4,7 +4,7 @@
 
 angular.module('app.components.nodeAttributeMinimap', [])
 
-.directive('nodeAttributeMinimap', function($timeout, networkData, scalesUtils){
+.directive('nodeAttributeMinimap', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -20,7 +20,7 @@ angular.module('app.components.nodeAttributeMinimap', [])
         window.removeEventListener('resize', redraw)
       })
 
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       var container = el[0]
 

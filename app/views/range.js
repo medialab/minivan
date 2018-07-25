@@ -17,13 +17,13 @@ angular.module('app.range', ['ngRoute'])
 	$route,
 	$routeParams,
   $filter,
-	networkData,
+	dataLoader,
 	csvBuilder,
   remarkableNodes
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
   $scope.matrixDetailLevel = 1
   $scope.modalityListDetailLevel = 1
   $scope.statsDetailLevel = 1

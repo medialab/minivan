@@ -13,10 +13,11 @@ angular.module('app.print-stats-modalities-ranking', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData,
+	$routeParams,
+	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 
   $scope.attributeId = $location.search().att
   $scope.statsDetailLevel = $location.search().detail || 1

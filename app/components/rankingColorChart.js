@@ -4,7 +4,7 @@
 
 angular.module('app.components.rankingColorChart', [])
 
-.directive('rankingColorChart', function($timeout, networkData, scalesUtils){
+.directive('rankingColorChart', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -25,7 +25,7 @@ angular.module('app.components.rankingColorChart', [])
         window.removeEventListener('resize', redraw)
       })
 
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       function redraw(){
         $timeout(function(){

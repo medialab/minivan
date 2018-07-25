@@ -4,7 +4,7 @@
 
 angular.module('app.components.rankingColorKey', [])
 
-.directive('rankingColorKey', function($timeout, networkData, scalesUtils){
+.directive('rankingColorKey', function($timeout, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/rankingColorKey.html',

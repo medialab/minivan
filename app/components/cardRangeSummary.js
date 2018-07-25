@@ -2,7 +2,7 @@
 
 angular.module('app.components.cardRangeSummary', [])
 
-.directive('cardRangeSummary', function($timeout, networkData, scalesUtils){
+.directive('cardRangeSummary', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/cardRangeSummary.html',
@@ -16,7 +16,7 @@ angular.module('app.components.cardRangeSummary', [])
     link: function($scope, el, attrs) {
       $scope.$watch('subgraph', function(){
         var g = $scope.subgraph
-        $scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+        $scope.attribute = dataLoader.get().nodeAttributesIndex[$scope.attId]
         $scope.density = Graph.library.metrics.density(g)
       })
 	  }

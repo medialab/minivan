@@ -13,10 +13,11 @@ angular.module('app.print-stats-modalities-partition', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData,
+  $routeParams,
+	dataLoader,
 	scalesUtils
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 
   $scope.attributeId = $location.search().att
   $scope.attributeListDetailLevel = $location.search().detail || 1

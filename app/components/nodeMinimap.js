@@ -4,7 +4,7 @@
 
 angular.module('app.components.nodeMinimap', [])
 
-.directive('nodeMinimap', function($timeout, networkData, scalesUtils){
+.directive('nodeMinimap', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">...</small>',
@@ -21,7 +21,7 @@ angular.module('app.components.nodeMinimap', [])
         window.removeEventListener('resize', redraw)
       })*/
 
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       var container = el[0]
 

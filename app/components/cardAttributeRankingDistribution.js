@@ -2,7 +2,7 @@
 
 angular.module('app.components.cardAttributeRankingDistribution', [])
 
-.directive('cardAttributeRankingDistribution', function($timeout, networkData, scalesUtils){
+.directive('cardAttributeRankingDistribution', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'A',
     templateUrl: 'components/cardAttributeRankingDistribution.html',
@@ -14,9 +14,10 @@ angular.module('app.components.cardAttributeRankingDistribution', [])
     	printMode: '='
     },
     link: function($scope, el, attrs) {
-    	var g = networkData.g
+    	$scope.networkData = dataLoader.get()
+    	var g = $scope.networkData.g
     	var maxBandCount = 50
-    	$scope.attribute = networkData.nodeAttributesIndex[$scope.attId]
+    	$scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
     	$scope.$watch('modalitiesSelection', function(){
 	    	$scope.hiddenModalities = d3.values($scope.modalitiesSelection).some(function(d){ return d }) && d3.values($scope.modalitiesSelection).some(function(d){ return !d })
     	}, true)

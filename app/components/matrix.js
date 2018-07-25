@@ -4,7 +4,7 @@
 
 angular.module('app.components.matrix', [])
 
-.directive('matrix', function($timeout, networkData, scalesUtils){
+.directive('matrix', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     templateUrl: 'components/matrix.html',
@@ -21,7 +21,7 @@ angular.module('app.components.matrix', [])
     link: function($scope, el, attrs) {
       $scope.headlineSize = 200
       $scope.cellSize = 16
-    	$scope.networkData = networkData
+    	$scope.networkData = dataLoader.get()
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
           updateNodes()
@@ -201,7 +201,7 @@ angular.module('app.components.matrix', [])
   }
 })
 
-.directive('matrixSvg', function($timeout, networkData, scalesUtils){
+.directive('matrixSvg', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -217,7 +217,7 @@ angular.module('app.components.matrix', [])
       $scope.headlineSize = 200
       $scope.cellSize = 16
 
-      $scope.networkData = networkData
+      $scope.networkData = dataLoader.get()
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
           redraw()
@@ -411,7 +411,7 @@ angular.module('app.components.matrix', [])
 })
 
 .directive('matrixLine', function(
-    networkData
+    dataLoader
   ){
     return {
       restrict: 'A',
@@ -430,7 +430,7 @@ angular.module('app.components.matrix', [])
       templateUrl: 'components/matrixLine.html',
       link: function($scope, el, attrs) {
         $scope.$watch('nodeId', function(){
-          $scope.node = networkData.g.getNodeAttributes($scope.nodeId)
+          $scope.node = dataLoader.get().g.getNodeAttributes($scope.nodeId)
         })
       }
     }

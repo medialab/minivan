@@ -16,12 +16,12 @@ angular.module('app.modalities-partition', ['ngRoute'])
 	$timeout,
 	$route,
 	$routeParams,
-	networkData,
+	dataLoader,
 	csvBuilder
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
   $scope.matrixDetailLevel = 1
   $scope.modalityListDetailLevel = 1
   $scope.statsDetailLevel = 1

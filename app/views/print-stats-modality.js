@@ -13,11 +13,12 @@ angular.module('app.print-stats-modality', ['ngRoute'])
 	$scope,
 	$location,
 	$timeout,
-	networkData,
+  $routeParams,
+	dataLoader,
 	scalesUtils,
   remarkableNodes
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 
   $scope.attributeId = $location.search().att
   $scope.modalityValue = $location.search().mod

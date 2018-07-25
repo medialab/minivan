@@ -4,7 +4,7 @@
 
 angular.module('app.components.nodeAttributeThumbnail', [])
 
-.directive('nodeAttributeThumbnail', function($timeout, networkData, scalesUtils){
+.directive('nodeAttributeThumbnail', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
@@ -20,7 +20,7 @@ angular.module('app.components.nodeAttributeThumbnail', [])
         window.removeEventListener('resize', redraw)
       })
 
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       var container = el[0]
 

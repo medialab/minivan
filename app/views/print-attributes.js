@@ -12,9 +12,10 @@ angular.module('app.print-attributes', ['ngRoute'])
 .controller('PrintAttributesController', function(
 	$scope,
 	$location,
-	networkData
+	$routeParams,
+	dataLoader
 ) {
-	$scope.networkData = networkData
+	$scope.networkData = dataLoader.get($routeParams.bundle)
 	$scope.printMode = true
 	
 	$scope.attributeListDetailLevel = $location.search().detail || 1

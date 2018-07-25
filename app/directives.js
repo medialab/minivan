@@ -116,7 +116,7 @@ angular.module('app.directives', [])
   })
 
 .directive('modalityPartitionListElement', function(
-    networkData
+    dataLoader
   ){
     return {
       restrict: 'A',
@@ -133,14 +133,14 @@ angular.module('app.directives', [])
         $scope.toggleSelection = function(){
           $scope.isSelected = !$scope.isSelected
         }
-        $scope.networkData = networkData
+        $scope.networkData = dataLoader.get()
         $scope.labelThreshold = 40
       }
     }
   })
 
 .directive('modalityRankingListElement', function(
-    networkData
+    dataLoader
   ){
     return {
       restrict: 'A',
@@ -157,13 +157,13 @@ angular.module('app.directives', [])
         $scope.toggleSelection = function(){
           $scope.isSelected = !$scope.isSelected
         }
-        $scope.networkData = networkData
+        $scope.networkData = dataLoader.get()
         $scope.labelThreshold = 40
       }
     }
   })
 
-.directive('vColorKey', function($timeout, networkData, scalesUtils){
+.directive('vColorKey', function($timeout, dataLoader, scalesUtils){
   return {
     restrict: 'E',
     template: '<small style="opacity:0.5;">.<br>.<br>.</small>',
@@ -177,7 +177,7 @@ angular.module('app.directives', [])
         window.removeEventListener('resize', redraw)
       })
 
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       var container = el[0]
 
