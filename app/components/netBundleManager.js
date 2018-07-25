@@ -29,6 +29,35 @@ angular.module('minivan.netBundleManager', [])
 			} else if (verbose) { console.warn(attribute+' found:', bundle[attribute]) }
     }
 
+    ns.importBundle = function(fileLocation, callback, verbose) {
+    	$http.get(fileLocation)
+      .then(function(r){
+      	var bundle = r.data
+      	var unserializedGraph = new Graph()
+      	unserializedGraph.import(bundle.g)
+      	bundle.g = unserializedGraph
+
+      	// Build attributes indexes
+      	bundle.nodeAttributesIndex = {}
+      	bundle.nodeAttributes.forEach(function(d){
+      		bundle.nodeAttributesIndex[d.id] = d
+      	})
+      	bundle.edgeAttributesIndex = {}
+      	bundle.edgeAttributes.forEach(function(d){
+      		bundle.edgeAttributesIndex[d.id] = d
+      	})
+
+      	if (!bundle.consolidated) {
+      		// Consolidate (indexes...)
+		      ns._consolidateBundle(bundle)
+      	}
+
+      	callback(bundle)
+      }, function(e){
+        console.error('Error loading file at location:', fileLocation, '\n', e)
+      })
+    }
+
     ns.importGEXF = function(fileLocation, callback, verbose) {
     	var settings = {}
     	settings.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
@@ -132,6 +161,32 @@ angular.module('minivan.netBundleManager', [])
       }, function(){
         console.error('Error loading file at location:', fileLocation)
       })
+    }
+
+    ns.exportBundle = function(bundle) {
+    	var validKeys = [
+    		'title',
+    		'authors',
+    		'bundleVersion',
+    		'consolidated',
+    		'date',
+    		'defaultNodeColor',
+    		'defaultNodeSize',
+    		'defaultEdgeColor',
+    		'defaultEdgeSize',
+    		'description',
+    		'edgeAttributes',
+    		'nodeAttributes',
+    		'url'
+    	]
+    	var bundleSerialize = {}
+    	validKeys.forEach(function(k){
+    		if (bundle[k]) {
+    			bundleSerialize[k] = bundle[k]
+    		}
+    	})
+    	bundleSerialize.g = bundle.g.export()
+    	return JSON.stringify(bundleSerialize, null, "\t")
     }
 
 		ns._analyseAttributeIndex = function(g, attributesIndex, ignored_attributes) {
