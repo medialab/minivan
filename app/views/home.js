@@ -14,9 +14,17 @@ angular.module('app.home', ['ngRoute'])
 	$location,
 	$timeout,
 	$routeParams,
-	networkData
+	dataLoader
 ) {
-	$scope.networkData = networkData
+	$scope.bundleLocation = $routeParams.bundle
+
+	// No file location: redirect to test corpus.
+	if ($scope.bundleLocation === undefined) {
+		var test_file_location = dataLoader.encodeLocation('data/BUNDLE - Sample Rio+20.json')
+		$scope.bundleLocation = test_file_location
+	}
+
+	$scope.networkData = dataLoader.get($scope.bundleLocation)
 
 	$scope.downloadNetwork = function() {
   	var xml = Graph.library.gexf.write($scope.networkData.g);

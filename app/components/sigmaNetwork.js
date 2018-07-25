@@ -6,7 +6,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
   .directive('sigmaNetwork', function(
     $timeout,
-    networkData,
+    dataLoader,
     scalesUtils,
     layoutCache,
     storage
@@ -34,7 +34,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         var renderer
         var networkDisplayThreshold = storage.get('networkDisplayThreshold') || 1000
 
-        $scope.networkData = networkData
+        $scope.networkData = dataLoader.get()
         $scope.nodesCount
         $scope.edgesCount
         $scope.tooBig = false
@@ -47,7 +47,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         $scope.$watch('networkData.loaded', function(){
           if ( $scope.networkData.loaded ) {
-            $scope.g = networkData.g.copy()
+            $scope.g = $scope.networkData.g.copy()
             $scope.loaded = true
             $scope.nodesCount = $scope.g.order
             $scope.edgesCount = $scope.g.size

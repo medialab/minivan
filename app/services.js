@@ -4,39 +4,65 @@
 
 angular.module('app.services', [])
 
-	.factory('networkData', function($http, /*networkProcessor, */$timeout, netBundleManager){
+  .factory('dataLoader', function($http, $timeout, $location, netBundleManager){
     var ns = {}     // namespace
 
-    ns.loaded = false
+    ns.cache = undefined
 
-    // Demo sample via bundle manager
-    // netBundleManager.importGEXF('data/SiS Words.gexf', function(data){
-    // netBundleManager.importGEXF('data/Eleonoras Network with tags v2.gexf', function(data){
-    // netBundleManager.importGEXF('data/sample rio+20.gexf', function(data){
-    netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', function(data){
+    ns.get = function(fileLocation) {
+      var settings = {}
+      settings.simulate_loading_time = 500
+      settings.allow_gexf = true
 
-      // Simulate long loading time
-      $timeout(function(){
-        console.log('data from bundle', data)
-        d3.keys(data).forEach(function(k){
-          ns[k] = data[k]
-        })
-        ns.loaded = true
-      }, 500)
-
-      // Register download feature for the console
-      window.downloadBundle = function() {
-        var json = netBundleManager.exportBundle(ns)
-        var blob = new Blob([json], {'type':'application/json;charset=utf-8'});
-        saveAs(blob, 'BUNDLE - ' + ns.title + '.json');
+      var bundle_import
+      if (settings.allow_gexf && fileLocation && fileLocation.substr(-5).toUpperCase() == '.GEXF') {
+        bundle_import = netBundleManager.importGEXF
+      } else {
+        bundle_import = netBundleManager.importBundle
       }
-    })
+
+      if (ns.cache === undefined) {
+        if (fileLocation === undefined) {
+          alert('Weird!\nWe cannot locate the data...\nThis is not supposed to happen.')
+          console.error('Error: no file location known for loading data.')
+          return
+        }
+        var networkData = {loaded: false}
+        bundle_import(ns.decodeLocation(fileLocation) || settings.default_file_location, function(data){
+
+          // Simulate long loading time
+          $timeout(function(){
+            console.log('data from bundle', data)
+            d3.keys(data).forEach(function(k){
+              networkData[k] = data[k]
+            })
+            networkData.loaded = true
+          }, settings.simulate_loading_time)
+
+          // Register download feature for the console
+          window.downloadBundle = function() {
+            var json = netBundleManager.exportBundle(networkData)
+            var blob = new Blob([json], {'type':'application/json;charset=utf-8'});
+            saveAs(blob, 'BUNDLE - ' + ns.title + '.json');
+          }
+        })
+        ns.cache = networkData
+      }
+      return ns.cache
+    }
+    ns.encodeLocation = function(url) {
+      return encodeURIComponent(url)
+    }
+
+    ns.decodeLocation = function(encodedUrl) {
+      return decodeURIComponent(encodedUrl)
+    }
 
     return ns
   })
 
 
-  .factory('scalesUtils', function(networkData, $filter){
+  .factory('scalesUtils', function($filter, dataLoader){
     var ns = {} // Namespace
 
     // Circle area -> radius
@@ -109,7 +135,7 @@ angular.module('app.services', [])
     }
 
     ns.getXYScales = function(width, height, offset, _g) {
-      var g = _g || networkData.g
+      var g = _g || dataLoader.get().g
       var xScale = d3.scaleLinear()
         .range([offset, width - offset])
       var yScale = d3.scaleLinear()
@@ -127,7 +153,7 @@ angular.module('app.services', [])
     }
 
     ns.getXYScales_camera = function(width, height, offset, x, y, ratio, _g) {
-      var g = _g || networkData.g
+      var g = _g || dataLoader.get().g
       var xScale = d3.scaleLinear()
         .range([offset - (x-0.5) * width / ratio, width - offset - (x-0.5) * width / ratio])
       var yScale = d3.scaleLinear()
@@ -154,7 +180,7 @@ angular.module('app.services', [])
     }
 
     ns.buildModalities_size = function(attribute, useDeciles) {
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       // Size scales
       var areaScale = ns.getAreaScale(attribute.min, attribute.max, attribute.areaScaling.min, attribute.areaScaling.max, attribute.areaScaling.interpolation)
@@ -289,7 +315,7 @@ angular.module('app.services', [])
     }
 
     ns.buildModalities_color = function(attribute, useDeciles) {
-      var g = networkData.g
+      var g = dataLoader.get().g
 
       // Color scales
       var colorScale = ns.getColorScale(attribute.min, attribute.max, attribute.colorScale)
@@ -413,7 +439,7 @@ angular.module('app.services', [])
 
     // Build data for distribution of ranking
     ns.buildRankingDistribution = function(attribute, bandsCount, niceScale) {
-      var g = networkData.g
+      var g = dataLoader.get().g
       var values = g.nodes().map(function(nid){ return g.getNodeAttribute(nid, attribute.id) })
       var valuesExtent = d3.extent(values)
       var lowerBound = valuesExtent[0]
@@ -454,7 +480,7 @@ angular.module('app.services', [])
 
     // Get natural modalities for a ranking, comparable to buildRankingDistribution
     ns.getIntegerRankingModalities = function(attribute) {
-      var g = networkData.g
+      var g = dataLoader.get().g
       var modalitiesIndex = {}
       var min = Infinity
       var max = -Infinity
@@ -484,6 +510,7 @@ angular.module('app.services', [])
 
     // Sort the nodes, by default or by an attribute
     ns.sortNodes = function(nodes, attributeId) {
+      var networkData = dataLoader.get()
       var g = networkData.g
       if (attributeId) {
         if (networkData.loaded) {
@@ -529,12 +556,12 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('csvBuilder', function(networkData, scalesUtils){
+  .factory('csvBuilder', function(dataLoader, scalesUtils){
     var ns = {} // Namespace
 
     ns.getAttributes = function() {
       var csv = d3.csvFormat(
-        networkData.nodeAttributes
+        dataLoader.get().nodeAttributes
           .map(function(att){
             var validElements = {}
             validElements.id = att.id
@@ -557,7 +584,7 @@ angular.module('app.services', [])
     }
 
     ns.getModalities = function(attributeId) {
-      var attribute = networkData.nodeAttributesIndex[attributeId]
+      var attribute = dataLoader.get().nodeAttributesIndex[attributeId]
       var csv = d3.csvFormat(
         attribute.modalities
           .map(function(att){
@@ -598,7 +625,7 @@ angular.module('app.services', [])
     }
 
     ns._getModalityCrossings = function(attributeId, modSelection, modalityAtt) {
-      var attribute = networkData.nodeAttributesIndex[attributeId]
+      var attribute = dataLoader.get().nodeAttributesIndex[attributeId]
       var rows = []
 
       // Fix modSelection
@@ -641,6 +668,7 @@ angular.module('app.services', [])
     }
 
     ns.getNodes = function(nodesFilter, attributeId) {
+      var networkData = dataLoader.get()
       var nodes = networkData.g.nodes()
       if (nodesFilter) {
         nodes = nodes.filter(nodesFilter)
@@ -668,6 +696,7 @@ angular.module('app.services', [])
     }
 
     ns.getAdjacencyMatrix = function(attributeId, nodesFilter) {
+      var networkData = dataLoader.get()
       var nodes = networkData.g.nodes()
       if (nodesFilter) {
         nodes = nodes.filter(nodesFilter)
@@ -756,7 +785,7 @@ angular.module('app.services', [])
     return ns
   })
 
-  .factory('remarkableNodes', function ($rootScope, networkData) {
+  .factory('remarkableNodes', function ($rootScope) {
     var ns = {}
 
     ns.attribute = undefined
@@ -767,7 +796,7 @@ angular.module('app.services', [])
       ns.attribute = attribute
       ns.modality = modality
       ns.topCut = topCut
-      var g = networkData.g
+      var g = dataLoader.get().g
       var sortedNodes = {
         inside: {
           citedFromInside: [],
@@ -807,7 +836,7 @@ angular.module('app.services', [])
     }
 
     ns.buildSortedNodes = function(pool, mode, extremity_pool) {
-      var g = networkData.g
+      var g = dataLoader.get().g
       var result = g.nodes()
       var pool_condition
       var extremity_pool_condition
