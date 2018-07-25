@@ -255,7 +255,12 @@ angular.module('app.components.matrix', [])
           }
         }
         
-        var margin = {top: settings.display_headlines ? settings.headline_thickness : 0, right: 0, bottom: 0, left: settings.display_headlines ? settings.headline_thickness : 0}
+        var margin = {
+          top: settings.display_headlines ? settings.headline_thickness : 0,
+          right: settings.display_headlines ? settings.headline_thickness : 0,
+          bottom: settings.display_headlines ? settings.headline_thickness : 0,
+          left: settings.display_headlines ? settings.headline_thickness : 0
+        }
         var width = $scope.nodes.length * $scope.cellSize
         var height = width // square space
 
@@ -273,19 +278,42 @@ angular.module('app.components.matrix', [])
 
         // Top headline
         if (settings.display_headlines) {
-          var topHeadCells = svg.selectAll('.cell')
+          var topHeadCells = svg.selectAll('.thcell')
               .data($scope.nodes)
           topHeadCells.enter().append('rect')
+              .attr('class', 'thcell')
               .attr('x', function(nid, i){ return i * $scope.cellSize })
               .attr('y', function(nid){ return -$scope.getRadius(nid) * settings.headline_thickness })
               .attr('width', $scope.cellSize )
               .attr('height', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
               .attr('fill', function(nid){ return $scope.getColor(nid) })
-          var leftHeadCells = svg.selectAll('.cell')
+
+          var bottomHeadCells = svg.selectAll('.bhcell')
+              .data($scope.nodes)
+          topHeadCells.enter().append('rect')
+              .attr('class', 'bhcell')
+              .attr('x', function(nid, i){ return i * $scope.cellSize })
+              .attr('y', function(nid){ return height })
+              .attr('width', $scope.cellSize )
+              .attr('height', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
+              .attr('fill', function(nid){ return $scope.getColor(nid) })
+
+          var leftHeadCells = svg.selectAll('.lhcell')
               .data($scope.nodes)
           leftHeadCells.enter().append('rect')
+              .attr('class', 'lhcell')
               .attr('y', function(nid, i){ return i * $scope.cellSize })
               .attr('x', function(nid){ return -$scope.getRadius(nid) * settings.headline_thickness })
+              .attr('height', $scope.cellSize )
+              .attr('width', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
+              .attr('fill', function(nid){ return $scope.getColor(nid) })
+
+          var rightHeadCells = svg.selectAll('.rhcell')
+              .data($scope.nodes)
+          leftHeadCells.enter().append('rect')
+              .attr('class', 'rhcell')
+              .attr('y', function(nid, i){ return i * $scope.cellSize })
+              .attr('x', function(nid){ return width })
               .attr('height', $scope.cellSize )
               .attr('width', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
               .attr('fill', function(nid){ return $scope.getColor(nid) })
