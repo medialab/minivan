@@ -87,7 +87,7 @@
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-network?color={{colorAttId}}&size={{sizeAttId}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-network?color={{colorAttId}}&size={{sizeAttId}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
@@ -105,7 +105,7 @@
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-matrix?att={{selectedAttId}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-matrix?att={{selectedAttId}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
@@ -130,7 +130,7 @@
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-node-list?color={{colorAttId}}&size={{sizeAttId}}&att={{selectedAttId}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-node-list?color={{colorAttId}}&size={{sizeAttId}}&att={{selectedAttId}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print list</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
@@ -171,7 +171,7 @@
 						<md-tooltip md-direction="top">Download data</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-attributes?detail={{attributeListDetailLevel}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-attributes?detail={{attributeListDetailLevel}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print data visualization</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>

@@ -8,6 +8,7 @@ angular.module('app.services', [])
     var ns = {}     // namespace
 
     ns.cache = undefined
+    ns.fileLocation = undefined
 
     ns.get = function(fileLocation) {
       var settings = {}
@@ -47,15 +48,21 @@ angular.module('app.services', [])
           }
         })
         ns.cache = networkData
+        ns.fileLocation = fileLocation
       }
       return ns.cache
     }
+
     ns.encodeLocation = function(url) {
       return encodeURIComponent(url)
     }
 
     ns.decodeLocation = function(encodedUrl) {
       return decodeURIComponent(encodedUrl)
+    }
+
+    ns.getLocation = function(){
+      return ns.fileLocation
     }
 
     return ns

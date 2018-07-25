@@ -12,7 +12,7 @@
 		<md-icon style="margin-right: 12px" ng-if="isSelected && !printMode">check_box</md-icon>
 		<md-icon style="margin-right: 12px" ng-if="!isSelected  && !printMode">check_box_outline_blank</md-icon>
 	  <p class="md-truncate">{{mod.label}}</p>
-	  <md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected" ng-href="#!/ranking/{{att.id}}/range/{{mod.min}}/{{mod.max}}" ng-click="$event.stopPropagation();">
+	  <md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected" ng-href="#!/ranking/{{att.id}}/range/{{mod.min}}/{{mod.max}}?bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
 			<md-icon>arrow_forward</md-icon>
 		</md-button>
 	</md-list-item>
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 		<div style="width: 64px" layout="row" layout-align="center center" ng-if="!printMode">
-			<md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected" ng-href="#!/ranking/{{att.id}}/range/{{mod.min}}/{{mod.max}}" ng-click="$event.stopPropagation();">
+			<md-button class="md-fab md-mini md-primary md-secondary" ng-if="isSelected" ng-href="#!/ranking/{{att.id}}/range/{{mod.min}}/{{mod.max}}?bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
 				<md-icon>arrow_forward</md-icon>
 			</md-button>
 		</div>

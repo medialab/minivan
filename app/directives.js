@@ -85,6 +85,7 @@ angular.module('app.directives', [])
   })
 
 .directive('attributeListElement', function(
+    dataLoader
   ){
     return {
       restrict: 'A',
@@ -96,6 +97,7 @@ angular.module('app.directives', [])
       },
       templateUrl: 'components/attributeListElement.html',
       link: function($scope, el, attrs) {
+        $scope.bundleLocation = dataLoader.getLocation()
       	$scope.isSelected = false
       	$scope.$watch('selectedAttId', function(){
       		$scope.isSelected = $scope.att && $scope.att.id && $scope.selectedAttId == $scope.att.id
@@ -130,6 +132,7 @@ angular.module('app.directives', [])
       },
       templateUrl: 'components/modalityPartitionListElement.html',
       link: function($scope, el, attrs) {
+        $scope.bundleLocation = dataLoader.getLocation()
         $scope.toggleSelection = function(){
           $scope.isSelected = !$scope.isSelected
         }
@@ -154,6 +157,7 @@ angular.module('app.directives', [])
       },
       templateUrl: 'components/modalityRankingListElement.html',
       link: function($scope, el, attrs) {
+        $scope.bundleLocation = dataLoader.getLocation()
         $scope.toggleSelection = function(){
           $scope.isSelected = !$scope.isSelected
         }
