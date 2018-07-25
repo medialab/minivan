@@ -214,7 +214,6 @@ angular.module('app.components.matrix', [])
     },
     link: function($scope, el, attrs) {
       
-      $scope.headlineSize = 200
       $scope.cellSize = 16
 
       $scope.networkData = dataLoader.get()
@@ -245,7 +244,7 @@ angular.module('app.components.matrix', [])
 
         var settings = {}
         settings.display_headlines = !!$scope.headlines
-        settings.headline_thickness = $scope.headlineSize
+        settings.headline_thickness = 0.8 * d3.keys($scope.edgeIndex).length
 
         var g = $scope.networkData.g
         var data = []
