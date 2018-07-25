@@ -33,9 +33,9 @@ angular.module('minivan.netBundleManager', [])
     	$http.get(fileLocation)
       .then(function(r){
       	var bundle = r.data
-      	var unserializedGraph = new Graph()
-      	unserializedGraph.import(bundle.g)
-      	bundle.g = unserializedGraph
+	      var deserializedGraph = new Graph(bundle.graph_settings || {})
+      	deserializedGraph.import(bundle.g)
+      	bundle.g = deserializedGraph
 
       	// Build attributes indexes
       	bundle.nodeAttributesIndex = {}
@@ -185,6 +185,9 @@ angular.module('minivan.netBundleManager', [])
     			bundleSerialize[k] = bundle[k]
     		}
     	})
+    	bundleSerialize.graph_settings = {}
+    	bundleSerialize.graph_settings.type = g.type
+    	bundleSerialize.graph_settings.multi = g.multi
     	bundleSerialize.g = bundle.g.export()
     	return JSON.stringify(bundleSerialize, null, "\t")
     }
