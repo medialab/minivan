@@ -23,7 +23,7 @@ angular.module('app.range', ['ngRoute'])
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
-  $scope.bundleLocation = $routeParams.bundle
+  $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
   $scope.matrixDetailLevel = 1
   $scope.modalityListDetailLevel = 1

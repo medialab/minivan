@@ -17,7 +17,7 @@ angular.module('app.print-network', ['ngRoute'])
 	dataLoader,
 	scalesUtils
 ) {
-	$scope.bundleLocation = $routeParams.bundle
+	$scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
 	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.colorAttId = $location.search().color
 	$scope.sizeAttId = $location.search().size

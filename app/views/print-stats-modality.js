@@ -18,7 +18,7 @@ angular.module('app.print-stats-modality', ['ngRoute'])
 	scalesUtils,
   remarkableNodes
 ) {
-  $scope.bundleLocation = $routeParams.bundle
+  $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.attributeId = $location.search().att

@@ -15,7 +15,7 @@ angular.module('app.print-attributes', ['ngRoute'])
 	$routeParams,
 	dataLoader
 ) {
-	$scope.bundleLocation = $routeParams.bundle
+	$scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
 	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.printMode = true
 	

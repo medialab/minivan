@@ -17,7 +17,7 @@ angular.module('app.print-node-list-modalities-partition', ['ngRoute'])
 	dataLoader,
 	scalesUtils
 ) {
-  $scope.bundleLocation = $routeParams.bundle
+  $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.attributeId = $location.search().att
