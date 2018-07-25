@@ -44,7 +44,7 @@ angular.module('app.services', [])
           window.downloadBundle = function() {
             var json = netBundleManager.exportBundle(networkData)
             var blob = new Blob([json], {'type':'application/json;charset=utf-8'});
-            saveAs(blob, 'BUNDLE - ' + ns.title + '.json');
+            saveAs(blob, 'BUNDLE - ' + networkData.title + '.json');
           }
         })
         ns.cache = networkData

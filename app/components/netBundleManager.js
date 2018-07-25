@@ -186,8 +186,8 @@ angular.module('minivan.netBundleManager', [])
     		}
     	})
     	bundleSerialize.graph_settings = {}
-    	bundleSerialize.graph_settings.type = g.type
-    	bundleSerialize.graph_settings.multi = g.multi
+    	bundleSerialize.graph_settings.type = bundle.g.type
+    	bundleSerialize.graph_settings.multi = bundle.g.multi
     	bundleSerialize.g = bundle.g.export()
     	return JSON.stringify(bundleSerialize, null, "\t")
     }

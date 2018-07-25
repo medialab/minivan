@@ -40,18 +40,23 @@ angular.module('app.directives', [])
   })
 
 .directive('leftSideBar', function(
+    dataLoader
   ){
     return {
       restrict: 'E',
       scope: {
         title: '='
       },
-      templateUrl: 'components/leftSideBar.html'
+      templateUrl: 'components/leftSideBar.html',
+      link: function($scope, el, attrs) {
+        $scope.bundleLocation = dataLoader.getLocation()
+      }
     }
   })
 
 .directive('projectTitleBar', function(
-    $location
+    $location,
+    dataLoader
   ){
     return {
       restrict: 'E',
@@ -61,7 +66,7 @@ angular.module('app.directives', [])
       templateUrl: 'components/projectTitleBar.html',
       link: function($scope, el, attrs){
         $scope.goHome = function() {
-          $location.url('/')
+          $location.url('/?'+dataLoader.getLocation())
         }
       }
     }
