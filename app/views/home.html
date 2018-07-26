@@ -82,7 +82,7 @@
 					</p>
 					<p ng-if="networkData.authors && networkData.authors.length > 0">
 						<strong>Author{{networkData.authors.length > 1 ? 's' : ''}}</strong>
-						<span ng-repeat="author in networkData.authors"><br/>{{author}}</span>
+						<span ng-repeat="author in networkData.authors"><br/><md-icon>brush</md-icon> {{author}}</span>
 					</p>
 					<p class="key-element-p" ng-if="networkData.url" style="word-break: break-all;">
 						<a ng-href="{{networkData.url}}" target="_blank">
@@ -96,7 +96,6 @@
 						ng-href="#!/attributes?bundle={{bundleLocation}}"
 						style="margin: 6px 0px"
 					>
-						<md-icon>explore</md-icon>
 						Explore network
 					</md-button>
 		      <md-button
