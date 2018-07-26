@@ -243,8 +243,10 @@ angular.module('app.components.matrix', [])
       function draw(container) {
 
         var settings = {}
+        settings.cell_size = $scope.cellSize
         settings.display_headlines = !!$scope.headlines
         settings.headline_thickness = 0.8 * d3.keys($scope.edgeIndex).length
+        settings.lines_thickness = settings.headline_thickness / 100
 
         var g = $scope.networkData.g
         var data = []
@@ -256,10 +258,10 @@ angular.module('app.components.matrix', [])
         }
         
         var margin = {
-          top: settings.display_headlines ? settings.headline_thickness : 0,
-          right: settings.display_headlines ? settings.headline_thickness : 0,
-          bottom: settings.display_headlines ? settings.headline_thickness : 0,
-          left: settings.display_headlines ? settings.headline_thickness : 0
+          top: (settings.display_headlines ? settings.lines_thickness * 2 + settings.headline_thickness : 0),
+          right: (settings.display_headlines ? settings.lines_thickness * 2 + settings.headline_thickness : 0),
+          bottom: (settings.display_headlines ? settings.lines_thickness * 2 + settings.headline_thickness : 0),
+          left: (settings.display_headlines ? settings.lines_thickness * 2 + settings.headline_thickness : 0)
         }
         var width = $scope.nodes.length * $scope.cellSize
         var height = width // square space
@@ -276,15 +278,15 @@ angular.module('app.components.matrix', [])
           .append("g")
             .attr("transform", "scale(" +ratio+ ", " +ratio+ ") translate(" + margin.left + "," + margin.top + ")");
 
-        // Top headline
+        // Headlines
         if (settings.display_headlines) {
           var topHeadCells = svg.selectAll('.thcell')
               .data($scope.nodes)
           topHeadCells.enter().append('rect')
               .attr('class', 'thcell')
-              .attr('x', function(nid, i){ return i * $scope.cellSize })
+              .attr('x', function(nid, i){ return i * settings.cell_size })
               .attr('y', function(nid){ return -$scope.getRadius(nid) * settings.headline_thickness })
-              .attr('width', $scope.cellSize )
+              .attr('width', settings.cell_size )
               .attr('height', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
               .attr('fill', function(nid){ return $scope.getColor(nid) })
 
@@ -292,9 +294,9 @@ angular.module('app.components.matrix', [])
               .data($scope.nodes)
           topHeadCells.enter().append('rect')
               .attr('class', 'bhcell')
-              .attr('x', function(nid, i){ return i * $scope.cellSize })
+              .attr('x', function(nid, i){ return i * settings.cell_size })
               .attr('y', function(nid){ return height })
-              .attr('width', $scope.cellSize )
+              .attr('width', settings.cell_size )
               .attr('height', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
               .attr('fill', function(nid){ return $scope.getColor(nid) })
 
@@ -302,9 +304,9 @@ angular.module('app.components.matrix', [])
               .data($scope.nodes)
           leftHeadCells.enter().append('rect')
               .attr('class', 'lhcell')
-              .attr('y', function(nid, i){ return i * $scope.cellSize })
+              .attr('y', function(nid, i){ return i * settings.cell_size })
               .attr('x', function(nid){ return -$scope.getRadius(nid) * settings.headline_thickness })
-              .attr('height', $scope.cellSize )
+              .attr('height', settings.cell_size )
               .attr('width', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
               .attr('fill', function(nid){ return $scope.getColor(nid) })
 
@@ -312,11 +314,70 @@ angular.module('app.components.matrix', [])
               .data($scope.nodes)
           leftHeadCells.enter().append('rect')
               .attr('class', 'rhcell')
-              .attr('y', function(nid, i){ return i * $scope.cellSize })
+              .attr('y', function(nid, i){ return i * settings.cell_size })
               .attr('x', function(nid){ return width })
-              .attr('height', $scope.cellSize )
+              .attr('height', settings.cell_size )
               .attr('width', function(nid){ return $scope.getRadius(nid) * settings.headline_thickness })
               .attr('fill', function(nid){ return $scope.getColor(nid) })
+
+          // Lines
+          svg.append('line')
+            .attr('x1', -settings.headline_thickness)
+            .attr('y1', -settings.headline_thickness)
+            .attr('x2', width + settings.headline_thickness)
+            .attr('y2', -settings.headline_thickness)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+          svg.append('line')
+            .attr('x1', -settings.headline_thickness)
+            .attr('y1', 0)
+            .attr('x2', width + settings.headline_thickness)
+            .attr('y2', 0)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+          svg.append('line')
+            .attr('x1', -settings.headline_thickness)
+            .attr('y1', height)
+            .attr('x2', width + settings.headline_thickness)
+            .attr('y2', height)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+          svg.append('line')
+            .attr('x1', -settings.headline_thickness)
+            .attr('y1', height + settings.headline_thickness)
+            .attr('x2', width + settings.headline_thickness)
+            .attr('y2', height + settings.headline_thickness)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+
+          svg.append('line')
+            .attr('x1', -settings.headline_thickness)
+            .attr('y1', -settings.headline_thickness)
+            .attr('x2', -settings.headline_thickness)
+            .attr('y2', width + settings.headline_thickness)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+          svg.append('line')
+            .attr('x1', 0)
+            .attr('y1', -settings.headline_thickness)
+            .attr('x2', 0)
+            .attr('y2', width + settings.headline_thickness)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+          svg.append('line')
+            .attr('x1', height)
+            .attr('y1', -settings.headline_thickness)
+            .attr('x2', height)
+            .attr('y2', width + settings.headline_thickness)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
+          svg.append('line')
+            .attr('x1', height + settings.headline_thickness)
+            .attr('y1', -settings.headline_thickness)
+            .attr('x2', height + settings.headline_thickness)
+            .attr('y2', width + settings.headline_thickness)
+            .style('stroke-width', settings.lines_thickness)
+            .style('stroke', '#333' )
         }
 
         // Background
@@ -335,8 +396,8 @@ angular.module('app.components.matrix', [])
             .attr('class', 'cell')
             .attr('x', function(d) { return x(d.target); })
             .attr('y', function(d) { return x(d.source); })
-            .attr('width', $scope.cellSize )
-            .attr('height', $scope.cellSize )
+            .attr('width', settings.cell_size )
+            .attr('height', settings.cell_size )
             .attr('fill', 'rgba(0, 0, 0, 0.9)')
 
       }
