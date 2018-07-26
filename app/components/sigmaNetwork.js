@@ -25,7 +25,9 @@ angular.module('app.components.sigmaNetworkComponent', [])
         hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
         editableAttributes: '=',        // Optional. Allows to unset color and size attributes (close buttons)
         getCameraState: '=',
-        hideCommands: '=',
+        hideCommands: '=',              // Optional
+        hideLabels: '=',                // Optional
+        hideKey: '=',                   // Optional
         enableLayout: '=',
         layoutCacheKey: '=',            // Optional. Used to cache and recall layout.
         neverTooBig: '='                // Optional. When enabled, the warning nerver shows
@@ -269,7 +271,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: "Quicksand",
               labelWeight: '400',
-              labelSize: 12
+              labelSize: $scope.hideLabels ? 0 : 12
             })
             
             $scope.zoomIn = function(){
