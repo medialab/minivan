@@ -32,135 +32,142 @@ angular.module('minivan.netBundleManager', [])
     ns.importBundle = function(fileLocation, callback, verbose) {
     	$http.get(fileLocation)
       .then(function(r){
-      	var bundle = r.data
-	      var deserializedGraph = new Graph(bundle.graph_settings || {})
-      	deserializedGraph.import(bundle.g)
-      	bundle.g = deserializedGraph
-
-      	// Build attributes indexes
-      	bundle.nodeAttributesIndex = {}
-      	bundle.nodeAttributes.forEach(function(d){
-      		bundle.nodeAttributesIndex[d.id] = d
-      	})
-      	bundle.edgeAttributesIndex = {}
-      	bundle.edgeAttributes.forEach(function(d){
-      		bundle.edgeAttributesIndex[d.id] = d
-      	})
-
-      	if (!bundle.consolidated) {
-      		// Consolidate (indexes...)
-		      ns._consolidateBundle(bundle)
-      	}
-
-      	callback(bundle)
+        ns.parseBundle(r.data, callback, verbose)
       }, function(e){
         console.error('Error loading file at location:', fileLocation, '\n', e)
       })
     }
 
-    ns.importGEXF = function(fileLocation, callback, verbose) {
-    	var settings = {}
-    	settings.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
-    	settings.ignored_edge_attributes = ['label', 'color']
+    ns.parseBundle = function(bundle, callback, verbose) {
+      var deserializedGraph = new Graph(bundle.graph_settings || {})
+      deserializedGraph.import(bundle.g)
+      bundle.g = deserializedGraph
 
+      // Build attributes indexes
+      bundle.nodeAttributesIndex = {}
+      bundle.nodeAttributes.forEach(function(d){
+        bundle.nodeAttributesIndex[d.id] = d
+      })
+      bundle.edgeAttributesIndex = {}
+      bundle.edgeAttributes.forEach(function(d){
+        bundle.edgeAttributesIndex[d.id] = d
+      })
+
+      if (!bundle.consolidated) {
+        // Consolidate (indexes...)
+        ns._consolidateBundle(bundle)
+      }
+
+      callback(bundle)
+    }
+
+    ns.importGEXF = function(fileLocation, callback, verbose) {
     	$http.get(fileLocation)
       .then(function(r){
-      	var bundle = {}
-
-      	bundle.g = Graph.library.gexf.parse(Graph, r.data)
-
-	      ns._addMissingVisualizationData(bundle.g)
-	      // window.g = bundle.g
-
-	      // Add default attributes when necessary
-    		var title = ns._toTitleCase(fileLocation.substring(fileLocation.lastIndexOf('/')+1).replace(/\..*/gi, ''))
-	      ns.setBundleAttribute(bundle, 'title', 					title, verbose)
-	      ns.setBundleAttribute(bundle, 'authors', 				undefined, verbose)
-	      ns.setBundleAttribute(bundle, 'date', 					bundle.g._attributes.lastModifiedDate, verbose)
-	      ns.setBundleAttribute(bundle, 'url', 						undefined, verbose)
-	      ns.setBundleAttribute(bundle, 'description', 		bundle.g._attributes.description, verbose)
-	      ns.setBundleAttribute(bundle, 'bundleVersion', 	ns.bundleVersion, verbose)
-
-	      // Index all node attributes from GEXF
-	      var nodeAttributesIndex = {}
-	      var g = bundle.g
-	      g.nodes().forEach(function(nid){
-	      	var n = g.getNodeAttributes(nid)
-	      	d3.keys(n).forEach(function(k){
-	      		if (nodeAttributesIndex[k]) {
-	      			nodeAttributesIndex[k].count++
-	      		} else {
-	      			nodeAttributesIndex[k] = {count:1}
-	      		}
-	      	})
-	      })
-
-      	// Analyze the data of each node attribute
-      	d3.keys(nodeAttributesIndex).forEach(function(k){
-      		var attData = nodeAttributesIndex[k]
-      		if(settings.ignored_node_attributes.indexOf(k) >= 0) {
-      			attData.type = 'ignore'
-      			return
-      		}
-
-      		// Gather variable types from the nodes
-      		attData.modalityTypes = {}
-					g.nodes().forEach(function(nid){
-						var t = ns._getType(g.getNodeAttribute(nid, k))
-						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
-					})
-				})
-      	ns._analyseAttributeIndex(g, nodeAttributesIndex, settings.ignored_node_attributes)
-
-      	// Create metadata for node attributes
-	      bundle.nodeAttributes = []
-	      ns._createAttributeMetaData(g, nodeAttributesIndex, bundle.nodeAttributes)
-
-      	// Index all edge attributes from GEXF
-	      var edgeAttributesIndex = {}
-	      var g = bundle.g
-	      g.edges().forEach(function(eid){
-	      	var e = g.getEdgeAttributes(eid)
-	      	d3.keys(e).forEach(function(k){
-	      		if (edgeAttributesIndex[k]) {
-	      			edgeAttributesIndex[k].count++
-	      		} else {
-	      			edgeAttributesIndex[k] = {count:1}
-	      		}
-	      	})
-	      })
-
-      	// Analyze the data of each edge attribute
-      	d3.keys(edgeAttributesIndex).forEach(function(k){
-      		var attData = edgeAttributesIndex[k]
-      		if(settings.ignored_edge_attributes.indexOf(k) >= 0) {
-      			attData.type = 'ignore'
-      			return
-      		}
-
-      		// Gather variable types from the nodes
-      		attData.modalityTypes = {}
-					g.edges().forEach(function(eid){
-						var t = ns._getType(g.getEdgeAttribute(eid, k))
-						attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
-					})
-				})
-      	ns._analyseAttributeIndex(g, edgeAttributesIndex, settings.ignored_edge_attributes)
-
-      	// Create metadata for node attributes
-	      bundle.edgeAttributes = []
-	      ns._createAttributeMetaData(g, edgeAttributesIndex, bundle.edgeAttributes)
-
-	      // Set default node and edges size and color (for Home page)
-	      ns._setDefaultAttributes(g, bundle)
-
-        // Consolidate (indexes...)
-	      ns._consolidateBundle(bundle)
-
-	    	callback(bundle)
+        var title = ns._toTitleCase(fileLocation.substring(fileLocation.lastIndexOf('/')+1).replace(/\..*/gi, ''))
+        ns.parseGEXF(r.data, title, callback, verbose)
       }, function(){
         console.error('Error loading file at location:', fileLocation)
       })
+    }
+
+    ns.parseGEXF = function(data, title, callback, verbose) {
+      var settings = {}
+      settings.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
+      settings.ignored_edge_attributes = ['label', 'color']
+
+      var bundle = {}
+
+      bundle.g = Graph.library.gexf.parse(Graph, data)
+
+      ns._addMissingVisualizationData(bundle.g)
+      // window.g = bundle.g
+
+      // Add default attributes when necessary
+      ns.setBundleAttribute(bundle, 'title',          title, verbose)
+      ns.setBundleAttribute(bundle, 'authors',        undefined, verbose)
+      ns.setBundleAttribute(bundle, 'date',           bundle.g._attributes.lastModifiedDate, verbose)
+      ns.setBundleAttribute(bundle, 'url',            undefined, verbose)
+      ns.setBundleAttribute(bundle, 'description',    bundle.g._attributes.description, verbose)
+      ns.setBundleAttribute(bundle, 'bundleVersion',  ns.bundleVersion, verbose)
+
+      // Index all node attributes from GEXF
+      var nodeAttributesIndex = {}
+      var g = bundle.g
+      g.nodes().forEach(function(nid){
+        var n = g.getNodeAttributes(nid)
+        d3.keys(n).forEach(function(k){
+          if (nodeAttributesIndex[k]) {
+            nodeAttributesIndex[k].count++
+          } else {
+            nodeAttributesIndex[k] = {count:1}
+          }
+        })
+      })
+
+      // Analyze the data of each node attribute
+      d3.keys(nodeAttributesIndex).forEach(function(k){
+        var attData = nodeAttributesIndex[k]
+        if(settings.ignored_node_attributes.indexOf(k) >= 0) {
+          attData.type = 'ignore'
+          return
+        }
+
+        // Gather variable types from the nodes
+        attData.modalityTypes = {}
+        g.nodes().forEach(function(nid){
+          var t = ns._getType(g.getNodeAttribute(nid, k))
+          attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
+        })
+      })
+      ns._analyseAttributeIndex(g, nodeAttributesIndex, settings.ignored_node_attributes)
+
+      // Create metadata for node attributes
+      bundle.nodeAttributes = []
+      ns._createAttributeMetaData(g, nodeAttributesIndex, bundle.nodeAttributes)
+
+      // Index all edge attributes from GEXF
+      var edgeAttributesIndex = {}
+      var g = bundle.g
+      g.edges().forEach(function(eid){
+        var e = g.getEdgeAttributes(eid)
+        d3.keys(e).forEach(function(k){
+          if (edgeAttributesIndex[k]) {
+            edgeAttributesIndex[k].count++
+          } else {
+            edgeAttributesIndex[k] = {count:1}
+          }
+        })
+      })
+
+      // Analyze the data of each edge attribute
+      d3.keys(edgeAttributesIndex).forEach(function(k){
+        var attData = edgeAttributesIndex[k]
+        if(settings.ignored_edge_attributes.indexOf(k) >= 0) {
+          attData.type = 'ignore'
+          return
+        }
+
+        // Gather variable types from the nodes
+        attData.modalityTypes = {}
+        g.edges().forEach(function(eid){
+          var t = ns._getType(g.getEdgeAttribute(eid, k))
+          attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
+        })
+      })
+      ns._analyseAttributeIndex(g, edgeAttributesIndex, settings.ignored_edge_attributes)
+
+      // Create metadata for node attributes
+      bundle.edgeAttributes = []
+      ns._createAttributeMetaData(g, edgeAttributesIndex, bundle.edgeAttributes)
+
+      // Set default node and edges size and color (for Home page)
+      ns._setDefaultAttributes(g, bundle)
+
+      // Consolidate (indexes...)
+      ns._consolidateBundle(bundle)
+
+      callback(bundle)
     }
 
     ns.exportBundle = function(bundle) {
