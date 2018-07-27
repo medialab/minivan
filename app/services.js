@@ -54,10 +54,12 @@ angular.module('app.services', [])
     }
 
     ns.encodeLocation = function(url) {
+      if (url === undefined) return undefined
       return encodeURIComponent(url)
     }
 
     ns.decodeLocation = function(encodedUrl) {
+      if (encodedUrl === undefined) return undefined
       return decodeURIComponent(encodedUrl)
     }
 

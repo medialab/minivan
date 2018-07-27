@@ -16,7 +16,7 @@ angular.module('app.home', ['ngRoute'])
 	$routeParams,
 	dataLoader
 ) {
-	$scope.bundleLocation = $routeParams.bundle
+	$scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
 
 	// No file location: redirect to test corpus.
 	if ($scope.bundleLocation === undefined) {
