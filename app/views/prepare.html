@@ -1,5 +1,5 @@
 <div layout-fill md-colors="{background: 'default-background-800'}">
-	<div layout-fill layout="row" ng-if="!bundleLocation">
+	<div layout-fill layout="row" ng-if="!networkData">
 		<div
 			flex="60"
 			flex-gt-sm="50"
@@ -74,16 +74,14 @@
 
 		</md-content>
 	</div>
-	<!-- <div layout-fill layout="row">
-		<div flex="60" ng-if="!networkData.loaded" layout="row" layout-align="center center">
-			<md-progress-circular md-mode="indeterminate"></md-progress-circular>
-		</div>
+
+	<!-- BUNDLE LOADED -->
+	<div layout-fill ng-if="networkData" layout="row">
 		<div
 			flex="60"
 			flex-gt-sm="50"
 			flex-gt-md="40"
 			layout="column"
-			ng-if="networkData.loaded"
 			style="overflow: hidden; padding: 48px"
 		>
 			<md-grid-list
@@ -101,43 +99,25 @@
 							size-att-id="networkData.defaultNodeSize"
 							color-att-id="networkData.defaultNodeColor"
 							get-camera-state="$parent.getCameraState"
-							hide-commands="true"
 							hide-labels="true"
 							hide-key="true"
-							default-zoom-show-percent="80"
+							default-zoom-show-percent="95"
 							never-too-big="true"
 							layout
 							layout-fill
 						></sigma-network>
 	      	</div>
-	      	<div
-	      		layout-fill
-	      		layout="column"
-	      		layout-align="center center"
-	      		style="z-index: 2; position: absolute; top: 0; left: 0; background-color: rgba(255, 255, 255, 0.3)"
-	      	>
-	      		<md-button
-							ng-href="#!/attributes?bundle={{bundleLocation}}"
-							layout-fill
-							style="padding-top: 50%; font-size: 1.2em; font-weight: 500;"
-						>
-							<div style="margin-top: -18px; text-shadow: 0px 0px 2px #FFFFFF, 0 0 25px #FFFFFF, 0 0 5px #FFFFFF;">Explore network</div>
-						</md-button>
-	      	</div>
 		    </md-grid-tile>
 			</md-grid-list>
 		</div>
 		<md-content
-			ng-if="networkData.loaded"
 			flex
 			layout="row"
 			style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
-			md-colors="{background: 'default-background-300'}"
+			md-colors="{background: 'default-background-800'}"
 		>
 			<div
 				flex
-				flex-gt-sm="80"
-				flex-gt-md="60"
 			>
 				<h1 style="font-size: 2.4em; font-weight: 400; color: #FFF; background-color: #000; padding: 6px; margin-top: 0px">
 					{{networkData.title}}
@@ -166,24 +146,8 @@
 						</a>
 					</p>
 				</div>
-				<div layout="column" style="margin-bottom: 48px;">
-					<md-button
-						class="md-raised"
-						ng-href="#!/attributes?bundle={{bundleLocation}}"
-						style="margin: 6px 0px"
-					>
-						Explore network
-					</md-button>
-		      <md-button
-						ng-click="downloadNetwork()"
-						style="margin: 6px 0px"
-					>
-						<md-icon>get_app</md-icon>
-						Download
-					</md-button>
-				</div>
 			</div>
 
 		</md-content>
-	</div> -->
+	</div>
 </div>

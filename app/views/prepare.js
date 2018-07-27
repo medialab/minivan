@@ -14,6 +14,7 @@ angular.module('app.prepare', ['ngRoute'])
 	$location,
 	$timeout,
 	$routeParams,
+	dataLoader,
 	netBundleManager,
 	FileLoader,
 	droppable,
@@ -106,11 +107,15 @@ angular.module('app.prepare', ['ngRoute'])
   	if (fileName.substr(-5).toUpperCase() == '.GEXF') {
   		var title = netBundleManager._toTitleCase(fileName.substring(fileName.lastIndexOf('/')+1).replace('_', ' ').replace(/\..*/gi, ''))
   		netBundleManager.parseGEXF(data, title, function(bundle){
+  			dataLoader.set(bundle)
   			$scope.networkData = bundle
+  			$scope.networkData.loaded = true
   		})
   	} else if (fileName.substr(-5).toUpperCase() == '.JSON' || fileName.substr(-3).toUpperCase() == '.JS') {
   		netBundleManager.parseBundle(JSON.parse(data), function(bundle){
+  			dataLoader.set(bundle)
   			$scope.networkData = bundle
+  			$scope.networkData.loaded = true
   		})
   	} else return false
 

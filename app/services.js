@@ -10,6 +10,10 @@ angular.module('app.services', [])
     ns.cache = undefined
     ns.fileLocation = undefined
 
+    ns.set = function(bundle) {
+      ns.cache = bundle
+    }
+
     ns.get = function(fileLocation) {
       var settings = {}
       settings.simulate_loading_time = 500
