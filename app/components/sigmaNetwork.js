@@ -323,26 +323,27 @@ angular.module('app.components.sigmaNetworkComponent', [])
               }
               var visibleTarget = Math.max(0, Math.min(1, (+$scope.defaultZoomShowPercent || 100) / 100))
               var minRatio = 0
-              var maxRatio = 2
+              var maxRatio = 1
               var visible
-              do {
-                visible = visiblePart((minRatio+maxRatio)/2)
-              } while (visible < visibleTarget) {
-                maxRatio *= 2
-              }
-              var offset
               var limit = 100
+              do {
+                maxRatio *= 1.2
+                visible = visiblePart((minRatio+maxRatio)/2)
+              } while (visible < visibleTarget && limit-->0)
+              var offset, closeEnough
               do {
                 visible = visiblePart((minRatio+maxRatio)/2)
                 offset = visible - visibleTarget
-                if (offset > 0) {
-                  maxRatio = (minRatio+maxRatio)/2
-                } else {
-                  minRatio = (minRatio+maxRatio)/2
+                closeEnough = Math.abs(offset) <= 0.001 * visibleTarget
+                if (!closeEnough) {
+                  if (offset > 0) {
+                    maxRatio = (minRatio+maxRatio)/2
+                  } else {
+                    minRatio = (minRatio+maxRatio)/2
+                  }
                 }
-              } while (Math.abs(offset) > 0.001 * visibleTarget && limit-->0) {
-              }
-              var unzoom = 0.1 // This additional unzoom adds a slight margin that's more comfortable
+              } while (!closeEnough && limit-->0)
+              var unzoom = 0.08 // This additional unzoom adds a slight margin that's more comfortable
               camera.animate({ratio: (1+unzoom) * (minRatio + maxRatio)/2, x:xScale(xBary), y:yScale(yBary)})
             } else {
               camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
