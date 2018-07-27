@@ -109,13 +109,13 @@ angular.module('app.components.sigmaNetworkComponent', [])
         }
 
         $scope.restoreOriginalLayout = function() {
-          // $scope.g = networkData.g.copy()
+          // $scope.g = $scope.networkData.g.copy()
           layoutCache.clear($scope.layoutCacheKey)
           if ($scope.layout === undefined) { return }
           $scope.layout.stop()
           $scope.g.nodes().forEach(function(nid){
-            $scope.g.setNodeAttribute(nid, 'x', networkData.g.getNodeAttribute(nid, 'x'))
-            $scope.g.setNodeAttribute(nid, 'y', networkData.g.getNodeAttribute(nid, 'y'))
+            $scope.g.setNodeAttribute(nid, 'x', $scope.networkData.g.getNodeAttribute(nid, 'x'))
+            $scope.g.setNodeAttribute(nid, 'y', $scope.networkData.g.getNodeAttribute(nid, 'y'))
           })
         }
 
