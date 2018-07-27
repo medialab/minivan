@@ -25,6 +25,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
         editableAttributes: '=',        // Optional. Allows to unset color and size attributes (close buttons)
         getCameraState: '=',
+        defaultZoomShowPercent: '=',    // Optional. If set to n, camera centered to barycenter with n% nodes visible
         hideCommands: '=',              // Optional
         hideLabels: '=',                // Optional
         hideKey: '=',                   // Optional
@@ -264,6 +265,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             var settings = {}
             settings.default_ratio = 1.2
+            settings.default_x = 0.5
+            settings.default_y = 0.5
 
             var container = document.getElementById('sigma-div')
             if (!container) return
@@ -289,13 +292,61 @@ angular.module('app.components.sigmaNetworkComponent', [])
             $scope.resetCamera = function(){
               var camera = renderer.getCamera()
               var state = camera.getState()
-              camera.animate({ratio: settings.default_ratio, x:0.5, y:0.5})
+              camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
             }
 
             // Defaults to some unzoom
             var camera = renderer.getCamera()
             var state = camera.getState()
-            camera.animate({ratio: settings.default_ratio, x:0.5, y:0.5})
+            if ($scope.defaultZoomShowPercent) {
+              // If option enabled, compute the default view from barycenter
+              var xyScales = getXYScales_camera(1, 1, 0.5, 0.5, 1)
+              var xExtent = d3.extent($scope.g.nodes(), function(nid){ return $scope.g.getNodeAttribute(nid, 'x') })
+              var yExtent = d3.extent($scope.g.nodes(), function(nid){ return $scope.g.getNodeAttribute(nid, 'y') })
+              var xMean = (xExtent[0] + xExtent[1])/2
+              var yMean = (yExtent[0] + yExtent[1])/2
+              var sizeRatio =  Math.max((xExtent[1] - xExtent[0]), (yExtent[1] - yExtent[0]))
+              var xScale = d3.scaleLinear().range([0, 1]).domain([ xMean - sizeRatio / 2, xMean + sizeRatio / 2])
+              var yScale = d3.scaleLinear().range([0, 1]).domain([ yMean - sizeRatio / 2, yMean + sizeRatio / 2])
+
+              var xBary = d3.sum($scope.g.nodes(), function(nid){ return $scope.g.getNodeAttribute(nid, 'x') })/$scope.g.order
+              var yBary = d3.sum($scope.g.nodes(), function(nid){ return $scope.g.getNodeAttribute(nid, 'y') })/$scope.g.order
+
+              // Iteratively find which ratio displays n% of the nodes by dichotomic search
+              var visiblePart = function(ratio){
+                var xyScales = getXYScales_camera(1, 1, xScale(xBary), yScale(yBary), ratio)
+                return $scope.g.nodes().filter(function(nid){
+                  var x = xyScales[0]($scope.g.getNodeAttribute(nid, 'x'))
+                  var y = xyScales[1]($scope.g.getNodeAttribute(nid, 'y'))
+                  return x > 0 && x < 1 && y > 0 && y < 1
+                }).length / $scope.g.order
+              }
+              var visibleTarget = Math.max(0, Math.min(1, (+$scope.defaultZoomShowPercent || 100) / 100))
+              var minRatio = 0
+              var maxRatio = 2
+              var visible
+              do {
+                visible = visiblePart((minRatio+maxRatio)/2)
+              } while (visible < visibleTarget) {
+                maxRatio *= 2
+              }
+              var offset
+              var limit = 100
+              do {
+                visible = visiblePart((minRatio+maxRatio)/2)
+                offset = visible - visibleTarget
+                if (offset > 0) {
+                  maxRatio = (minRatio+maxRatio)/2
+                } else {
+                  minRatio = (minRatio+maxRatio)/2
+                }
+              } while (Math.abs(offset) > 0.001 * visibleTarget && limit-->0) {
+              }
+              var unzoom = 0.1 // This additional unzoom adds a slight margin that's more comfortable
+              camera.animate({ratio: (1+unzoom) * (minRatio + maxRatio)/2, x:xScale(xBary), y:yScale(yBary)})
+            } else {
+              camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
+            }
 
             $scope.getCameraState = function() {
               return camera.getState()
@@ -344,6 +395,24 @@ angular.module('app.components.sigmaNetworkComponent', [])
             })
 
           }
+        }
+
+        function getXYScales_camera(width, height, x, y, ratio) {
+          var g = $scope.g
+          var xScale = d3.scaleLinear()
+            .range([- (x-0.5) * width / ratio, width - (x-0.5) * width / ratio])
+          var yScale = d3.scaleLinear()
+            .range([height + (y-0.5) * height / ratio, (y-0.5) * height / ratio])
+
+          var xExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'x') })
+          var yExtent = d3.extent(g.nodes(), function(nid){ return g.getNodeAttribute(nid, 'y') })
+          var sizeRatio = ratio * Math.max((xExtent[1] - xExtent[0])/width, (yExtent[1] - yExtent[0])/height)
+          var xMean = (xExtent[0] + xExtent[1])/2
+          var yMean = (yExtent[0] + yExtent[1])/2
+          xScale.domain([ xMean - sizeRatio * width / 2, xMean + sizeRatio * width / 2])
+          yScale.domain([ yMean - sizeRatio * height / 2, yMean + sizeRatio * height / 2])
+
+          return [xScale, yScale]
         }
 
       }
