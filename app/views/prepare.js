@@ -20,6 +20,10 @@ angular.module('app.prepare', ['ngRoute'])
 	droppable,
 	$mdToast
 ) {
+	// DEV MODE: auto load
+	var test_file_location = dataLoader.encodeLocation('data/BUNDLE - Sample Rio+20.json')
+	$scope.networkData = dataLoader.get(test_file_location)
+
   // File upload interactions
   $scope.uploadFile = function(){
     document.querySelector('input#hidden-upload-file-input').click()
