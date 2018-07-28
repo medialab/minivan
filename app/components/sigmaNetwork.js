@@ -275,7 +275,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: "Quicksand",
               labelWeight: '400',
-              labelSize: $scope.hideLabels ? 0 : 12
+              labelSize: $scope.hideLabels ? 0 : 12 // FIX ME: this is not the right way to hide labels
             })
             
             $scope.zoomIn = function(){
