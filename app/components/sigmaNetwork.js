@@ -45,6 +45,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         $scope.layout
         $scope.colorAtt
         $scope.sizeAtt
+        $scope.barycentricDefaultCam
 
         $scope.stateOnSuspendLayout = ($scope.startLayoutOnLoad === undefined || $scope.startLayoutOnLoad)
 
@@ -292,7 +293,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
             $scope.resetCamera = function(){
               var camera = renderer.getCamera()
               var state = camera.getState()
-              camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
+              if ($scope.barycentricDefaultCam) {
+                camera.animate($scope.barycentricDefaultCam)
+              } else {
+                camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
+              }
             }
 
             // Defaults to some unzoom
@@ -344,7 +349,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
                 }
               } while (!closeEnough && limit-->0)
               var unzoom = 0.08 // This additional unzoom adds a slight margin that's more comfortable
-              camera.animate({ratio: (1+unzoom) * (minRatio + maxRatio)/2, x:xScale(xBary), y:yScale(yBary)})
+              $scope.barycentricDefaultCam = {ratio: (1+unzoom) * (minRatio + maxRatio)/2, x:xScale(xBary), y:yScale(yBary)}
+              camera.animate($scope.barycentricDefaultCam)
             } else {
               camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
             }
