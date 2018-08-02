@@ -14,7 +14,8 @@ angular.module('minivan.netBundleManager', [])
     	defaults.title = 'Untitled Network'
     	defaults.authors = []
     	defaults.date = 'Unknown'
-    	defaults.url = undefined
+      defaults.url = undefined
+    	defaults.doi = undefined
     	defaults.description = 'This network has no description.'
     	defaults.bundleVersion = ns.bundleVersion
 
@@ -88,12 +89,66 @@ angular.module('minivan.netBundleManager', [])
       ns.setBundleAttribute(bundle, 'authors',        undefined, verbose)
       ns.setBundleAttribute(bundle, 'date',           bundle.g._attributes.lastModifiedDate, verbose)
       ns.setBundleAttribute(bundle, 'url',            undefined, verbose)
+      ns.setBundleAttribute(bundle, 'doi',            undefined, verbose)
       ns.setBundleAttribute(bundle, 'description',    bundle.g._attributes.description, verbose)
       ns.setBundleAttribute(bundle, 'bundleVersion',  ns.bundleVersion, verbose)
 
+      var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g, settings.ignored_node_attributes)
+      ns._analyseAttributeIndex(bundle.g, nodeAttributesIndex, settings.ignored_node_attributes)
+
+      // Create metadata for node attributes
+      bundle.nodeAttributes = []
+      ns._createAttributeMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes)
+
+      // Index all edge attributes from GEXF
+      var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g, settings.ignored_edge_attributes)
+      ns._analyseAttributeIndex(bundle.g, edgeAttributesIndex, settings.ignored_edge_attributes)
+
+      // Create metadata for node attributes
+      bundle.edgeAttributes = []
+      ns._createAttributeMetaData(bundle.g, edgeAttributesIndex, bundle.edgeAttributes)
+
+      // Set default node and edges size and color (for Home page)
+      ns._setDefaultAttributes(bundle)
+
+      // Consolidate (indexes...)
+      ns._consolidateBundle(bundle)
+
+      callback(bundle)
+    }
+
+    ns.exportBundle = function(bundle) {
+      var validKeys = [
+        'title',
+        'authors',
+        'bundleVersion',
+        'consolidated',
+        'date',
+        'defaultNodeColor',
+        'defaultNodeSize',
+        'defaultEdgeColor',
+        'defaultEdgeSize',
+        'description',
+        'edgeAttributes',
+        'nodeAttributes',
+        'url'
+      ]
+      var bundleSerialize = {}
+      validKeys.forEach(function(k){
+        if (bundle[k]) {
+          bundleSerialize[k] = bundle[k]
+        }
+      })
+      bundleSerialize.graph_settings = {}
+      bundleSerialize.graph_settings.type = bundle.g.type
+      bundleSerialize.graph_settings.multi = bundle.g.multi
+      bundleSerialize.g = bundle.g.export()
+      return JSON.stringify(bundleSerialize, null, "\t")
+    }
+
+    ns.buildNodeAttributesIndex = function(g, ignored_node_attributes) {
       // Index all node attributes from GEXF
       var nodeAttributesIndex = {}
-      var g = bundle.g
       g.nodes().forEach(function(nid){
         var n = g.getNodeAttributes(nid)
         d3.keys(n).forEach(function(k){
@@ -108,7 +163,7 @@ angular.module('minivan.netBundleManager', [])
       // Analyze the data of each node attribute
       d3.keys(nodeAttributesIndex).forEach(function(k){
         var attData = nodeAttributesIndex[k]
-        if(settings.ignored_node_attributes.indexOf(k) >= 0) {
+        if(ignored_node_attributes.indexOf(k) >= 0) {
           attData.type = 'ignore'
           return
         }
@@ -120,15 +175,11 @@ angular.module('minivan.netBundleManager', [])
           attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
         })
       })
-      ns._analyseAttributeIndex(g, nodeAttributesIndex, settings.ignored_node_attributes)
+      return nodeAttributesIndex
+    }
 
-      // Create metadata for node attributes
-      bundle.nodeAttributes = []
-      ns._createAttributeMetaData(g, nodeAttributesIndex, bundle.nodeAttributes)
-
-      // Index all edge attributes from GEXF
+    ns.buildEdgeAttributesIndex = function(g, ignored_edge_attributes) {
       var edgeAttributesIndex = {}
-      var g = bundle.g
       g.edges().forEach(function(eid){
         var e = g.getEdgeAttributes(eid)
         d3.keys(e).forEach(function(k){
@@ -143,7 +194,7 @@ angular.module('minivan.netBundleManager', [])
       // Analyze the data of each edge attribute
       d3.keys(edgeAttributesIndex).forEach(function(k){
         var attData = edgeAttributesIndex[k]
-        if(settings.ignored_edge_attributes.indexOf(k) >= 0) {
+        if(ignored_edge_attributes.indexOf(k) >= 0) {
           attData.type = 'ignore'
           return
         }
@@ -155,48 +206,7 @@ angular.module('minivan.netBundleManager', [])
           attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
         })
       })
-      ns._analyseAttributeIndex(g, edgeAttributesIndex, settings.ignored_edge_attributes)
-
-      // Create metadata for node attributes
-      bundle.edgeAttributes = []
-      ns._createAttributeMetaData(g, edgeAttributesIndex, bundle.edgeAttributes)
-
-      // Set default node and edges size and color (for Home page)
-      ns._setDefaultAttributes(g, bundle)
-
-      // Consolidate (indexes...)
-      ns._consolidateBundle(bundle)
-
-      callback(bundle)
-    }
-
-    ns.exportBundle = function(bundle) {
-    	var validKeys = [
-    		'title',
-    		'authors',
-    		'bundleVersion',
-    		'consolidated',
-    		'date',
-    		'defaultNodeColor',
-    		'defaultNodeSize',
-    		'defaultEdgeColor',
-    		'defaultEdgeSize',
-    		'description',
-    		'edgeAttributes',
-    		'nodeAttributes',
-    		'url'
-    	]
-    	var bundleSerialize = {}
-    	validKeys.forEach(function(k){
-    		if (bundle[k]) {
-    			bundleSerialize[k] = bundle[k]
-    		}
-    	})
-    	bundleSerialize.graph_settings = {}
-    	bundleSerialize.graph_settings.type = bundle.g.type
-    	bundleSerialize.graph_settings.multi = bundle.g.multi
-    	bundleSerialize.g = bundle.g.export()
-    	return JSON.stringify(bundleSerialize, null, "\t")
+      return edgeAttributesIndex
     }
 
 		ns._analyseAttributeIndex = function(g, attributesIndex, ignored_attributes) {
@@ -317,7 +327,7 @@ angular.module('minivan.netBundleManager', [])
     	})
     }
 
-    ns._setDefaultAttributes = function(g, bundle) {
+    ns._setDefaultAttributes = function(bundle) {
     	// Is there a node attribute partition?
     	bundle.nodeAttributes.some(function(na){
     		if (na.type == 'partition') {
