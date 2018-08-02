@@ -21,8 +21,7 @@ angular.module('app.prepare', ['ngRoute'])
 	$mdToast
 ) {
 	// DEV MODE: auto load
-	var test_file_location = dataLoader.encodeLocation('data/BUNDLE - Sample Rio+20.json')
-	$scope.networkData = dataLoader.get(test_file_location)
+	netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
 
   // File upload interactions
   $scope.uploadFile = function(){
@@ -104,28 +103,29 @@ angular.module('app.prepare', ['ngRoute'])
 	  droppable(document.getElementById("file-uploader"), 'uploadingDropClass', $scope, $scope.readUploadFile)
   }
 
+  // Init at bundle build
+  function initBundle(bundle) {
+  	console.log("networkData", bundle)
+  	dataLoader.set(bundle)
+		$scope.networkData = bundle
+		$scope.networkData.loaded = true
+  	$scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(bundle.g)
+  	$scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(bundle.g)
+  }
+
   // Parsing functions
   function parseUpload(data, fileName) {
   	if (!fileName) return false
 		var bundle_import
   	if (fileName.substr(-5).toUpperCase() == '.GEXF') {
   		var title = netBundleManager._toTitleCase(fileName.substring(fileName.lastIndexOf('/')+1).replace('_', ' ').replace(/\..*/gi, ''))
-  		netBundleManager.parseGEXF(data, title, function(bundle){
-  			dataLoader.set(bundle)
-  			$scope.networkData = bundle
-  			$scope.networkData.loaded = true
-  		})
+  		netBundleManager.parseGEXF(data, title, initBundle)
   	} else if (fileName.substr(-5).toUpperCase() == '.JSON' || fileName.substr(-3).toUpperCase() == '.JS') {
-  		netBundleManager.parseBundle(JSON.parse(data), function(bundle){
-  			dataLoader.set(bundle)
-  			$scope.networkData = bundle
-  			$scope.networkData.loaded = true
-  		})
+  		netBundleManager.parseBundle(JSON.parse(data), initBundle)
   	} else return false
 
 		return true
   }
-
 })
 
 .factory('FileLoader', ['$window', function(win){

@@ -14,7 +14,7 @@ angular.module('app.services', [])
       ns.cache = bundle
     }
 
-    ns.get = function(fileLocation) {
+    ns.get = function(fileLocation, callback) {
       var settings = {}
       settings.simulate_loading_time = 500
       settings.allow_gexf = true
@@ -35,7 +35,7 @@ angular.module('app.services', [])
         var networkData = {loaded: false}
         bundle_import(ns.decodeLocation(fileLocation) || settings.default_file_location, function(data){
 
-          // Simulate long loading time
+          // Simulate loading time
           $timeout(function(){
             console.log('data from bundle', data)
             d3.keys(data).forEach(function(k){
