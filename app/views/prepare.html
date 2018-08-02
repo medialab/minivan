@@ -129,10 +129,13 @@
 		    </md-grid-tile>
 			</md-grid-list>
 		</md-content>
+
+		<!-- Right panel: general view -->
 		<md-content
 			flex
 			layout="row"
 			style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
+			ng-if="!attId"
 		>
 			<div
 				flex
@@ -199,7 +202,7 @@
 		    	<md-list-item
 		    		class="md-2-line"
 		    		ng-repeat="(k, v) in nodeAttributesIndex"
-		    		ng-click="null"
+		    		ng-click="editNodeAttribute(k)"
 		    	>
 	          <md-icon>edit</md-icon>
 	          <div class="md-list-item-text" layout="column">
@@ -252,5 +255,41 @@
 			</div>
 
 		</md-content>
+
+		<!-- Right panel: edit node attribute -->
+		<md-content
+			flex
+			layout="row"
+			style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
+			ng-if="attId !== undefined"
+		>
+			<div
+				flex
+				layout="column"
+			>
+				<h1 style="font-size: 2.4em; font-weight: 300; color: #FFF; margin-top: 0px">
+					Settings of {{att.name}}
+				</h1>
+				<div layout="row">
+	    		<md-button
+		    		flex
+	    			class=""
+	    			style="margin-left: 0"
+	    			ng-click="cancelEditAttribute()"
+	    		>
+	    			Cancel
+	    		</md-button>
+	    		<md-button
+		    		flex
+	    			class="md-raised"
+	    			style="margin-right: 0"
+	    			ng-click="validateEditAttribute()"
+	    		>
+	    			OK
+	    		</md-button>
+	    	</div>
+			</div>
+		</md-content>
+
 	</div>
 </div>

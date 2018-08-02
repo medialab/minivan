@@ -23,6 +23,10 @@ angular.module('app.prepare', ['ngRoute'])
 	// DEV MODE: auto load
 	netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
 
+	$scope.attMode = undefined
+	$scope.attId = undefined
+	$scope.att = undefined
+
 	$scope.downloadBundle = function() {
 		var json = netBundleManager.exportBundle($scope.networkData)
     var blob = new Blob([json], {'type':'application/json;charset=utf-8'});
@@ -87,6 +91,33 @@ angular.module('app.prepare', ['ngRoute'])
   $scope.initDroppable = function(){
 	  droppable(document.getElementById("file-uploader"), 'uploadingDropClass', $scope, $scope.readUploadFile)
   }
+
+  $scope.editNodeAttribute = function(id) {
+  	$scope.attMode = 'node'
+  	$scope.attId = id
+  	$scope.att = $scope.networkData.nodeAttributesIndex[id]
+  	// TODO: clone att
+  }
+
+  $scope.editEdgeAttribute = function(id) {
+  	$scope.attMode = 'edge'
+  	$scope.attId = id
+  	$scope.att = $scope.networkData.edgeAttributesIndex[id]
+  }
+
+  $scope.cancelEditAttribute = function() {
+  	$scope.attMode = undefined
+  	$scope.attId = undefined
+  	$scope.att = undefined
+  	// TODO: recall cloned att
+  }
+
+  $scope.validateEditAttribute = function() {
+  	$scope.attMode = undefined
+  	$scope.attId = undefined
+  	$scope.att = undefined
+  }
+
 
   /// Functions
 
