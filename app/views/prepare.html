@@ -1,6 +1,6 @@
-<div layout-fill md-colors="{background: 'default-background-800'}">
+<div layout-fill md-theme="prepare-dark">
 	<div layout-fill layout="row" ng-if="!networkData">
-		<div
+		<md-content
 			flex="60"
 			flex-gt-sm="50"
 			flex-gt-md="40"
@@ -43,12 +43,11 @@
 	      	</div>
 		    </md-grid-tile>
 			</md-grid-list>
-		</div>
+		</md-content>
 		<md-content
 			flex
 			layout="row"
 			style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
-			md-colors="{background: 'default-background-800'}"
 		>
 			<div
 				flex
@@ -77,7 +76,7 @@
 
 	<!-- BUNDLE LOADED -->
 	<div layout-fill ng-if="networkData" layout="row">
-		<div
+		<md-content
 			flex="60"
 			flex-gt-sm="50"
 			flex-gt-md="40"
@@ -93,7 +92,12 @@
 	        md-rowspan="1"
 	        md-colspan="1"
 	      >
-	      	<div layout-fill class="md-whiteframe-12dp" style="min-height: 100px; min-width: 100px;">
+	      	<div
+	      		layout-fill
+	      		class="md-whiteframe-12dp"
+	      		md-theme="default"
+	      		style="min-height: 100px; min-width: 100px;"
+	      	>
 		       	<sigma-network
 							start-layout-on-load="false"
 							size-att-id="networkData.defaultNodeSize"
@@ -108,75 +112,142 @@
 						></sigma-network>
 	      	</div>
 		    </md-grid-tile>
+      	<md-grid-tile
+	        md-rowspan="1"
+	        md-colspan="1"
+	      >
+	      	<div layout-fill layout="column">
+	      		<md-button
+	      			class="md-raised"
+	      			style="margin: 0"
+	      			ng-click="downloadBundle()"
+	      		>
+	      			<md-icon>get_app</md-icon>
+	      			Download bundle
+	      		</md-button>
+	      	</div>
+		    </md-grid-tile>
 			</md-grid-list>
-		</div>
+		</md-content>
 		<md-content
 			flex
 			layout="row"
 			style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
-			md-colors="{background: 'default-background-800'}"
 		>
 			<div
 				flex
+				layout="column"
 			>
-				<h1 style="font-size: 2.4em; font-weight: 400; margin-top: 0px">
-					INFO
-				</h1>
-
 				<!-- Title -->
-				<div>
-					<p>TITLE</p>
-				</div>
+				<md-input-container>
+	        <label>Title</label>
+	        <input ng-model="networkData.title">
+	      </md-input-container>
 				
 				<!-- Date -->
-				<div>
-					<p>DATE</p>
-				</div>
+				<md-input-container>
+	        <label>Date</label>
+	        <input ng-model="networkData.date">
+	      </md-input-container>
 				
 				<!-- Authors -->
-				<div>
-					<p>AUTHORS</p>
-				</div>
+				<form name="authors">
+		      <md-chips
+		      	ng-model="networkData.authors"
+		      	name="authors"
+		      	readonly="false"
+		        md-removable="true"
+		        md-enable-chip-edit="true"
+		        md-max-chips="100"
+		        placeholder="Add author..."
+		      >
+		      	<md-chip-template>
+				      <div md-chip-draggable>{{$chip}}</div>
+				    </md-chip-template>
+		      </md-chips>
+		    </form>
 
-				<h1 style="font-size: 2.4em; font-weight: 400;">
-					DOC
-				</h1>
+		    <div style="min-height: 48px"><!-- SPACER --></div>
 
 				<!-- Description -->
-				<div>
-					<p>DESCRIPTION</p>
-				</div>
+				<md-input-container class="md-block">
+					<label>Description</label>
+					<textarea ng-model="networkData.description" rows="5"></textarea>
+				</md-input-container>
+
+				<!-- URL -->
+				<md-input-container>
+	        <label>URL</label>
+	        <input ng-model="networkData.url">
+	      </md-input-container>
 
 				<!-- DOI -->
-				<div>
-					<p>DOI</p>
-				</div>
+				<md-input-container>
+	        <label>DOI</label>
+	        <input ng-model="networkData.doi">
+	      </md-input-container>
 
-				<!-- Url -->
-				<div>
-					<p>URL</p>
-				</div>
+				<md-toolbar layout="row">
+		      <div class="md-toolbar-tools">
+		        <span>Node attributes</span>
+		      </div>
+		    </md-toolbar>
 
-				<h1 style="font-size: 2.4em; font-weight: 400;">
-					NODE ATTRIBUTES
-				</h1>
+		    <md-list md-colors="{background: 'default-background-500-0.1'}">
 
-				<!-- Attribute -->
-				<div ng-repeat="(k, v) in nodeAttributesIndex">
-					<p>{{k}}</p>
-				</div>
+					<!-- Node attribute -->
+		    	<md-list-item
+		    		class="md-2-line"
+		    		ng-repeat="(k, v) in nodeAttributesIndex"
+		    		ng-click="null"
+		    	>
+	          <md-icon>edit</md-icon>
+	          <div class="md-list-item-text" layout="column">
+	            <h3>{{networkData.nodeAttributesIndex[k].name || k}}</h3>
+	            <p>{{(networkData.nodeAttributesIndex[k].type || 'hidden') | uppercase}}</p>
+	          </div>
+	        </md-list-item>
+	    	</md-list>
 
-				<h1 style="font-size: 2.4em; font-weight: 400;">
-					EDGE ATTRIBUTES
-				</h1>
+	    	<!-- Spacer -->
+				<div style="min-height: 48px"></div>
 
-				<!-- Attribute -->
-				<div ng-repeat="(k, v) in edgeAttributesIndex">
-					<p>{{k}}</p>
-				</div>
+				<md-toolbar layout="row">
+		      <div class="md-toolbar-tools">
+		        <span>Edge attributes</span>
+		      </div>
+		    </md-toolbar>
+
+				<md-list md-colors="{background: 'default-background-500-0.1'}">
+
+					<!-- Edge attribute -->
+		    	<md-list-item
+		    		class="md-2-line"
+		    		ng-repeat="(k, v) in edgeAttributesIndex"
+		    		ng-click="null"
+		    	>
+	          <md-icon>edit</md-icon>
+	          <div class="md-list-item-text" layout="column">
+	            <h3>{{networkData.edgeAttributesIndex[k].name || k}}</h3>
+	            <p>{{(networkData.edgeAttributesIndex[k].type || 'hidden') | uppercase}}</p>
+	          </div>
+	        </md-list-item>
+	    	</md-list>
+
+	    	<!-- Spacer -->
+				<div style="min-height: 48px"></div>
+
+				<md-button
+    			class="md-raised"
+    			style="margin: 0"
+    			ng-click="downloadBundle()"
+    		>
+    			<md-icon>get_app</md-icon>
+    			Download bundle
+    		</md-button>
 
 				<!-- Spacer -->
-				<div style="height: 200px"></div>
+				<div style="min-height: 200px"></div>
 
 			</div>
 

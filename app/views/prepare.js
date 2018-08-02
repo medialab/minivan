@@ -23,6 +23,12 @@ angular.module('app.prepare', ['ngRoute'])
 	// DEV MODE: auto load
 	netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
 
+	$scope.downloadBundle = function() {
+		var json = netBundleManager.exportBundle($scope.networkData)
+    var blob = new Blob([json], {'type':'application/json;charset=utf-8'});
+    saveAs(blob, 'BUNDLE - ' + $scope.networkData.title + '.json');
+	}
+
   // File upload interactions
   $scope.uploadFile = function(){
     document.querySelector('input#hidden-upload-file-input').click()
@@ -77,6 +83,13 @@ angular.module('app.prepare', ['ngRoute'])
     })
   }
 
+  // Make the text area droppable
+  $scope.initDroppable = function(){
+	  droppable(document.getElementById("file-uploader"), 'uploadingDropClass', $scope, $scope.readUploadFile)
+  }
+
+  /// Functions
+
   function uploadParsingSuccess() {
     $scope.uploadingMessage = ''
     $scope.uploadingDropClass = ''
@@ -96,11 +109,6 @@ angular.module('app.prepare', ['ngRoute'])
         .textContent(message)
         .hideDelay(3000)
     )
-  }
-
-  // Make the text area droppable
-  $scope.initDroppable = function(){
-	  droppable(document.getElementById("file-uploader"), 'uploadingDropClass', $scope, $scope.readUploadFile)
   }
 
   // Init at bundle build
