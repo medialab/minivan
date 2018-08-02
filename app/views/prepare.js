@@ -118,7 +118,13 @@ angular.module('app.prepare', ['ngRoute'])
 		$scope.networkData = bundle
 		$scope.networkData.loaded = true
   	$scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(bundle.g)
+  	netBundleManager.ignored_node_attributes.forEach(function(d){
+  		if ($scope.nodeAttributesIndex[d]) { delete $scope.nodeAttributesIndex[d] }
+  	})
   	$scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(bundle.g)
+  	netBundleManager.ignored_edge_attributes.forEach(function(d){
+  		if ($scope.edgeAttributesIndex[d]) { delete $scope.edgeAttributesIndex[d] }
+  	})
   }
 
   // Parsing functions
