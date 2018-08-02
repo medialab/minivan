@@ -7,6 +7,8 @@ angular.module('minivan.netBundleManager', [])
 	.factory('netBundleManager', function($http, $timeout, paletteGenerator){
     var ns = {}     // namespace
     ns.bundleVersion = '0.1alpha'
+    ns.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
+    ns.ignored_edge_attributes = ['label', 'color']
 
     // Sets the passed value and if none sets a default value if the attribute is required
     ns.setBundleAttribute = function(bundle, attribute, value, verbose) {
@@ -73,10 +75,6 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns.parseGEXF = function(data, title, callback, verbose) {
-      var settings = {}
-      settings.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
-      settings.ignored_edge_attributes = ['label', 'color']
-
       var bundle = {}
 
       bundle.g = Graph.library.gexf.parse(Graph, data)
@@ -93,16 +91,16 @@ angular.module('minivan.netBundleManager', [])
       ns.setBundleAttribute(bundle, 'description',    bundle.g._attributes.description, verbose)
       ns.setBundleAttribute(bundle, 'bundleVersion',  ns.bundleVersion, verbose)
 
-      var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g, settings.ignored_node_attributes)
-      ns._analyseAttributeIndex(bundle.g, nodeAttributesIndex, settings.ignored_node_attributes)
+      var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g)
+      ns._analyseAttributeIndex(bundle.g, nodeAttributesIndex, ns.ignored_node_attributes)
 
       // Create metadata for node attributes
       bundle.nodeAttributes = []
       ns._createAttributeMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes)
 
       // Index all edge attributes from GEXF
-      var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g, settings.ignored_edge_attributes)
-      ns._analyseAttributeIndex(bundle.g, edgeAttributesIndex, settings.ignored_edge_attributes)
+      var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g)
+      ns._analyseAttributeIndex(bundle.g, edgeAttributesIndex, ns.ignored_edge_attributes)
 
       // Create metadata for node attributes
       bundle.edgeAttributes = []
@@ -146,7 +144,7 @@ angular.module('minivan.netBundleManager', [])
       return JSON.stringify(bundleSerialize, null, "\t")
     }
 
-    ns.buildNodeAttributesIndex = function(g, ignored_node_attributes) {
+    ns.buildNodeAttributesIndex = function(g) {
       // Index all node attributes from GEXF
       var nodeAttributesIndex = {}
       g.nodes().forEach(function(nid){
@@ -163,7 +161,7 @@ angular.module('minivan.netBundleManager', [])
       // Analyze the data of each node attribute
       d3.keys(nodeAttributesIndex).forEach(function(k){
         var attData = nodeAttributesIndex[k]
-        if(ignored_node_attributes.indexOf(k) >= 0) {
+        if(ns.ignored_node_attributes.indexOf(k) >= 0) {
           attData.type = 'ignore'
           return
         }
@@ -178,7 +176,7 @@ angular.module('minivan.netBundleManager', [])
       return nodeAttributesIndex
     }
 
-    ns.buildEdgeAttributesIndex = function(g, ignored_edge_attributes) {
+    ns.buildEdgeAttributesIndex = function(g) {
       var edgeAttributesIndex = {}
       g.edges().forEach(function(eid){
         var e = g.getEdgeAttributes(eid)
@@ -194,7 +192,7 @@ angular.module('minivan.netBundleManager', [])
       // Analyze the data of each edge attribute
       d3.keys(edgeAttributesIndex).forEach(function(k){
         var attData = edgeAttributesIndex[k]
-        if(ignored_edge_attributes.indexOf(k) >= 0) {
+        if(ns.ignored_edge_attributes.indexOf(k) >= 0) {
           attData.type = 'ignore'
           return
         }
