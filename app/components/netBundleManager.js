@@ -125,7 +125,13 @@ angular.module('minivan.netBundleManager', [])
         'description',
         'edgeAttributes',
         'nodeAttributes',
-        'url'
+        'url',
+        'doi'
+      ]
+      var validAttTypes = [
+        'partition',
+        'ranking-size',
+        'ranking-color'
       ]
       var bundleSerialize = {}
       validKeys.forEach(function(k){
@@ -133,6 +139,10 @@ angular.module('minivan.netBundleManager', [])
           bundleSerialize[k] = bundle[k]
         }
       })
+      bundleSerialize.nodeAttributes = bundleSerialize.nodeAttributes
+        .filter(function(att){ return validAttTypes.indexOf(att.type) >= 0 })
+      bundleSerialize.edgeAttributes = bundleSerialize.edgeAttributes
+        .filter(function(att){ return validAttTypes.indexOf(att.type) >= 0 })
       bundleSerialize.graph_settings = {}
       bundleSerialize.graph_settings.type = bundle.g.type
       bundleSerialize.graph_settings.multi = bundle.g.multi
@@ -245,7 +255,7 @@ angular.module('minivan.netBundleManager', [])
 				
 				// Decide what how the attribute should be visualized
 				if (attData.dataType == 'string') {
-					if (attData.stats.modalitiesAbove10Percent == 0) {
+					if (attData.stats.modalitiesAbove10Percent == 0 || attData.stats.differentModalities < 2 || attData.stats.differentModalities == g.order) {
 						attData.type = 'ignore'
 					} else {
 						attData.type = 'partition'

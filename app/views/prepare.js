@@ -21,7 +21,7 @@ angular.module('app.prepare', ['ngRoute'])
 	$mdToast
 ) {
 	// DEV MODE: auto load
-	netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
+	// netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
 
 	$scope.attMode = undefined
 	$scope.attId = undefined

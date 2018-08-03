@@ -104,7 +104,6 @@
 							color-att-id="(att === undefined) ? (networkData.defaultNodeColor) : ((attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ? (attId) : (undefined))"
 							att-recheck="att|json"
 							get-camera-state="$parent.getCameraState"
-							hide-labels="true"
 							hide-key="true"
 							default-zoom-show-percent="95"
 							never-too-big="true"
@@ -204,6 +203,7 @@
 		    		class="md-2-line"
 		    		ng-repeat="(k, v) in nodeAttributesIndex"
 		    		ng-click="editNodeAttribute(k)"
+		    		ng-style="{opacity: networkData.nodeAttributesIndex[k].type ? 1 : 0.5}"
 		    	>
           	<md-icon
           		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
