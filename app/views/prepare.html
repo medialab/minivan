@@ -204,10 +204,23 @@
 		    		ng-repeat="(k, v) in nodeAttributesIndex"
 		    		ng-click="editNodeAttribute(k)"
 		    	>
-	          <md-icon>edit</md-icon>
+          	<md-icon
+          		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+          	>gradient</md-icon>
+          	<md-icon
+          		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+          	>bubble_chart</md-icon>
+          	<md-icon
+          		ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
+          	>color_lens</md-icon>
+          	<md-icon
+          		ng-if="!networkData.nodeAttributesIndex[k].type"
+          	>visibility_off</md-icon>
 	          <div class="md-list-item-text" layout="column">
 	            <h3>{{networkData.nodeAttributesIndex[k].name || k}}</h3>
-	            <p>{{(networkData.nodeAttributesIndex[k].type || 'hidden') | uppercase}}</p>
+	            <p>
+	            	{{(networkData.nodeAttributesIndex[k].type || 'hidden') | uppercase}}
+	            </p>
 	          </div>
 	        </md-list-item>
 	    	</md-list>
@@ -229,7 +242,18 @@
 		    		ng-repeat="(k, v) in edgeAttributesIndex"
 		    		ng-click="null"
 		    	>
-	          <md-icon>edit</md-icon>
+	          <md-icon
+          		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+          	>gradient</md-icon>
+          	<md-icon
+          		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+          	>line_weight</md-icon>
+          	<md-icon
+          		ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
+          	>color_lens</md-icon>
+          	<md-icon
+          		ng-if="!networkData.nodeAttributesIndex[k].type"
+          	>visibility_off</md-icon>
 	          <div class="md-list-item-text" layout="column">
 	            <h3>{{networkData.edgeAttributesIndex[k].name || k}}</h3>
 	            <p>{{(networkData.edgeAttributesIndex[k].type || 'hidden') | uppercase}}</p>
