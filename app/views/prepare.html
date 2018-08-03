@@ -347,7 +347,17 @@
 	            	ng-repeat="c in colorScales"
 	            	ng-value="c"
 	            >
-	            	{{c|uppercase}}
+	            	<div layout="column" layout-align="center center" style="width: 300px; height: 20px; overflow: hidden">
+	            		<div
+	            			layout-fill
+	            			ng-style="{'transform': ((att.invertScale) ? ('rotate(0.5turn)') : ('')) + ' ' + ((att.truncateScale) ? ('scale(1.4, 1)') : (''))}"
+	            		>
+			            	<img
+			            		ng-style="{'width': '100%', 'height': '100%'}"
+			            		ng-src="res/{{c}}.png"
+			            	/>
+			            </div>
+		            </div>
 	            </md-option>
 	          </md-select>
 	        </md-input-container>
@@ -357,7 +367,7 @@
 					</md-switch>
 
           <md-switch ng-model="att.truncateScale" aria-label="Truncate scale">
-					  Truncate (shorter scale)
+					  Short scale
 					</md-switch>
 
         </div>
