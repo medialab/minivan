@@ -97,7 +97,8 @@ angular.module('app.prepare', ['ngRoute'])
   	$scope.attMode = 'node'
   	$scope.attData = $scope.nodeAttributesIndex[id]
   	$scope.attId = id
-  	$scope.att = angular.copy($scope.networkData.nodeAttributesIndex[id])
+  	$scope.att = $scope.networkData.nodeAttributesIndex[id]
+  	$scope.originalAtt = angular.copy($scope.att)
   }
 
   $scope.editEdgeAttribute = function(id) {
@@ -108,6 +109,16 @@ angular.module('app.prepare', ['ngRoute'])
   }
 
   $scope.cancelEditAttribute = function() {
+  	var k
+  	if ($scope.attMode == 'node') {
+	  	for (k in $scope.networkData.nodeAttributesIndex[$scope.attId]) {
+	  		$scope.networkData.nodeAttributesIndex[$scope.attId][k] = $scope.originalAtt[k]
+	  	}
+  	} else if ($scope.attMode == 'edge') {
+	  	for (k in $scope.networkData.edgeAttributesIndex[$scope.attId]) {
+	  		$scope.networkData.edgeAttributesIndex[$scope.attId][k] = $scope.originalAtt[k]
+	  	}
+  	}
   	$scope.attMode = undefined
   	$scope.attData = undefined
   	$scope.attId = undefined
@@ -120,6 +131,20 @@ angular.module('app.prepare', ['ngRoute'])
   	$scope.attId = undefined
   	$scope.att = undefined
   }
+
+  $scope.$watch('att.type', function(newType, oldType){
+  	if ($scope.attId) {
+	  	// Look for necessary metadata
+	  	$scope.attData.type = newType
+  		var metadataAttribute = netBundleManager.createAttributeMetaData($scope.networkData.g, $scope.attData)
+  		var k
+  		for (k in metadataAttribute) {
+  			if ($scope.att[k] === undefined) {
+  				$scope.att[k] = metadataAttribute[k]
+  			}
+  		}
+  	}
+  })
 
 
   /// Functions

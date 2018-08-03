@@ -95,12 +95,12 @@ angular.module('minivan.netBundleManager', [])
       // Create metadata for node attributes
       var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g)
       bundle.nodeAttributes = []
-      ns._createAttributeMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes)
+      ns.createAttributesMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes)
 
       // Create metadata for node attributes
       var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g)
       bundle.edgeAttributes = []
-      ns._createAttributeMetaData(bundle.g, edgeAttributesIndex, bundle.edgeAttributes)
+      ns.createAttributesMetaData(bundle.g, edgeAttributesIndex, bundle.edgeAttributes)
 
       // Set default node and edges size and color (for Home page)
       ns._setDefaultAttributes(bundle)
@@ -260,67 +260,82 @@ angular.module('minivan.netBundleManager', [])
     	})
 		}
 
-    ns._createAttributeMetaData = function(g, attributesIndex, attributes) {
-    	var settings = {}
-    	settings.max_colors = 10
-    	settings.min_proportion_for_a_color = 0.01
-    	settings.default_color = '#AAA'
-    	settings.min_node_size = 10
-    	settings.max_node_size = 100
-
-      d3.keys(attributesIndex).forEach(function(k){
+    ns.createAttributesMetaData = function(g, attributesIndex, attributes) {
+    	d3.keys(attributesIndex).forEach(function(k){
       	var attData = attributesIndex[k]
-      	if (attData.type != 'ignore') {
-      		var att = {
-      			id: k,
-      			name: ns._toTitleCase(k),
-      			count: attData.count,
-      			type: attData.type,
-      			integer: attData.dataType == 'integer'
-      		}
-      		if (att.type == 'partition') {
-	      		// Default settings for partition
-      			att.modalities = d3.keys(attData.modalities).map(function(m){
-      				return {
-      					value: m,
-      					count: attData.modalities[m]
-      				}
-      			})
-      			var colors = ns._getColors(
-      				Math.min(
-      					settings.max_colors,
-      					att.modalities
-      						.filter(function(m){
-      							return m.count/g.order >= settings.min_proportion_for_a_color
-      						})
-      						.length
-      				),
-      				att.id // random seed
-    				)
-      			att.modalities.sort(function(a, b){
-      				return b.count - a.count
-      			})
-      			att.modalities.forEach(function(m, i){
-      				m.color = (colors[i] || settings.default_color).toString()
-      			})
-      		} else if (att.type == 'ranking-color') {
-      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
-      			att.min = extent[0]
-      			att.max = extent[1]
-  					att.colorScale = ns._getRandomColorScale()
-      		} else if (att.type == 'ranking-size') {
-      			var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
-      			att.min = extent[0]
-      			att.max = extent[1]
-  					att.areaScaling = {
-  						min: settings.min_node_size,
-  						max: settings.max_node_size,
-  						interpolation: 'linear'
-  					}
-      		}
-      		attributes.push(att)
-      	}
+        var att = {
+          id: k,
+          name: ns._toTitleCase(k),
+          count: attData.count,
+          type: attData.type,
+          integer: attData.dataType == 'integer'
+        }
+        var attMeta = ns.createAttributeMetaData(g, attData)
+      	if (attMeta) {
+          var attMetaKey
+          for (attMetaKey in attMeta) {
+            att[attMetaKey] = attMeta[attMetaKey]
+          }
+          attributes.push(att)
+        }
     	})
+    }
+
+    ns.createAttributeMetaData = function(g, attData) {
+      var settings = {}
+      settings.max_colors = 10
+      settings.min_proportion_for_a_color = 0.01
+      settings.default_color = '#AAA'
+      settings.min_node_size = 10
+      settings.max_node_size = 100
+
+      if (attData.type == 'ignore') {
+        return
+      } else {
+        var att = {}
+        if (attData.type == 'partition') {
+          // Default settings for partition
+          att.modalities = d3.keys(attData.modalities).map(function(m){
+            return {
+              value: m,
+              count: attData.modalities[m]
+            }
+          })
+          var colors = ns._getColors(
+            Math.min(
+              settings.max_colors,
+              att.modalities
+                .filter(function(m){
+                  return m.count/g.order >= settings.min_proportion_for_a_color
+                })
+                .length
+            ),
+            att.id // random seed
+          )
+          att.modalities.sort(function(a, b){
+            return b.count - a.count
+          })
+          att.modalities.forEach(function(m, i){
+            m.color = (colors[i] || settings.default_color).toString()
+          })
+        } else if (attData.type == 'ranking-color') {
+          var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
+          att.min = extent[0]
+          att.max = extent[1]
+          att.colorScale = 'interpolateYlGnBu'
+          att.invertScale = false
+        } else if (attData.type == 'ranking-size') {
+          var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
+          att.min = extent[0]
+          att.max = extent[1]
+          att.areaScaling = {
+            min: settings.min_node_size,
+            max: settings.max_node_size,
+            interpolation: 'linear'
+          }
+        }
+        return att
+      }
     }
 
     ns._setDefaultAttributes = function(bundle) {
@@ -656,19 +671,33 @@ angular.module('minivan.netBundleManager', [])
 			return colors
 		}
 
-		ns._getRandomColorScale = function() {
-			var scales = [
-				'interpolatePuRd',
-				'interpolateYlGnBu',
-				'interpolateYlOrBr',
-				'interpolateGnBu',
-				'interpolateCubehelixDefault',
-				'interpolateMagma',
-				'interpolateInferno',
-				'interpolateViridis'
-			]
-			return scales[Math.floor(Math.random() * scales.length)]
-		}
+    ns.colorScales = [
+      'interpolateGreys',
+      'interpolateGreens',
+      'interpolateBlues',
+      'interpolatePurples',
+      'interpolateReds',
+      'interpolateOranges',
+      'interpolateViridis',
+      'interpolateInferno',
+      'interpolateMagma',
+      'interpolatePlasma',
+      'interpolateWarm',
+      'interpolateCool',
+      'interpolateCubehelixDefault',
+      'interpolateBuGn',
+      'interpolateBuPu',
+      'interpolateGnBu',
+      'interpolateOrRd',
+      'interpolatePuBuGn',
+      'interpolatePuBu',
+      'interpolatePuRd',
+      'interpolateRdPu',
+      'interpolateYlGnBu',
+      'interpolateYlGn',
+      'interpolateYlOrBr',
+      'interpolateYlOrRd'
+    ]
 
     return ns
   })

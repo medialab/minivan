@@ -132,11 +132,10 @@ angular.module('app.services', [])
     }
 
     // ranking value -> color
-    ns.getColorScale = function(minValue, maxValue, colorScaleInterpolator) {
+    ns.getColorScale = function(minValue, maxValue, colorScaleInterpolator, invert) {
       var dScale = d3.scaleLinear()
-        .range([1, 0])
+        .range(invert ? [1, 0] : [0, 1])
         .domain([minValue, maxValue])
-      
       var d3Interpolator = d3[colorScaleInterpolator]
       if (d3Interpolator === undefined) {
         console.error('[error] Unknown d3 color interpolator:', colorScaleInterpolator)
@@ -331,7 +330,10 @@ angular.module('app.services', [])
       var g = dataLoader.get().g
 
       // Color scales
-      var colorScale = ns.getColorScale(attribute.min, attribute.max, attribute.colorScale)
+      var colorScale = ns.getColorScale(attribute.min, attribute.max, attribute.colorScale, attribute.invertScale)
+      if (attribute.invertScale) {
+        colorScale = colorScale.invert()
+      }
 
       var data
       if (useDeciles) {
@@ -589,6 +591,7 @@ angular.module('app.services', [])
               validElements.areaScaling_interpolation = att.areaScaling.interpolation
             }
             validElements.colorScale = att.colorScale
+            validElements.invertScale = att.invertScale
             validElements.modalities = JSON.stringify(att.modalities || [])
             return validElements
           })

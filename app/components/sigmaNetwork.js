@@ -21,6 +21,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         onNodeClick: '=',
         colorAttId: '=',
         sizeAttId: '=',
+        attRecheck: '=',                // Optional. Just a trick: change it to check attributes again
         nodeFilter: '=',                // Optional. Used to display only certain nodes (the others are present but muted)
         hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
         editableAttributes: '=',        // Optional. Allows to unset color and size attributes (close buttons)
@@ -69,6 +70,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
         })
 
         $scope.$watch('sizeAttId', function(){
+          updateSizeFilter()
+          $timeout(updateNodeAppearance, 120)
+        })
+
+        $scope.$watch('attRecheck', function(){
           updateSizeFilter()
           $timeout(updateNodeAppearance, 120)
         })
