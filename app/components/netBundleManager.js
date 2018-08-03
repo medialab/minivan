@@ -324,6 +324,7 @@ angular.module('minivan.netBundleManager', [])
           att.max = extent[1]
           att.colorScale = 'interpolateYlGnBu'
           att.invertScale = false
+          att.truncateScale = true
         } else if (attData.type == 'ranking-size') {
           var extent = d3.extent(d3.keys(attData.modalities), function(d){ return +d })
           att.min = extent[0]
