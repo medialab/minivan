@@ -25,6 +25,7 @@ angular.module('app.prepare', ['ngRoute'])
 
 	$scope.attMode = undefined
 	$scope.attId = undefined
+	$scope.attData = undefined
 	$scope.att = undefined
 
 	$scope.downloadBundle = function() {
@@ -94,26 +95,28 @@ angular.module('app.prepare', ['ngRoute'])
 
   $scope.editNodeAttribute = function(id) {
   	$scope.attMode = 'node'
+  	$scope.attData = $scope.nodeAttributesIndex[id]
   	$scope.attId = id
-  	$scope.att = $scope.networkData.nodeAttributesIndex[id]
-  	// TODO: clone att
+  	$scope.att = angular.copy($scope.networkData.nodeAttributesIndex[id])
   }
 
   $scope.editEdgeAttribute = function(id) {
   	$scope.attMode = 'edge'
+  	$scope.attData = $scope.edgeAttributesIndex[id]
   	$scope.attId = id
   	$scope.att = $scope.networkData.edgeAttributesIndex[id]
   }
 
   $scope.cancelEditAttribute = function() {
   	$scope.attMode = undefined
+  	$scope.attData = undefined
   	$scope.attId = undefined
   	$scope.att = undefined
-  	// TODO: recall cloned att
   }
 
   $scope.validateEditAttribute = function() {
   	$scope.attMode = undefined
+  	$scope.attData = undefined
   	$scope.attId = undefined
   	$scope.att = undefined
   }
@@ -152,6 +155,7 @@ angular.module('app.prepare', ['ngRoute'])
   	netBundleManager.ignored_node_attributes.forEach(function(d){
   		if ($scope.nodeAttributesIndex[d]) { delete $scope.nodeAttributesIndex[d] }
   	})
+  	console.log('Node attributes', $scope.nodeAttributesIndex)
   	$scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(bundle.g)
   	netBundleManager.ignored_edge_attributes.forEach(function(d){
   		if ($scope.edgeAttributesIndex[d]) { delete $scope.edgeAttributesIndex[d] }

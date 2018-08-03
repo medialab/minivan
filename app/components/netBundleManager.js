@@ -91,18 +91,14 @@ angular.module('minivan.netBundleManager', [])
       ns.setBundleAttribute(bundle, 'description',    bundle.g._attributes.description, verbose)
       ns.setBundleAttribute(bundle, 'bundleVersion',  ns.bundleVersion, verbose)
 
-      var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g)
-      ns._analyseAttributeIndex(bundle.g, nodeAttributesIndex, ns.ignored_node_attributes)
 
       // Create metadata for node attributes
+      var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g)
       bundle.nodeAttributes = []
       ns._createAttributeMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes)
 
-      // Index all edge attributes from GEXF
-      var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g)
-      ns._analyseAttributeIndex(bundle.g, edgeAttributesIndex, ns.ignored_edge_attributes)
-
       // Create metadata for node attributes
+      var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g)
       bundle.edgeAttributes = []
       ns._createAttributeMetaData(bundle.g, edgeAttributesIndex, bundle.edgeAttributes)
 
@@ -173,6 +169,7 @@ angular.module('minivan.netBundleManager', [])
           attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
         })
       })
+      ns._analyseAttributeIndex(g, nodeAttributesIndex, ns.ignored_node_attributes)
       return nodeAttributesIndex
     }
 
@@ -204,6 +201,7 @@ angular.module('minivan.netBundleManager', [])
           attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
         })
       })
+      ns._analyseAttributeIndex(g, edgeAttributesIndex, ns.ignored_edge_attributes)
       return edgeAttributesIndex
     }
 
