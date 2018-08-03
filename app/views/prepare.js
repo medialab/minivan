@@ -209,6 +209,7 @@ angular.module('app.prepare', ['ngRoute'])
     })
   }
 
+  // On type change
   $scope.$watch('att.type', function(newType, oldType){
   	if ($scope.attId) {
 	  	// Look for necessary metadata
@@ -220,6 +221,7 @@ angular.module('app.prepare', ['ngRoute'])
   				$scope.att[k] = metadataAttribute[k]
   			}
   		}
+  		console.log('$scope.att', $scope.att)
   	}
   })
 
@@ -262,6 +264,27 @@ angular.module('app.prepare', ['ngRoute'])
   	netBundleManager.ignored_edge_attributes.forEach(function(d){
   		if ($scope.edgeAttributesIndex[d]) { delete $scope.edgeAttributesIndex[d] }
   	})
+  	// It's possible, when loading an existing bundle, that some attributes registered in the
+  	// node attributes index or edge attribute index are not listed in the bundle.
+  	// This may cause some issues, so we create them with no type, as this means that
+  	// they are not published.
+  	var k
+  	for (k in $scope.nodeAttributesIndex) {
+  		if (bundle.nodeAttributesIndex[k] === undefined) {
+  			var att = netBundleManager.initAttribute(k, $scope.nodeAttributesIndex[k])
+  			att.type = undefined
+  			bundle.nodeAttributes.push(att)
+  			netBundleManager.consolidateNodeAttribute(bundle, att)
+  		}
+  	}
+  	for (k in $scope.edgeAttributesIndex) {
+  		if (bundle.edgeAttributesIndex[k] === undefined) {
+  			var att = netBundleManager.initAttribute(k, $scope.edgeAttributesIndex[k])
+  			att.type = undefined
+  			bundle.edgeAttributes.push(att)
+  			netBundleManager.consolidateEdgeAttribute(bundle, att)
+  		}
+  	}
   }
 
   // Parsing functions

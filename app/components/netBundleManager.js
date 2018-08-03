@@ -58,7 +58,7 @@ angular.module('minivan.netBundleManager', [])
 
       if (!bundle.consolidated) {
         // Consolidate (indexes...)
-        ns._consolidateBundle(bundle)
+        ns.consolidateBundle(bundle)
       }
 
       callback(bundle)
@@ -106,7 +106,7 @@ angular.module('minivan.netBundleManager', [])
       ns._setDefaultAttributes(bundle)
 
       // Consolidate (indexes...)
-      ns._consolidateBundle(bundle)
+      ns.consolidateBundle(bundle)
 
       callback(bundle)
     }
@@ -263,13 +263,7 @@ angular.module('minivan.netBundleManager', [])
     ns.createAttributesMetaData = function(g, attributesIndex, attributes) {
     	d3.keys(attributesIndex).forEach(function(k){
       	var attData = attributesIndex[k]
-        var att = {
-          id: k,
-          name: ns._toTitleCase(k),
-          count: attData.count,
-          type: attData.type,
-          integer: attData.dataType == 'integer'
-        }
+        var att = ns.initAttribute(k, attData)
         var attMeta = ns.createAttributeMetaData(g, attData)
       	if (attMeta) {
           var attMetaKey
@@ -279,6 +273,16 @@ angular.module('minivan.netBundleManager', [])
           attributes.push(att)
         }
     	})
+    }
+
+    ns.initAttribute = function(id, attData) {
+      return {
+        id: id,
+        name: ns._toTitleCase(id),
+        count: attData.count,
+        type: attData.type,
+        integer: attData.dataType == 'integer'
+      }
     }
 
     ns.createAttributeMetaData = function(g, attData) {
@@ -459,48 +463,48 @@ angular.module('minivan.netBundleManager', [])
       }
     }
 
-    ns._consolidateBundle = function(bundle) {
+    ns.consolidateBundle = function(bundle) {
     	ns.setBundleAttribute(bundle, 'consolidated', true)
 
       // Node attributes index
       bundle.nodeAttributesIndex = {}
       bundle.nodeAttributes.forEach(function(att){
-        bundle.nodeAttributesIndex[att.id] = att
-
-        // Modalities index
-        if (att.modalities) {
-          att.modalitiesIndex = {}
-          att.modalities.forEach(function(m){
-            att.modalitiesIndex[m.value] = m
-          })
-        }
-
-      })
-
-      // Build each node attribute's data
-      bundle.nodeAttributes.forEach(function(att){
-        att.data = ns._buildNodeAttData(bundle.g, att.id, att.type)
+        ns.consolidateNodeAttribute(bundle, att)
       })
 
       // Edge attributes index
       bundle.edgeAttributesIndex = {}
       bundle.edgeAttributes.forEach(function(att){
-        bundle.edgeAttributesIndex[att.id] = att
-
-        // Modalities index
-        if (att.modalities) {
-          att.modalitiesIndex = {}
-          att.modalities.forEach(function(m){
-            att.modalitiesIndex[m.value] = m
-          })
-        }
-
+        ns.consolidateEdgeAttribute(bundle, att)
       })
+    }
 
-      // Build each edge attribute's data
-      bundle.edgeAttributes.forEach(function(att){
-        att.data = ns._buildEdgeAttData(bundle.g, att.id, att.type)
-      })
+    ns.consolidateNodeAttribute = function(bundle, att) {
+      bundle.nodeAttributesIndex[att.id] = att
+
+      // Modalities index
+      if (att.modalities) {
+        att.modalitiesIndex = {}
+        att.modalities.forEach(function(m){
+          att.modalitiesIndex[m.value] = m
+        })
+      }
+
+      att.data = ns._buildNodeAttData(bundle.g, att.id, att.type)
+    }
+
+    ns.consolidateEdgeAttribute = function(bundle, att) {
+      bundle.edgeAttributesIndex[att.id] = att
+
+      // Modalities index
+      if (att.modalities) {
+        att.modalitiesIndex = {}
+        att.modalities.forEach(function(m){
+          att.modalitiesIndex[m.value] = m
+        })
+      }
+
+      att.data = ns._buildEdgeAttData(bundle.g, att.id, att.type)
     }
 
     ns._buildNodeAttData = function(g, attributeId, attributeType) {

@@ -143,19 +143,19 @@
 				layout="column"
 			>
 				<!-- Title -->
-				<!-- <md-input-container>
+				<md-input-container>
 	        <label>Title</label>
 	        <input ng-model="networkData.title">
-	      </md-input-container> -->
+	      </md-input-container>
 				
 				<!-- Date -->
-				<!-- <md-input-container>
+				<md-input-container>
 	        <label>Date</label>
 	        <input ng-model="networkData.date">
-	      </md-input-container> -->
+	      </md-input-container>
 				
 				<!-- Authors -->
-				<!-- <form name="authors">
+				<form name="authors">
 		      <md-chips
 		      	ng-model="networkData.authors"
 		      	name="authors"
@@ -169,27 +169,27 @@
 				      <div md-chip-draggable>{{$chip}}</div>
 				    </md-chip-template>
 		      </md-chips>
-		    </form> -->
+		    </form>
 
 		    <div style="min-height: 48px"><!-- SPACER --></div>
 
 				<!-- Description -->
-				<!-- <md-input-container class="md-block">
+				<md-input-container class="md-block">
 					<label>Description</label>
 					<textarea ng-model="networkData.description" rows="5"></textarea>
-				</md-input-container> -->
+				</md-input-container>
 
 				<!-- URL -->
-				<!-- <md-input-container>
+				<md-input-container>
 	        <label>URL</label>
 	        <input ng-model="networkData.url">
-	      </md-input-container> -->
+	      </md-input-container>
 
 				<!-- DOI -->
-				<!-- <md-input-container>
+				<md-input-container>
 	        <label>DOI</label>
 	        <input ng-model="networkData.doi">
-	      </md-input-container> -->
+	      </md-input-container>
 
 				<md-toolbar layout="row">
 		      <div class="md-toolbar-tools">
@@ -284,27 +284,49 @@
 		<!-- Right panel: edit node attribute -->
 		<md-content
 			flex
-			layout="row"
-			style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
+			layout="column"
+			style="padding: 48px 0px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
 			ng-if="attId !== undefined"
 		>
-			<div
-				flex
+			<md-content
 				layout="column"
+				md-colors="{'background': 'default-background-700-0.5'}"
+				style="padding: 12px; margin-right: 48px"
 			>
-				<h1 style="font-size: 2.4em; font-weight: 300; color: #FFF; margin-top: 0px">
+				<h1 style="font-size: 2.4em; font-weight: 300; color: #FFF; margin: 0px">
 					Edit {{attMode}} attribute
 				</h1>
 
-        <!-- Attribute name -->
-        <md-input-container>
-	        <label>Name</label>
-	        <input ng-model="att.name">
-	      </md-input-container>
+				<small><pre>Attribute ID: {{attId}}</pre></small>
 
+				<div layout="row" style="min-height: 48px">
+	    		<md-button
+		    		flex
+	    			class=""
+	    			style="margin-left: 0"
+	    			ng-click="cancelEditAttribute()"
+	    		>
+	    			Cancel
+	    		</md-button>
+	    		<md-button
+		    		flex
+	    			class="md-raised"
+	    			style="margin-right: 0"
+	    			ng-click="validateEditAttribute()"
+	    		>
+	    			OK
+	    		</md-button>
+	    	</div>
+
+			</md-content>
+			<md-content
+				flex
+				layout="column"
+				style="padding: 48px 48px 48px 0px"
+			>
 				<md-input-container>
           <label>Visualize as...</label>
-          <md-select ng-model="att.type">
+          <md-select ng-model="$parent.att.type">
             <md-option ng-value="undefined">
             	<md-icon>visibility_off</md-icon>
             	<em>Hidden</em>
@@ -335,12 +357,18 @@
           </md-select>
         </md-input-container>
 
+        <!-- Attribute name -->
+        <md-input-container ng-if="att.type">
+	        <label>Name</label>
+	        <input ng-model="$parent.att.name">
+	      </md-input-container>
+
 	    	<!-- Spacer -->
 				<div style="min-height: 24px"></div>
 
 				<div ng-if="attMode == 'node' && att.type == 'partition'">
 					<div layout="column" style="border: 1px solid rgba(255, 255, 255, 0.3); padding: 12px">
-						<div style="margin-bottom: 12px">Reroll colors</div>
+						<div style="margin-bottom: 12px">Generate Colors</div>
 						<div layout="row" style="margin-bottom: -24px">
 							<md-input-container flex>
 		        		<label>Max colors</label>
@@ -371,8 +399,8 @@
 		          </md-select>
 		        </md-input-container>
 						<md-button class="md-raised" style="margin: 0px" ng-click="repaint()">
-							<md-icon>refresh</md-icon>
-							Repaint
+							<md-icon>color_lens</md-icon>
+							Paint
 						</md-button>
 					</div>
 
@@ -485,25 +513,10 @@
 	        </md-input-container>
         </div>
 
-				<div layout="row">
-	    		<md-button
-		    		flex
-	    			class=""
-	    			style="margin-left: 0"
-	    			ng-click="cancelEditAttribute()"
-	    		>
-	    			Cancel
-	    		</md-button>
-	    		<md-button
-		    		flex
-	    			class="md-raised"
-	    			style="margin-right: 0"
-	    			ng-click="validateEditAttribute()"
-	    		>
-	    			OK
-	    		</md-button>
-	    	</div>
-			</div>
+	    	<!-- Spacer -->
+				<div style="min-height: 48px;"></div>
+
+			</md-content>
 		</md-content>
 
 	</div>
