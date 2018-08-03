@@ -301,7 +301,7 @@ angular.module('minivan.netBundleManager', [])
               count: attData.modalities[m]
             }
           })
-          var colors = ns._getColors(
+          var colors = ns.getColors(
             Math.min(
               settings.max_colors,
               att.modalities
@@ -647,7 +647,13 @@ angular.module('minivan.netBundleManager', [])
 		  else return "string";
 		}
 
-		ns._getColors = function(count, randomSeed) {
+		ns.getColors = function(count, randomSeed, settings) {
+      settings = settings || {}
+      settings.cmin = settings.cmin || 25.59
+      settings.cmax = settings.cmax || 55.59
+      settings.lmin = settings.lmin || 60.94
+      settings.lmax = settings.lmax || 90.94
+
 			if (count == 0) {
 				return []
 			} else if (count == 1) {
@@ -658,8 +664,8 @@ angular.module('minivan.netBundleManager', [])
 			  count, // Colors
 			  function(color){ // This function filters valid colors
 			    var hcl = d3.hcl(color)
-			    return hcl.c>=25.59 && hcl.c<=55.59
-			      	&& hcl.l>=60.94 && hcl.l<=90.94;
+			    return hcl.c>=settings.cmin && hcl.c<=settings.cmax
+			      	&& hcl.l>=settings.lmin && hcl.l<=settings.lmax;
 			  },
 			  false, // Using Force Vector instead of k-Means
 			  50, // Steps (quality)

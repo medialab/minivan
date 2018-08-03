@@ -338,6 +338,77 @@
 	    	<!-- Spacer -->
 				<div style="min-height: 24px"></div>
 
+				<div ng-if="attMode == 'node' && att.type == 'partition'">
+					<div layout="column" style="border: 1px solid rgba(255, 255, 255, 0.3); padding: 12px">
+						<div style="margin-bottom: 12px">Reroll colors</div>
+						<div layout="row" style="margin-bottom: -24px">
+							<md-input-container flex>
+		        		<label>Max colors</label>
+						    <input
+					        ng-model="$parent.$parent.$parent.maxColors"
+					        min="1"
+					        type="number"
+						    >
+							</md-input-container>
+							<div style="min-width: 6px"><!-- SPACER --></div>
+							<md-input-container flex>
+		        		<label>Default color</label>
+						    <input
+					        ng-model="$parent.$parent.$parent.defaultColor"
+					        type="text"
+						    >
+							</md-input-container>
+						</div>
+						<md-input-container>
+		          <label>Palette style</label>
+		          <md-select ng-model="$parent.$parent.$parent.paletteIndex">
+		            <md-option
+		            	ng-repeat="palette in colorPalettes"
+		            	ng-value="$index"
+		            >
+		            	{{palette.name}}
+		            </md-option>
+		          </md-select>
+		        </md-input-container>
+						<md-button class="md-raised" style="margin: 0px" ng-click="repaint()">
+							<md-icon>refresh</md-icon>
+							Repaint
+						</md-button>
+					</div>
+
+					<md-list>
+						<md-list-item
+			    		class="md-2-line"
+			    		ng-repeat="modality in att.modalities"
+			    	>
+		          <md-icon
+		          	ng-style="{'color': modality.color, 'font-size':'42px', 'height':'42px	'}"
+		          >brightness_1</md-icon>
+		          <div class="md-list-item-text" layout="column">
+		            <h3>{{modality.value}}</h3>
+		            <p>{{modality.count|number}} node{{modality.count>1?'s':''}}</p>
+		            <md-icon
+		            	ng-click="modalityUp($index)"
+		            	aria-label="Up"
+		            	class="md-secondary"
+		            	ng-disabled="$index == 0"
+		            	ng-style="{'opacity': ($index == 0) ? ('0.3') : ('1')}"
+		            >
+		            	arrow_upward
+		            </md-icon>
+		            <md-icon
+		            	ng-click="modalityDown($index)"
+		            	aria-label="Down"
+		            	class="md-secondary"
+		            	ng-disabled="$index == att.modalities.length - 1"
+		            	ng-style="{'opacity': ($index == att.modalities.length - 1) ? ('0.3') : ('1')}"
+		            >
+		            	arrow_downward
+		            </md-icon>
+		          </div>
+		        </md-list-item>
+		    	</md-list>
+        </div>
 
         <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-color'">
 					<md-input-container>
@@ -369,7 +440,6 @@
           <md-switch ng-model="att.truncateScale" aria-label="Truncate scale">
 					  Short scale
 					</md-switch>
-
         </div>
 
         <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-size'">

@@ -28,6 +28,52 @@ angular.module('app.prepare', ['ngRoute'])
 	$scope.attData = undefined
 	$scope.att = undefined
 	$scope.colorScales = netBundleManager.colorScales
+	$scope.maxColors = 5
+	$scope.defaultColor = '#AAA'
+	$scope.colorPalettes = [
+		{
+			name: 'Default',
+			settings: {
+				cmin: 30,
+				cmax: 60,
+				lmin: 60,
+				lmax: 80
+			}
+		}, {
+			name: 'Light',
+			settings: {
+				cmin: 25,
+				cmax: 60,
+				lmin: 80,
+				lmax: 100
+			}
+		}, {
+			name: 'Dark',
+			settings: {
+				cmin: 25,
+				cmax: 60,
+				lmin: 40,
+				lmax: 80
+			}
+		}, {
+			name: 'Colorful',
+			settings: {
+				cmin: 60,
+				cmax: 90,
+				lmin: 30,
+				lmax: 95
+			}
+		}, {
+			name: 'Dull',
+			settings: {
+				cmin: 10,
+				cmax: 50,
+				lmin: 60,
+				lmax: 100
+			}
+		}
+	]
+	$scope.paletteIndex = 0
 
 	$scope.downloadBundle = function() {
 		var json = netBundleManager.exportBundle($scope.networkData)
@@ -131,6 +177,36 @@ angular.module('app.prepare', ['ngRoute'])
   	$scope.attData = undefined
   	$scope.attId = undefined
   	$scope.att = undefined
+  }
+
+  $scope.modalityUp = function(i) {
+  	var m = $scope.att.modalities[i-1]
+  	$scope.att.modalities[i-1] = $scope.att.modalities[i]
+  	$scope.att.modalities[i] = m
+  }
+
+  $scope.modalityDown = function(i) {
+  	var m = $scope.att.modalities[i+1]
+  	$scope.att.modalities[i+1] = $scope.att.modalities[i]
+  	$scope.att.modalities[i] = m
+  }
+
+  $scope.repaint = function() {
+  	var colors = netBundleManager.getColors(
+      Math.min(
+        $scope.maxColors,
+        $scope.att.modalities.length
+      ),
+      undefined,
+      $scope.colorPalettes[$scope.paletteIndex].settings
+    )
+    $scope.att.modalities.forEach(function(mod, i){
+    	if (i < colors.length) {
+    		mod.color = colors[i].toString()
+    	} else {
+    		mod.color = $scope.defaultColor
+    	}
+    })
   }
 
   $scope.$watch('att.type', function(newType, oldType){
