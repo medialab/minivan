@@ -235,7 +235,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             // Default / muted
             g.nodes().forEach(function(nid){
               g.setNodeAttribute(nid, 'z', 0)
-              g.setNodeAttribute(nid, 'size', getSize(nid))
+              g.setNodeAttribute(nid, 'size', Math.max(0.0000001, getSize(nid)))
               g.setNodeAttribute(nid, 'color', settings.default_node_color_muted)
             })
 

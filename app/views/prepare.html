@@ -102,7 +102,7 @@
 							start-layout-on-load="false"
 							size-att-id="(att === undefined) ? (networkData.defaultNodeSize) : ((attMode=='node' && att.type=='ranking-size') ? (attId) : (undefined))"
 							color-att-id="(att === undefined) ? (networkData.defaultNodeColor) : ((attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ? (attId) : (undefined))"
-							att-recheck="att.type"
+							att-recheck="att|json"
 							get-camera-state="$parent.getCameraState"
 							hide-labels="true"
 							hide-key="true"
@@ -293,8 +293,14 @@
 				layout="column"
 			>
 				<h1 style="font-size: 2.4em; font-weight: 300; color: #FFF; margin-top: 0px">
-					{{att.name}}
+					Edit attribute
 				</h1>
+
+        <!-- Attribute name -->
+        <md-input-container>
+	        <label>Name</label>
+	        <input ng-model="att.name">
+	      </md-input-container>
 
 				<md-input-container>
           <label>Visualize as...</label>
@@ -307,26 +313,73 @@
             	value="partition"
             	ng-if="attData.dataType == 'string' || attData.dataType == 'integer'"
             >
-            	<md-icon ng-if="attMode == 'node'">color_lens</md-icon>
-            	<md-icon ng-if="attMode == 'edge'">line_weight</md-icon>
+            	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'node'">color_lens</md-icon>
+            	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'edge'">line_weight</md-icon>
           		Partition
           	</md-option>
             <md-option
             	value="ranking-color"
             	ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
             >
-          		<md-icon>gradient</md-icon>
+          		<md-icon style="font-size: 20px; height: 20px">gradient</md-icon>
           		Ranking as Color
           	</md-option>
             <md-option
             	value="ranking-size"
             	ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
             >
-            	<md-icon>bubble_chart</md-icon>
+            	<md-icon style="font-size: 20px; height: 20px">bubble_chart</md-icon>
           		Ranking as Size
           	</md-option>
           </md-select>
         </md-input-container>
+
+	    	<!-- Spacer -->
+				<div style="min-height: 24px"></div>
+
+
+        <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-size'">
+        	<div layout="row">
+	        	<md-input-container flex>
+	        		<label>Min node area</label>
+					    <input
+				        ng-model="att.areaScaling.min"
+				        min="0"
+				        type="number"
+					    >
+						</md-input-container>
+						<div style="min-width: 6px"><!-- SPACER --></div>
+	        	<md-input-container flex>
+	        		<label>Max node area</label>
+					    <input
+				        ng-model="att.areaScaling.max"
+				        min="0"
+				        type="number"
+					    >
+						</md-input-container>
+					</div>
+
+					<md-input-container>
+	          <label>Interpolation</label>
+	          <md-select ng-model="att.areaScaling.interpolation">
+	            <md-option value="pow-0.333333333">
+	            	Power 1/3 (Cubic root)
+	            </md-option>
+	            <md-option value="pow-0.5">
+	            	Power 1/2 (Square root)
+	            </md-option>
+	            <md-option value="linear">
+	            	Linear
+	            </md-option>
+	            <md-option value="pow-2">
+	            	Power 2 (Square)
+	            </md-option>
+	            <md-option value="pow-3">
+	            	Power 3 (Cubic)
+	            </md-option>
+	          </md-select>
+	        </md-input-container>
+        </div>
 
 				<div layout="row">
 	    		<md-button
