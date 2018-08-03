@@ -214,7 +214,7 @@ angular.module('app.directives', [])
           var ctx = canvas.getContext("2d")
 
           // Color scale
-          var getColor = scalesUtils.getColorScale(height, 0, $scope.att.colorScale)
+          var getColor = scalesUtils.getColorScale(height, 0, $scope.att.colorScale, $scope.att.invertScale)
 
           for (y=0; y<height; y++) {
             ctx.beginPath()

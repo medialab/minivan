@@ -27,6 +27,7 @@ angular.module('app.prepare', ['ngRoute'])
 	$scope.attId = undefined
 	$scope.attData = undefined
 	$scope.att = undefined
+	$scope.colorScales = netBundleManager.colorScales
 
 	$scope.downloadBundle = function() {
 		var json = netBundleManager.exportBundle($scope.networkData)

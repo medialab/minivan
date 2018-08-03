@@ -223,7 +223,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
                 })
                 getColor = function(nid){ return colorByModality[g.getNodeAttribute(nid, colorAtt.id)] || '#000' }
               } else if (colorAtt.type == 'ranking-color') {
-                var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
+                var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale, colorAtt.invertScale)
                 getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)).toString() }
               } else {
                 getColor = function(){ return settings.default_node_color }

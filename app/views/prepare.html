@@ -293,7 +293,7 @@
 				layout="column"
 			>
 				<h1 style="font-size: 2.4em; font-weight: 300; color: #FFF; margin-top: 0px">
-					Edit attribute
+					Edit {{attMode}} attribute
 				</h1>
 
         <!-- Attribute name -->
@@ -313,23 +313,24 @@
             	value="partition"
             	ng-if="attData.dataType == 'string' || attData.dataType == 'integer'"
             >
-            	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'node'">color_lens</md-icon>
-            	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'edge'">line_weight</md-icon>
-          		Partition
+            	<md-icon style="font-size: 20px; height: 20px">color_lens</md-icon>
+          		Color set
           	</md-option>
             <md-option
             	value="ranking-color"
             	ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
             >
           		<md-icon style="font-size: 20px; height: 20px">gradient</md-icon>
-          		Ranking as Color
+          		Color gradient
           	</md-option>
             <md-option
             	value="ranking-size"
             	ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
             >
-            	<md-icon style="font-size: 20px; height: 20px">bubble_chart</md-icon>
-          		Ranking as Size
+            	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'node'">bubble_chart</md-icon>
+            	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'edge'">line_weight</md-icon>
+          		<span ng-if="attMode == 'node'">Size</span>
+          		<span ng-if="attMode == 'edge'">Thickness</span>
           	</md-option>
           </md-select>
         </md-input-container>
@@ -337,6 +338,25 @@
 	    	<!-- Spacer -->
 				<div style="min-height: 24px"></div>
 
+
+        <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-color'">
+					<md-input-container>
+	          <label>Color scale</label>
+	          <md-select ng-model="att.colorScale">
+	            <md-option
+	            	ng-repeat="c in colorScales"
+	            	ng-value="c"
+	            >
+	            	{{c|uppercase}}
+	            </md-option>
+	          </md-select>
+	        </md-input-container>
+
+          <md-switch ng-model="att.invertScale" aria-label="Invert scale">
+					  Invert scale
+					</md-switch>
+
+        </div>
 
         <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-size'">
         	<div layout="row">
