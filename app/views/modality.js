@@ -3,7 +3,7 @@
 angular.module('app.modality', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/partition/:attribute/modality/:modalityValue', {
+  $routeProvider.when('/partition/:attribute/modality/', {
     templateUrl: 'views/modality.html'
   , controller: 'ModalityController'
   , reloadOnSearch: false
@@ -21,7 +21,7 @@ angular.module('app.modality', ['ngRoute'])
   remarkableNodes
 ) {
 	$scope.panel = $location.search().panel || 'map'
-	$scope.search = $location.search().q
+  $scope.search = $location.search().q
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
   $scope.matrixDetailLevel = 1
@@ -35,7 +35,7 @@ angular.module('app.modality', ['ngRoute'])
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
-      $scope.modality = $scope.attribute.modalities.filter(function(mod){return mod.value == $routeParams.modalityValue})[0]
+      $scope.modality = $scope.attribute.modalities.filter(function(mod){return mod.value == $location.search().m})[0]
       $scope.modalityFlow = $scope.attribute.data.modalityFlow[$scope.modality.value][$scope.modality.value]
       if ($scope.attribute.type !== 'partition') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)

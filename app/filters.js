@@ -17,3 +17,9 @@ angular.module('app.filters', [])
 	  	else return attType
 	  }
 	})
+	
+	.filter('encodeURIComponent', function () {
+	  return function (txt) {
+	  	return encodeURIComponent(txt)
+	  }
+	})
