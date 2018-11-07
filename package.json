@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --colors --progress",
     "postinstall": "npm run build",
-    "serve": "http-server app -a localhost -o"
+    "serve": "http-server app -a localhost -o -p 8000"
   },
   "licenses": [
     {
