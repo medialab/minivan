@@ -28,7 +28,7 @@ angular.module('app.print-stats-range', ['ngRoute'])
   if ($scope.detailLevel != 1 && $scope.detailLevel != 2) {
     $scope.detailLevel = 1
   }
-  
+
 	$scope.$watch('networkData.loaded', function(){
 		if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
@@ -45,7 +45,11 @@ angular.module('app.print-stats-range', ['ngRoute'])
       // Subgraph
       var g = networkData.g
       $scope.subgraph = g.copy()
-      $scope.subgraph.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
+      $scope.subgraph.nodes().forEach(function(nid) {
+        if (!$scope.nodeFilter(nid)) {
+          $scope.subgraph.dropNode(nid);
+        }
+      })
 	  }
 	})
 })

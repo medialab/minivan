@@ -43,10 +43,14 @@ angular.module('app.range', ['ngRoute'])
       // Subgraph
       var g = $scope.networkData.g
       $scope.subgraph = g.copy()
-      $scope.subgraph.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
+      $scope.subgraph.nodes().forEach(function(nid) {
+        if (!$scope.nodeFilter(nid)) {
+          $scope.subgraph.dropNode(nid);
+        }
+      })
     }
   })
-  
+
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }
