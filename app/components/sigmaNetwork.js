@@ -29,6 +29,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         defaultZoomShowPercent: '=',    // Optional. If set to n, camera centered to barycenter with n% nodes visible
         hideCommands: '=',              // Optional
         hideKey: '=',                   // Optional
+        hideLabels: '=',                // Optional
         enableLayout: '=',
         layoutCacheKey: '=',            // Optional. Used to cache and recall layout.
         neverTooBig: '='                // Optional. When enabled, the warning nerver shows
@@ -177,9 +178,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
             // Filter
             var nodeFilter
             if ($scope.hardFilter) {
-              g.dropNodes(g.nodes().filter(function(nid){
-                return !$scope.nodeFilter(nid)
-              }))
+              g.nodes().forEach(function(nid) {
+                if (!$scope.nodeFilter(nid)) {
+                  g.dropNode(nid)
+                }
+              })
 
               nodeFilter = function(d){return d}
             } else {
@@ -280,6 +283,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: "Quicksand",
               labelWeight: '400',
+              renderLabels: !$scope.hideLabels,
               zIndex: true
             })
 
