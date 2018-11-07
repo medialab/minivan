@@ -28,7 +28,6 @@ angular.module('app.components.sigmaNetworkComponent', [])
         getCameraState: '=',
         defaultZoomShowPercent: '=',    // Optional. If set to n, camera centered to barycenter with n% nodes visible
         hideCommands: '=',              // Optional
-        hideLabels: '=',                // Optional
         hideKey: '=',                   // Optional
         enableLayout: '=',
         layoutCacheKey: '=',            // Optional. Used to cache and recall layout.
@@ -281,9 +280,9 @@ angular.module('app.components.sigmaNetworkComponent', [])
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: "Quicksand",
               labelWeight: '400',
-              labelSize: $scope.hideLabels ? 0 : 12 // FIX ME: this is not the right way to hide labels
+              zIndex: true
             })
-            
+
             $scope.zoomIn = function(){
               var camera = renderer.getCamera()
               var state = camera.getState()
