@@ -6,7 +6,8 @@
   "repository": "https://github.com/medialab/visual-net-analyser",
   "scripts": {
     "build": "webpack --colors --progress",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "serve": "http-server app -a localhost -o"
   },
   "licenses": [
     {
@@ -30,6 +31,7 @@
     "sigma": "2.0.0-alpha19"
   },
   "devDependencies": {
+    "http-server": "^0.11.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
   }
