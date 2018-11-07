@@ -30,7 +30,7 @@
 								icon="'apps'"
 								label="'Matrix'"
 							></toolbar-viewmode-item>
-							
+
 							<toolbar-viewmode-item
 								viewmode-target="'list'"
 								viewmode="panel"
@@ -55,11 +55,11 @@
 							size-att-id="$parent.sizeAttId"
 							color-att-id="$parent.colorAttId"
 							default-zoom-show-percent="100"
-							get-camera-state="$parent.getCameraState"
+							get-renderer="$parent.getRenderer"
 							editable-attributes="true"
 							layout-fill
 						></sigma-network>
-						
+
 						<matrix
 							ng-if="networkData.loaded && panel == 'matrix'"
 							on-node-click="networkNodeClick"
@@ -78,17 +78,17 @@
 							search="$parent.search"
 							layout-fill
 						></node-list>
-						
+
 					</div>
 				</div>
-				
+
 				<!-- Footer: MAP -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'map'">
 					<md-button class="footer-button" ng-click="downloadGEXF()">
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-network?color={{colorAttId}}&size={{sizeAttId}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}&bundle={{bundleLocation}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-network?color={{colorAttId}}&size={{sizeAttId}}&x={{getRenderer().getCamera().getState().x}}&y={{getRenderer().getCamera().getState().y}}&r={{getRenderer().getCamera().getState().ratio}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>

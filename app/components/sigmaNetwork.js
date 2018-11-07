@@ -25,7 +25,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
         nodeFilter: '=',                // Optional. Used to display only certain nodes (the others are present but muted)
         hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
         editableAttributes: '=',        // Optional. Allows to unset color and size attributes (close buttons)
-        getCameraState: '=',
+        getRenderer: '=',
         defaultZoomShowPercent: '=',    // Optional. If set to n, camera centered to barycenter with n% nodes visible
         hideCommands: '=',              // Optional
         hideKey: '=',                   // Optional
@@ -364,8 +364,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
               camera.animate({ratio: settings.default_ratio, x:settings.default_x, y:settings.default_y})
             }
 
-            $scope.getCameraState = function() {
-              return camera.getState()
+            $scope.getRenderer = function() {
+              return renderer
             }
 
             if ($scope.layout) {
