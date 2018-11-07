@@ -279,7 +279,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
             container.innerHTML = ''
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: "Quicksand",
-              labelWeight: '400'
+              labelWeight: '400',
+              zIndex: true
             })
 
             $scope.zoomIn = function(){
