@@ -41,14 +41,18 @@ angular.module('app.modalities-partition', ['ngRoute'])
       $scope.maxModCount = d3.max($scope.attribute.modalities.map(function(mod){ return mod.count }))
     }
   })
-  
+
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }
 
   $scope.downloadGEXF = function() {
     var g2 = $scope.networkData.g.copy()
-    g2.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
+    g2.nodes().forEach(function(nid) {
+      if (!$scope.nodeFilter(nid)) {
+        g2.dropNode(nid);
+      }
+    })
   	var xml = Graph.library.gexf.write(g2);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + ".gexf");
