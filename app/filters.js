@@ -9,3 +9,11 @@ angular.module('app.filters', [])
 	    return item !== undefined
 	  }
 	})
+
+	.filter('simpleAttType', function () {
+	  return function (attType) {
+	  	if (attType == 'ranking-size' || attType == 'ranking-color')
+	  		return 'ranking'
+	  	else return attType
+	  }
+	})
