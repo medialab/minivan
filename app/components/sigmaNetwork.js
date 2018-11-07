@@ -177,9 +177,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
             // Filter
             var nodeFilter
             if ($scope.hardFilter) {
-              g.dropNodes(g.nodes().filter(function(nid){
-                return !$scope.nodeFilter(nid)
-              }))
+              g.nodes().forEach(function(nid) {
+                if (!$scope.nodeFilter(nid)) {
+                  g.dropNode(nid)
+                }
+              })
 
               nodeFilter = function(d){return d}
             } else {
