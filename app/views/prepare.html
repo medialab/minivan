@@ -100,8 +100,8 @@
 	      	>
 		       	<sigma-network
 							start-layout-on-load="false"
-							size-att-id="(att === undefined) ? (networkData.defaultNodeSize) : ((attMode=='node' && att.type=='ranking-size') ? (attId) : (undefined))"
-							color-att-id="(att === undefined) ? (networkData.defaultNodeColor) : ((attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ? (attId) : (undefined))"
+							node-size-att-id="(att === undefined) ? (networkData.defaultNodeSize) : ((attMode=='node' && att.type=='ranking-size') ? (attId) : (undefined))"
+							node-color-att-id="(att === undefined) ? (networkData.defaultNodeColor) : ((attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ? (attId) : (undefined))"
 							att-recheck="att|json"
 							get-renderer="$parent.getRenderer"
 							hide-key="true"

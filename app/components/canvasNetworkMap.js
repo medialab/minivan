@@ -12,8 +12,8 @@ angular.module('app.components.canvasNetworkMap', [])
     restrict: 'E',
     template: '<small style="opacity:0.5;">loading</small>',
     scope: {
-    	colorAttId: '=',
-    	sizeAttId: '=',
+    	nodeColorAttId: '=',
+    	nodeSizeAttId: '=',
     	nodeFilter: '=',
     	hardFilter: '=',
     	nodeSize: '=',
@@ -34,8 +34,8 @@ angular.module('app.components.canvasNetworkMap', [])
     	var redraw = debounce(_redraw, 100) // Prevents multiple triggers in a row
     	$scope.networkData = dataLoader.get()
 
-    	$scope.$watch('colorAttId', redraw)
-    	$scope.$watch('sizeAttId', redraw)
+    	$scope.$watch('nodeColorAttId', redraw)
+    	$scope.$watch('nodeSizeAttId', redraw)
     	$scope.$watch('oversampling', redraw)
     	$scope.$watch('nodeSize', redraw)
     	$scope.$watch('labelSize', redraw)
@@ -156,8 +156,8 @@ angular.module('app.components.canvasNetworkMap', [])
 
 					// Colors
 					var getColor
-					if ($scope.colorAttId) {
-            var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
+					if ($scope.nodeColorAttId) {
+            var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
             if (colorAtt.type == 'partition') {
               var colorByModality = {}
               colorAtt.modalities.forEach(function(m){
@@ -195,8 +195,8 @@ angular.module('app.components.canvasNetworkMap', [])
 					var nodesDensity = nodesInTheFrame.length / (el[0].offsetWidth * el[0].offsetHeight)
 					var standardArea =  0.01 / nodesDensity
 					var getArea
-					if ($scope.sizeAttId) {
-            var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
+					if ($scope.nodeSizeAttId) {
+            var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
             var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
             var areaScale_norm = function(val){ return sizeAtt.areaScaling.max * areaScale(val) * standardArea / 10 }
             getArea = function(nid){ return areaScale_norm(g.getNodeAttribute(nid, sizeAtt.id)) }
