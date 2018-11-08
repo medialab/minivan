@@ -19,8 +19,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         startLayoutOnShow: '=',         // Optional. Starts layout when suspendLayout becomes false
         startLayoutOnLoad: '=',         // Optional. Default: true
         onNodeClick: '=',
-        colorAttId: '=',
-        sizeAttId: '=',
+        nodeColorAttId: '=',
+        nodeSizeAttId: '=',
         attRecheck: '=',                // Optional. Just a trick: change it to check attributes again
         nodeFilter: '=',                // Optional. Used to display only certain nodes (the others are present but muted)
         hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
@@ -64,12 +64,12 @@ angular.module('app.components.sigmaNetworkComponent', [])
           }
         })
 
-        $scope.$watch('colorAttId', function(){
+        $scope.$watch('nodeColorAttId', function(){
           updateColorFilter()
           $timeout(updateNodeAppearance, 120)
         })
 
-        $scope.$watch('sizeAttId', function(){
+        $scope.$watch('nodeSizeAttId', function(){
           updateSizeFilter()
           $timeout(updateNodeAppearance, 120)
         })
@@ -147,8 +147,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         function updateColorFilter(){
           if ( $scope.g === undefined ) return
-          if ($scope.colorAttId) {
-            $scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
+          if ($scope.nodeColorAttId) {
+            $scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
           } else {
             $scope.colorAtt = undefined
           }
@@ -156,8 +156,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         function updateSizeFilter(){
           if ( $scope.g === undefined ) return
-          if ($scope.sizeAttId) {
-            $scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
+          if ($scope.nodeSizeAttId) {
+            $scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
           } else {
             $scope.sizeAtt = undefined
           }
@@ -206,8 +206,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
             var standardArea =  0.03 / nodesDensity
             var rScale = scalesUtils.getRScale()
             var getSize
-            if ($scope.sizeAttId) {
-              var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.sizeAttId]
+            if ($scope.nodeSizeAttId) {
+              var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
               var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
               getSize = function(nid){ return rScale(sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10) }
             } else {
@@ -218,8 +218,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             // Color
             var getColor
-            if ($scope.colorAttId) {
-              var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]
+            if ($scope.nodeColorAttId) {
+              var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
               if (colorAtt.type == 'partition') {
                 var colorByModality = {}
                 colorAtt.modalities.forEach(function(m){

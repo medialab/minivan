@@ -231,7 +231,7 @@ angular.module('minivan.netBundleManager', [])
           attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
         })
       })
-      ns._analyseAttributeIndex(g, nodeAttributesIndex, ns.ignored_node_attributes)
+      ns._analyseAttributeIndex(g, g.nodes().map(function(nid){return g.getNodeAttributes(nid)}), nodeAttributesIndex, ns.ignored_node_attributes)
       return nodeAttributesIndex
     }
 
@@ -299,11 +299,11 @@ angular.module('minivan.netBundleManager', [])
           attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
         })
       })
-      ns._analyseAttributeIndex(g, edgeAttributesIndex, ns.ignored_edge_attributes)
+      ns._analyseAttributeIndex(g, g.edges().map(function(eid){return g.getEdgeAttributes(eid)}), edgeAttributesIndex, ns.ignored_edge_attributes)
       return edgeAttributesIndex
     }
 
-		ns._analyseAttributeIndex = function(g, attributesIndex, ignored_attributes) {
+		ns._analyseAttributeIndex = function(g, items, attributesIndex, ignored_attributes) {
 			d3.keys(attributesIndex).forEach(function(k){
     		var attData = attributesIndex[k]
     		if(ignored_attributes.indexOf(k) >= 0) {
@@ -324,8 +324,8 @@ angular.module('minivan.netBundleManager', [])
 
 				// Aggregate the distribution of modalities
 				attData.modalities = {}
-				g.nodes().forEach(function(nid){
-					var v = g.getNodeAttribute(nid, k)
+				items.forEach(function(item){
+          var v = item[k]
 					attData.modalities[v] = (attData.modalities[v] || 0) + 1
 				})
 

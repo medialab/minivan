@@ -20,7 +20,7 @@ angular.module('app.home', ['ngRoute'])
 
 	// No file location: redirect to test corpus.
 	if ($scope.bundleLocation === undefined) {
-		var test_file_location = dataLoader.encodeLocation('data/BUNDLE - Sample Rio+20.json')
+		var test_file_location = dataLoader.encodeLocation('data/test00.json')
 		// var test_file_location = dataLoader.encodeLocation('data/Eleonoras Network with tags v2.gexf')
 		// var test_file_location = dataLoader.encodeLocation('data/SiS Words.gexf')
 		$scope.bundleLocation = test_file_location
