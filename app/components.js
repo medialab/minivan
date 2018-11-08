@@ -24,6 +24,7 @@ angular.module('app.components', [
     'app.components.cardModalityInOut',
     'app.components.cardModalityConnectivityBalance',
     'app.components.cardModalityRemarkableNodes',
+    'app.components.cardNetworkDescription',
     'app.components.cardRangeSummary',
     'app.components.cardRangeInOut'
   ])
