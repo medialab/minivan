@@ -1,6 +1,6 @@
 <!-- Message if too big -->
 <div layout-fill layout="column" layout-align="center center" ng-if="tooBig">
-  
+
   <!-- Round -->
   <div
     md-colors="{'background': 'default-primary'}"
@@ -11,7 +11,7 @@
     <div><strong>{{nodesCount|number}} NODES</strong></div>
     <div><strong>{{edgesCount|number}} EDGES</strong></div>
   </div>
-  
+
   <!-- Message -->
   <div style="margin-top: 16px">
     THIS NETWORK IS LARGE
@@ -125,7 +125,7 @@
         {{sizeAtt.name}}
       </div>
       <div layout="column" layout-align="center center" ng-if="editableAttributes">
-        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.$parent.sizeAttId = undefined" style="opacity: 0.6">
+        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.$parent.$parent.sizeAttId = undefined" style="opacity: 0.6">
           <md-icon class="md-icon-18">close</md-icon>
         </md-button>
       </div>
@@ -137,7 +137,7 @@
         {{colorAtt.name}}
       </div>
       <div layout="column" layout-align="center center" ng-if="editableAttributes">
-        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.$parent.colorAttId = undefined" style="opacity: 0.6">
+        <md-button class="md-icon-button mini-icon-button" ng-click="$parent.$parent.$parent.$parent.colorAttId = undefined" style="opacity: 0.6">
           <md-icon class="md-icon-18">close</md-icon>
         </md-button>
       </div>
