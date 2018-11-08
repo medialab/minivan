@@ -17,20 +17,23 @@ angular.module('app.attributes', ['ngRoute'])
 	$route,
 	$routeParams,
 	dataLoader,
-	csvBuilder
+	csvBuilder,
+  userCache
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
 	$scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
 	$scope.networkData = dataLoader.get($scope.bundleLocation)
-	$scope.attributeListDetailLevel = 1
-	$scope.matrixDetailLevel = 1
+	$scope.attributeListDetailLevel = userCache.get('attributeListDetailLevel', 1)
+	$scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
 	$scope.selectedAttId = undefined
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
 	$scope.sizePlusColor = false
 	$scope.$watch('panel', updateLocationPath)
 	$scope.$watch('search', updateLocationPath)
+  $scope.$watch('attributeListDetailLevel', updateAttributeListDetailLevel)
+  $scope.$watch('matrixDetailLevel', updateMatrixDetailLevel)
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
@@ -109,5 +112,13 @@ angular.module('app.attributes', ['ngRoute'])
   function updateLocationPath(){
   	$location.search('panel', $scope.panel || null)
   	$location.search('q', $scope.search || null)
+  }
+
+  function updateAttributeListDetailLevel() {
+    userCache.set('attributeListDetailLevel', $scope.attributeListDetailLevel)
+  }
+
+  function updateMatrixDetailLevel() {
+    userCache.set('matrixDetailLevel', $scope.matrixDetailLevel)
   }
 })

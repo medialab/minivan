@@ -469,7 +469,7 @@ angular.module('app.services', [])
       var lowerBound = valuesExtent[0]
       var upperBound = valuesExtent[1]
       var bandWidth = (upperBound - lowerBound) / bandsCount
-      
+
       if (niceScale) {
         // Lower the bandWidth to closest round number
         bandWidth = Math.pow(10, Math.floor(Math.log(bandWidth)/Math.log(10)))
@@ -688,7 +688,7 @@ angular.module('app.services', [])
         })
         rows.push(row)
       })
-      
+
       var csv = d3.csvFormatRows(rows)
       return csv
     }
@@ -744,7 +744,7 @@ angular.module('app.services', [])
         })
         rows.push(row)
       })
-      
+
       var csv = d3.csvFormatRows(rows)
       return csv
     }
@@ -806,6 +806,27 @@ angular.module('app.services', [])
 
     ns.clear = function(key) {
       delete sessionStorage[key]
+    }
+
+    return ns
+  })
+
+  .factory('userCache', function() {
+    var ns = {}
+
+    ns.set = function(key, obj) {
+      localStorage[key] = angular.toJson(obj)
+    }
+
+    ns.get = function(key, defaultValue){
+      if (!(key in localStorage))
+        return defaultValue
+
+      return angular.fromJson(localStorage[key])
+    }
+
+    ns.clear = function(key) {
+      delete localStorage[key]
     }
 
     return ns
@@ -942,4 +963,4 @@ angular.module('app.services', [])
 
 
 
-  
+
