@@ -6,6 +6,7 @@
   "repository": "https://github.com/medialab/visual-net-analyser",
   "scripts": {
     "build": "webpack --colors --progress",
+    "build:prod": "webpack --colors --progress -p",
     "postinstall": "npm run build",
     "serve": "http-server app -a localhost -o -p 8000"
   },
