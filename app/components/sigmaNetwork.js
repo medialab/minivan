@@ -21,6 +21,8 @@ angular.module('app.components.sigmaNetworkComponent', [])
         onNodeClick: '=',
         nodeColorAttId: '=',
         nodeSizeAttId: '=',
+        edgeColorAttId: '=',
+        edgeSizeAttId: '=',
         attRecheck: '=',                // Optional. Just a trick: change it to check attributes again
         nodeFilter: '=',                // Optional. Used to display only certain nodes (the others are present but muted)
         hardFilter: '=',                // Optional. When enabled, hidden nodes are completely removed
@@ -57,26 +59,39 @@ angular.module('app.components.sigmaNetworkComponent', [])
             $scope.nodesCount = $scope.g.order
             $scope.edgesCount = $scope.g.size
             $scope.tooBig = !$scope.neverTooBig && $scope.nodesCount > networkDisplayThreshold
-            updateColorFilter()
-            updateSizeFilter()
-            updateNodeAppearance()
+            updateNodeColorFilter()
+            updateNodeSizeFilter()
+            updateEdgeColorFilter()
+            updateEdgeSizeFilter()
+            updateNodeEdgeAppearance()
             refreshSigma()
           }
         })
 
         $scope.$watch('nodeColorAttId', function(){
-          updateColorFilter()
-          $timeout(updateNodeAppearance, 120)
+          updateNodeColorFilter()
+          $timeout(updateNodeEdgeAppearance, 120)
         })
 
         $scope.$watch('nodeSizeAttId', function(){
-          updateSizeFilter()
-          $timeout(updateNodeAppearance, 120)
+          updateNodeSizeFilter()
+          $timeout(updateNodeEdgeAppearance, 120)
+        })
+
+        $scope.$watch('edgeColorAttId', function(){
+          updateEdgeColorFilter()
+          $timeout(updateNodeEdgeAppearance, 120)
+        })
+
+        $scope.$watch('edgeSizeAttId', function(){
+          updateEdgeSizeFilter()
+          $timeout(updateNodeEdgeAppearance, 120)
         })
 
         $scope.$watch('attRecheck', function(){
-          updateSizeFilter()
-          $timeout(updateNodeAppearance, 120)
+          updateNodeSizeFilter()
+          updateEdgeSizeFilter()
+          $timeout(updateNodeEdgeAppearance, 120)
         })
 
         $scope.$watch('onNodeClick', updateMouseEvents)
@@ -93,7 +108,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
           }
         })
 
-        $scope.$watch('nodeFilter', updateNodeAppearance)
+        $scope.$watch('nodeFilter', updateNodeEdgeAppearance)
 
         $scope.displayLargeNetwork = function() {
           networkDisplayThreshold = $scope.nodesCount+1
@@ -145,25 +160,43 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
         /// Functions
 
-        function updateColorFilter(){
+        function updateNodeColorFilter(){
           if ( $scope.g === undefined ) return
           if ($scope.nodeColorAttId) {
-            $scope.colorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
+            $scope.nodeColorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
           } else {
-            $scope.colorAtt = undefined
+            $scope.nodeColorAtt = undefined
           }
         }
 
-        function updateSizeFilter(){
+        function updateNodeSizeFilter(){
           if ( $scope.g === undefined ) return
           if ($scope.nodeSizeAttId) {
-            $scope.sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
+            $scope.nodeSizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
           } else {
-            $scope.sizeAtt = undefined
+            $scope.nodeSizeAtt = undefined
           }
         }
 
-        function updateNodeAppearance() {
+        function updateEdgeColorFilter(){
+          if ( $scope.g === undefined ) return
+          if ($scope.edgeColorAttId) {
+            $scope.edgeColorAtt = $scope.networkData.edgeAttributesIndex[$scope.edgeColorAttId]
+          } else {
+            $scope.edgeColorAtt = undefined
+          }
+        }
+
+        function updateEdgeSizeFilter(){
+          if ( $scope.g === undefined ) return
+          if ($scope.edgeSizeAttId) {
+            $scope.edgeSizeAtt = $scope.networkData.edgeAttributesIndex[$scope.edgeSizeAttId]
+          } else {
+            $scope.edgeSizeAtt = undefined
+          }
+        }
+
+        function updateNodeEdgeAppearance() {
           if ($scope.networkData.loaded) {
 
             var g = $scope.g
@@ -201,45 +234,73 @@ angular.module('app.components.sigmaNetworkComponent', [])
               }
             }
 
-            // Size
+            // Node size
             var nodesDensity = g.order / (el[0].offsetWidth * el[0].offsetHeight)
             var standardArea =  0.03 / nodesDensity
             var rScale = scalesUtils.getRScale()
-            var getSize
+            var getNodeSize
             if ($scope.nodeSizeAttId) {
-              var sizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
-              var areaScale = scalesUtils.getAreaScale(sizeAtt.min, sizeAtt.max, sizeAtt.areaScaling.min, sizeAtt.areaScaling.max, sizeAtt.areaScaling.interpolation)
-              getSize = function(nid){ return rScale(sizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10) }
+              var nodeSizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
+              var areaScale = scalesUtils.getAreaScale(nodeSizeAtt.min, nodeSizeAtt.max, nodeSizeAtt.areaScaling.min, nodeSizeAtt.areaScaling.max, nodeSizeAtt.areaScaling.interpolation)
+              getNodeSize = function(nid){ return rScale(nodeSizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10) }
             } else {
               // Trick: a barely visible size difference by degree
               // (helps hierarchizing node labels)
-              getSize = function(nid){ return rScale(standardArea + 0.1 * Math.log(1 + g.degree(nid)) ) }
+              getNodeSize = function(nid){ return rScale(standardArea + 0.1 * Math.log(1 + g.degree(nid)) ) }
             }
 
-            // Color
-            var getColor
+            // Node color
+            var getNodeColor
             if ($scope.nodeColorAttId) {
-              var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
-              if (colorAtt.type == 'partition') {
+              var nodeColorAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
+              if (nodeColorAtt.type == 'partition') {
                 var colorByModality = {}
-                colorAtt.modalities.forEach(function(m){
+                nodeColorAtt.modalities.forEach(function(m){
                   colorByModality[m.value] = m.color
                 })
-                getColor = function(nid){ return colorByModality[g.getNodeAttribute(nid, colorAtt.id)] || '#000' }
-              } else if (colorAtt.type == 'ranking-color') {
-                var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale, colorAtt.invertScale, colorAtt.truncateScale)
-                getColor = function(nid){ return colorScale(g.getNodeAttribute(nid, colorAtt.id)).toString() }
+                getNodeColor = function(nid){ return colorByModality[g.getNodeAttribute(nid, nodeColorAtt.id)] || '#000' }
+              } else if (nodeColorAtt.type == 'ranking-color') {
+                var colorScale = scalesUtils.getColorScale(nodeColorAtt.min, nodeColorAtt.max, nodeColorAtt.colorScale, nodeColorAtt.invertScale, nodeColorAtt.truncateScale)
+                getNodeColor = function(nid){ return colorScale(g.getNodeAttribute(nid, nodeColorAtt.id)).toString() }
               } else {
-                getColor = function(){ return settings.default_node_color }
+                getNodeColor = function(){ return settings.default_node_color }
               }
             } else {
-              getColor = function(){ return settings.default_node_color }
+              getNodeColor = function(){ return settings.default_node_color }
+            }
+
+            // Edge size
+            var getEdgeSize
+            if ($scope.edgeSizeAttId) {
+              // TODO
+            } else {
+              getEdgeSize = function(eid){ return 1 }
+            }
+
+            // Edge color
+            var getEdgeColor
+            if ($scope.edgeColorAttId) {
+              var edgeColorAtt = $scope.networkData.edgeAttributesIndex[$scope.edgeColorAttId]
+              if (edgeColorAtt.type == 'partition') {
+                var colorByModality = {}
+                edgeColorAtt.modalities.forEach(function(m){
+                  colorByModality[m.value] = m.color
+                })
+                getEdgeColor = function(eid){ return colorByModality[g.getEdgeAttribute(eid, edgeColorAtt.id)] || '#000' }
+              } else if (edgeColorAtt.type == 'ranking-color') {
+                var edgeColorScale = scalesUtils.getColorScale(edgeColorAtt.min, edgeColorAtt.max, edgeColorAtt.colorScale, edgeColorAtt.invertScale, edgeColorAtt.truncateScale)
+                getEdgeColor = function(eid){ return colorScale(g.getNodeAttribute(eid, edgeColorAtt.id)).toString() }
+              } else {
+                getEdgeColor = function(){ return settings.default_edge_color }
+              }
+            } else {
+              getEdgeColor = function(){ return settings.default_edge_color }
             }
 
             // Default / muted
             g.nodes().forEach(function(nid){
               g.setNodeAttribute(nid, 'z', 0)
-              g.setNodeAttribute(nid, 'size', Math.max(0.0000001, getSize(nid)))
+              g.setNodeAttribute(nid, 'size', Math.max(0.0000001, getNodeSize(nid)))
               g.setNodeAttribute(nid, 'color', settings.default_node_color_muted)
             })
 
@@ -248,7 +309,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
               .filter(nodeFilter)
               .forEach(function(nid){
                 g.setNodeAttribute(nid, 'z', 1)
-                g.setNodeAttribute(nid, 'color', getColor(nid))
+                g.setNodeAttribute(nid, 'color', getNodeColor(nid))
               })
 
             /// EDGES
@@ -266,7 +327,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
               })
               .forEach(function(eid){
                 g.setEdgeAttribute(eid, 'z', 1)
-                g.setEdgeAttribute(eid, 'color', settings.default_edge_color)
+                g.setEdgeAttribute(eid, 'color', getEdgeColor(eid))
               })
           }
         }
