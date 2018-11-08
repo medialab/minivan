@@ -241,7 +241,8 @@
 		    	<md-list-item
 		    		class="md-2-line"
 		    		ng-repeat="(k, v) in edgeAttributesIndex"
-		    		ng-click="null"
+		    		ng-click="editEdgeAttribute(k)"
+		    		ng-style="{opacity: networkData.edgeAttributesIndex[k].type ? 1 : 0.5}"
 		    	>
 	          <md-icon
           		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
@@ -281,7 +282,7 @@
 
 		</md-content>
 
-		<!-- Right panel: edit node attribute -->
+		<!-- Right panel: edit NODE or EDGE attribute -->
 		<md-content
 			flex
 			layout="column"
@@ -366,7 +367,7 @@
 	    	<!-- Spacer -->
 				<div style="min-height: 24px"></div>
 
-				<div ng-if="attMode == 'node' && att.type == 'partition'">
+				<div ng-if="att.type == 'partition'">
 					<div layout="column" style="border: 1px solid rgba(255, 255, 255, 0.3); padding: 12px">
 						<div style="margin-bottom: 12px">Generate Colors</div>
 						<div layout="row" style="margin-bottom: -24px">

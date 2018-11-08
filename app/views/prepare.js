@@ -153,6 +153,7 @@ angular.module('app.prepare', ['ngRoute'])
   	$scope.attData = $scope.edgeAttributesIndex[id]
   	$scope.attId = id
   	$scope.att = $scope.networkData.edgeAttributesIndex[id]
+    $scope.originalAtt = angular.copy($scope.att)
   }
 
   $scope.cancelEditAttribute = function() {
@@ -221,7 +222,6 @@ angular.module('app.prepare', ['ngRoute'])
   				$scope.att[k] = metadataAttribute[k]
   			}
   		}
-  		console.log('$scope.att', $scope.att)
   	}
   })
 
@@ -264,6 +264,7 @@ angular.module('app.prepare', ['ngRoute'])
   	netBundleManager.ignored_edge_attributes.forEach(function(d){
   		if ($scope.edgeAttributesIndex[d]) { delete $scope.edgeAttributesIndex[d] }
   	})
+    console.log('Edge attributes', $scope.edgeAttributesIndex)
   	// It's possible, when loading an existing bundle, that some attributes registered in the
   	// node attributes index or edge attribute index are not listed in the bundle.
   	// This may cause some issues, so we create them with no type, as this means that
