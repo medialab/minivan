@@ -151,7 +151,7 @@ angular.module('app.components.matrix', [])
               return colorScale($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId))
             }
           } else if ($scope.att.type == 'ranking-color') {
-            var colorScale = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
+            var colorScale = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale, $scope.att.invertScale, $scope.att.truncateScale)
             var colorScale_string = function(val){ return colorScale(val).toString() }
             $scope.getColor = function(nid){ return colorScale_string($scope.networkData.g.getNodeAttribute(nid, $scope.selectedAttId)) }
           } else {

@@ -131,7 +131,7 @@ angular.module('app.components.nodeAttributeThumbnail', [])
 					} else if ($scope.att.type == 'ranking-size') {
 						getColor = scalesUtils.getSizeAsColorScale($scope.att.min, $scope.att.max, $scope.att.areaScaling.min, $scope.att.areaScaling.max, $scope.att.areaScaling.interpolation)
 					} else if ($scope.att.type == 'ranking-color') {
-						getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
+						getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale, $scope.att.invertScale, $scope.att.truncateScale)
 					} else {
 						getColor = function(){ return d3.color('#000') }
 					}

@@ -95,7 +95,7 @@ angular.module('app.components.nodeAttributeMinimap', [])
 							return d3.color(colorsIndex[d] || '#999')
 						}
 					} else if ($scope.att.type == 'ranking-color') {
-						getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale)
+						getColor = scalesUtils.getColorScale($scope.att.min, $scope.att.max, $scope.att.colorScale, $scope.att.invertScale, $scope.att.truncateScale)
 					} else {
 						getColor = function(){ return d3.color('#000') }
 					}

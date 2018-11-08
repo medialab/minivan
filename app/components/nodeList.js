@@ -59,7 +59,7 @@ angular.module('app.components.nodeList', [])
               return colorScale(n[$scope.colorAttId])
             }
           } else if (colorAtt.type == 'ranking-color') {
-            var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale)
+            var colorScale = scalesUtils.getColorScale(colorAtt.min, colorAtt.max, colorAtt.colorScale, colorAtt.invertScale, colorAtt.truncateScale)
             var colorScale_string = function(val){ return colorScale(val).toString() }
             $scope.getColor = function(n){ return colorScale_string(n[$scope.colorAttId]) }
           } else {
