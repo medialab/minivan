@@ -1,9 +1,41 @@
+<!-- Message if too big -->
+<div layout-fill layout="column" layout-align="center center" ng-if="tooBig">
+
+  <!-- Round -->
+  <div
+    md-colors="{'background': 'default-primary'}"
+    style="width:200px;height:200px;border-radius:50%;"
+    layout="column"
+    layout-align="center center"
+  >
+    <div><strong>{{nodesCount|number}} NODES</strong></div>
+    <div><strong>{{edgesCount|number}} EDGES</strong></div>
+  </div>
+
+  <!-- Message -->
+  <div style="margin-top: 16px">
+    THIS NETWORK IS LARGE
+  </div>
+  <div>
+    Displaying it as a matrix may be slow
+  </div>
+  <div style="margin-top: 16px">
+    <md-button
+      class="md-raised md-primary"
+      aria-label="Display large network"
+      ng-click="displayLargeNetwork()"
+    >
+      Display
+    </md-button>
+  </div>
+</div>
+
 <!-- Details: level 1 -->
 <div
   layout-fill
   layout="column"
   layout-align="center center"
-  ng-if="detailLevel == 1"
+  ng-if="detailLevel == 1 && !tooBig"
   style="position: relative; padding: 12px"
 >
   <matrix-svg
@@ -19,7 +51,7 @@
 </div>
 
 <!-- Details: level 2 -->
-<div layout-fill style="position: relative" ng-if="detailLevel == 2">
+<div layout-fill style="position: relative" ng-if="detailLevel == 2 && !tooBig">
 
   <!-- Matrix -->
   <div layout-fill layout="column" style="user-select: none">
@@ -63,7 +95,7 @@
     <div flex>
       <md-virtual-repeat-container layout-fill class="scroll-target-y md-virtual-repeat-no-scroll-bar" md-top-index="$parent.topIndexY">
         <div md-virtual-repeat="nid in nodes" md-item-size="16" flex>
-          
+
           <div
             matrix-line
             get-radius="getRadius"
