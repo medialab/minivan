@@ -43,16 +43,20 @@ angular.module('app.range', ['ngRoute'])
       // Subgraph
       var g = $scope.networkData.g
       $scope.subgraph = g.copy()
-      $scope.subgraph.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
+      $scope.subgraph.nodes().forEach(function(nid) {
+        if (!$scope.nodeFilter(nid)) {
+          $scope.subgraph.dropNode(nid);
+        }
+      })
     }
   })
-  
+
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }
 
   $scope.downloadGEXF = function() {
-    var xml = Graph.library.gexf.write($scope.subgraph);
+    var xml = Graph.library.gexf.write($scope.getRenderer().graph);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - " + $scope.attribute.id + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + ".gexf");
   }

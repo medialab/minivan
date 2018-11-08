@@ -30,7 +30,7 @@
 								icon="'apps'"
 								label="'Matrix'"
 							></toolbar-viewmode-item>
-							
+
 							<toolbar-viewmode-item
 								viewmode-target="'list'"
 								viewmode="panel"
@@ -60,7 +60,7 @@
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
 							color-att-id="attribute.id"
-							get-camera-state="$parent.getCameraState"
+							get-renderer="$parent.getRenderer"
 							default-zoom-show-percent="100"
 							node-filter="$parent.nodeFilter"
 							layout-fill
@@ -85,7 +85,7 @@
 							node-filter="$parent.nodeFilter"
 							layout-fill
 						></node-list>
-						
+
 						<md-content
 							ng-if="networkData.loaded && panel == 'stats'"
 							layout-fill
@@ -113,14 +113,14 @@
 
 					</div>
 				</div>
-				
+
 				<!-- Footer: MAP -->
 				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'map'">
 					<md-button class="footer-button" ng-click="downloadGEXF()">
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-network-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getCameraState().x}}&y={{getCameraState().y}}&r={{getCameraState().ratio}}&bundle={{bundleLocation}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-network-modalities-partition?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getRenderer()|cameraX}}&y={{getRenderer()|cameraY}}&r={{getRenderer()|cameraRatio}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
@@ -196,7 +196,7 @@
 
 				<!-- Panel -->
 				<div layout="column" flex class="component-panel md-whiteframe-3dp" md-colors="{background: 'default-background-300'}">
-					
+
 					<project-title-bar title="networkData.title"></project-title-bar>
 
 					<!-- Attribute toolbar -->

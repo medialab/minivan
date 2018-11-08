@@ -64,7 +64,7 @@ angular.module('app.components.canvasNetworkMap', [])
       	$timeout(function(){
 	      	container.innerHTML = '<small style="opacity:0.5;">Refreshing...</small>'
 	      })
-      	
+
       	// Actual redraw
       	$timeout(function(){
 
@@ -113,9 +113,11 @@ angular.module('app.components.canvasNetworkMap', [])
           // Hard filter
           var nodeFilter
           if ($scope.hardFilter) {
-            g.dropNodes(g.nodes().filter(function(nid){
-              return !$scope.nodeFilter(nid)
-            }))
+            g.nodes().forEach(function(nid) {
+              if (!$scope.nodeFilter(nid)) {
+                g.dropNode(nid);
+              }
+            });
 
             nodeFilter = function(d){return d}
           } else {
@@ -146,7 +148,7 @@ angular.module('app.components.canvasNetworkMap', [])
 					var yScale = xyScales[1]
 					var rScale = scalesUtils.getRScale()
 					var scales = {} // Collect scales to broadcast and inform the network map key
-					
+
 					// Create the canvas
 					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
 					var canvas = container.querySelector('#cnvs')
@@ -329,7 +331,7 @@ angular.module('app.components.canvasNetworkMap', [])
 							    }
 							    p[2] = o
 							  })
-							  
+
 							  // Smoothe path
 							  if (path.length > 5) {
 							    for (i=2; i<path.length-2; i++) {
@@ -357,7 +359,7 @@ angular.module('app.components.canvasNetworkMap', [])
 							    lastp = p
 							    lastop = color.opacity
 							  })
-							  
+
 							})
 					}
 
@@ -420,7 +422,7 @@ angular.module('app.components.canvasNetworkMap', [])
 						for (i in bbPixelMap) {
 						  bbPixelMap[i] = 0 // 1 means "occupied"
 						}
-						
+
 						// Compute scale for labels
 						var label_nodeSizeExtent = d3.extent(
 						  nodesBySize.map(function(nid){
@@ -438,10 +440,10 @@ angular.module('app.components.canvasNetworkMap', [])
 							  var nx = xScale(n.x)
 								var ny = yScale(n.y)
 								var nsize = rScale(getArea(nid))
-						  	
+
 						  	// Precompute the label
 						    var color = settings.colored_labels ? tuneColorForLabel(getColor(nid)) : d3.color('#666')
-						    var fontSize = settings.sized_labels 
+						    var fontSize = settings.sized_labels
 						    	? Math.floor(label_font_min_size + (nsize - label_nodeSizeExtent[0]) * (label_font_max_size - label_font_min_size) / (label_nodeSizeExtent[1] - label_nodeSizeExtent[0]))
 						    	: Math.floor(0.6 * label_font_min_size + 0.4 * label_font_max_size)
 
@@ -515,7 +517,7 @@ angular.module('app.components.canvasNetworkMap', [])
 								}
 
 						  }
-						  
+
 						})
 					}
 
@@ -574,7 +576,7 @@ angular.module('app.components.canvasNetworkMap', [])
 							for(var i = 0; i <= intervalsCount; i++){
 								range.push( min + (max - min) * i / intervalsCount )
 							}
-							
+
 							if ( omitFirst ) {
 								range.shift()
 							}

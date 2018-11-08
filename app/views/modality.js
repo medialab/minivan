@@ -44,15 +44,13 @@ angular.module('app.modality', ['ngRoute'])
       buildAllSortedNodes()
     }
   })
-  
+
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
   }
 
   $scope.downloadGEXF = function() {
-    var g2 = $scope.networkData.g.copy()
-    g2.dropNodes(g.nodes().filter(function(nid){ return !$scope.nodeFilter(nid) }))
-  	var xml = Graph.library.gexf.write(g2);
+    var xml = Graph.library.gexf.write($scope.getRenderer().graph);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - " + $scope.modality.value + ".gexf");
   }

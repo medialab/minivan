@@ -103,7 +103,7 @@
 							size-att-id="(att === undefined) ? (networkData.defaultNodeSize) : ((attMode=='node' && att.type=='ranking-size') ? (attId) : (undefined))"
 							color-att-id="(att === undefined) ? (networkData.defaultNodeColor) : ((attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ? (attId) : (undefined))"
 							att-recheck="att|json"
-							get-camera-state="$parent.getCameraState"
+							get-renderer="$parent.getRenderer"
 							hide-key="true"
 							default-zoom-show-percent="95"
 							never-too-big="true"
@@ -146,13 +146,13 @@
 	        <label>Title</label>
 	        <input ng-model="networkData.title">
 	      </md-input-container>
-				
+
 				<!-- Date -->
 				<md-input-container>
 	        <label>Date</label>
 	        <input ng-model="networkData.date">
 	      </md-input-container>
-				
+
 				<!-- Authors -->
 				<form name="authors">
 		      <md-chips
