@@ -138,7 +138,9 @@ angular.module('app.components.sigmaNetworkComponent', [])
           if ($scope.layout) {
             $scope.layout.kill()
           }
-          renderer.kill()
+          if (renderer) {
+            renderer.kill()
+          }
         })
 
         /// Functions

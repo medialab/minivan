@@ -38,6 +38,13 @@
 								label="'Nodes'"
 							></toolbar-viewmode-item>
 
+							<toolbar-viewmode-item
+								viewmode-target="'stats'"
+								viewmode="panel"
+								icon="'insert_chart'"
+								label="'Stats'"
+							></toolbar-viewmode-item>
+
 							<span flex></span>
 				    </div>
 					</md-toolbar>
@@ -78,6 +85,15 @@
 							search="$parent.search"
 							layout-fill
 						></node-list>
+
+						<md-content
+							ng-if="networkData.loaded && panel == 'stats'"
+							layout-fill
+							style="overflow: auto"
+							md-colors="{background: 'default-background-200-0.3'}"
+						>
+							One day, there will be very interesting stats here...
+						</md-content>
 
 					</div>
 				</div>
@@ -141,6 +157,18 @@
 						<md-icon ng-if="sizePlusColor">check_box</md-icon>
 		      	Size + color
 		      </md-button>
+				</div>
+
+				<!-- Footer: STATS -->
+				<div class="component-footer" layout="row" layout-align="center center" ng-if="panel == 'stats'">
+				<md-button class="footer-button" ng-click="downloadStats()">
+							<md-tooltip md-direction="top">Download statistics</md-tooltip>
+			      	<md-icon>file_download</md-icon>
+			      </md-button>
+						<md-button class="footer-button" ng-href="#!/print-stats-modalities-ranking?att={{attribute.id}}&detail={{statsDetailLevel}}&bundle={{bundleLocation}}" target="_blank">
+							<md-tooltip md-direction="top">Print statistics</md-tooltip>
+			      	<md-icon>print</md-icon>
+			      </md-button>
 				</div>
 			</div>
 		</div>

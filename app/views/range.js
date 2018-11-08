@@ -19,18 +19,22 @@ angular.module('app.range', ['ngRoute'])
   $filter,
 	dataLoader,
 	csvBuilder,
-  remarkableNodes
+  remarkableNodes,
+  userCache
 ) {
 	$scope.panel = $location.search().panel || 'map'
 	$scope.search = $location.search().q
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
-  $scope.matrixDetailLevel = 1
-  $scope.modalityListDetailLevel = 1
-  $scope.statsDetailLevel = 1
+  $scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
+  $scope.modalityListDetailLevel = userCache.get('modalityListDetailLevel', 1)
+  $scope.statsDetailLevel = userCache.get('statsDetailLevel', 1)
 
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
+  $scope.$watch('matrixDetailLevel', updateMatrixDetailLevel)
+  $scope.$watch('modalityListDetailLevel', updateModalityListDetailLevel)
+  $scope.$watch('statsDetailLevel', updateStatsDetailLevel)
   $scope.$watch('networkData.loaded', function(){
     if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
@@ -88,5 +92,15 @@ angular.module('app.range', ['ngRoute'])
   function updateLocationPath(){
   	$location.search('panel', $scope.panel || null)
   	$location.search('q', $scope.search || null)
+  }
+
+  function updateMatrixDetailLevel() {
+    userCache.set('matrixDetailLevel', $scope.matrixDetailLevel)
+  }
+  function updateModalityListDetailLevel() {
+    userCache.set('modalityListDetailLevel', $scope.modalityListDetailLevel)
+  }
+  function updateStatsDetailLevel() {
+    userCache.set('statsDetailLevel', $scope.statsDetailLevel)
   }
 })

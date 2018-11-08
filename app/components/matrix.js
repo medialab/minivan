@@ -19,11 +19,22 @@ angular.module('app.components.matrix', [])
       nodeFilter: '='
     },
     link: function($scope, el, attrs) {
+      var networkDisplayThreshold = 1000;
+
+      $scope.tooBig = false
       $scope.headlineSize = 200
       $scope.cellSize = 16
-    	$scope.networkData = dataLoader.get()
+      $scope.networkData = dataLoader.get()
+      $scope.nodesCount
+      $scope.edgesCount
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
+          $scope.nodesCount = $scope.networkData.g.order
+          $scope.edgesCount = $scope.networkData.g.size
+
+          if ($scope.nodesCount > networkDisplayThreshold) {
+            $scope.tooBig = true
+          }
           updateNodes()
           update()
         }
@@ -213,7 +224,7 @@ angular.module('app.components.matrix', [])
       headlines: '='
     },
     link: function($scope, el, attrs) {
-      
+
       $scope.cellSize = 16
 
       $scope.networkData = dataLoader.get()
@@ -256,7 +267,7 @@ angular.module('app.components.matrix', [])
             data.push({source:nsid, target:ntid})
           }
         }
-        
+
         var margin = {
           top: (settings.display_headlines ? settings.lines_thickness * 2 + settings.headline_thickness : 0),
           right: (settings.display_headlines ? settings.lines_thickness * 2 + settings.headline_thickness : 0),
@@ -401,7 +412,7 @@ angular.module('app.components.matrix', [])
             .attr('fill', 'rgba(0, 0, 0, 0.9)')
 
       }
-     
+
     }
   }
 })
@@ -415,7 +426,7 @@ angular.module('app.components.matrix', [])
       viewBoxDragged: '='
     },
     link: function($scope, el, attrs) {
-      
+
       $scope.headlineSize = 200
       $scope.cellSize = 16
 
@@ -493,7 +504,7 @@ angular.module('app.components.matrix', [])
             .attr('stroke-width', settings.border_size)
 
       }
-     
+
     }
   }
 })

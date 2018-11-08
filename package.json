@@ -5,8 +5,9 @@
   "description": "A web interface for visual network analysis",
   "repository": "https://github.com/medialab/visual-net-analyser",
   "scripts": {
-    "build": "webpack --colors --progress",
+    "build": "webpack --colors --progress --devtool source-map",
     "build:prod": "webpack --colors --progress -p",
+    "deploy": "gh-pages-deploy",
     "postinstall": "npm run build",
     "serve": "http-server app -a localhost -o -p 8000"
   },
@@ -32,8 +33,16 @@
     "sigma": "2.0.0-alpha20"
   },
   "devDependencies": {
+    "gh-pages-deploy": "^0.4.2",
     "http-server": "^0.11.1",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
+  },
+  "gh-pages-deploy": {
+    "staticpath": "app",
+    "prep": [
+      "build:prod"
+    ],
+    "commit": "Deploying on gh-pages."
   }
 }
