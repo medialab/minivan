@@ -5,7 +5,7 @@
   "description": "A web interface for visual network analysis",
   "repository": "https://github.com/medialab/visual-net-analyser",
   "scripts": {
-    "build": "webpack --colors --progress",
+    "build": "webpack --colors --progress --devtool source-map",
     "build:prod": "webpack --colors --progress -p",
     "deploy": "gh-pages-deploy",
     "postinstall": "npm run build",
