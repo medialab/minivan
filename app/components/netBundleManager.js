@@ -91,16 +91,15 @@ angular.module('minivan.netBundleManager', [])
       ns.setBundleAttribute(bundle, 'description',    bundle.g._attributes.description, verbose)
       ns.setBundleAttribute(bundle, 'bundleVersion',  ns.bundleVersion, verbose)
 
-
       // Create metadata for node attributes
       var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g)
       bundle.nodeAttributes = []
-      ns.createAttributesMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes)
+      ns.createAttributesMetaData(bundle.g, nodeAttributesIndex, bundle.nodeAttributes, ns.nodeAttributeNames)
 
       // Create metadata for node attributes
       var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g)
       bundle.edgeAttributes = []
-      ns.createAttributesMetaData(bundle.g, edgeAttributesIndex, bundle.edgeAttributes)
+      ns.createAttributesMetaData(bundle.g, edgeAttributesIndex, bundle.edgeAttributes, ns.edgeAttributeNames)
 
       // Set default node and edges size and color (for Home page)
       ns._setDefaultAttributes(bundle)
@@ -150,7 +149,60 @@ angular.module('minivan.netBundleManager', [])
       return JSON.stringify(bundleSerialize, null, "\t")
     }
 
+    ns.slugify = function(str) {
+      str = str.replace(/^\s+|\s+$/g, '') // trim
+      str = str.toLowerCase()
+    
+      // remove accents, swap ñ for n, etc
+      var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;"
+      var to   = "aaaaeeeeiiiioooouuuunc------"
+      for (var i=0, l=from.length ; i<l ; i++) {
+          str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i))
+      }
+
+      str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+          .replace(/\s+/g, '-') // collapse whitespace and replace by -
+          .replace(/-+/g, '-'); // collapse dashes
+
+      return str
+    }
+
+    ns.nodeAttributeNames = {}
+
     ns.buildNodeAttributesIndex = function(g) {
+      // FIXME: Slugify from Graphology directly if possible
+      // Determine the slugs
+      var slugIndex = {}
+      ns.nodeAttributeNames = {}
+      g.nodes().forEach(function(nid){
+        var n = g.getNodeAttributes(nid)
+        d3.keys(n).forEach(function(k){
+          if (slugIndex[k] === undefined) {
+            var slug = ns.slugify(k)
+            while(ns.nodeAttributeNames[slug]){ // Detect collision
+              slug = slug+'-'
+            }
+            slugIndex[k] = slug
+            ns.nodeAttributeNames[slug] = ns._toTitleCase(k)
+          }
+        })
+      })
+      
+      // Replace node attributes with slugs
+      g.nodes().forEach(function(nid){
+        var n = g.getNodeAttributes(nid)
+        var n2 = {}
+        d3.keys(n).forEach(function(k){
+          n2[slugIndex[k]] = n[k]
+        })
+        d3.keys(n).forEach(function(k){
+          g.removeNodeAttribute(nid, k)
+        })
+        d3.keys(n2).forEach(function(sk){
+          g.setNodeAttribute(nid, sk, n2[sk])
+        })
+      })
+
       // Index all node attributes from GEXF
       var nodeAttributesIndex = {}
       g.nodes().forEach(function(nid){
@@ -183,7 +235,43 @@ angular.module('minivan.netBundleManager', [])
       return nodeAttributesIndex
     }
 
+    ns.edgeAttributeNames = {}
+
     ns.buildEdgeAttributesIndex = function(g) {
+      // FIXME: Slugify from Graphology directly if possible
+      // Determine the slugs
+      var slugIndex = {}
+      ns.edgeAttributeNames = {}
+      g.edges().forEach(function(eid){
+        var e = g.getEdgeAttributes(eid)
+        d3.keys(e).forEach(function(k){
+          if (slugIndex[k] === undefined) {
+            var slug = ns.slugify(k)
+            while(ns.edgeAttributeNames[slug]){ // Detect collision
+              slug = slug+'-'
+            }
+            slugIndex[k] = slug
+            ns.edgeAttributeNames[slug] = ns._toTitleCase(k)
+          }
+        })
+      })
+      
+      // Replace edge attributes with slugs
+      g.edges().forEach(function(eid){
+        var e = g.getEdgeAttributes(eid)
+        var e2 = {}
+        d3.keys(e).forEach(function(k){
+          e2[slugIndex[k]] = e[k]
+        })
+        d3.keys(e).forEach(function(k){
+          g.removeEdgeAttribute(eid, k)
+        })
+        d3.keys(e2).forEach(function(sk){
+          g.setEdgeAttribute(eid, sk, e2[sk])
+        })
+      })
+
+      // Index all edge attributes from GEXF
       var edgeAttributesIndex = {}
       g.edges().forEach(function(eid){
         var e = g.getEdgeAttributes(eid)
@@ -270,10 +358,10 @@ angular.module('minivan.netBundleManager', [])
     	})
 		}
 
-    ns.createAttributesMetaData = function(g, attributesIndex, attributes) {
+    ns.createAttributesMetaData = function(g, attributesIndex, attributes, attributeNames) {
     	d3.keys(attributesIndex).forEach(function(k){
       	var attData = attributesIndex[k]
-        var att = ns.initAttribute(k, attData)
+        var att = ns.initAttribute(k, attributeNames[k] || k, attData)
         var attMeta = ns.createAttributeMetaData(g, attData)
       	if (attMeta) {
           var attMetaKey
@@ -285,10 +373,10 @@ angular.module('minivan.netBundleManager', [])
     	})
     }
 
-    ns.initAttribute = function(id, attData) {
+    ns.initAttribute = function(id, name, attData) {
       return {
         id: id,
-        name: ns._toTitleCase(id),
+        name: name,
         count: attData.count,
         type: attData.type,
         integer: attData.dataType == 'integer'

@@ -271,7 +271,7 @@ angular.module('app.prepare', ['ngRoute'])
   	var k
   	for (k in $scope.nodeAttributesIndex) {
   		if (bundle.nodeAttributesIndex[k] === undefined) {
-  			var att = netBundleManager.initAttribute(k, $scope.nodeAttributesIndex[k])
+  			var att = netBundleManager.initAttribute(k, k, $scope.nodeAttributesIndex[k])
   			att.type = undefined
   			bundle.nodeAttributes.push(att)
   			netBundleManager.consolidateNodeAttribute(bundle, att)
@@ -279,7 +279,7 @@ angular.module('app.prepare', ['ngRoute'])
   	}
   	for (k in $scope.edgeAttributesIndex) {
   		if (bundle.edgeAttributesIndex[k] === undefined) {
-  			var att = netBundleManager.initAttribute(k, $scope.edgeAttributesIndex[k])
+  			var att = netBundleManager.initAttribute(k, k, $scope.edgeAttributesIndex[k])
   			att.type = undefined
   			bundle.edgeAttributes.push(att)
   			netBundleManager.consolidateEdgeAttribute(bundle, att)
