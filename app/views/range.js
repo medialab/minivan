@@ -56,7 +56,7 @@ angular.module('app.range', ['ngRoute'])
   }
 
   $scope.downloadGEXF = function() {
-    var xml = Graph.library.gexf.write($scope.subgraph);
+    var xml = Graph.library.gexf.write($scope.getRenderer().graph);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - " + $scope.attribute.id + " - " + $filter('number')($scope.rangeMin) + " to " + $filter('number')($scope.rangeMax) + ".gexf");
   }
