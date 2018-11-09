@@ -28,6 +28,7 @@
     "angular-route": "~1.7.5",
     "angular-sanitize": "~1.7.5",
     "d3": "~5.5.0",
+    "file-saver": "^2.0.0-rc.4",
     "graphology": "~0.13.1",
     "graphology-library": "0.2.0",
     "screenfull": "^3.3.3",

@@ -12,9 +12,14 @@ require('angular-messages');
 require('angular-marked');
 require('angular-drag-scroll');
 
-// Other libraries
+// D3
 window.d3 = require('d3');
+
+// Graphology + Sigma
 window.Sigma = require('sigma/endpoint');
 window.Graph = require('graphology');
 window.Graph.library = require('graphology-library/browser');
+
+// Misc
+window.saveAs = require('file-saver');
 window.screenfull = require('screenfull');
