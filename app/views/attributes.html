@@ -60,8 +60,10 @@
 							ng-if="networkData.loaded && panel == 'map'"
 							on-node-click="networkNodeClick"
 							start-layout-on-load="false"
-							node-size-att-id="$parent.sizeAttId"
-							node-color-att-id="$parent.colorAttId"
+							node-size-att-id="$parent.nodeSizeAttId"
+							node-color-att-id="$parent.nodeColorAttId"
+							edge-size-att-id="$parent.edgeSizeAttId"
+							edge-color-att-id="$parent.edgeColorAttId"
 							default-zoom-show-percent="100"
 							get-renderer="$parent.getRenderer"
 							editable-attributes="true"
@@ -81,8 +83,8 @@
 						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
 							on-node-click="networkNodeClick"
-							size-att-id="$parent.sizeAttId"
-							color-att-id="$parent.colorAttId"
+							size-att-id="$parent.nodeSizeAttId"
+							color-att-id="$parent.nodeColorAttId"
 							selected-att-id="selectedAttId"
 							search="$parent.search"
 							layout-fill
@@ -120,7 +122,7 @@
 						<md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-network?color={{colorAttId}}&size={{sizeAttId}}&x={{getRenderer()|cameraX}}&y={{getRenderer()|cameraY}}&r={{getRenderer()|cameraRatio}}&bundle={{bundleLocation}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-network?color={{nodeColorAttId}}&size={{nodeSizeAttId}}&x={{getRenderer()|cameraX}}&y={{getRenderer()|cameraY}}&r={{getRenderer()|cameraRatio}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print network map</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
@@ -163,7 +165,7 @@
 						<md-tooltip md-direction="top">Download list</md-tooltip>
 		      	<md-icon>file_download</md-icon>
 		      </md-button>
-					<md-button class="footer-button" ng-href="#!/print-node-list?color={{colorAttId}}&size={{sizeAttId}}&att={{selectedAttId}}&bundle={{bundleLocation}}" target="_blank">
+					<md-button class="footer-button" ng-href="#!/print-node-list?color={{nodeColorAttId}}&size={{nodeSizeAttId}}&att={{selectedAttId}}&bundle={{bundleLocation}}" target="_blank">
 						<md-tooltip md-direction="top">Print list</md-tooltip>
 		      	<md-icon>print</md-icon>
 		      </md-button>
@@ -212,10 +214,11 @@
 					<!-- Content -->
 					<md-virtual-repeat-container flex>
 						<md-list layout-fill>
-				      <div md-virtual-repeat="att in networkData.nodeAttributes" md-item-size="20" flex>
+				      <div md-virtual-repeat="att in attributeList" md-item-size="20" flex>
 				        <div
 					        attribute-list-element
 					        att="att"
+					        obj="att.obj"
 					        panel="panel"
 					        print-mode="false"
 					        detail-level="attributeListDetailLevel"

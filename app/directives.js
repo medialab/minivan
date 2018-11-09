@@ -96,6 +96,7 @@ angular.module('app.directives', [])
       restrict: 'A',
       scope: {
         att: '=',
+        obj: '=',
       	panel: '=',
       	printMode: '=',
       	detailLevel: '=',

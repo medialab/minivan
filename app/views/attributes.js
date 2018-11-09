@@ -29,29 +29,44 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
   $scope.statsDetailLevel = userCache.get('statsDetailLevel', 1)
 	$scope.selectedAttId = undefined
-	$scope.sizeAttId = undefined
-	$scope.colorAttId = undefined
+	$scope.nodeSizeAttId = undefined
+	$scope.nodeColorAttId = undefined
 	$scope.sizePlusColor = false
-  $scope.selectedNode = null;
+  $scope.selectedNode = null
+  $scope.attributeList = []
 	$scope.$watch('panel', updateLocationPath)
 	$scope.$watch('search', updateLocationPath)
   $scope.$watch('attributeListDetailLevel', updateAttributeListDetailLevel)
   $scope.$watch('matrixDetailLevel', updateMatrixDetailLevel)
   $scope.$watch('statsDetailLevel', updateStatsDetailLevel)
 
+  $scope.$watch('networkData.loaded', function(){
+    if ( $scope.networkData.loaded ) {
+	  	$scope.attributeList = []
+  		$scope.networkData.nodeAttributes.forEach(function(d){
+  			d.obj = 'node'
+  			$scope.attributeList.push(d)
+  		})
+  		$scope.networkData.edgeAttributes.forEach(function(d){
+  			d.obj = 'edge'
+  			$scope.attributeList.push(d)
+  		})
+  	}
+  })
+
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
 			var selectedAtt = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
 			if (selectedAtt) {
 				if (selectedAtt.type == 'partition' || selectedAtt.type == 'ranking-color') {
-					$scope.colorAttId = selectedAtt.id
+					$scope.nodeColorAttId = selectedAtt.id
 					if (!$scope.sizePlusColor) {
-						$scope.sizeAttId = undefined
+						$scope.nodeSizeAttId = undefined
 					}
 				} else if (selectedAtt.type == 'ranking-size') {
-					$scope.sizeAttId = selectedAtt.id
+					$scope.nodeSizeAttId = selectedAtt.id
 					if (!$scope.sizePlusColor) {
-						$scope.colorAttId = undefined
+						$scope.nodeColorAttId = undefined
 					}
 				}
 			}
@@ -60,26 +75,26 @@ angular.module('app.attributes', ['ngRoute'])
 				// Remove previous selected att
 				var oldSelectedAtt = $scope.networkData.nodeAttributesIndex[oldSelectedAttId]
 				if (oldSelectedAtt.type == 'partition' || oldSelectedAtt.type == 'ranking-color') {
-					$scope.colorAttId = undefined
+					$scope.nodeColorAttId = undefined
 				} else if (oldSelectedAtt.type == 'ranking-size') {
-					$scope.sizeAttId = undefined
+					$scope.nodeSizeAttId = undefined
 				}
 			}
-			if ($scope.colorAttId) {
-				$scope.selectedAttId = $scope.colorAttId
-			} else if ($scope.sizeAttId) {
-				$scope.selectedAttId = $scope.sizeAttId
+			if ($scope.nodeColorAttId) {
+				$scope.selectedAttId = $scope.nodeColorAttId
+			} else if ($scope.nodeSizeAttId) {
+				$scope.selectedAttId = $scope.nodeSizeAttId
 			}
 		}
 	})
 
-	$scope.$watch('sizeAttId', function(newSizeAttId, oldSizeAttId){
+	$scope.$watch('nodeSizeAttId', function(newSizeAttId, oldSizeAttId){
 		if (newSizeAttId === undefined && $scope.selectedAttId == oldSizeAttId) {
 			$scope.selectedAttId = undefined
 		}
 	})
 
-	$scope.$watch('colorAttId', function(newColorAttId, oldColorAttId){
+	$scope.$watch('nodeColorAttId', function(newColorAttId, oldColorAttId){
 		if (newColorAttId === undefined && $scope.selectedAttId == oldColorAttId) {
 			$scope.selectedAttId = undefined
 		}
