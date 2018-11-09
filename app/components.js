@@ -15,6 +15,7 @@ angular.module('app.components', [
     'app.components.rankingColorKey',
     'app.components.rankingSizeKey',
     'app.components.nodeList',
+    'app.components.nodeSidenav',
     'app.components.matrix',
     'app.components.cardAttributeModularity',
     'app.components.cardAttributeModularityGroupLinks',

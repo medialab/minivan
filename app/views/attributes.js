@@ -16,6 +16,7 @@ angular.module('app.attributes', ['ngRoute'])
 	$timeout,
 	$route,
 	$routeParams,
+  $mdSidenav,
 	dataLoader,
 	csvBuilder,
   userCache
@@ -31,6 +32,7 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
 	$scope.sizePlusColor = false
+  $scope.selectedNode = null;
 	$scope.$watch('panel', updateLocationPath)
 	$scope.$watch('search', updateLocationPath)
   $scope.$watch('attributeListDetailLevel', updateAttributeListDetailLevel)
@@ -85,6 +87,9 @@ angular.module('app.attributes', ['ngRoute'])
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
+    $scope.selectedNode = $scope.getRenderer().graph.getNodeAttributes(nid)
+    $mdSidenav('node-sidenav').open()
+
   }
 
   $scope.downloadGEXF = function() {
