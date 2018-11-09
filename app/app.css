@@ -104,6 +104,10 @@
   border: 0;
 }
 
+.pointable {
+  cursor: pointer;
+}
+
 .md-virtual-repeat-no-scroll-bar .md-virtual-repeat-scroller{
   overflow: hidden !important;
 }
@@ -247,7 +251,7 @@
   top: 0;
   width: 170mm;
 }
-@media print {    
+@media print {
   .a4page-overlay {
     display: none !important;
   }
@@ -257,7 +261,7 @@
     page-break-after: always;
   }
 }
-@media print {    
+@media print {
   .no-print {
     display: none !important;
   }
@@ -298,7 +302,7 @@
   border-radius: 2px;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.3);
 
-  -webkit-transition: background-color .2s; 
+  -webkit-transition: background-color .2s;
           transition: background-color .2s;
 }
 .upload-area-container:hover .upload-area, .upload-area-container.over .upload-area{
