@@ -242,7 +242,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             if ($scope.nodeSizeAttId) {
               var nodeSizeAtt = $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
               var areaScale = scalesUtils.getAreaScale(nodeSizeAtt.min, nodeSizeAtt.max, nodeSizeAtt.areaScaling.min, nodeSizeAtt.areaScaling.max, nodeSizeAtt.areaScaling.interpolation)
-              getNodeSize = function(nid){ return rScale(nodeSizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, sizeAtt.id)) * standardArea / 10) }
+              getNodeSize = function(nid){ return rScale(nodeSizeAtt.areaScaling.max * areaScale(g.getNodeAttribute(nid, nodeSizeAtt.id)) * standardArea / 10) }
             } else {
               // Trick: a barely visible size difference by degree
               // (helps hierarchizing node labels)
