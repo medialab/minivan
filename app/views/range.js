@@ -17,6 +17,7 @@ angular.module('app.range', ['ngRoute'])
 	$route,
 	$routeParams,
   $filter,
+  $mdSidenav,
 	dataLoader,
 	csvBuilder,
   remarkableNodes,
@@ -29,6 +30,7 @@ angular.module('app.range', ['ngRoute'])
   $scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
   $scope.modalityListDetailLevel = userCache.get('modalityListDetailLevel', 1)
   $scope.statsDetailLevel = userCache.get('statsDetailLevel', 1)
+  $scope.selectedNode = null
 
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
@@ -57,6 +59,8 @@ angular.module('app.range', ['ngRoute'])
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
+    $scope.selectedNode = $scope.networkData.g.getNodeAttributes(nid)
+    $mdSidenav('node-sidenav').open()
   }
 
   $scope.downloadGEXF = function() {

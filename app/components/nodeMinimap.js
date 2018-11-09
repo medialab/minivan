@@ -10,11 +10,13 @@ angular.module('app.components.nodeMinimap', [])
     template: '<small style="opacity:0.5;">...</small>',
     scope: {
       node: '=',
-      printMode: '='
+      printMode: '=',
+      large: '@?'
     },
     link: function($scope, el, attrs) {
       $scope.$watch('node', redraw, true)
       $scope.$watch('printMode', redraw, true)
+      $scope.large = false
 
       /*window.addEventListener('resize', redraw)
       $scope.$on('$destroy', function(){
@@ -41,7 +43,9 @@ angular.module('app.components.nodeMinimap', [])
 					// Nodes
 					settings.background_node_size = 1.2
 					settings.highlighted_node_size = 2.5
-					settings.background_node_color = 'rgba(180, 180, 180, .2)'
+					settings.background_node_color = $scope.large ?
+            'rgba(180, 180, 180, 1)' :
+            'rgba(180, 180, 180, .2)'
 					settings.highlighted_node_color = '#000'
 
 					var i
@@ -56,11 +60,10 @@ angular.module('app.components.nodeMinimap', [])
 					var scales = scalesUtils.getXYScales(width, height, margin)
 					var xScale = scales[0]
 					var yScale = scales[1]
-					
 
 					// Create the canvas
-					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas id="cnvs" width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
-					var canvas = container.querySelector('#cnvs')
+					container.innerHTML = '<div style="width:'+settings.width+'; height:'+settings.height+';"><canvas width="'+width+'" height="'+height+'" style="width: 100%;"></canvas></div>'
+					var canvas = container.querySelector('canvas')
 					var ctx = canvas.getContext("2d")
 
 					// Draw each node

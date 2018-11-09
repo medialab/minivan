@@ -1,5 +1,6 @@
 <div layout="row" layout-fill md-colors="{background: 'default-background-500'}">
 	<left-side-bar></left-side-bar>
+	<node-sidenav node-data="selectedNode"></node-sidenav>
 	<div layout="row" flex>
 
 		<!-- Left part of the screen -->
@@ -82,6 +83,7 @@
 
 						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
+							on-node-click="networkNodeClick"
 							color-att-id="attribute.type == 'ranking-color' ? $parent.attribute.id : undefined"
 							size-att-id="attribute.type == 'ranking-size' ? $parent.attribute.id : undefined"
 							selected-att-id="$parent.attribute.id"

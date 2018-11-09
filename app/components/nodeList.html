@@ -11,14 +11,15 @@
     <md-virtual-repeat-container layout-fill>
       <md-list layout-fill>
         <div md-virtual-repeat="node in nodes|filter:search" md-item-size="88" flex>
-          
+
           <div
             node-list-element
             get-radius="getRadius"
             get-color="getColor"
-            node="node"
+            node="node.data"
             att="att"
             print-mode="false"
+            ng-click="click(node.nid)"
           ></div>
 
         </div>

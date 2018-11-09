@@ -26,6 +26,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
 	$timeout,
 	$route,
 	$routeParams,
+  $mdSidenav,
 	dataLoader,
 	csvBuilder,
   scalesUtils,
@@ -40,6 +41,7 @@ angular.module('app.modalities-ranking', ['ngRoute'])
   $scope.modalityListDetailLevel = userCache.get('modalityListDetailLevel', 1)
   $scope.statsDetailLevel = userCache.get('statsDetailLevel', 1)
   $scope.decileMode = false
+  $scope.selectedNode = null
   $scope.$watch('panel', updateLocationPath)
   $scope.$watch('search', updateLocationPath)
   $scope.$watch('modalitiesSelection', updateNodeFilter, true)
@@ -59,6 +61,8 @@ angular.module('app.modalities-ranking', ['ngRoute'])
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
+    $scope.selectedNode = $scope.networkData.g.getNodeAttributes(nid)
+    $mdSidenav('node-sidenav').open()
   }
 
   $scope.downloadGEXF = function() {
