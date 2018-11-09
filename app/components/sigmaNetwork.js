@@ -141,6 +141,10 @@ angular.module('app.components.sigmaNetworkComponent', [])
           })
         }
 
+        $scope.toggleFullscreen = function() {
+          screenfull.toggle(el[0])
+        }
+
         // These functions will be initialized at Sigma creation
         $scope.zoomIn = function(){}
         $scope.zoomOut = function(){}
