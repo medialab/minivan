@@ -271,8 +271,11 @@ angular.module('app.components.sigmaNetworkComponent', [])
 
             // Edge size
             var getEdgeSize
+            var standardThickness =  1
             if ($scope.edgeSizeAttId) {
-              // TODO
+              var edgeSizeAtt = $scope.networkData.edgeAttributesIndex[$scope.edgeSizeAttId]
+              var areaScale = scalesUtils.getAreaScale(edgeSizeAtt.min, edgeSizeAtt.max, edgeSizeAtt.areaScaling.min, edgeSizeAtt.areaScaling.max, edgeSizeAtt.areaScaling.interpolation)
+              getEdgeSize = function(eid){ return edgeSizeAtt.areaScaling.max * areaScale(g.getEdgeAttribute(eid, edgeSizeAtt.id)) * standardThickness / 10 }
             } else {
               getEdgeSize = function(eid){ return 1 }
             }
@@ -289,7 +292,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
                 getEdgeColor = function(eid){ return colorByModality[g.getEdgeAttribute(eid, edgeColorAtt.id)] || '#000' }
               } else if (edgeColorAtt.type == 'ranking-color') {
                 var edgeColorScale = scalesUtils.getColorScale(edgeColorAtt.min, edgeColorAtt.max, edgeColorAtt.colorScale, edgeColorAtt.invertScale, edgeColorAtt.truncateScale)
-                getEdgeColor = function(eid){ return colorScale(g.getNodeAttribute(eid, edgeColorAtt.id)).toString() }
+                getEdgeColor = function(eid){ return edgeColorScale(g.getEdgeAttribute(eid, edgeColorAtt.id)).toString() }
               } else {
                 getEdgeColor = function(){ return settings.default_edge_color }
               }
@@ -317,6 +320,7 @@ angular.module('app.components.sigmaNetworkComponent', [])
             // Default / muted
             g.edges().forEach(function(eid){
               g.setEdgeAttribute(eid, 'z', 0)
+              g.setEdgeAttribute(eid, 'size', getEdgeSize(eid))
               g.setEdgeAttribute(eid, 'color', settings.default_edge_color_muted)
             })
 

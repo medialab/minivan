@@ -100,16 +100,37 @@
 	      	>
 		       	<sigma-network
 							start-layout-on-load="false"
-							node-size-att-id="(att === undefined) ? (networkData.defaultNodeSize) : ((attMode=='node' && att.type=='ranking-size') ? (attId) : (undefined))"
-							node-color-att-id="(att === undefined) ? (networkData.defaultNodeColor) : ((attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ? (attId) : (undefined))"
-							edge-size-att-id="(att === undefined) ? (networkData.defaultEdgeSize) : ((attMode=='edge' && att.type=='ranking-size') ? (attId) : (undefined))"
+							node-size-att-id="
+								(att === undefined) ?
+									(networkData.defaultNodeSize) :
+									(
+										(attMode=='node' && att.type=='ranking-size') ?
+											(attId) :
+											(undefined)
+									)"
+							node-color-att-id="
+								(att === undefined) ?
+									(networkData.defaultNodeColor) :
+									(
+										(attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ?
+											(attId) :
+											(undefined)
+									)"
+							edge-size-att-id="
+								(att === undefined) ?
+									(networkData.defaultEdgeSize) :
+									(
+										(attMode=='edge' && att.type=='ranking-size') ?
+											(attId) :
+											(undefined)
+									)"
 							edge-color-att-id="
 								(att === undefined) ?
 									(networkData.defaultEdgeColor) :
 									(
 										(attMode=='edge' && (att.type=='ranking-color' || att.type=='partition')) ?
-										(attId) :
-										(undefined)
+											(attId) :
+											(undefined)
 									)"
 							att-recheck="att|json"
 							get-renderer="$parent.getRenderer"
@@ -228,8 +249,25 @@
           	>visibility_off</md-icon>
 	          <div class="md-list-item-text" layout="column">
 	            <h3>{{networkData.nodeAttributesIndex[k].name || k}}</h3>
-	            <p>
-	            	{{(networkData.nodeAttributesIndex[k].type || 'hidden') | uppercase}}
+	            <p
+	            	ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+	            >
+	            	Color gradient
+	            </p>
+	            <p
+	            	ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+	            >
+	            	Size gradient
+	            </p>
+	            <p
+	            	ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
+	            >
+	            	Color categories
+	            </p>
+	            <p
+	            	ng-if="!networkData.nodeAttributesIndex[k].type"
+	            >
+	            	Hidden
 	            </p>
 	          </div>
 	        </md-list-item>
@@ -254,20 +292,39 @@
 		    		ng-style="{opacity: networkData.edgeAttributesIndex[k].type ? 1 : 0.5}"
 		    	>
 	          <md-icon
-          		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+          		ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
           	>gradient</md-icon>
           	<md-icon
-          		ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+          		ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
           	>line_weight</md-icon>
           	<md-icon
-          		ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
+          		ng-if="networkData.edgeAttributesIndex[k].type == 'partition'"
           	>color_lens</md-icon>
           	<md-icon
-          		ng-if="!networkData.nodeAttributesIndex[k].type"
+          		ng-if="!networkData.edgeAttributesIndex[k].type"
           	>visibility_off</md-icon>
 	          <div class="md-list-item-text" layout="column">
 	            <h3>{{networkData.edgeAttributesIndex[k].name || k}}</h3>
-	            <p>{{(networkData.edgeAttributesIndex[k].type || 'hidden') | uppercase}}</p>
+	            <p
+	            	ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
+	            >
+	            	Color gradient
+	            </p>
+	            <p
+	            	ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
+	            >
+	            	Thickness gradient
+	            </p>
+	            <p
+	            	ng-if="networkData.edgeAttributesIndex[k].type == 'partition'"
+	            >
+	            	Color categories
+	            </p>
+	            <p
+	            	ng-if="!networkData.edgeAttributesIndex[k].type"
+	            >
+	            	Hidden
+	            </p>
 	          </div>
 	        </md-list-item>
 	    	</md-list>
@@ -346,7 +403,7 @@
             	ng-if="attData.dataType == 'string' || attData.dataType == 'integer'"
             >
             	<md-icon style="font-size: 20px; height: 20px">color_lens</md-icon>
-          		Color set
+          		Color categories
           	</md-option>
             <md-option
             	value="ranking-color"
@@ -361,8 +418,8 @@
             >
             	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'node'">bubble_chart</md-icon>
             	<md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'edge'">line_weight</md-icon>
-          		<span ng-if="attMode == 'node'">Size</span>
-          		<span ng-if="attMode == 'edge'">Thickness</span>
+          		<span ng-if="attMode == 'node'">Size gradient</span>
+          		<span ng-if="attMode == 'edge'">Thickness gradient</span>
           	</md-option>
           </md-select>
         </md-input-container>
@@ -375,7 +432,6 @@
 
 	    	<!-- Spacer -->
 				<div style="min-height: 24px"></div>
-
 				<div ng-if="att.type == 'partition'">
 					<div layout="column" style="border: 1px solid rgba(255, 255, 255, 0.3); padding: 12px">
 						<div style="margin-bottom: 12px">Generate Colors</div>
@@ -448,7 +504,7 @@
 		    	</md-list>
         </div>
 
-        <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-color'">
+        <div layout="column" ng-if="att.type == 'ranking-color'">
 					<md-input-container>
 	          <label>Color scale</label>
 	          <md-select ng-model="att.colorScale">
@@ -480,10 +536,11 @@
 					</md-switch>
         </div>
 
-        <div layout="column" ng-if="attMode == 'node' && att.type == 'ranking-size'">
+        <div layout="column" ng-if="att.type == 'ranking-size'">
         	<div layout="row">
 	        	<md-input-container flex>
-	        		<label>Min node area</label>
+	        		<label ng-if="attMode=='node'">Min node area</label>
+	        		<label ng-if="attMode=='edge'">Min edge thickness</label>
 					    <input
 				        ng-model="att.areaScaling.min"
 				        min="0"
@@ -492,7 +549,8 @@
 						</md-input-container>
 						<div style="min-width: 6px"><!-- SPACER --></div>
 	        	<md-input-container flex>
-	        		<label>Max node area</label>
+	        		<label ng-if="attMode=='node'">Max node area</label>
+	        		<label ng-if="attMode=='edge'">Max edge thickness</label>
 					    <input
 				        ng-model="att.areaScaling.max"
 				        min="0"
