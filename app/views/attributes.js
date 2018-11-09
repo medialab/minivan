@@ -87,7 +87,7 @@ angular.module('app.attributes', ['ngRoute'])
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
-    $scope.selectedNode = $scope.getRenderer().graph.getNodeAttributes(nid)
+    $scope.selectedNode = $scope.networkData.g.getNodeAttributes(nid)
     $mdSidenav('node-sidenav').open()
   }
 
