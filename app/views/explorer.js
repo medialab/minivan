@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('app.home', ['ngRoute'])
+angular.module('app.explorer', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/', {
-    templateUrl: 'views/home.html'
-  , controller: 'HomeController'
+  $routeProvider.when('/explorer', {
+    templateUrl: 'views/explorer.html'
+  , controller: 'ExplorerController'
   })
 }])
 
-.controller('HomeController', function(
+.controller('ExplorerController', function(
 	$scope,
 	$location,
 	$timeout,

@@ -1,15 +1,15 @@
 'use strict';
 
-angular.module('app.prepare', ['ngRoute'])
+angular.module('app.maker', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/prepare', {
-    templateUrl: 'views/prepare.html'
-  , controller: 'PrepareController'
+  $routeProvider.when('/maker', {
+    templateUrl: 'views/maker.html'
+  , controller: 'MakerController'
   })
 }])
 
-.controller('PrepareController', function(
+.controller('MakerController', function(
 	$scope,
 	$location,
 	$timeout,

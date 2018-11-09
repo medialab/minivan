@@ -20,7 +20,7 @@ angular.module('app.start', ['ngRoute'])
   $scope.getUrl = function(relative) {
     var url = $location[relative ? 'url' : 'absUrl']().replace(/\/start$/, '')
 
-    url += '/attributes?panel=map&bundle='
+    url += '/explorer?bundle='
     url += encodeURIComponent($scope.bundleUrl)
 
     return url
