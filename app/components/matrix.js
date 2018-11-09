@@ -64,6 +64,11 @@ angular.module('app.components.matrix', [])
         }
       })
 
+      $scope.displayLargeNetwork = function() {
+        $scope.tooBig = false
+        update()
+      }
+
       if ($scope.viewBox) {
         var initViewBox = $scope.viewBox
         // if a view box is passed at initialization, use it
