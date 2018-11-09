@@ -30,6 +30,7 @@
     "d3": "~5.5.0",
     "graphology": "~0.13.1",
     "graphology-library": "0.2.0",
+    "screenfull": "^3.3.3",
     "sigma": "2.0.0-alpha20"
   },
   "devDependencies": {

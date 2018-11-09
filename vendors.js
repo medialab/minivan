@@ -17,3 +17,4 @@ window.d3 = require('d3');
 window.Sigma = require('sigma/endpoint');
 window.Graph = require('graphology');
 window.Graph.library = require('graphology-library/browser');
+window.screenfull = require('screenfull');
