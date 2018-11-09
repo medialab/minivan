@@ -16,6 +16,7 @@ angular.module('app.modality', ['ngRoute'])
 	$timeout,
 	$route,
 	$routeParams,
+  $mdSidenav,
 	dataLoader,
 	csvBuilder,
   userCache,
@@ -28,6 +29,7 @@ angular.module('app.modality', ['ngRoute'])
   $scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
   $scope.modalityListDetailLevel = userCache.get('modalityListDetailLevel', 1)
   $scope.statsDetailLevel = userCache.get('statsDetailLevel', 1)
+  $scope.selectedNode = null
   $scope.statsTopCut
   $scope.sortedNodes
   $scope.$watch('panel', updateLocationPath)
@@ -51,6 +53,8 @@ angular.module('app.modality', ['ngRoute'])
 
 	$scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
+    $scope.selectedNode = $scope.getRenderer().graph.getNodeAttributes(nid)
+    $mdSidenav('node-sidenav').open()
   }
 
   $scope.downloadGEXF = function() {

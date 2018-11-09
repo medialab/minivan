@@ -89,7 +89,6 @@ angular.module('app.attributes', ['ngRoute'])
     console.log('Click on', nid)
     $scope.selectedNode = $scope.getRenderer().graph.getNodeAttributes(nid)
     $mdSidenav('node-sidenav').open()
-
   }
 
   $scope.downloadGEXF = function() {
