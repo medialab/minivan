@@ -26,6 +26,7 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.networkData = dataLoader.get($scope.bundleLocation)
 	$scope.attributeListDetailLevel = userCache.get('attributeListDetailLevel', 1)
 	$scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
+  $scope.statsDetailLevel = userCache.get('statsDetailLevel', 1)
 	$scope.selectedAttId = undefined
 	$scope.sizeAttId = undefined
 	$scope.colorAttId = undefined
@@ -34,6 +35,7 @@ angular.module('app.attributes', ['ngRoute'])
 	$scope.$watch('search', updateLocationPath)
   $scope.$watch('attributeListDetailLevel', updateAttributeListDetailLevel)
   $scope.$watch('matrixDetailLevel', updateMatrixDetailLevel)
+  $scope.$watch('statsDetailLevel', updateStatsDetailLevel)
 
 	$scope.$watch('selectedAttId', function (newSelectedAttId, oldSelectedAttId) {
 		if ($scope.selectedAttId) {
@@ -117,8 +119,10 @@ angular.module('app.attributes', ['ngRoute'])
   function updateAttributeListDetailLevel() {
     userCache.set('attributeListDetailLevel', $scope.attributeListDetailLevel)
   }
-
   function updateMatrixDetailLevel() {
     userCache.set('matrixDetailLevel', $scope.matrixDetailLevel)
+  }
+  function updateStatsDetailLevel() {
+    userCache.set('statsDetailLevel', $scope.statsDetailLevel)
   }
 })

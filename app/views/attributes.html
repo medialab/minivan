@@ -175,6 +175,20 @@
 							<md-tooltip md-direction="top">Print statistics</md-tooltip>
 			      	<md-icon>print</md-icon>
 			      </md-button>
+
+			      <md-button class="footer-button" ng-click="$parent.statsDetailLevel=1">
+						<md-tooltip md-direction="top">No details</md-tooltip>
+						Details
+		      	<md-icon ng-if="statsDetailLevel==1">radio_button_checked</md-icon>
+		      	<md-icon ng-if="statsDetailLevel!=1">radio_button_unchecked</md-icon>
+		      	1
+		      </md-button>
+					<md-button class="footer-button" ng-click="$parent.statsDetailLevel=2">
+						<md-tooltip md-direction="top">More details</md-tooltip>
+		      	<md-icon ng-if="statsDetailLevel==2">radio_button_checked</md-icon>
+		      	<md-icon ng-if="statsDetailLevel!=2">radio_button_unchecked</md-icon>
+						2
+		      </md-button>
 				</div>
 			</div>
 		</div>
