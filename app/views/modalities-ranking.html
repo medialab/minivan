@@ -81,6 +81,7 @@
 
 						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
+							on-node-click="networkNodeClick"
 							color-att-id="attribute.type == 'ranking-color' ? attribute.id : ''"
 							size-att-id="attribute.type == 'ranking-size' ? attribute.id : ''"
 							selected-att-id="$parent.attribute.id"

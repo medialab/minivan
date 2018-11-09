@@ -82,6 +82,7 @@
 
 						<node-list
 							ng-if="networkData.loaded && panel == 'list'"
+							on-node-click="networkNodeClick"
 							color-att-id="$parent.attribute.id"
 							selected-att-id="$parent.attribute.id"
 							search="$parent.search"

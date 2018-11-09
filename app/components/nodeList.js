@@ -13,7 +13,8 @@ angular.module('app.components.nodeList', [])
       colorAttId: '=',
       sizeAttId: '=',
       nodeFilter: '=',
-      selectedAttId:'='
+      selectedAttId:'=',
+      onNodeClick: '='
     },
     link: function($scope, el, attrs) {
     	$scope.networkData = dataLoader.get()
@@ -29,6 +30,12 @@ angular.module('app.components.nodeList', [])
       $scope.$watch('selectedAttId', update)
       $scope.$watch('nodeFilter', updateNodes)
 
+      $scope.click = function(nid) {
+        if (typeof $scope.onNodeClick === 'function') {
+          $scope.onNodeClick(nid)
+        }
+      }
+
       function updateNodes() {
         var g = $scope.networkData.g
         var nodeFilter = $scope.nodeFilter || function(d){return d}
@@ -36,9 +43,9 @@ angular.module('app.components.nodeList', [])
           .filter(nodeFilter)
 
         scalesUtils.sortNodes($scope.nodes, $scope.selectedAttId)
-          
+
         $scope.nodes = $scope.nodes.map(function(nid){
-            return g.getNodeAttributes(nid)
+            return {nid: nid, data:g.getNodeAttributes(nid)}
           })
       }
 
@@ -107,7 +114,7 @@ angular.module('app.components.nodeList', [])
 
       // init
       redraw()
-      
+
       function redraw() {
         $timeout(function(){
           container.innerHTML = '';
@@ -115,12 +122,12 @@ angular.module('app.components.nodeList', [])
           var margin = {top: 0, right: 0, bottom: 0, left: 0},
               width = container.offsetWidth - margin.left - margin.right,
               height = container.offsetHeight - margin.top - margin.bottom;
-          
+
           var svg = d3.select(container).append('svg')
               .attr('width', width + margin.left + margin.right)
               .attr('height', height + margin.top + margin.bottom)
             .append('g')
-              .attr('transform', 
+              .attr('transform',
                     'translate(' + margin.left + ',' + margin.top + ')');
 
           svg.append('circle')
