@@ -17,7 +17,7 @@ angular.module('app.components.nodeList', [])
       onNodeClick: '='
     },
     link: function($scope, el, attrs) {
-    	$scope.networkData = dataLoader.get()
+      $scope.networkData = dataLoader.get()
       $scope.$watch('networkData.loaded', function(){
         if ($scope.networkData && $scope.networkData.loaded) {
           updateNodes()

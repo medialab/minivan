@@ -10,12 +10,12 @@ angular.module('app.print-stats-range', ['ngRoute'])
 }])
 
 .controller('PrintStatsRangeController', function(
-	$scope,
-	$location,
-	$timeout,
+  $scope,
+  $location,
+  $timeout,
   $routeParams,
-	dataLoader,
-	scalesUtils,
+  dataLoader,
+  scalesUtils,
   remarkableNodes
 ) {
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
@@ -29,8 +29,8 @@ angular.module('app.print-stats-range', ['ngRoute'])
     $scope.detailLevel = 1
   }
 
-	$scope.$watch('networkData.loaded', function(){
-		if ($scope.networkData.loaded) {
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
       if ($scope.attribute.type !== 'ranking-color' && $scope.attribute.type !== 'ranking-size') {
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "ranking-size" or "ranking-color".', $scope.attribute)
@@ -50,6 +50,6 @@ angular.module('app.print-stats-range', ['ngRoute'])
           $scope.subgraph.dropNode(nid);
         }
       })
-	  }
-	})
+    }
+  })
 })

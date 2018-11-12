@@ -10,20 +10,20 @@ angular.module('app.print-node-list-modalities-partition', ['ngRoute'])
 }])
 
 .controller('PrintNodeListModalitiesPartitionController', function(
-	$scope,
-	$location,
-	$timeout,
+  $scope,
+  $location,
+  $timeout,
   $routeParams,
-	dataLoader,
-	scalesUtils
+  dataLoader,
+  scalesUtils
 ) {
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.attributeId = $location.search().att
   
-	$scope.$watch('networkData.loaded', function(){
-		if ($scope.networkData.loaded) {
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
 
       // Rebuild node filter
@@ -45,19 +45,19 @@ angular.module('app.print-node-list-modalities-partition', ['ngRoute'])
         $scope.modalityFilter = function(){ return true }
       }
 
-	    var g = $scope.networkData.g
-	    $scope.nodes = g.nodes()
+      var g = $scope.networkData.g
+      $scope.nodes = g.nodes()
         .filter($scope.nodeFilter)
       scalesUtils.sortNodes($scope.nodes, $scope.attributeId)
       $scope.nodes = $scope.nodes.map(function(nid){
           return g.getNodeAttributes(nid)
         })
 
-	    update()
-	  }
-	})
+      update()
+    }
+  })
 
-	function update() {
+  function update() {
     var colorByModality = {}
     $scope.attribute.modalities.forEach(function(m){
       colorByModality[m.value] = m.color

@@ -4,7 +4,7 @@
 
 angular.module('minivan.netBundleManager', [])
 
-	.factory('netBundleManager', function($http, $timeout, paletteGenerator){
+  .factory('netBundleManager', function($http, $timeout, paletteGenerator){
     var ns = {}     // namespace
     ns.bundleVersion = '0.1alpha'
     ns.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
@@ -12,28 +12,28 @@ angular.module('minivan.netBundleManager', [])
 
     // Sets the passed value and if none sets a default value if the attribute is required
     ns.setBundleAttribute = function(bundle, attribute, value, verbose) {
-    	var defaults = {}
-    	defaults.title = 'Untitled Network'
-    	defaults.authors = []
-    	defaults.date = 'Unknown'
+      var defaults = {}
+      defaults.title = 'Untitled Network'
+      defaults.authors = []
+      defaults.date = 'Unknown'
       defaults.url = undefined
-    	defaults.doi = undefined
-    	defaults.description = 'This network has no description.'
-    	defaults.bundleVersion = ns.bundleVersion
+      defaults.doi = undefined
+      defaults.description = 'This network has no description.'
+      defaults.bundleVersion = ns.bundleVersion
 
-    	if (value !== undefined) {
-    		bundle[attribute] = value
-    		if (verbose) { console.warn(attribute+' set to ', bundle[attribute]) }
-    	} else if (bundle[attribute] === undefined) {
-				if (defaults[attribute] !== undefined) {
-					bundle[attribute] = defaults[attribute]
-					if (verbose) { console.warn(attribute+' missing, set to default:', bundle[attribute]) }
-				}
-			} else if (verbose) { console.warn(attribute+' found:', bundle[attribute]) }
+      if (value !== undefined) {
+        bundle[attribute] = value
+        if (verbose) { console.warn(attribute+' set to ', bundle[attribute]) }
+      } else if (bundle[attribute] === undefined) {
+        if (defaults[attribute] !== undefined) {
+          bundle[attribute] = defaults[attribute]
+          if (verbose) { console.warn(attribute+' missing, set to default:', bundle[attribute]) }
+        }
+      } else if (verbose) { console.warn(attribute+' found:', bundle[attribute]) }
     }
 
     ns.importBundle = function(fileLocation, callback, verbose) {
-    	$http.get(fileLocation)
+      $http.get(fileLocation)
       .then(function(r){
         ns.parseBundle(r.data, callback, verbose)
       }, function(e){
@@ -65,7 +65,7 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns.importGEXF = function(fileLocation, callback, verbose) {
-    	$http.get(fileLocation)
+      $http.get(fileLocation)
       .then(function(r){
         var title = ns._toTitleCase(fileLocation.substring(fileLocation.lastIndexOf('/')+1).replace(/\..*/gi, ''))
         ns.parseGEXF(r.data, title, callback, verbose)
@@ -303,74 +303,74 @@ angular.module('minivan.netBundleManager', [])
       return edgeAttributesIndex
     }
 
-		ns._analyseAttributeIndex = function(g, items, attributesIndex, ignored_attributes) {
-			d3.keys(attributesIndex).forEach(function(k){
-    		var attData = attributesIndex[k]
-    		if(ignored_attributes.indexOf(k) >= 0) {
-    			attData.type = 'ignore'
-    			return
-    		}
+    ns._analyseAttributeIndex = function(g, items, attributesIndex, ignored_attributes) {
+      d3.keys(attributesIndex).forEach(function(k){
+        var attData = attributesIndex[k]
+        if(ignored_attributes.indexOf(k) >= 0) {
+          attData.type = 'ignore'
+          return
+        }
 
-				// Infer a data type
-				if (attData.modalityTypes.string !== undefined) {
-					attData.dataType = 'string'
-				} else if (attData.modalityTypes.float !== undefined) {
-					attData.dataType = 'float'
-				} else if (attData.modalityTypes.integer !== undefined) {
-					attData.dataType = 'integer'
-				} else {
-					attData.dataType = 'error'
-				}
+        // Infer a data type
+        if (attData.modalityTypes.string !== undefined) {
+          attData.dataType = 'string'
+        } else if (attData.modalityTypes.float !== undefined) {
+          attData.dataType = 'float'
+        } else if (attData.modalityTypes.integer !== undefined) {
+          attData.dataType = 'integer'
+        } else {
+          attData.dataType = 'error'
+        }
 
-				// Aggregate the distribution of modalities
-				attData.modalities = {}
-				items.forEach(function(item){
+        // Aggregate the distribution of modalities
+        attData.modalities = {}
+        items.forEach(function(item){
           var v = item[k]
-					attData.modalities[v] = (attData.modalities[v] || 0) + 1
-				})
+          attData.modalities[v] = (attData.modalities[v] || 0) + 1
+        })
 
-				// Build stats for the distribution
-				attData.stats = {}
-				var modalityCountsArray = d3.values(attData.modalities)
-				attData.stats.differentModalities = modalityCountsArray.length
-				attData.stats.sizeOfSmallestModality = d3.min(modalityCountsArray)
-				attData.stats.sizeOfBiggestModality = d3.max(modalityCountsArray)
-				attData.stats.medianSize = d3.median(modalityCountsArray)
-				attData.stats.deviation = d3.deviation(modalityCountsArray)
-				attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(d){return d==1}).length
-				attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.01}).length
-				attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.1}).length
-				
-				// Decide what how the attribute should be visualized
-				if (attData.dataType == 'string') {
-					if (attData.stats.modalitiesAbove10Percent == 0 || attData.stats.differentModalities < 2 || attData.stats.differentModalities == g.order) {
-						attData.type = 'ignore'
-					} else {
-						attData.type = 'partition'
-					}
-				} else if (attData.dataType == 'float') {
-					attData.type = 'ranking-size'
-				} else if (attData.dataType == 'integer') {
-					attData.type = 'ranking-size'
-				} else {
-					attData.type = 'ignore'
-				}
-    	})
-		}
+        // Build stats for the distribution
+        attData.stats = {}
+        var modalityCountsArray = d3.values(attData.modalities)
+        attData.stats.differentModalities = modalityCountsArray.length
+        attData.stats.sizeOfSmallestModality = d3.min(modalityCountsArray)
+        attData.stats.sizeOfBiggestModality = d3.max(modalityCountsArray)
+        attData.stats.medianSize = d3.median(modalityCountsArray)
+        attData.stats.deviation = d3.deviation(modalityCountsArray)
+        attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(d){return d==1}).length
+        attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.01}).length
+        attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.1}).length
+        
+        // Decide what how the attribute should be visualized
+        if (attData.dataType == 'string') {
+          if (attData.stats.modalitiesAbove10Percent == 0 || attData.stats.differentModalities < 2 || attData.stats.differentModalities == g.order) {
+            attData.type = 'ignore'
+          } else {
+            attData.type = 'partition'
+          }
+        } else if (attData.dataType == 'float') {
+          attData.type = 'ranking-size'
+        } else if (attData.dataType == 'integer') {
+          attData.type = 'ranking-size'
+        } else {
+          attData.type = 'ignore'
+        }
+      })
+    }
 
     ns.createAttributesMetaData = function(g, attributesIndex, attributes, attributeNames) {
-    	d3.keys(attributesIndex).forEach(function(k){
-      	var attData = attributesIndex[k]
+      d3.keys(attributesIndex).forEach(function(k){
+        var attData = attributesIndex[k]
         var att = ns.initAttribute(k, attributeNames[k] || k, attData)
         var attMeta = ns.createAttributeMetaData(g, attData)
-      	if (attMeta) {
+        if (attMeta) {
           var attMetaKey
           for (attMetaKey in attMeta) {
             att[attMetaKey] = attMeta[attMetaKey]
           }
           attributes.push(att)
         }
-    	})
+      })
     }
 
     ns.initAttribute = function(id, name, attData) {
@@ -442,67 +442,67 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns._setDefaultAttributes = function(bundle) {
-    	// Is there a node attribute partition?
-    	bundle.nodeAttributes.some(function(na){
-    		if (na.type == 'partition') {
-    			bundle.defaultNodeColor = na.id
-    			return true
-    		} else return false
-    	})
-  		
-  		// If not, is there a ranking-color?
-    	if (!bundle.defaultNodeColor) {
-	    	bundle.nodeAttributes.some(function(na){
-	    		if (na.type == 'ranking-color') {
-	    			bundle.defaultNodeColor = na.id
-	    			return true
-	    		} else return false
-	    	})
-    	}
-    	
-    	// Is there a node attribute ranking-size?
-    	bundle.nodeAttributes.some(function(na){
-    		if (na.type == 'ranking-size') {
-    			bundle.defaultNodeSize = na.id
-    			return true
-    		} else return false
-    	})
+      // Is there a node attribute partition?
+      bundle.nodeAttributes.some(function(na){
+        if (na.type == 'partition') {
+          bundle.defaultNodeColor = na.id
+          return true
+        } else return false
+      })
+      
+      // If not, is there a ranking-color?
+      if (!bundle.defaultNodeColor) {
+        bundle.nodeAttributes.some(function(na){
+          if (na.type == 'ranking-color') {
+            bundle.defaultNodeColor = na.id
+            return true
+          } else return false
+        })
+      }
+      
+      // Is there a node attribute ranking-size?
+      bundle.nodeAttributes.some(function(na){
+        if (na.type == 'ranking-size') {
+          bundle.defaultNodeSize = na.id
+          return true
+        } else return false
+      })
 
-    	// If no node color, look for edge colors
-    	// (we do not want too much color)
-    	if (!bundle.defaultNodeColor) {
-	    	// Is there an edge attribute partition?
-	    	bundle.edgeAttributes.some(function(ea){
-	    		if (ea.type == 'partition') {
-	    			bundle.defaultEdgeColor = ea.id
-	    			return true
-	    		} else return false
-	    	})
-	  		
-	  		// If not, is there a ranking-color?
-	    	if (!bundle.defaultEdgeColor) {
-		    	bundle.edgeAttributes.some(function(ea){
-		    		if (ea.type == 'ranking-color') {
-		    			bundle.defaultEdgeColor = ea.id
-		    			return true
-		    		} else return false
-		    	})
-	    	}
-    	}
+      // If no node color, look for edge colors
+      // (we do not want too much color)
+      if (!bundle.defaultNodeColor) {
+        // Is there an edge attribute partition?
+        bundle.edgeAttributes.some(function(ea){
+          if (ea.type == 'partition') {
+            bundle.defaultEdgeColor = ea.id
+            return true
+          } else return false
+        })
+        
+        // If not, is there a ranking-color?
+        if (!bundle.defaultEdgeColor) {
+          bundle.edgeAttributes.some(function(ea){
+            if (ea.type == 'ranking-color') {
+              bundle.defaultEdgeColor = ea.id
+              return true
+            } else return false
+          })
+        }
+      }
 
-    	// Is there an edge attribute ranking-size?
-    	bundle.edgeAttributes.some(function(ea){
-    		if (ea.type == 'ranking-size') {
-    			bundle.defaultEdgeSize = ea.id
-    			return true
-    		} else return false
-    	})
+      // Is there an edge attribute ranking-size?
+      bundle.edgeAttributes.some(function(ea){
+        if (ea.type == 'ranking-size') {
+          bundle.defaultEdgeSize = ea.id
+          return true
+        } else return false
+      })
     }
 
     ns._addMissingVisualizationData = function(g) {
-    	var settings = {}
-    	settings.node_default_color = '#665'
-    	settings.edge_default_color = '#CCC9C9'
+      var settings = {}
+      settings.node_default_color = '#665'
+      settings.edge_default_color = '#CCC9C9'
 
       // Nodes
       var colorIssues = 0
@@ -562,7 +562,7 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns.consolidateBundle = function(bundle) {
-    	ns.setBundleAttribute(bundle, 'consolidated', true)
+      ns.setBundleAttribute(bundle, 'consolidated', true)
 
       // Node attributes index
       bundle.nodeAttributesIndex = {}
@@ -725,60 +725,60 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns._toTitleCase = function(str) {
-	    return str.replace(
+      return str.replace(
         /\w\S*/g,
         function(txt) {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         }
-	    )
-		}
+      )
+    }
 
-		ns._getType = function(str){
-			// Adapted from http://stackoverflow.com/questions/16775547/javascript-guess-data-type-from-string
-			if(str === undefined) str = 'undefined';
-		  if (typeof str !== 'string') str = str.toString();
-		  var nan = isNaN(Number(str));
-		  var isfloat = /^\d*(\.|,)\d*$/;
-		  var commaFloat = /^(\d{0,3}(,)?)+\.\d*$/;
-		  var dotFloat = /^(\d{0,3}(\.)?)+,\d*$/;
-		  if (!nan){
-		      if (parseFloat(str) === parseInt(str)) return "integer";
-		      else return "float";
-		  }
-		  else if (isfloat.test(str) || commaFloat.test(str) || dotFloat.test(str)) return "float";
-		  else return "string";
-		}
+    ns._getType = function(str){
+      // Adapted from http://stackoverflow.com/questions/16775547/javascript-guess-data-type-from-string
+      if(str === undefined) str = 'undefined';
+      if (typeof str !== 'string') str = str.toString();
+      var nan = isNaN(Number(str));
+      var isfloat = /^\d*(\.|,)\d*$/;
+      var commaFloat = /^(\d{0,3}(,)?)+\.\d*$/;
+      var dotFloat = /^(\d{0,3}(\.)?)+,\d*$/;
+      if (!nan){
+          if (parseFloat(str) === parseInt(str)) return "integer";
+          else return "float";
+      }
+      else if (isfloat.test(str) || commaFloat.test(str) || dotFloat.test(str)) return "float";
+      else return "string";
+    }
 
-		ns.getColors = function(count, randomSeed, settings) {
+    ns.getColors = function(count, randomSeed, settings) {
       settings = settings || {}
       settings.cmin = settings.cmin || 25.59
       settings.cmax = settings.cmax || 55.59
       settings.lmin = settings.lmin || 60.94
       settings.lmax = settings.lmax || 90.94
 
-			if (count == 0) {
-				return []
-			} else if (count == 1) {
-				return ['#666']
-			}
-			// Generate colors (as Chroma.js objects)
-			var colors = paletteGenerator.generate(
-			  count, // Colors
-			  function(color){ // This function filters valid colors
-			    var hcl = d3.hcl(color)
-			    return hcl.c>=settings.cmin && hcl.c<=settings.cmax
-			      	&& hcl.l>=settings.lmin && hcl.l<=settings.lmax;
-			  },
-			  false, // Using Force Vector instead of k-Means
-			  50, // Steps (quality)
-			  false, // Ultra precision
-			  'Default', // Color distance type (colorblindness)
-			  randomSeed // Random seed. Undefined = Math.random
-			);
-			// Sort colors by differenciation first
-			colors = paletteGenerator.diffSort(colors, 'Default')
-			return colors
-		}
+      if (count == 0) {
+        return []
+      } else if (count == 1) {
+        return ['#666']
+      }
+      // Generate colors (as Chroma.js objects)
+      var colors = paletteGenerator.generate(
+        count, // Colors
+        function(color){ // This function filters valid colors
+          var hcl = d3.hcl(color)
+          return hcl.c>=settings.cmin && hcl.c<=settings.cmax
+              && hcl.l>=settings.lmin && hcl.l<=settings.lmax;
+        },
+        false, // Using Force Vector instead of k-Means
+        50, // Steps (quality)
+        false, // Ultra precision
+        'Default', // Color distance type (colorblindness)
+        randomSeed // Random seed. Undefined = Math.random
+      );
+      // Sort colors by differenciation first
+      colors = paletteGenerator.diffSort(colors, 'Default')
+      return colors
+    }
 
     ns.colorScales = [
       'interpolateGreys',

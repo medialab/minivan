@@ -20,6 +20,6 @@ angular.module('app.components.cardModalityRemarkableNodes', [])
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
       $scope.modality = $scope.attribute.modalitiesIndex[$scope.modValue]
       $scope.modalityFlow = $scope.attribute.data.modalityFlow[$scope.modValue][$scope.modValue]
-	  }
+    }
   }
 })

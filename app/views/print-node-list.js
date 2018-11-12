@@ -10,12 +10,12 @@ angular.module('app.print-node-list', ['ngRoute'])
 }])
 
 .controller('PrintNodeListController', function(
-	$scope,
-	$location,
-	$timeout,
+  $scope,
+  $location,
+  $timeout,
   $routeParams,
-	dataLoader,
-	scalesUtils
+  dataLoader,
+  scalesUtils
 ) {
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
@@ -24,19 +24,19 @@ angular.module('app.print-node-list', ['ngRoute'])
   $scope.sizeAttId = $location.search().size
   $scope.selectedAttId = $location.search().att
   
-	$scope.$watch('networkData.loaded', function(){
-		if ($scope.networkData && $scope.networkData.g) {
-	    var g = $scope.networkData.g
-	    $scope.nodes = g.nodes().slice(0)
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData && $scope.networkData.g) {
+      var g = $scope.networkData.g
+      $scope.nodes = g.nodes().slice(0)
       scalesUtils.sortNodes($scope.nodes)
       $scope.nodes = $scope.nodes.map(function(nid){
-	      return g.getNodeAttributes(nid)
-	    })
-	    update()
-	  }
-	})
+        return g.getNodeAttributes(nid)
+      })
+      update()
+    }
+  })
 
-	function update() {
+  function update() {
     $scope.att = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
     if ($scope.colorAttId) {
       var colorAtt = $scope.networkData.nodeAttributesIndex[$scope.colorAttId]

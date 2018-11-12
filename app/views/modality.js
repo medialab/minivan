@@ -11,18 +11,18 @@ angular.module('app.modality', ['ngRoute'])
 }])
 
 .controller('ModalityController', function(
-	$scope,
-	$location,
-	$timeout,
-	$route,
-	$routeParams,
+  $scope,
+  $location,
+  $timeout,
+  $route,
+  $routeParams,
   $mdSidenav,
-	dataLoader,
-	csvBuilder,
+  dataLoader,
+  csvBuilder,
   userCache,
   remarkableNodes
 ) {
-	$scope.panel = $location.search().panel || 'map'
+  $scope.panel = $location.search().panel || 'map'
   $scope.search = $location.search().q
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
@@ -51,7 +51,7 @@ angular.module('app.modality', ['ngRoute'])
     }
   })
 
-	$scope.networkNodeClick = function(nid) {
+  $scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
     $scope.selectedNode = $scope.networkData.g.getNodeAttributes(nid)
     $mdSidenav('node-sidenav').open()
@@ -239,7 +239,7 @@ angular.module('app.modality', ['ngRoute'])
   }
 
   $scope.downloadNodeList = function() {
-  	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
+    var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - " + $scope.modality.value + " - Nodes.csv");
   }
@@ -267,8 +267,8 @@ angular.module('app.modality', ['ngRoute'])
   }
 
   function updateLocationPath(){
-  	$location.search('panel', $scope.panel || null)
-  	$location.search('q', $scope.search || null)
+    $location.search('panel', $scope.panel || null)
+    $location.search('q', $scope.search || null)
   }
 
   function updateMatrixDetailLevel() {

@@ -26,6 +26,6 @@ angular.module('app.components.cardModalitySummary', [])
       } else if(g.type == 'mixed') {
         $scope.density = Graph.library.metrics.density.mixedDensity($scope.modality.count, $scope.modalityFlow.count)
       }
-	  }
+    }
   }
 })

@@ -11,18 +11,18 @@ angular.module('app.modalities-partition', ['ngRoute'])
 }])
 
 .controller('ModalitiesPartitionController', function(
-	$scope,
-	$location,
-	$timeout,
-	$route,
-	$routeParams,
+  $scope,
+  $location,
+  $timeout,
+  $route,
+  $routeParams,
   $mdSidenav,
-	dataLoader,
-	csvBuilder,
+  dataLoader,
+  csvBuilder,
   userCache
 ) {
-	$scope.panel = $location.search().panel || 'map'
-	$scope.search = $location.search().q
+  $scope.panel = $location.search().panel || 'map'
+  $scope.search = $location.search().q
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
   $scope.matrixDetailLevel = userCache.get('matrixDetailLevel', 1)
@@ -48,14 +48,14 @@ angular.module('app.modalities-partition', ['ngRoute'])
     }
   })
 
-	$scope.networkNodeClick = function(nid) {
+  $scope.networkNodeClick = function(nid) {
     console.log('Click on', nid)
     $scope.selectedNode = $scope.networkData.g.getNodeAttributes(nid)
     $mdSidenav('node-sidenav').open()
   }
 
   $scope.downloadGEXF = function() {
-  	var xml = Graph.library.gexf.write($scope.getRenderer().graph);
+    var xml = Graph.library.gexf.write($scope.getRenderer().graph);
     var blob = new Blob([xml], {'type':'text/gexf+xml;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + ".gexf");
   }
@@ -87,7 +87,7 @@ angular.module('app.modalities-partition', ['ngRoute'])
   }
 
   $scope.downloadNodeList = function() {
-  	var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
+    var csv = csvBuilder.getNodes($scope.nodeFilter, $scope.attribute.id)
     var blob = new Blob([csv], {'type':'text/csv;charset=utf-8'});
     saveAs(blob, $scope.networkData.title + " - Nodes.csv");
   }
@@ -113,8 +113,8 @@ angular.module('app.modalities-partition', ['ngRoute'])
   }
 
   function updateLocationPath(){
-  	$location.search('panel', $scope.panel || null)
-  	$location.search('q', $scope.search || null)
+    $location.search('panel', $scope.panel || null)
+    $location.search('q', $scope.search || null)
   }
 
   function updateMatrixDetailLevel() {

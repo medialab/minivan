@@ -10,12 +10,12 @@ angular.module('app.print-stats-modality', ['ngRoute'])
 }])
 
 .controller('PrintStatsModalityController', function(
-	$scope,
-	$location,
-	$timeout,
+  $scope,
+  $location,
+  $timeout,
   $routeParams,
-	dataLoader,
-	scalesUtils,
+  dataLoader,
+  scalesUtils,
   remarkableNodes
 ) {
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
@@ -28,8 +28,8 @@ angular.module('app.print-stats-modality', ['ngRoute'])
     $scope.detailLevel = 1
   }
   
-	$scope.$watch('networkData.loaded', function(){
-		if ($scope.networkData.loaded) {
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
       $scope.modality = $scope.attribute.modalities.filter(function(mod){return mod.value == $scope.modalityValue})[0]
       $scope.modalityFlow = $scope.attribute.data.modalityFlow[$scope.modality.value][$scope.modality.value]
@@ -37,10 +37,10 @@ angular.module('app.print-stats-modality', ['ngRoute'])
         console.error('[ERROR] The type of attribute "' + $scope.attribute.name + '" is not "partition".', $scope.attribute)
       }
       update()
-	  }
-	})
+    }
+  })
 
-	function update() {
+  function update() {
     $scope.statsTopCut = ($scope.detailLevel > 1) ? (10) : (3)
     $scope.sortedNodes = remarkableNodes.getData($scope.attribute, $scope.modality, $scope.statsTopCut)
   }

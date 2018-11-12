@@ -10,12 +10,12 @@ angular.module('app.print-matrix', ['ngRoute'])
 }])
 
 .controller('PrintMatrixController', function(
-	$scope,
-	$location,
-	$timeout,
+  $scope,
+  $location,
+  $timeout,
   $routeParams,
-	dataLoader,
-	scalesUtils
+  dataLoader,
+  scalesUtils
 ) {
   $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
   $scope.networkData = dataLoader.get($scope.bundleLocation)
@@ -29,13 +29,13 @@ angular.module('app.print-matrix', ['ngRoute'])
     h: +$location.search().h,
   }
   
-	$scope.$watch('networkData.loaded', function(){
-		if ($scope.networkData && $scope.networkData.g) {
-	    update()
-	  }
-	})
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData && $scope.networkData.g) {
+      update()
+    }
+  })
 
-	function update() {
+  function update() {
     $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.selectedAttId]
 
     // Rebuild node filter

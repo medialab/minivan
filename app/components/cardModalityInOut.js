@@ -19,7 +19,7 @@ angular.module('app.components.cardModalityInOut', [])
       $scope.modality = $scope.attribute.modalitiesIndex[$scope.modValue]
       $scope.modalityFlow = $scope.attribute.data.modalityFlow[$scope.modValue][$scope.modValue]
       
-	  }
+    }
   }
 })
 

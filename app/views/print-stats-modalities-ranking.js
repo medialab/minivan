@@ -10,15 +10,15 @@ angular.module('app.print-stats-modalities-ranking', ['ngRoute'])
 }])
 
 .controller('PrintStatsModalitiesRankingController', function(
-	$scope,
-	$location,
-	$timeout,
-	$routeParams,
-	dataLoader,
-	scalesUtils
+  $scope,
+  $location,
+  $timeout,
+  $routeParams,
+  dataLoader,
+  scalesUtils
 ) {
-	$scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
-	$scope.networkData = dataLoader.get($scope.bundleLocation)
+  $scope.bundleLocation = dataLoader.encodeLocation($routeParams.bundle)
+  $scope.networkData = dataLoader.get($scope.bundleLocation)
 
   $scope.attributeId = $location.search().att
   $scope.statsDetailLevel = $location.search().detail || 1
@@ -26,21 +26,21 @@ angular.module('app.print-stats-modalities-ranking', ['ngRoute'])
     $scope.statsDetailLevel = 1
   }
   
-	$scope.$watch('networkData.loaded', function(){
-		if ($scope.networkData.loaded) {
+  $scope.$watch('networkData.loaded', function(){
+    if ($scope.networkData.loaded) {
       $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attributeId]
 
-	    var g = $scope.networkData.g
-	    $scope.nodes = g.nodes()
+      var g = $scope.networkData.g
+      $scope.nodes = g.nodes()
         .map(function(nid){
-  	      return g.getNodeAttributes(nid)
-  	    })
+          return g.getNodeAttributes(nid)
+        })
 
-	    update()
-	  }
-	})
+      update()
+    }
+  })
 
-	function update() {
+  function update() {
     
   }
 })

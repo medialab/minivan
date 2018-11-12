@@ -7,6 +7,7 @@
   "scripts": {
     "build": "webpack --colors --progress --devtool source-map",
     "build:prod": "webpack --colors --progress -p",
+    "clean": "for f in `find ./app -name '*.js' -o -name '*.html'`; do expand -t 2 $f > $f.bak && mv $f.bak $f; done",
     "deploy": "gh-pages-deploy",
     "postinstall": "npm run build",
     "serve": "http-server app -a localhost -o -p 8000"

@@ -19,6 +19,6 @@ angular.module('app.components.cardRangeSummary', [])
         $scope.attribute = dataLoader.get().nodeAttributesIndex[$scope.attId]
         $scope.density = Graph.library.metrics.density(g)
       })
-	  }
+    }
   }
 })

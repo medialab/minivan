@@ -15,7 +15,7 @@ angular.module('app.components.cardRangeInOut', [])
     },
     link: function($scope, el, attrs) {
       $scope.attribute = dataLoader.get().nodeAttributesIndex[$scope.attId]
-	  }
+    }
   }
 })
 

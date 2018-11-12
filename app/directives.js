@@ -97,29 +97,29 @@ angular.module('app.directives', [])
       scope: {
         att: '=',
         obj: '=',
-      	panel: '=',
-      	printMode: '=',
-      	detailLevel: '=',
-      	selectedAttId: '='
+        panel: '=',
+        printMode: '=',
+        detailLevel: '=',
+        selectedAttId: '='
       },
       templateUrl: 'components/attributeListElement.html',
       link: function($scope, el, attrs) {
         $scope.bundleLocation = dataLoader.getLocation()
-      	$scope.isSelected = false
-      	$scope.$watch('selectedAttId', function(){
-      		$scope.isSelected = $scope.att && $scope.att.id && $scope.selectedAttId == $scope.att.id
-      	})
-      	$scope.selectAtt = function(){
-      		if (!$scope.printMode) {
-      			if ($scope.selectedAttId == $scope.att.id) {
-      				$scope.isSelected = false
-		      		$scope.selectedAttId = undefined
-      			} else {
-		      		$scope.isSelected = true
-		      		$scope.selectedAttId = $scope.att.id
-      			}
-      		}
-      	}
+        $scope.isSelected = false
+        $scope.$watch('selectedAttId', function(){
+          $scope.isSelected = $scope.att && $scope.att.id && $scope.selectedAttId == $scope.att.id
+        })
+        $scope.selectAtt = function(){
+          if (!$scope.printMode) {
+            if ($scope.selectedAttId == $scope.att.id) {
+              $scope.isSelected = false
+              $scope.selectedAttId = undefined
+            } else {
+              $scope.isSelected = true
+              $scope.selectedAttId = $scope.att.id
+            }
+          }
+        }
       }
     }
   })

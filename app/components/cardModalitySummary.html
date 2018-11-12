@@ -1,22 +1,22 @@
 <md-card-title>
   <md-card-title-text>
     <span class="md-headline">
-    	Profile of {{modality.value}}
-   	</span>
+      Profile of {{modality.value}}
+    </span>
   </md-card-title-text>
 </md-card-title>
 <md-card-content>
-	Nodes = <strong>{{modality.count|number}}</strong>
-	<br>
-	Edges = <strong>{{modalityFlow.count|number}}</strong>
-	<br>
-	Density = <strong>{{density|number}}</strong>
-	<br>
-	Normalized internal density = <strong>{{modalityFlow.nd|number}}</strong>
-	<p ng-if="detailLevel>1">
+  Nodes = <strong>{{modality.count|number}}</strong>
+  <br>
+  Edges = <strong>{{modalityFlow.count|number}}</strong>
+  <br>
+  Density = <strong>{{density|number}}</strong>
+  <br>
+  Normalized internal density = <strong>{{modalityFlow.nd|number}}</strong>
+  <p ng-if="detailLevel>1">
     <a href="https://en.wikipedia.org/wiki/Dense_graph" target="_blank">Density</a> is the number of edges over the number of potential edges.
   </p>
-	<p ng-if="detailLevel>1">
+  <p ng-if="detailLevel>1">
     Normalized internal density uses Mark Newman's formula of modularity for the internal edges of the subgraph defined by this modality ({{modality.value}}). Though density only depends on the subgraph, normalized density situates it in the context of the whole graph. It can be interpreted as the contribution of each pair of modality groups to modularity.
   </p>
   <p ng-if="detailLevel>1">

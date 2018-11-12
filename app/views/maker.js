@@ -10,76 +10,76 @@ angular.module('app.maker', ['ngRoute'])
 }])
 
 .controller('MakerController', function(
-	$scope,
-	$location,
-	$timeout,
-	$routeParams,
-	dataLoader,
-	netBundleManager,
-	FileLoader,
-	droppable,
-	$mdToast
+  $scope,
+  $location,
+  $timeout,
+  $routeParams,
+  dataLoader,
+  netBundleManager,
+  FileLoader,
+  droppable,
+  $mdToast
 ) {
-	// DEV MODE: auto load
-	// netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
+  // DEV MODE: auto load
+  // netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
 
-	$scope.attMode = undefined
-	$scope.attId = undefined
-	$scope.attData = undefined
-	$scope.att = undefined
-	$scope.colorScales = netBundleManager.colorScales
-	$scope.maxColors = 5
-	$scope.defaultColor = '#AAA'
-	$scope.colorPalettes = [
-		{
-			name: 'Default',
-			settings: {
-				cmin: 30,
-				cmax: 60,
-				lmin: 60,
-				lmax: 80
-			}
-		}, {
-			name: 'Light',
-			settings: {
-				cmin: 25,
-				cmax: 60,
-				lmin: 80,
-				lmax: 100
-			}
-		}, {
-			name: 'Dark',
-			settings: {
-				cmin: 25,
-				cmax: 60,
-				lmin: 40,
-				lmax: 80
-			}
-		}, {
-			name: 'Colorful',
-			settings: {
-				cmin: 60,
-				cmax: 90,
-				lmin: 30,
-				lmax: 95
-			}
-		}, {
-			name: 'Dull',
-			settings: {
-				cmin: 10,
-				cmax: 50,
-				lmin: 60,
-				lmax: 100
-			}
-		}
-	]
-	$scope.paletteIndex = 0
+  $scope.attMode = undefined
+  $scope.attId = undefined
+  $scope.attData = undefined
+  $scope.att = undefined
+  $scope.colorScales = netBundleManager.colorScales
+  $scope.maxColors = 5
+  $scope.defaultColor = '#AAA'
+  $scope.colorPalettes = [
+    {
+      name: 'Default',
+      settings: {
+        cmin: 30,
+        cmax: 60,
+        lmin: 60,
+        lmax: 80
+      }
+    }, {
+      name: 'Light',
+      settings: {
+        cmin: 25,
+        cmax: 60,
+        lmin: 80,
+        lmax: 100
+      }
+    }, {
+      name: 'Dark',
+      settings: {
+        cmin: 25,
+        cmax: 60,
+        lmin: 40,
+        lmax: 80
+      }
+    }, {
+      name: 'Colorful',
+      settings: {
+        cmin: 60,
+        cmax: 90,
+        lmin: 30,
+        lmax: 95
+      }
+    }, {
+      name: 'Dull',
+      settings: {
+        cmin: 10,
+        cmax: 50,
+        lmin: 60,
+        lmax: 100
+      }
+    }
+  ]
+  $scope.paletteIndex = 0
 
-	$scope.downloadBundle = function() {
-		var json = netBundleManager.exportBundle($scope.networkData)
+  $scope.downloadBundle = function() {
+    var json = netBundleManager.exportBundle($scope.networkData)
     var blob = new Blob([json], {'type':'application/json;charset=utf-8'});
     saveAs(blob, 'BUNDLE - ' + $scope.networkData.title + '.json');
-	}
+  }
 
   // File upload interactions
   $scope.uploadFile = function(){
@@ -118,13 +118,13 @@ angular.module('app.maker', ['ngRoute'])
           try {
             var success = parseUpload(target.result, fileName);
             if(success) {
-	            uploadParsingSuccess()
-	          } else {
-	            uploadParsingFail(fileName)
-	          }
+              uploadParsingSuccess()
+            } else {
+              uploadParsingFail(fileName)
+            }
 
           } catch(e) {
-          	console.error(e)
+            console.error(e)
             uploadParsingFail(fileName)
           }
 
@@ -137,63 +137,63 @@ angular.module('app.maker', ['ngRoute'])
 
   // Make the text area droppable
   $scope.initDroppable = function(){
-	  droppable(document.getElementById("file-uploader"), 'uploadingDropClass', $scope, $scope.readUploadFile)
+    droppable(document.getElementById("file-uploader"), 'uploadingDropClass', $scope, $scope.readUploadFile)
   }
 
   $scope.editNodeAttribute = function(id) {
-  	$scope.attMode = 'node'
-  	$scope.attData = $scope.nodeAttributesIndex[id]
-  	$scope.attId = id
-  	$scope.att = $scope.networkData.nodeAttributesIndex[id]
-  	$scope.originalAtt = angular.copy($scope.att)
+    $scope.attMode = 'node'
+    $scope.attData = $scope.nodeAttributesIndex[id]
+    $scope.attId = id
+    $scope.att = $scope.networkData.nodeAttributesIndex[id]
+    $scope.originalAtt = angular.copy($scope.att)
   }
 
   $scope.editEdgeAttribute = function(id) {
-  	$scope.attMode = 'edge'
-  	$scope.attData = $scope.edgeAttributesIndex[id]
-  	$scope.attId = id
-  	$scope.att = $scope.networkData.edgeAttributesIndex[id]
+    $scope.attMode = 'edge'
+    $scope.attData = $scope.edgeAttributesIndex[id]
+    $scope.attId = id
+    $scope.att = $scope.networkData.edgeAttributesIndex[id]
     $scope.originalAtt = angular.copy($scope.att)
   }
 
   $scope.cancelEditAttribute = function() {
-  	var k
-  	if ($scope.attMode == 'node') {
-	  	for (k in $scope.networkData.nodeAttributesIndex[$scope.attId]) {
-	  		$scope.networkData.nodeAttributesIndex[$scope.attId][k] = $scope.originalAtt[k]
-	  	}
-  	} else if ($scope.attMode == 'edge') {
-	  	for (k in $scope.networkData.edgeAttributesIndex[$scope.attId]) {
-	  		$scope.networkData.edgeAttributesIndex[$scope.attId][k] = $scope.originalAtt[k]
-	  	}
-  	}
-  	$scope.attMode = undefined
-  	$scope.attData = undefined
-  	$scope.attId = undefined
-  	$scope.att = undefined
+    var k
+    if ($scope.attMode == 'node') {
+      for (k in $scope.networkData.nodeAttributesIndex[$scope.attId]) {
+        $scope.networkData.nodeAttributesIndex[$scope.attId][k] = $scope.originalAtt[k]
+      }
+    } else if ($scope.attMode == 'edge') {
+      for (k in $scope.networkData.edgeAttributesIndex[$scope.attId]) {
+        $scope.networkData.edgeAttributesIndex[$scope.attId][k] = $scope.originalAtt[k]
+      }
+    }
+    $scope.attMode = undefined
+    $scope.attData = undefined
+    $scope.attId = undefined
+    $scope.att = undefined
   }
 
   $scope.validateEditAttribute = function() {
-  	$scope.attMode = undefined
-  	$scope.attData = undefined
-  	$scope.attId = undefined
-  	$scope.att = undefined
+    $scope.attMode = undefined
+    $scope.attData = undefined
+    $scope.attId = undefined
+    $scope.att = undefined
   }
 
   $scope.modalityUp = function(i) {
-  	var m = $scope.att.modalities[i-1]
-  	$scope.att.modalities[i-1] = $scope.att.modalities[i]
-  	$scope.att.modalities[i] = m
+    var m = $scope.att.modalities[i-1]
+    $scope.att.modalities[i-1] = $scope.att.modalities[i]
+    $scope.att.modalities[i] = m
   }
 
   $scope.modalityDown = function(i) {
-  	var m = $scope.att.modalities[i+1]
-  	$scope.att.modalities[i+1] = $scope.att.modalities[i]
-  	$scope.att.modalities[i] = m
+    var m = $scope.att.modalities[i+1]
+    $scope.att.modalities[i+1] = $scope.att.modalities[i]
+    $scope.att.modalities[i] = m
   }
 
   $scope.repaint = function() {
-  	var colors = netBundleManager.getColors(
+    var colors = netBundleManager.getColors(
       Math.min(
         $scope.maxColors,
         $scope.att.modalities.length
@@ -202,27 +202,27 @@ angular.module('app.maker', ['ngRoute'])
       $scope.colorPalettes[$scope.paletteIndex].settings
     )
     $scope.att.modalities.forEach(function(mod, i){
-    	if (i < colors.length) {
-    		mod.color = colors[i].toString()
-    	} else {
-    		mod.color = $scope.defaultColor
-    	}
+      if (i < colors.length) {
+        mod.color = colors[i].toString()
+      } else {
+        mod.color = $scope.defaultColor
+      }
     })
   }
 
   // On type change
   $scope.$watch('att.type', function(newType, oldType){
-  	if ($scope.attId) {
-	  	// Look for necessary metadata
-	  	$scope.attData.type = newType
-  		var metadataAttribute = netBundleManager.createAttributeMetaData($scope.networkData.g, $scope.attData)
-  		var k
-  		for (k in metadataAttribute) {
-  			if ($scope.att[k] === undefined) {
-  				$scope.att[k] = metadataAttribute[k]
-  			}
-  		}
-  	}
+    if ($scope.attId) {
+      // Look for necessary metadata
+      $scope.attData.type = newType
+      var metadataAttribute = netBundleManager.createAttributeMetaData($scope.networkData.g, $scope.attData)
+      var k
+      for (k in metadataAttribute) {
+        if ($scope.att[k] === undefined) {
+          $scope.att[k] = metadataAttribute[k]
+        }
+      }
+    }
   })
 
 
@@ -251,55 +251,55 @@ angular.module('app.maker', ['ngRoute'])
 
   // Init at bundle build
   function initBundle(bundle) {
-  	console.log("networkData", bundle)
-  	dataLoader.set(bundle)
-		$scope.networkData = bundle
-		$scope.networkData.loaded = true
-  	$scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(bundle.g)
-  	netBundleManager.ignored_node_attributes.forEach(function(d){
-  		if ($scope.nodeAttributesIndex[d]) { delete $scope.nodeAttributesIndex[d] }
-  	})
-  	console.log('Node attributes', $scope.nodeAttributesIndex)
-  	$scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(bundle.g)
-  	netBundleManager.ignored_edge_attributes.forEach(function(d){
-  		if ($scope.edgeAttributesIndex[d]) { delete $scope.edgeAttributesIndex[d] }
-  	})
+    console.log("networkData", bundle)
+    dataLoader.set(bundle)
+    $scope.networkData = bundle
+    $scope.networkData.loaded = true
+    $scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(bundle.g)
+    netBundleManager.ignored_node_attributes.forEach(function(d){
+      if ($scope.nodeAttributesIndex[d]) { delete $scope.nodeAttributesIndex[d] }
+    })
+    console.log('Node attributes', $scope.nodeAttributesIndex)
+    $scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(bundle.g)
+    netBundleManager.ignored_edge_attributes.forEach(function(d){
+      if ($scope.edgeAttributesIndex[d]) { delete $scope.edgeAttributesIndex[d] }
+    })
     console.log('Edge attributes', $scope.edgeAttributesIndex)
-  	// It's possible, when loading an existing bundle, that some attributes registered in the
-  	// node attributes index or edge attribute index are not listed in the bundle.
-  	// This may cause some issues, so we create them with no type, as this means that
-  	// they are not published.
-  	var k
-  	for (k in $scope.nodeAttributesIndex) {
-  		if (bundle.nodeAttributesIndex[k] === undefined) {
-  			var att = netBundleManager.initAttribute(k, k, $scope.nodeAttributesIndex[k])
-  			att.type = undefined
-  			bundle.nodeAttributes.push(att)
-  			netBundleManager.consolidateNodeAttribute(bundle, att)
-  		}
-  	}
-  	for (k in $scope.edgeAttributesIndex) {
-  		if (bundle.edgeAttributesIndex[k] === undefined) {
-  			var att = netBundleManager.initAttribute(k, k, $scope.edgeAttributesIndex[k])
-  			att.type = undefined
-  			bundle.edgeAttributes.push(att)
-  			netBundleManager.consolidateEdgeAttribute(bundle, att)
-  		}
-  	}
+    // It's possible, when loading an existing bundle, that some attributes registered in the
+    // node attributes index or edge attribute index are not listed in the bundle.
+    // This may cause some issues, so we create them with no type, as this means that
+    // they are not published.
+    var k
+    for (k in $scope.nodeAttributesIndex) {
+      if (bundle.nodeAttributesIndex[k] === undefined) {
+        var att = netBundleManager.initAttribute(k, k, $scope.nodeAttributesIndex[k])
+        att.type = undefined
+        bundle.nodeAttributes.push(att)
+        netBundleManager.consolidateNodeAttribute(bundle, att)
+      }
+    }
+    for (k in $scope.edgeAttributesIndex) {
+      if (bundle.edgeAttributesIndex[k] === undefined) {
+        var att = netBundleManager.initAttribute(k, k, $scope.edgeAttributesIndex[k])
+        att.type = undefined
+        bundle.edgeAttributes.push(att)
+        netBundleManager.consolidateEdgeAttribute(bundle, att)
+      }
+    }
   }
 
   // Parsing functions
   function parseUpload(data, fileName) {
-  	if (!fileName) return false
-		var bundle_import
-  	if (fileName.substr(-5).toUpperCase() == '.GEXF') {
-  		var title = netBundleManager._toTitleCase(fileName.substring(fileName.lastIndexOf('/')+1).replace('_', ' ').replace(/\..*/gi, ''))
-  		netBundleManager.parseGEXF(data, title, initBundle)
-  	} else if (fileName.substr(-5).toUpperCase() == '.JSON' || fileName.substr(-3).toUpperCase() == '.JS') {
-  		netBundleManager.parseBundle(JSON.parse(data), initBundle)
-  	} else return false
+    if (!fileName) return false
+    var bundle_import
+    if (fileName.substr(-5).toUpperCase() == '.GEXF') {
+      var title = netBundleManager._toTitleCase(fileName.substring(fileName.lastIndexOf('/')+1).replace('_', ' ').replace(/\..*/gi, ''))
+      netBundleManager.parseGEXF(data, title, initBundle)
+    } else if (fileName.substr(-5).toUpperCase() == '.JSON' || fileName.substr(-3).toUpperCase() == '.JS') {
+      netBundleManager.parseBundle(JSON.parse(data), initBundle)
+    } else return false
 
-		return true
+    return true
   }
 })
 
@@ -372,7 +372,7 @@ angular.module('app.maker', ['ngRoute'])
 
 .factory('droppable', [function(){
   return function(droppable, classReference, $scope, callback){
-  	if (droppable === undefined || droppable == null) return
+    if (droppable === undefined || droppable == null) return
 
     //============== DRAG & DROP =============
     // adapted from http://jsfiddle.net/danielzen/utp7j/

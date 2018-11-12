@@ -10,7 +10,7 @@ angular.module('app.home', ['ngRoute'])
 }])
 
 .controller('HomeController', function(
-	$scope
+  $scope
 ) {
-		
+    
 })
