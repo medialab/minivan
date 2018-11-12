@@ -1,8 +1,8 @@
 {
-  "name": "visual-network-analyser",
+  "name": "minivan",
   "private": true,
   "version": "0.0.1",
-  "description": "A web interface for visual network analysis",
+  "description": "A web interface for visual network analysis.",
   "repository": "https://github.com/medialab/visual-net-analyser",
   "scripts": {
     "build": "webpack --colors --progress --devtool source-map",
