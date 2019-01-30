@@ -723,7 +723,7 @@
 			}
 		}
 	],
-	"graph_settings": {
+	"graphSettings": {
 		"type": "directed",
 		"multi": false
 	},

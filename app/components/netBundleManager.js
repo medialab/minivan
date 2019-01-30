@@ -42,7 +42,7 @@ angular.module('minivan.netBundleManager', [])
     }
 
     ns.parseBundle = function(bundle, callback, verbose) {
-      var deserializedGraph = new Graph(bundle.graph_settings || {})
+      var deserializedGraph = new Graph(bundle.graphSettings || {})
       deserializedGraph.import(bundle.g)
       bundle.g = deserializedGraph
 
@@ -142,9 +142,9 @@ angular.module('minivan.netBundleManager', [])
         .filter(function(att){ return validAttTypes.indexOf(att.type) >= 0 })
       bundleSerialize.edgeAttributes = bundleSerialize.edgeAttributes
         .filter(function(att){ return validAttTypes.indexOf(att.type) >= 0 })
-      bundleSerialize.graph_settings = {}
-      bundleSerialize.graph_settings.type = bundle.g.type
-      bundleSerialize.graph_settings.multi = bundle.g.multi
+      bundleSerialize.graphSettings = {}
+      bundleSerialize.graphSettings.type = bundle.g.type
+      bundleSerialize.graphSettings.multi = bundle.g.multi
       bundleSerialize.g = bundle.g.export()
       return JSON.stringify(bundleSerialize, null, "\t")
     }
@@ -152,7 +152,7 @@ angular.module('minivan.netBundleManager', [])
     ns.slugify = function(str) {
       str = str.replace(/^\s+|\s+$/g, '') // trim
       str = str.toLowerCase()
-    
+
       // remove accents, swap ñ for n, etc
       var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;"
       var to   = "aaaaeeeeiiiioooouuuunc------"
@@ -187,7 +187,7 @@ angular.module('minivan.netBundleManager', [])
           }
         })
       })
-      
+
       // Replace node attributes with slugs
       g.nodes().forEach(function(nid){
         var n = g.getNodeAttributes(nid)
@@ -255,7 +255,7 @@ angular.module('minivan.netBundleManager', [])
           }
         })
       })
-      
+
       // Replace edge attributes with slugs
       g.edges().forEach(function(eid){
         var e = g.getEdgeAttributes(eid)
@@ -340,7 +340,7 @@ angular.module('minivan.netBundleManager', [])
         attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(d){return d==1}).length
         attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.01}).length
         attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(function(d){return d>=g.order*0.1}).length
-        
+
         // Decide what how the attribute should be visualized
         if (attData.dataType == 'string') {
           if (attData.stats.modalitiesAbove10Percent == 0 || attData.stats.differentModalities < 2 || attData.stats.differentModalities == g.order) {
@@ -449,7 +449,7 @@ angular.module('minivan.netBundleManager', [])
           return true
         } else return false
       })
-      
+
       // If not, is there a ranking-color?
       if (!bundle.defaultNodeColor) {
         bundle.nodeAttributes.some(function(na){
@@ -459,7 +459,7 @@ angular.module('minivan.netBundleManager', [])
           } else return false
         })
       }
-      
+
       // Is there a node attribute ranking-size?
       bundle.nodeAttributes.some(function(na){
         if (na.type == 'ranking-size') {
@@ -478,7 +478,7 @@ angular.module('minivan.netBundleManager', [])
             return true
           } else return false
         })
-        
+
         // If not, is there a ranking-color?
         if (!bundle.defaultEdgeColor) {
           bundle.edgeAttributes.some(function(ea){
@@ -548,7 +548,7 @@ angular.module('minivan.netBundleManager', [])
       function isNumeric(n) {
         return !isNaN(parseFloat(n)) && isFinite(n)
       }
-      
+
       function getRandomCoordinates() {
         var candidates
         var d2 = Infinity
@@ -621,7 +621,7 @@ angular.module('minivan.netBundleManager', [])
         })
         attData.modalities = d3.keys(attData.modalitiesIndex)
         var modalitiesCounts = d3.values(attData.modalitiesIndex).map(function(d){return d.nodes})
-        
+
         // Count edge flow
         attData.modalityFlow = {}
         attData.modalities.forEach(function(v1){
@@ -646,7 +646,7 @@ angular.module('minivan.netBundleManager', [])
         })
         attData.modalities.forEach(function(v1){
           attData.modalities.forEach(function(v2){
-            attData.modalityFlow[v1][v2].nd = ( attData.modalityFlow[v1][v2].count - attData.modalityFlow[v1][v2].expected ) / (4 * g.size) 
+            attData.modalityFlow[v1][v2].nd = ( attData.modalityFlow[v1][v2].count - attData.modalityFlow[v1][v2].expected ) / (4 * g.size)
           })
         })
 
@@ -716,7 +716,7 @@ angular.module('minivan.netBundleManager', [])
           }
         })
         attData.modalities = d3.keys(attData.modalitiesIndex)
-        
+
       } else {
         // We do not need to precompute data for ranking types so far
       }

@@ -1175,7 +1175,7 @@
 			}
 		}
 	],
-	"graph_settings": {
+	"graphSettings": {
 		"type": "undirected",
 		"multi": false
 	},
