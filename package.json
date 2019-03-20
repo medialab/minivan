@@ -30,19 +30,19 @@
     "angular-messages": "~1.7.5",
     "angular-route": "~1.7.5",
     "angular-sanitize": "~1.7.5",
-    "d3": "~5.5.0",
-    "file-saver": "^2.0.0-rc.4",
-    "graphology": "~0.13.1",
+    "d3": "~5.9.2",
+    "file-saver": "^2.0.1",
+    "graphology": "~0.14.1",
     "graphology-library": "0.2.0",
-    "screenfull": "^3.3.3",
+    "screenfull": "^4.1.0",
     "sigma": "2.0.0-alpha20"
   },
   "devDependencies": {
-    "gh-pages-deploy": "^0.4.2",
+    "gh-pages-deploy": "^0.5.1",
     "http-server": "^0.11.1",
     "prettier": "^1.16.4",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "gh-pages-deploy": {
     "staticpath": "app",
