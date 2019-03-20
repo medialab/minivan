@@ -1,4 +1,10 @@
-<div class="page-container" ng-if="!networkData.loaded" layout-fill layout="column" layout-align="center center">
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
 <div class="page-container" ng-if="networkData.loaded">
@@ -12,10 +18,7 @@
       <div class="thin-h-line" ng-if="modalityListDetailLevel>1"></div>
     </div>
     <md-list>
-      <div
-        ng-repeat="mod in modalities"
-        md-item-size="20"
-      >
+      <div ng-repeat="mod in modalities" md-item-size="20">
         <div class="thin-h-line" ng-if="modalityListDetailLevel==1"></div>
         <div
           modality-ranking-list-element

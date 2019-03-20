@@ -8,16 +8,18 @@
   <md-icon ng-if="isSelected && !printMode">radio_button_checked</md-icon>
   <md-icon ng-if="!isSelected  && !printMode">radio_button_unchecked</md-icon>
   <p>{{att.name}}</p>
-  <md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-if="isSelected" ng-href="#!/{{att.type|simpleAttType}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
+  <md-button
+    class="md-fab md-mini md-primary md-secondary md-hue-1"
+    ng-if="isSelected"
+    ng-href="#!/{{att.type|simpleAttType}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}"
+    ng-click="$event.stopPropagation();"
+  >
     <md-icon>arrow_forward</md-icon>
   </md-button>
 </md-list-item>
 
 <!-- Detail level 2 -->
-<div
-  ng-if="detailLevel==2"
-  layout-fill
->
+<div ng-if="detailLevel==2" layout-fill>
   <div
     layout="row"
     class="shifter-80"
@@ -32,7 +34,11 @@
       md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
       ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
     >
-      <div style="width: 80px; padding: 3px 0px 3px 6px" layout="column" layout-align="center center">
+      <div
+        style="width: 80px; padding: 3px 0px 3px 6px"
+        layout="column"
+        layout-align="center center"
+      >
         <node-attribute-thumbnail
           att="att"
           print-mode="printMode"
@@ -41,16 +47,29 @@
         ></node-attribute-thumbnail>
       </div>
       <div flex layout="row">
-        <div flex="40" style="padding-left: 6px; overflow: hidden;" layout="column" layout-align="center">
-
+        <div
+          flex="40"
+          style="padding-left: 6px; overflow: hidden;"
+          layout="column"
+          layout-align="center"
+        >
           <!-- Key: Type == partition -->
           <div ng-if="att.type=='partition'">
             <div md-truncate ng-repeat="modality in att.modalities|limitTo:3">
-              <md-icon style="width: 24px; text-align: center" class="md-icon-12" ng-style="{'color':modality.color}">brightness_1</md-icon>
+              <md-icon
+                style="width: 24px; text-align: center"
+                class="md-icon-12"
+                ng-style="{'color':modality.color}"
+                >brightness_1</md-icon
+              >
               <small>{{modality.value}}</small>
             </div>
             <div ng-if="att.modalities.length > 3" style="line-height: 6px">
-              <md-icon style="width: 24px; text-align: center; opacity:0" class="md-icon-12">brightness_1</md-icon>
+              <md-icon
+                style="width: 24px; text-align: center; opacity:0"
+                class="md-icon-12"
+                >brightness_1</md-icon
+              >
               <small style="opacity: 0.6">...</small>
             </div>
           </div>
@@ -58,22 +77,36 @@
           <!-- Key: Type == ranking-size -->
           <div ng-if="att.type=='ranking-size'">
             <div md-truncate>
-              <md-icon style="width: 24px; text-align: center" class="md-icon-18">brightness_1</md-icon>
+              <md-icon
+                style="width: 24px; text-align: center"
+                class="md-icon-18"
+                >brightness_1</md-icon
+              >
               {{att.max|number}}
             </div>
             <div md-truncate>
-              <md-icon style="width: 24px; text-align: center" class="md-icon-12">brightness_1</md-icon>
+              <md-icon
+                style="width: 24px; text-align: center"
+                class="md-icon-12"
+                >brightness_1</md-icon
+              >
               <small style="opacity: 0.6">to</small>
             </div>
             <div md-truncate>
-              <md-icon style="width: 24px; text-align: center" class="md-icon-8">brightness_1</md-icon>
+              <md-icon style="width: 24px; text-align: center" class="md-icon-8"
+                >brightness_1</md-icon
+              >
               {{att.min|number}}
             </div>
           </div>
 
           <!-- Key: Type == ranking-color -->
           <div ng-if="att.type=='ranking-color'" layout="row">
-            <div style="width: 24px; padding: 0px 6px 0px 6px;" layout="column" layout-align="center center">
+            <div
+              style="width: 24px; padding: 0px 6px 0px 6px;"
+              layout="column"
+              layout-align="center center"
+            >
               <v-color-key att="att" layout-fill></v-color-key>
             </div>
             <div flex layout="column" layout-align="center">
@@ -88,9 +121,13 @@
               </div>
             </div>
           </div>
-
         </div>
-        <div flex="60" layout="column" layout-align="center" style="padding: 6px">
+        <div
+          flex="60"
+          layout="column"
+          layout-align="center"
+          style="padding: 6px"
+        >
           <div class="attribute-title" md-truncate>{{att.name}}</div>
         </div>
       </div>
@@ -112,15 +149,13 @@
     ng-click="selectAtt()"
     ng-if="obj=='edge'"
   >
-    TODO <!-- TODO: Edge mode -->
+    TODO
+    <!-- TODO: Edge mode -->
   </div>
 </div>
 
 <!-- Detail level 3 -->
-<div
-  ng-if="detailLevel==3"
-  layout-fill
->
+<div ng-if="detailLevel==3" layout-fill>
   <div
     layout="row"
     class="shifter-240"
@@ -131,10 +166,15 @@
     <md-content
       style="width: 100%; overflow: hidden;"
       layout="row"
-      md-ink-ripple md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
+      md-ink-ripple
+      md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
       ng-class="{'md-whiteframe-3dp': isSelected, ontop: isSelected}"
     >
-      <div style="width: 240px; padding: 3px 0px 3px 6px" layout="column" layout-align="center center">
+      <div
+        style="width: 240px; padding: 3px 0px 3px 6px"
+        layout="column"
+        layout-align="center center"
+      >
         <node-attribute-minimap
           att="att"
           print-mode="printMode"
@@ -147,15 +187,39 @@
           <div class="attribute-title" md-truncate>{{att.name}}</div>
         </div>
         <div flex>
-          <div partition-bar-chart ng-if="att.type=='partition'" att="att" is-selected="isSelected" layout-fill style="overflow: hidden;"></div>
-          <div ranking-size-chart ng-if="att.type=='ranking-size'" att="att" is-selected="isSelected" layout-fill style="overflow: hidden;"></div>
-          <div ranking-color-chart ng-if="att.type=='ranking-color'" att="att" is-selected="isSelected" layout-fill style="overflow: hidden;"></div>
+          <div
+            partition-bar-chart
+            ng-if="att.type=='partition'"
+            att="att"
+            is-selected="isSelected"
+            layout-fill
+            style="overflow: hidden;"
+          ></div>
+          <div
+            ranking-size-chart
+            ng-if="att.type=='ranking-size'"
+            att="att"
+            is-selected="isSelected"
+            layout-fill
+            style="overflow: hidden;"
+          ></div>
+          <div
+            ranking-color-chart
+            ng-if="att.type=='ranking-color'"
+            att="att"
+            is-selected="isSelected"
+            layout-fill
+            style="overflow: hidden;"
+          ></div>
         </div>
-        
       </div>
     </md-content>
     <div style="min-width: 80px" layout="column" layout-align="center center">
-      <md-button class="md-fab md-mini md-primary md-secondary md-hue-1" ng-href="#!/{{att.type|simpleAttType}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}" ng-click="$event.stopPropagation();">
+      <md-button
+        class="md-fab md-mini md-primary md-secondary md-hue-1"
+        ng-href="#!/{{att.type|simpleAttType}}/{{att.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}"
+        ng-click="$event.stopPropagation();"
+      >
         <md-icon>arrow_forward</md-icon>
       </md-button>
     </div>
@@ -167,6 +231,7 @@
     ng-click="selectAtt()"
     ng-if="obj=='edge'"
   >
-    TODO <!-- TODO: Edge mode -->
+    TODO
+    <!-- TODO: Edge mode -->
   </div>
 </div>

@@ -1,72 +1,144 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
   <head>
     <title>Visual Network Analyser</title>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
 
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,100italic,300italic,400italic|Quicksand:300,400,500'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,100italic,300italic,400italic|Quicksand:300,400,500"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="vendor/angular-material.min.css"/>
-    <link rel="stylesheet" href="app.css"/>
+    <link rel="stylesheet" href="vendor/angular-material.min.css" />
+    <link rel="stylesheet" href="app.css" />
 
     <style type="text/css">
-
-/**
+      /**
  * Hide when Angular is not yet loaded and initialized
  */
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
-}
-
+      [ng\:cloak],
+      [ng-cloak],
+      [data-ng-cloak],
+      [x-ng-cloak],
+      .ng-cloak,
+      .x-ng-cloak {
+        display: none !important;
+      }
     </style>
-
   </head>
 
   <body ng-app="app" ng-cloak>
-
     <div ng-view layout-fill></div>
 
     <!-- Load font for Canvas -->
-    <div style="height:0px; width:0px; opacity: 0; overflow: hidden; font-family: Quicksand; font-weight:300" class="no-print">-</div>
+    <div
+      style="height:0px; width:0px; opacity: 0; overflow: hidden; font-family: Quicksand; font-weight:300"
+      class="no-print"
+    >
+      -
+    </div>
 
     <script type="text/javascript" src="bundle.js"></script>
 
     <script type="text/javascript" src="services.js"></script>
     <script type="text/javascript" src="directives.js"></script>
     <script type="text/javascript" src="filters.js"></script>
-    <script type="text/javascript" src="components/netBundleManager.js"></script>
-    <script type="text/javascript" src="components/paletteGenerator.js"></script>
+    <script
+      type="text/javascript"
+      src="components/netBundleManager.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/paletteGenerator.js"
+    ></script>
     <script type="text/javascript" src="components.js"></script>
     <script type="text/javascript" src="components/sigmaNetwork.js"></script>
-    <script type="text/javascript" src="components/nodeAttributeThumbnail.js"></script>
-    <script type="text/javascript" src="components/nodeAttributeMinimap.js"></script>
+    <script
+      type="text/javascript"
+      src="components/nodeAttributeThumbnail.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/nodeAttributeMinimap.js"
+    ></script>
     <script type="text/javascript" src="components/nodeMinimap.js"></script>
-    <script type="text/javascript" src="components/canvasNetworkMap.js"></script>
-    <script type="text/javascript" src="components/partitionBarChart.js"></script>
-    <script type="text/javascript" src="components/rankingSizeChart.js"></script>
-    <script type="text/javascript" src="components/rankingColorChart.js"></script>
+    <script
+      type="text/javascript"
+      src="components/canvasNetworkMap.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/partitionBarChart.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/rankingSizeChart.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/rankingColorChart.js"
+    ></script>
     <script type="text/javascript" src="components/rankingSizeKey.js"></script>
     <script type="text/javascript" src="components/rankingColorKey.js"></script>
-    <script type="text/javascript" src="components/partitionColorKey.js"></script>
+    <script
+      type="text/javascript"
+      src="components/partitionColorKey.js"
+    ></script>
     <script type="text/javascript" src="components/nodeList.js"></script>
     <script type="text/javascript" src="components/nodeSidenav.js"></script>
     <script type="text/javascript" src="components/matrix.js"></script>
-    <script type="text/javascript" src="components/cardAttributeModularity.js"></script>
-    <script type="text/javascript" src="components/cardAttributeModularityGroupLinks.js"></script>
-    <script type="text/javascript" src="components/cardAttributeRankingDistribution.js"></script>
+    <script
+      type="text/javascript"
+      src="components/cardAttributeModularity.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardAttributeModularityGroupLinks.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardAttributeRankingDistribution.js"
+    ></script>
     <script type="text/javascript" src="components/cardDensity.js"></script>
-    <script type="text/javascript" src="components/cardModalitySummary.js"></script>
-    <script type="text/javascript" src="components/cardModalityInternalExternal.js"></script>
-    <script type="text/javascript" src="components/cardModalityInOut.js"></script>
-    <script type="text/javascript" src="components/cardModalityConnectivityBalance.js"></script>
-    <script type="text/javascript" src="components/cardModalityRemarkableNodes.js"></script>
-    <script type="text/javascript" src="components/cardNetworkDescription.js"></script>
-    <script type="text/javascript" src="components/cardRangeSummary.js"></script>
+    <script
+      type="text/javascript"
+      src="components/cardModalitySummary.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardModalityInternalExternal.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardModalityInOut.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardModalityConnectivityBalance.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardModalityRemarkableNodes.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardNetworkDescription.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="components/cardRangeSummary.js"
+    ></script>
     <script type="text/javascript" src="components/cardRangeInOut.js"></script>
     <script type="text/javascript" src="views/home.js"></script>
     <script type="text/javascript" src="views/explorer.js"></script>
@@ -78,93 +150,115 @@
     <script type="text/javascript" src="views/range.js"></script>
     <script type="text/javascript" src="views/start.js"></script>
     <script type="text/javascript" src="views/print-attributes.js"></script>
-    <script type="text/javascript" src="views/print-modalities-partition.js"></script>
-    <script type="text/javascript" src="views/print-modalities-ranking.js"></script>
+    <script
+      type="text/javascript"
+      src="views/print-modalities-partition.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="views/print-modalities-ranking.js"
+    ></script>
     <script type="text/javascript" src="views/print-network.js"></script>
-    <script type="text/javascript" src="views/print-network-modalities-partition.js"></script>
-    <script type="text/javascript" src="views/print-network-modalities-ranking.js"></script>
+    <script
+      type="text/javascript"
+      src="views/print-network-modalities-partition.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="views/print-network-modalities-ranking.js"
+    ></script>
     <script type="text/javascript" src="views/print-node-list.js"></script>
     <script type="text/javascript" src="views/print-matrix.js"></script>
-    <script type="text/javascript" src="views/print-node-list-modalities-partition.js"></script>
-    <script type="text/javascript" src="views/print-node-list-modalities-ranking.js"></script>
-    <script type="text/javascript" src="views/print-stats-modalities-partition.js"></script>
-    <script type="text/javascript" src="views/print-stats-modalities-ranking.js"></script>
+    <script
+      type="text/javascript"
+      src="views/print-node-list-modalities-partition.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="views/print-node-list-modalities-ranking.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="views/print-stats-modalities-partition.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="views/print-stats-modalities-ranking.js"
+    ></script>
     <script type="text/javascript" src="views/print-stats-modality.js"></script>
     <script type="text/javascript" src="views/print-stats-range.js"></script>
 
     <script type="text/javascript">
+      angular
+        .module("app", [
+          "ngMaterial",
+          "ngRoute",
+          "ngSanitize",
+          "ngMessages",
+          "hc.marked",
+          "ng-drag-scroll",
+          "iwanthue.paletteGenerator",
+          "minivan.netBundleManager",
+          "app.services",
+          "app.directives",
+          "app.filters",
+          "app.components",
+          "app.home",
+          "app.explorer",
+          "app.attributes",
+          "app.modalities-partition",
+          "app.modalities-ranking",
+          "app.modality",
+          "app.range",
+          "app.print-attributes",
+          "app.print-modalities-partition",
+          "app.print-modalities-ranking",
+          "app.print-network",
+          "app.print-network-modalities-partition",
+          "app.print-network-modalities-ranking",
+          "app.print-node-list",
+          "app.print-matrix",
+          "app.print-node-list-modalities-partition",
+          "app.print-node-list-modalities-ranking",
+          "app.print-stats-modalities-partition",
+          "app.print-stats-modalities-ranking",
+          "app.print-stats-modality",
+          "app.print-stats-range",
+          // Prepare
+          "app.maker",
+          // Start
+          "app.start"
+        ])
 
-angular
-.module('app', [
-  'ngMaterial',
-  'ngRoute',
-  'ngSanitize',
-  'ngMessages',
-  'hc.marked',
-  'ng-drag-scroll',
-  'iwanthue.paletteGenerator',
-  'minivan.netBundleManager',
-  'app.services',
-  'app.directives',
-  'app.filters',
-  'app.components',
-  'app.home',
-  'app.explorer',
-  'app.attributes',
-  'app.modalities-partition',
-  'app.modalities-ranking',
-  'app.modality',
-  'app.range',
-  'app.print-attributes',
-  'app.print-modalities-partition',
-  'app.print-modalities-ranking',
-  'app.print-network',
-  'app.print-network-modalities-partition',
-  'app.print-network-modalities-ranking',
-  'app.print-node-list',
-  'app.print-matrix',
-  'app.print-node-list-modalities-partition',
-  'app.print-node-list-modalities-ranking',
-  'app.print-stats-modalities-partition',
-  'app.print-stats-modalities-ranking',
-  'app.print-stats-modality',
-  'app.print-stats-range',
-  // Prepare
-  'app.maker',
-  // Start
-  'app.start'
-])
+        .config(function($mdThemingProvider, $routeProvider) {
+          // Route
+          $routeProvider.otherwise({ redirectTo: "/" });
 
-.config(function($mdThemingProvider, $routeProvider){
-  // Route
-  $routeProvider.otherwise({redirectTo: '/'})
+          // Material theme
+          $mdThemingProvider
+            .theme("default")
+            .primaryPalette("blue", {
+              default: "200"
+            })
+            .accentPalette("indigo", {
+              default: "600"
+            })
+            .warnPalette("pink")
+            .backgroundPalette("grey", {
+              default: "200"
+            });
 
-  // Material theme
-  $mdThemingProvider.theme('default')
-    .primaryPalette('blue', {
-      'default': '200'
-    })
-    .accentPalette('indigo', {
-      'default': '600'
-    })
-    .warnPalette('pink')
-    .backgroundPalette('grey', {
-      'default': '200'
-    })
-
-  $mdThemingProvider.theme('prepare-dark', 'default')
-      .primaryPalette('grey')
-      .accentPalette('indigo', {
-        'default': '200'
-      })
-      .backgroundPalette('grey', {
-        'default': '800'
-      })
-      .dark()
-
-})
-
+          $mdThemingProvider
+            .theme("prepare-dark", "default")
+            .primaryPalette("grey")
+            .accentPalette("indigo", {
+              default: "200"
+            })
+            .backgroundPalette("grey", {
+              default: "800"
+            })
+            .dark();
+        });
     </script>
-
   </body>
 </html>

@@ -7,15 +7,8 @@
       layout="column"
       style="overflow: hidden; padding: 48px"
     >
-      <md-grid-list
-        md-cols="1"
-        md-row-height="1:1"
-        md-gutter="48px"
-      >
-        <md-grid-tile
-          md-rowspan="1"
-          md-colspan="1"
-        >
+      <md-grid-list md-cols="1" md-row-height="1:1" md-gutter="48px">
+        <md-grid-tile md-rowspan="1" md-colspan="1">
           <div layout-fill style="min-height: 100px; min-width: 100px;">
             <div
               class="upload-area-container"
@@ -27,8 +20,16 @@
               layout-fill
               layout
             >
-              <div class="upload-area" layout="column" layout-align="center center">
-                <div class="upload-text-icon"><md-icon style="font-size:38px; margin-bottom: 12px">file_upload</md-icon></div>
+              <div
+                class="upload-area"
+                layout="column"
+                layout-align="center center"
+              >
+                <div class="upload-text-icon">
+                  <md-icon style="font-size:38px; margin-bottom: 12px"
+                    >file_upload</md-icon
+                  >
+                </div>
                 <div class="upload-text-main">
                   CLICK or DRAG FILES
                 </div>
@@ -38,8 +39,14 @@
               </div>
             </div>
             <!-- This hidden input is used for loading the files via the dropdown of the nav tabs -->
-            <input id="hidden-upload-file-input" type="file" multiple name="hidden-upload-file-input" style="display: none;" onchange="angular.element(this).scope().setUploadFile(this)"/>
-
+            <input
+              id="hidden-upload-file-input"
+              type="file"
+              multiple
+              name="hidden-upload-file-input"
+              style="display: none;"
+              onchange="angular.element(this).scope().setUploadFile(this)"
+            />
           </div>
         </md-grid-tile>
       </md-grid-list>
@@ -49,9 +56,7 @@
       layout="row"
       style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
     >
-      <div
-        flex
-      >
+      <div flex>
         <h1 style="font-size: 2.4em; font-weight: 400; margin-top: 0px">
           PREPARE DATA BUNDLE
         </h1>
@@ -62,15 +67,14 @@
           <li>Publish it with MiniVan Alpha</li>
         </ol>
         <p>
-          MiniVan Alpha reads a data bundle that you need to host somewhere.
-          On this page you can <strong>create a bundle</strong> from a network
-          or <strong>edit a bundle</strong> you already have.
+          MiniVan Alpha reads a data bundle that you need to host somewhere. On
+          this page you can <strong>create a bundle</strong> from a network or
+          <strong>edit a bundle</strong> you already have.
         </p>
         <p>
           File formats currently supported: GEXF, JSON data bundle.
         </p>
       </div>
-
     </md-content>
   </div>
 
@@ -83,15 +87,8 @@
       layout="column"
       style="overflow: hidden; padding: 48px"
     >
-      <md-grid-list
-        md-cols="1"
-        md-row-height="1:1"
-        md-gutter="48px"
-      >
-        <md-grid-tile
-          md-rowspan="1"
-          md-colspan="1"
-        >
+      <md-grid-list md-cols="1" md-row-height="1:1" md-gutter="48px">
+        <md-grid-tile md-rowspan="1" md-colspan="1">
           <div
             layout-fill
             class="md-whiteframe-12dp"
@@ -142,10 +139,7 @@
             ></sigma-network>
           </div>
         </md-grid-tile>
-        <md-grid-tile
-          md-rowspan="1"
-          md-colspan="1"
-        >
+        <md-grid-tile md-rowspan="1" md-colspan="1">
           <div layout-fill layout="column">
             <md-button
               class="md-raised"
@@ -167,20 +161,17 @@
       style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
       ng-if="!attId"
     >
-      <div
-        flex
-        layout="column"
-      >
+      <div flex layout="column">
         <!-- Title -->
         <md-input-container>
           <label>Title</label>
-          <input ng-model="networkData.title">
+          <input ng-model="networkData.title" />
         </md-input-container>
 
         <!-- Date -->
         <md-input-container>
           <label>Date</label>
-          <input ng-model="networkData.date">
+          <input ng-model="networkData.date" />
         </md-input-container>
 
         <!-- Authors -->
@@ -211,13 +202,13 @@
         <!-- URL -->
         <md-input-container>
           <label>URL</label>
-          <input ng-model="networkData.url">
+          <input ng-model="networkData.url" />
         </md-input-container>
 
         <!-- DOI -->
         <md-input-container>
           <label>DOI</label>
-          <input ng-model="networkData.doi">
+          <input ng-model="networkData.doi" />
         </md-input-container>
 
         <md-toolbar layout="row">
@@ -227,7 +218,6 @@
         </md-toolbar>
 
         <md-list md-colors="{background: 'default-background-500-0.1'}">
-
           <!-- Node attribute -->
           <md-list-item
             class="md-2-line"
@@ -237,16 +227,19 @@
           >
             <md-icon
               ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
-            >gradient</md-icon>
+              >gradient</md-icon
+            >
             <md-icon
               ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
-            >bubble_chart</md-icon>
+              >bubble_chart</md-icon
+            >
             <md-icon
               ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
-            >color_lens</md-icon>
-            <md-icon
-              ng-if="!networkData.nodeAttributesIndex[k].type"
-            >visibility_off</md-icon>
+              >color_lens</md-icon
+            >
+            <md-icon ng-if="!networkData.nodeAttributesIndex[k].type"
+              >visibility_off</md-icon
+            >
             <div class="md-list-item-text" layout="column">
               <h3>{{networkData.nodeAttributesIndex[k].name || k}}</h3>
               <p
@@ -259,14 +252,10 @@
               >
                 Size gradient
               </p>
-              <p
-                ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
-              >
+              <p ng-if="networkData.nodeAttributesIndex[k].type == 'partition'">
                 Color categories
               </p>
-              <p
-                ng-if="!networkData.nodeAttributesIndex[k].type"
-              >
+              <p ng-if="!networkData.nodeAttributesIndex[k].type">
                 Hidden
               </p>
             </div>
@@ -283,7 +272,6 @@
         </md-toolbar>
 
         <md-list md-colors="{background: 'default-background-500-0.1'}">
-
           <!-- Edge attribute -->
           <md-list-item
             class="md-2-line"
@@ -293,16 +281,19 @@
           >
             <md-icon
               ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
-            >gradient</md-icon>
+              >gradient</md-icon
+            >
             <md-icon
               ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
-            >line_weight</md-icon>
+              >line_weight</md-icon
+            >
             <md-icon
               ng-if="networkData.edgeAttributesIndex[k].type == 'partition'"
-            >color_lens</md-icon>
-            <md-icon
-              ng-if="!networkData.edgeAttributesIndex[k].type"
-            >visibility_off</md-icon>
+              >color_lens</md-icon
+            >
+            <md-icon ng-if="!networkData.edgeAttributesIndex[k].type"
+              >visibility_off</md-icon
+            >
             <div class="md-list-item-text" layout="column">
               <h3>{{networkData.edgeAttributesIndex[k].name || k}}</h3>
               <p
@@ -315,14 +306,10 @@
               >
                 Thickness gradient
               </p>
-              <p
-                ng-if="networkData.edgeAttributesIndex[k].type == 'partition'"
-              >
+              <p ng-if="networkData.edgeAttributesIndex[k].type == 'partition'">
                 Color categories
               </p>
-              <p
-                ng-if="!networkData.edgeAttributesIndex[k].type"
-              >
+              <p ng-if="!networkData.edgeAttributesIndex[k].type">
                 Hidden
               </p>
             </div>
@@ -343,9 +330,7 @@
 
         <!-- Spacer -->
         <div style="min-height: 200px"></div>
-
       </div>
-
     </md-content>
 
     <!-- Right panel: edit NODE or EDGE attribute -->
@@ -360,7 +345,9 @@
         md-colors="{'background': 'default-background-700-0.5'}"
         style="padding: 12px; margin-right: 48px"
       >
-        <h1 style="font-size: 2.4em; font-weight: 300; color: #FFF; margin: 0px">
+        <h1
+          style="font-size: 2.4em; font-weight: 300; color: #FFF; margin: 0px"
+        >
           Edit {{attMode}} attribute
         </h1>
 
@@ -384,13 +371,8 @@
             OK
           </md-button>
         </div>
-
       </md-content>
-      <md-content
-        flex
-        layout="column"
-        style="padding: 48px 48px 48px 0px"
-      >
+      <md-content flex layout="column" style="padding: 48px 48px 48px 0px">
         <md-input-container>
           <label>Visualize as...</label>
           <md-select ng-model="$parent.att.type">
@@ -402,7 +384,9 @@
               value="partition"
               ng-if="attData.dataType == 'string' || attData.dataType == 'integer'"
             >
-              <md-icon style="font-size: 20px; height: 20px">color_lens</md-icon>
+              <md-icon style="font-size: 20px; height: 20px"
+                >color_lens</md-icon
+              >
               Color categories
             </md-option>
             <md-option
@@ -416,8 +400,16 @@
               value="ranking-size"
               ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
             >
-              <md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'node'">bubble_chart</md-icon>
-              <md-icon style="font-size: 20px; height: 20px" ng-if="attMode == 'edge'">line_weight</md-icon>
+              <md-icon
+                style="font-size: 20px; height: 20px"
+                ng-if="attMode == 'node'"
+                >bubble_chart</md-icon
+              >
+              <md-icon
+                style="font-size: 20px; height: 20px"
+                ng-if="attMode == 'edge'"
+                >line_weight</md-icon
+              >
               <span ng-if="attMode == 'node'">Size gradient</span>
               <span ng-if="attMode == 'edge'">Thickness gradient</span>
             </md-option>
@@ -427,13 +419,16 @@
         <!-- Attribute name -->
         <md-input-container ng-if="att.type">
           <label>Name</label>
-          <input ng-model="$parent.att.name">
+          <input ng-model="$parent.att.name" />
         </md-input-container>
 
         <!-- Spacer -->
         <div style="min-height: 24px"></div>
         <div ng-if="att.type == 'partition'">
-          <div layout="column" style="border: 1px solid rgba(255, 255, 255, 0.3); padding: 12px">
+          <div
+            layout="column"
+            style="border: 1px solid rgba(255, 255, 255, 0.3); padding: 12px"
+          >
             <div style="margin-bottom: 12px">Generate Colors</div>
             <div layout="row" style="margin-bottom: -24px">
               <md-input-container flex>
@@ -442,7 +437,7 @@
                   ng-model="$parent.$parent.$parent.maxColors"
                   min="1"
                   type="number"
-                >
+                />
               </md-input-container>
               <div style="min-width: 6px"><!-- SPACER --></div>
               <md-input-container flex>
@@ -450,7 +445,7 @@
                 <input
                   ng-model="$parent.$parent.$parent.defaultColor"
                   type="text"
-                >
+                />
               </md-input-container>
             </div>
             <md-input-container>
@@ -464,7 +459,11 @@
                 </md-option>
               </md-select>
             </md-input-container>
-            <md-button class="md-raised" style="margin: 0px" ng-click="repaint()">
+            <md-button
+              class="md-raised"
+              style="margin: 0px"
+              ng-click="repaint()"
+            >
               <md-icon>color_lens</md-icon>
               Paint
             </md-button>
@@ -477,7 +476,8 @@
             >
               <md-icon
                 ng-style="{'color': modality.color, 'font-size':'42px', 'height':'42px  '}"
-              >brightness_1</md-icon>
+                >brightness_1</md-icon
+              >
               <div class="md-list-item-text" layout="column">
                 <h3>{{modality.value}}</h3>
                 <p>{{modality.count|number}} node{{modality.count>1?'s':''}}</p>
@@ -508,11 +508,12 @@
           <md-input-container>
             <label>Color scale</label>
             <md-select ng-model="att.colorScale">
-              <md-option
-                ng-repeat="c in colorScales"
-                ng-value="c"
-              >
-                <div layout="column" layout-align="center center" style="width: 300px; height: 20px; overflow: hidden">
+              <md-option ng-repeat="c in colorScales" ng-value="c">
+                <div
+                  layout="column"
+                  layout-align="center center"
+                  style="width: 300px; height: 20px; overflow: hidden"
+                >
                   <div
                     layout-fill
                     ng-style="{'transform': ((att.invertScale) ? ('rotate(0.5turn)') : ('')) + ' ' + ((att.truncateScale) ? ('scale(1.4, 1)') : (''))}"
@@ -541,21 +542,13 @@
             <md-input-container flex>
               <label ng-if="attMode=='node'">Min node area</label>
               <label ng-if="attMode=='edge'">Min edge thickness</label>
-              <input
-                ng-model="att.areaScaling.min"
-                min="0"
-                type="number"
-              >
+              <input ng-model="att.areaScaling.min" min="0" type="number" />
             </md-input-container>
             <div style="min-width: 6px"><!-- SPACER --></div>
             <md-input-container flex>
               <label ng-if="attMode=='node'">Max node area</label>
               <label ng-if="attMode=='edge'">Max edge thickness</label>
-              <input
-                ng-model="att.areaScaling.max"
-                min="0"
-                type="number"
-              >
+              <input ng-model="att.areaScaling.max" min="0" type="number" />
             </md-input-container>
           </div>
 
@@ -583,9 +576,7 @@
 
         <!-- Spacer -->
         <div style="min-height: 48px;"></div>
-
       </md-content>
     </md-content>
-
   </div>
 </div>

@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
-angular.module('app.home', ['ngRoute'])
+angular
+  .module('app.home', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/', {
-    templateUrl: 'views/home.html'
-  , controller: 'HomeController'
-  })
-}])
+  .config([
+    '$routeProvider',
+    function($routeProvider) {
+      $routeProvider.when('/', {
+        templateUrl: 'views/home.html',
+        controller: 'HomeController'
+      })
+    }
+  ])
 
-.controller('HomeController', function(
-  $scope
-) {
-    
-})
+  .controller('HomeController', function($scope) {})

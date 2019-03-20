@@ -1,31 +1,32 @@
-'use strict';
+'use strict'
 
 /* Services */
 
-angular.module('app.filters', [])
+angular
+  .module('app.filters', [])
 
-  .filter('defined', function () {
-    return function (item) {
+  .filter('defined', function() {
+    return function(item) {
       return item !== undefined
     }
   })
 
-  .filter('simpleAttType', function () {
-    return function (attType) {
+  .filter('simpleAttType', function() {
+    return function(attType) {
       if (attType == 'ranking-size' || attType == 'ranking-color')
         return 'ranking'
       else return attType
     }
   })
 
-  .filter('encodeURIComponent', function () {
-    return function (txt) {
+  .filter('encodeURIComponent', function() {
+    return function(txt) {
       return encodeURIComponent(txt)
     }
   })
 
-  .filter('cameraX', function () {
-    return function (renderer) {
+  .filter('cameraX', function() {
+    return function(renderer) {
       if (!renderer) {
         return
       }
@@ -33,8 +34,8 @@ angular.module('app.filters', [])
     }
   })
 
-  .filter('cameraY', function () {
-    return function (renderer) {
+  .filter('cameraY', function() {
+    return function(renderer) {
       if (!renderer) {
         return
       }
@@ -42,8 +43,8 @@ angular.module('app.filters', [])
     }
   })
 
-  .filter('cameraRatio', function () {
-    return function (renderer) {
+  .filter('cameraRatio', function() {
+    return function(renderer) {
       if (!renderer) {
         return
       }

@@ -1,144 +1,183 @@
-'use strict';
+'use strict'
 
-angular.module('app.components.cardRangeInOut', [])
+angular
+  .module('app.components.cardRangeInOut', [])
 
-.directive('cardRangeInOut', function($timeout, dataLoader, scalesUtils){
-  return {
-    restrict: 'A',
-    templateUrl: 'components/cardRangeInOut.html',
-    scope: {
-      attId: '=',
-      range: '=',
-      subgraph: '=',
-      detailLevel: '=',
-      printMode: '='
-    },
-    link: function($scope, el, attrs) {
-      $scope.attribute = dataLoader.get().nodeAttributesIndex[$scope.attId]
-    }
-  }
-})
-
-.directive('rangeInOutChart', function(
-  $timeout,
-  dataLoader
-){
-  return {
-    restrict: 'A',
-    scope: {
-      subgraph: '=',
-      printMode: '=',
-      modalityValue: '='
-    },
-    link: function($scope, el, attrs) {
-      el.html('<div>LOADING</div>')
-
-      $scope.$watch('subgraph', redraw)
-
-      window.addEventListener('resize', redraw)
-      $scope.$on('$destroy', function(){
-        window.removeEventListener('resize', redraw)
-      })
-
-      function redraw() {
-        if ($scope.subgraph !== undefined){
-          $timeout(function(){
-            el.html('');
-            drawValueInboundOutbound(d3.select(el[0]))
-          })
-        }
+  .directive('cardRangeInOut', function($timeout, dataLoader, scalesUtils) {
+    return {
+      restrict: 'A',
+      templateUrl: 'components/cardRangeInOut.html',
+      scope: {
+        attId: '=',
+        range: '=',
+        subgraph: '=',
+        detailLevel: '=',
+        printMode: '='
+      },
+      link: function($scope, el, attrs) {
+        $scope.attribute = dataLoader.get().nodeAttributesIndex[$scope.attId]
       }
+    }
+  })
 
-      function drawValueInboundOutbound(container) {
-        var g = dataLoader.get().g
-        var sg = $scope.subgraph
-        var sgIndex = {}
-        var inboundCount = 0
-        var outboundCount = 0
-        sg.nodes().forEach(function(nid){ sgIndex[nid] = true })
-        g.edges().forEach(function(eid){
-          if (sgIndex[g.source(eid)] && sgIndex[g.target(eid)] === undefined) {
-            outboundCount++
-          } else if(sgIndex[g.source(eid)] === undefined && sgIndex[g.target(eid)]) {
-            inboundCount++
-          }
+  .directive('rangeInOutChart', function($timeout, dataLoader) {
+    return {
+      restrict: 'A',
+      scope: {
+        subgraph: '=',
+        printMode: '=',
+        modalityValue: '='
+      },
+      link: function($scope, el, attrs) {
+        el.html('<div>LOADING</div>')
+
+        $scope.$watch('subgraph', redraw)
+
+        window.addEventListener('resize', redraw)
+        $scope.$on('$destroy', function() {
+          window.removeEventListener('resize', redraw)
         })
-        
-        var data = [
-          {
-            label: 'INBOUND',
-            count: inboundCount
-          },
-          {
-            label: 'OUTBOUND',
-            count: outboundCount
+
+        function redraw() {
+          if ($scope.subgraph !== undefined) {
+            $timeout(function() {
+              el.html('')
+              drawValueInboundOutbound(d3.select(el[0]))
+            })
           }
-        ]
-        
-        var barHeight = 32
-        var margin = {top: 24, right: 120, bottom: 24, left: 120}
-        var width = container.node().getBoundingClientRect().width  - margin.left - margin.right
-        var height = barHeight * data.length
+        }
 
-        var x = d3.scaleLinear().range([0, width])
+        function drawValueInboundOutbound(container) {
+          var g = dataLoader.get().g
+          var sg = $scope.subgraph
+          var sgIndex = {}
+          var inboundCount = 0
+          var outboundCount = 0
+          sg.nodes().forEach(function(nid) {
+            sgIndex[nid] = true
+          })
+          g.edges().forEach(function(eid) {
+            if (
+              sgIndex[g.source(eid)] &&
+              sgIndex[g.target(eid)] === undefined
+            ) {
+              outboundCount++
+            } else if (
+              sgIndex[g.source(eid)] === undefined &&
+              sgIndex[g.target(eid)]
+            ) {
+              inboundCount++
+            }
+          })
 
-        var y = d3.scaleBand().rangeRound([0, height]).padding(.05)
+          var data = [
+            {
+              label: 'INBOUND',
+              count: inboundCount
+            },
+            {
+              label: 'OUTBOUND',
+              count: outboundCount
+            }
+          ]
 
-        var xAxis = d3.axisBottom()
-            .scale(x)
+          var barHeight = 32
+          var margin = { top: 24, right: 120, bottom: 24, left: 120 }
+          var width =
+            container.node().getBoundingClientRect().width -
+            margin.left -
+            margin.right
+          var height = barHeight * data.length
 
-        var yAxis = d3.axisLeft()
-            .scale(y)
+          var x = d3.scaleLinear().range([0, width])
 
-        var svg = container.append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", 
-                "translate(" + margin.left + "," + margin.top + ")")
+          var y = d3
+            .scaleBand()
+            .rangeRound([0, height])
+            .padding(0.05)
 
-        x.domain([0, Math.max(0.01, d3.max(data, function(d) { return d.count }))])
-        y.domain(data.map(function(d){return d.label}))
+          var xAxis = d3.axisBottom().scale(x)
 
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
+          var yAxis = d3.axisLeft().scale(y)
+
+          var svg = container
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom)
+            .append('g')
+            .attr(
+              'transform',
+              'translate(' + margin.left + ',' + margin.top + ')'
+            )
+
+          x.domain([
+            0,
+            Math.max(
+              0.01,
+              d3.max(data, function(d) {
+                return d.count
+              })
+            )
+          ])
+          y.domain(
+            data.map(function(d) {
+              return d.label
+            })
+          )
+
+          svg
+            .append('g')
+            .attr('class', 'x axis')
+            .attr('transform', 'translate(0,' + height + ')')
             .call(xAxis)
-          .selectAll("text")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "9px")
-            .attr("fill", 'rgba(0, 0, 0, 0.5)')
+            .selectAll('text')
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', '9px')
+            .attr('fill', 'rgba(0, 0, 0, 0.5)')
 
-        svg.append("g")
-            .attr("class", "y axis")
+          svg
+            .append('g')
+            .attr('class', 'y axis')
             .call(yAxis)
-          .selectAll("text")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "12px")
-            .attr("fill", 'rgba(0, 0, 0, 0.5)')
+            .selectAll('text')
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', '12px')
+            .attr('fill', 'rgba(0, 0, 0, 0.5)')
 
-        var bar = svg.selectAll("bar")
+          var bar = svg
+            .selectAll('bar')
             .data(data)
-          .enter().append('g')
-            .attr("class", "bar")
+            .enter()
+            .append('g')
+            .attr('class', 'bar')
 
-        bar.append("rect")
-            .style("fill", 'rgba(120, 120, 120, 0.5)')
-            .attr("x", 0)
-            .attr("y", function(d) { return y(d.label) })
-            .attr("width", function(d) { return x(Math.max(0, d.count)) })
-            .attr("height", y.bandwidth())
+          bar
+            .append('rect')
+            .style('fill', 'rgba(120, 120, 120, 0.5)')
+            .attr('x', 0)
+            .attr('y', function(d) {
+              return y(d.label)
+            })
+            .attr('width', function(d) {
+              return x(Math.max(0, d.count))
+            })
+            .attr('height', y.bandwidth())
 
-        bar.append('text')
-            .attr('x', function(d) { return 6 + x(Math.max(0, d.count)) })
-            .attr('y', function(d) { return y(d.label) + 18 })
+          bar
+            .append('text')
+            .attr('x', function(d) {
+              return 6 + x(Math.max(0, d.count))
+            })
+            .attr('y', function(d) {
+              return y(d.label) + 18
+            })
             .attr('font-family', 'sans-serif')
             .attr('font-size', '10px')
             .attr('fill', 'rgba(0, 0, 0, 0.8)')
-            .text(function(d){ return d.count + ' links'})
+            .text(function(d) {
+              return d.count + ' links'
+            })
+        }
       }
-
-
     }
-  }
-})
+  })

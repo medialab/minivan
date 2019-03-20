@@ -1,6 +1,11 @@
 <div layout-fill md-colors="{background: 'default-background-300'}">
   <div layout-fill layout="row">
-    <div flex="60" ng-if="!networkData.loaded" layout="row" layout-align="center center">
+    <div
+      flex="60"
+      ng-if="!networkData.loaded"
+      layout="row"
+      layout-align="center center"
+    >
       <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
     <div
@@ -11,16 +16,13 @@
       ng-if="networkData.loaded"
       style="overflow: hidden; padding: 48px"
     >
-      <md-grid-list
-        md-cols="1"
-        md-row-height="1:1"
-        md-gutter="48px"
-      >
-        <md-grid-tile
-          md-rowspan="1"
-          md-colspan="1"
-        >
-          <div layout-fill class="md-whiteframe-12dp" style="min-height: 100px; min-width: 100px;">
+      <md-grid-list md-cols="1" md-row-height="1:1" md-gutter="48px">
+        <md-grid-tile md-rowspan="1" md-colspan="1">
+          <div
+            layout-fill
+            class="md-whiteframe-12dp"
+            style="min-height: 100px; min-width: 100px;"
+          >
             <sigma-network
               start-layout-on-load="false"
               node-size-att-id="networkData.defaultNodeSize"
@@ -46,7 +48,11 @@
               layout-fill
               style="padding-top: 50%; font-size: 1.2em; font-weight: 500;"
             >
-              <div style="margin-top: -18px; text-shadow: 0px 0px 2px #FFFFFF, 0 0 25px #FFFFFF, 0 0 5px #FFFFFF;">Explore network</div>
+              <div
+                style="margin-top: -18px; text-shadow: 0px 0px 2px #FFFFFF, 0 0 25px #FFFFFF, 0 0 5px #FFFFFF;"
+              >
+                Explore network
+              </div>
             </md-button>
           </div>
         </md-grid-tile>
@@ -59,18 +65,16 @@
       style="padding: 48px 48px 0px 0px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
       md-colors="{background: 'default-background-300'}"
     >
-      <div
-        flex
-        flex-gt-sm="80"
-        flex-gt-md="60"
-      >
-        <h1 style="font-size: 2.4em; font-weight: 400; color: #FFF; background-color: #000; padding: 6px; margin-top: 0px">
+      <div flex flex-gt-sm="80" flex-gt-md="60">
+        <h1
+          style="font-size: 2.4em; font-weight: 400; color: #FFF; background-color: #000; padding: 6px; margin-top: 0px"
+        >
           {{networkData.title}}
         </h1>
         <div>
           <p>
             {{networkData.g.order|number}} nodes
-            <br>
+            <br />
             {{networkData.g.size|number}} edges
           </p>
         </div>
@@ -83,9 +87,15 @@
           </p>
           <p ng-if="networkData.authors && networkData.authors.length > 0">
             <strong>Author{{networkData.authors.length > 1 ? 's' : ''}}</strong>
-            <span ng-repeat="author in networkData.authors"><br/><md-icon>brush</md-icon> {{author}}</span>
+            <span ng-repeat="author in networkData.authors"
+              ><br /><md-icon>brush</md-icon> {{author}}</span
+            >
           </p>
-          <p class="key-element-p" ng-if="networkData.url" style="word-break: break-all;">
+          <p
+            class="key-element-p"
+            ng-if="networkData.url"
+            style="word-break: break-all;"
+          >
             <a ng-href="{{networkData.url}}" target="_blank">
               {{networkData.url}}
             </a>
@@ -99,16 +109,12 @@
           >
             Explore network
           </md-button>
-          <md-button
-            ng-click="downloadNetwork()"
-            style="margin: 6px 0px"
-          >
+          <md-button ng-click="downloadNetwork()" style="margin: 6px 0px">
             <md-icon>get_app</md-icon>
             Download
           </md-button>
         </div>
       </div>
-
     </md-content>
   </div>
 </div>

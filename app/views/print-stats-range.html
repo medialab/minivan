@@ -1,15 +1,22 @@
-<div class="page-container" ng-if="!networkData.loaded" layout-fill layout="column" layout-align="center center">
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
 <div class="page-container" ng-if="networkData.loaded">
   <print-button-overlay></print-button-overlay>
   <div class="a4page" layout="column" style="position: relative">
-    <h1>Statistics of {{attribute.name}} from {{rangeMin|number}} to {{rangeMax|number}}</h1>
+    <h1>
+      Statistics of {{attribute.name}} from {{rangeMin|number}} to
+      {{rangeMax|number}}
+    </h1>
     <div class="thin-h-line"></div>
     <div class="thin-h-line"></div>
-    <md-content
-      style="background-color: #FFF"
-    >
+    <md-content style="background-color: #FFF">
       <md-card
         card-range-summary
         att-id="$parent.attribute.id"
