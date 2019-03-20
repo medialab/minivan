@@ -10,7 +10,8 @@
     "clean": "for f in `find ./app -name '*.js' -o -name '*.html'`; do expand -t 2 $f > $f.bak && mv $f.bak $f; done",
     "deploy": "gh-pages-deploy",
     "postinstall": "npm run build",
-    "serve": "http-server app -a localhost -o -p 8000"
+    "serve": "http-server app -a localhost -o -p 8000",
+    "style": "prettier --single-quote --no-semi 'app/**/*.js'"
   },
   "licenses": [
     {
@@ -38,6 +39,7 @@
   "devDependencies": {
     "gh-pages-deploy": "^0.4.2",
     "http-server": "^0.11.1",
+    "prettier": "^1.16.4",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
   },
