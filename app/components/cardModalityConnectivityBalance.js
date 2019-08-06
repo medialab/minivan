@@ -21,9 +21,9 @@ angular
         $scope.networkData = dataLoader.get()
         var g = $scope.networkData.g
         $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
-        $scope.modality = $scope.attribute.modalitiesIndex[$scope.modValue]
+        $scope.modality = $scope.attribute.modalities[$scope.modValue]
         $scope.modalityFlow =
-          $scope.attribute.data.modalityFlow[$scope.modValue][$scope.modValue]
+          $scope.attribute.modalities[$scope.modValue].flow[$scope.modValue]
       }
     }
   })
@@ -61,10 +61,10 @@ angular
         }
 
         function drawValueSkewnessDistribution(container, attData, v) {
-          var sortedValues = attData.modalities.slice(0).sort(function(v1, v2) {
+          var sortedValues = Object.keys(attData.modalities).slice(0).sort(function(v1, v2) {
             return (
-              attData.modalitiesIndex[v2].nodes -
-              attData.modalitiesIndex[v1].nodes
+              attData.modalities[v2].count -
+              attData.modalities[v1].count
             )
           })
 
@@ -75,10 +75,10 @@ angular
             .map(function(v2) {
               return {
                 label: v2,
-                ndToVal: attData.modalityFlow[v2][v].nd,
-                linksToVal: attData.modalityFlow[v2][v].count,
-                ndFromVal: attData.modalityFlow[v][v2].nd,
-                linksFromVal: attData.modalityFlow[v][v2].count
+                ndToVal: attData.modalities[v2].flow[v].normalizedDensity,
+                linksToVal: attData.modalities[v2].flow[v].count,
+                ndFromVal: attData.modalities[v].flow[v2].normalizedDensity,
+                linksFromVal: attData.modalities[v].flow[v2].count
               }
             })
 

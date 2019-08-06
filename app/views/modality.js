@@ -133,13 +133,13 @@ angular
       mdLines.push('\n')
       mdLines.push(
         '\nInternal: ' +
-          $scope.attribute.data.modalitiesIndex[$scope.modality.value]
-            .internalNDensity
+          $scope.attribute.modalities[$scope.modality.value]
+            .internalNormalizedDensity
       )
       mdLines.push(
         '\nExternal: ' +
-          $scope.attribute.data.modalitiesIndex[$scope.modality.value]
-            .externalNDensity
+          $scope.attribute.modalities[$scope.modality.value]
+            .externalNormalizedDensity
       )
       mdLines.push('\n')
       mdLines.push('\n## Inbound vs. Outbound connectivity')
@@ -147,25 +147,25 @@ angular
       mdLines.push('\n### Number of links')
       mdLines.push(
         '\nInbound links:  ' +
-          $scope.attribute.data.modalitiesIndex[$scope.modality.value]
-            .inboundLinks
+          $scope.attribute.modalities[$scope.modality.value]
+            .inboundEdges
       )
       mdLines.push(
         '\nOutbound links: ' +
-          $scope.attribute.data.modalitiesIndex[$scope.modality.value]
-            .outboundLinks
+          $scope.attribute.modalities[$scope.modality.value]
+            .outboundEdges
       )
       mdLines.push('\n')
       mdLines.push('\n### Normalized density (ND)')
       mdLines.push(
         '\nInbound ND:  ' +
-          $scope.attribute.data.modalitiesIndex[$scope.modality.value]
-            .inboundNDensity
+          $scope.attribute.modalities[$scope.modality.value]
+            .inboundNormalizedDensity
       )
       mdLines.push(
         '\nOutbound ND: ' +
-          $scope.attribute.data.modalitiesIndex[$scope.modality.value]
-            .outboundNDensity
+          $scope.attribute.modalities[$scope.modality.value]
+            .outboundNormalizedDensity
       )
       mdLines.push('\n')
       mdLines.push('\n## Connectivity Balance Breakdown')
@@ -187,8 +187,8 @@ angular
         .slice(0)
         .sort(function(v1, v2) {
           return (
-            $scope.attribute.data.modalitiesIndex[v2].nodes -
-            $scope.attribute.data.modalitiesIndex[v1].nodes
+            $scope.attribute.modalities[v2].nodes -
+            $scope.attribute.modalities[v1].nodes
           )
         })
       sortedValues

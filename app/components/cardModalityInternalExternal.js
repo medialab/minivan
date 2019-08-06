@@ -21,9 +21,9 @@ angular
         $scope.networkData = dataLoader.get()
         var g = $scope.networkData.g
         $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
-        $scope.modality = $scope.attribute.modalitiesIndex[$scope.modValue]
+        $scope.modality = $scope.attribute.modalities[$scope.modValue]
         $scope.modalityFlow =
-          $scope.attribute.data.modalityFlow[$scope.modValue][$scope.modValue]
+          $scope.attribute.modalities[$scope.modValue].flow[$scope.modValue]
       }
     }
   })
@@ -64,12 +64,12 @@ angular
           var data = [
             {
               label: 'INTERNAL',
-              nd: attData.modalitiesIndex[v].internalNDensity,
+              nd: attData.modalities[v].internalNormalizedDensity,
               color: 'rgba(70, 220, 70, 0.3)'
             },
             {
               label: 'EXTERNAL',
-              nd: attData.modalitiesIndex[v].externalNDensity,
+              nd: attData.modalities[v].externalNormalizedDensity,
               color: 'rgba(220, 70, 70, 0.3)'
             }
           ]

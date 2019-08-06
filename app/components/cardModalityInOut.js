@@ -17,9 +17,9 @@ angular
         $scope.networkData = dataLoader.get()
         var g = $scope.networkData.g
         $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
-        $scope.modality = $scope.attribute.modalitiesIndex[$scope.modValue]
+        $scope.modality = $scope.attribute.modalities[$scope.modValue]
         $scope.modalityFlow =
-          $scope.attribute.data.modalityFlow[$scope.modValue][$scope.modValue]
+          $scope.attribute.modalities[$scope.modValue].flow[$scope.modValue]
       }
     }
   })
@@ -60,13 +60,13 @@ angular
           var data = [
             {
               label: 'INBOUND',
-              nd: attData.modalitiesIndex[v].inboundNDensity,
-              count: attData.modalitiesIndex[v].inboundLinks
+              nd: attData.modalities[v].inboundNormalizedDensity,
+              count: attData.modalities[v].inboundEdges
             },
             {
               label: 'OUTBOUND',
-              nd: attData.modalitiesIndex[v].outboundNDensity,
-              count: attData.modalitiesIndex[v].outboundLinks
+              nd: attData.modalities[v].outboundNormalizedDensity,
+              count: attData.modalities[v].outboundEdges
             }
           ]
 
