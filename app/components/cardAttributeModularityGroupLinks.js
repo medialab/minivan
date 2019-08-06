@@ -19,7 +19,7 @@ angular
       },
       link: function($scope, el, attrs) {
         $scope.networkData = dataLoader.get()
-        var g = $scope.networkData.g
+
         $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
         $scope.$watch(
           'modalitiesSelection',
@@ -67,11 +67,11 @@ angular
         }
 
         function drawFlowMatrix(container, attData) {
-          var modalities = attData.modalities.filter(function(mod) {
+          var modalities = Object.keys(attData.modalities).filter(function(mod) {
             return $scope.modalitiesSelection[mod]
           })
           if (modalities.length == 0) {
-            modalities = attData.modalities
+            modalities = Object.keys(attData.modalities)
           }
 
           // Compute crossings
@@ -83,7 +83,7 @@ angular
               crossings.push({
                 v1: v1,
                 v2: v2,
-                count: attData.modalityFlow[v1][v2].count
+                count: attData.modalities[v1].flow[v2].count
               })
             })
           })
@@ -91,8 +91,8 @@ angular
           // Rank modalities by count
           var sortedModalities = modalities.sort(function(v1, v2) {
             return (
-              attData.modalitiesIndex[v2].nodes -
-              attData.modalitiesIndex[v1].nodes
+              attData.modalities[v2].nodes -
+              attData.modalities[v1].nodes
             )
           })
           var modalityRanking = {}
@@ -346,11 +346,11 @@ angular
         }
 
         function drawNormalizedDensityMatrix(container, attData) {
-          var modalities = attData.modalities.filter(function(mod) {
+          var modalities = Object.keys(attData.modalities).filter(function(mod) {
             return $scope.modalitiesSelection[mod]
           })
           if (modalities.length == 0) {
-            modalities = attData.modalities
+            modalities = Object.keys(attData.modalities)
           }
 
           // Compute crossings
@@ -370,8 +370,8 @@ angular
           // Rank modalities by count
           var sortedModalities = modalities.sort(function(v1, v2) {
             return (
-              attData.modalitiesIndex[v2].nodes -
-              attData.modalitiesIndex[v1].nodes
+              attData.modalities[v2].nodes -
+              attData.modalities[v1].nodes
             )
           })
           var modalityRanking = {}

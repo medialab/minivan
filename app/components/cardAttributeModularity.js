@@ -18,7 +18,6 @@ angular
       },
       link: function($scope, el, attrs) {
         $scope.networkData = dataLoader.get()
-        var g = $scope.networkData.g
         $scope.attribute = $scope.networkData.nodeAttributesIndex[$scope.attId]
       }
     }
