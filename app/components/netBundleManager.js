@@ -59,20 +59,22 @@ angular
     }
 
     ns.parseBundle = function(bundle, callback, verbose) {
-      var deserializedGraph = new Graph(bundle.graphSettings || {})
-      deserializedGraph.import(bundle.g)
+      var deserializedGraph = new Graph(bundle.settings || {})
+      deserializedGraph.import(bundle.graph)
       bundle.g = deserializedGraph
 
       // Build attributes indexes
+      // TODO: [new-bundle] overloading bundle could be problematic
       bundle.nodeAttributesIndex = {}
-      bundle.nodeAttributes.forEach(function(d) {
+      bundle.model.nodeAttributes.forEach(function(d) {
         bundle.nodeAttributesIndex[d.id] = d
       })
       bundle.edgeAttributesIndex = {}
-      bundle.edgeAttributes.forEach(function(d) {
+      bundle.model.edgeAttributes.forEach(function(d) {
         bundle.edgeAttributesIndex[d.id] = d
       })
 
+      // TODO: [new-bundle] probably need to update that
       if (!bundle.consolidated) {
         // Consolidate (indexes...)
         ns.consolidateBundle(bundle)
