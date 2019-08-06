@@ -51,3 +51,9 @@ angular
       return renderer.getCamera().getState().ratio
     }
   })
+
+  .filter('values', function() {
+    return function(o) {
+      return Object.values(o)
+    }
+  });

@@ -149,7 +149,7 @@ angular
             var getColor
             if ($scope.att.type == 'partition') {
               var colorsIndex = {}
-              $scope.att.modalities.forEach(function(modality) {
+              Object.values($scope.att.modalities).forEach(function(modality) {
                 colorsIndex[modality.value] = modality.color
               })
               getColor = function(d) {

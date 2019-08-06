@@ -55,7 +55,7 @@
         >
           <!-- Key: Type == partition -->
           <div ng-if="att.type=='partition'">
-            <div md-truncate ng-repeat="modality in att.modalities|limitTo:3">
+            <div md-truncate ng-repeat="modality in att.modalities|values|limitTo:3">
               <md-icon
                 style="width: 24px; text-align: center"
                 class="md-icon-12"
@@ -64,7 +64,7 @@
               >
               <small>{{modality.value}}</small>
             </div>
-            <div ng-if="att.modalities.length > 3" style="line-height: 6px">
+            <div ng-if="att.cardinality > 3" style="line-height: 6px">
               <md-icon
                 style="width: 24px; text-align: center; opacity:0"
                 class="md-icon-12"
