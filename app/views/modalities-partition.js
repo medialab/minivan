@@ -53,11 +53,12 @@ angular
         }
 
         $scope.modalitiesSelection = {}
-        $scope.attribute.modalities.forEach(function(mod) {
+        Object.values($scope.attribute.modalities).forEach(function(mod) {
           $scope.modalitiesSelection[mod.value] = false
         })
+
         $scope.maxModCount = d3.max(
-          $scope.attribute.modalities.map(function(mod) {
+          Object.values($scope.attribute.modalities).map(function(mod) {
             return mod.count
           })
         )
@@ -138,7 +139,7 @@ angular
     function updateNodeFilter() {
       if ($scope.attribute) {
         if (
-          $scope.attribute.modalities.some(function(mod) {
+          Object.values($scope.attribute.modalities).some(function(mod) {
             return $scope.modalitiesSelection[mod.value]
           })
         ) {
@@ -155,7 +156,7 @@ angular
         }
 
         // Node filter imprint (used in URLs)
-        $scope.nodeFilterImprint = $scope.attribute.modalities
+        $scope.nodeFilterImprint = Object.values($scope.attribute.modalities)
           .map(function(mod) {
             return $scope.modalitiesSelection[mod.value]
           })

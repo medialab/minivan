@@ -726,7 +726,7 @@ angular
 
     ns.getAttributes = function() {
       var csv = d3.csvFormat(
-        dataLoader.get().nodeAttributes.map(function(att) {
+        dataLoader.get().model.nodeAttributes.map(function(att) {
           var validElements = {}
           validElements.id = att.id
           validElements.name = att.name
