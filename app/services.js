@@ -818,10 +818,7 @@ angular
 
       // Rank modalities by count
       var sortedModalities = modalities.sort(function(v1, v2) {
-        return (
-          attribute.modalities[v2].nodes -
-          attribute.modalities[v1].nodes
-        )
+        return attribute.modalities[v2].nodes - attribute.modalities[v1].nodes
       })
 
       var headRow = ['']

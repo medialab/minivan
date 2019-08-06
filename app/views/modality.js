@@ -46,9 +46,11 @@ angular
       if ($scope.networkData.loaded) {
         $scope.attribute =
           $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
-        $scope.modality = Object.values($scope.attribute.modalities).filter(function(mod) {
-          return mod.value == $location.search().m
-        })[0]
+        $scope.modality = Object.values($scope.attribute.modalities).filter(
+          function(mod) {
+            return mod.value == $location.search().m
+          }
+        )[0]
         $scope.modalityFlow =
           $scope.attribute.modalities[$scope.modality.value].flow[
             $scope.modality.value
@@ -147,13 +149,11 @@ angular
       mdLines.push('\n### Number of links')
       mdLines.push(
         '\nInbound links:  ' +
-          $scope.attribute.modalities[$scope.modality.value]
-            .inboundEdges
+          $scope.attribute.modalities[$scope.modality.value].inboundEdges
       )
       mdLines.push(
         '\nOutbound links: ' +
-          $scope.attribute.modalities[$scope.modality.value]
-            .outboundEdges
+          $scope.attribute.modalities[$scope.modality.value].outboundEdges
       )
       mdLines.push('\n')
       mdLines.push('\n### Normalized density (ND)')

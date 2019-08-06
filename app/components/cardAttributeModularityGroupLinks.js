@@ -67,7 +67,9 @@ angular
         }
 
         function drawFlowMatrix(container, attData) {
-          var modalities = Object.keys(attData.modalities).filter(function(mod) {
+          var modalities = Object.keys(attData.modalities).filter(function(
+            mod
+          ) {
             return $scope.modalitiesSelection[mod]
           })
           if (modalities.length == 0) {
@@ -90,10 +92,7 @@ angular
 
           // Rank modalities by count
           var sortedModalities = modalities.sort(function(v1, v2) {
-            return (
-              attData.modalities[v2].nodes -
-              attData.modalities[v1].nodes
-            )
+            return attData.modalities[v2].nodes - attData.modalities[v1].nodes
           })
           var modalityRanking = {}
           sortedModalities.forEach(function(v, i) {
@@ -346,7 +345,9 @@ angular
         }
 
         function drawNormalizedDensityMatrix(container, attData) {
-          var modalities = Object.keys(attData.modalities).filter(function(mod) {
+          var modalities = Object.keys(attData.modalities).filter(function(
+            mod
+          ) {
             return $scope.modalitiesSelection[mod]
           })
           if (modalities.length == 0) {
@@ -369,10 +370,7 @@ angular
 
           // Rank modalities by count
           var sortedModalities = modalities.sort(function(v1, v2) {
-            return (
-              attData.modalities[v2].nodes -
-              attData.modalities[v1].nodes
-            )
+            return attData.modalities[v2].nodes - attData.modalities[v1].nodes
           })
           var modalityRanking = {}
           sortedModalities.forEach(function(v, i) {

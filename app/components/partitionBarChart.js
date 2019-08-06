@@ -39,7 +39,10 @@ angular
             settings.percent_box_width = 36
             settings.label_in_out_threshold = 0.4
 
-            var data = Object.values($scope.att.modalities).filter(function(d, i) {
+            var data = Object.values($scope.att.modalities).filter(function(
+              d,
+              i
+            ) {
               return i < 10
             })
 

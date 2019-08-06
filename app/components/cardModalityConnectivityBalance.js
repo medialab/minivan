@@ -61,12 +61,11 @@ angular
         }
 
         function drawValueSkewnessDistribution(container, attData, v) {
-          var sortedValues = Object.keys(attData.modalities).slice(0).sort(function(v1, v2) {
-            return (
-              attData.modalities[v2].count -
-              attData.modalities[v1].count
-            )
-          })
+          var sortedValues = Object.keys(attData.modalities)
+            .slice(0)
+            .sort(function(v1, v2) {
+              return attData.modalities[v2].count - attData.modalities[v1].count
+            })
 
           var data = sortedValues
             .filter(function(v2) {
