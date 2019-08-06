@@ -46,11 +46,11 @@ angular
       if ($scope.networkData.loaded) {
         $scope.attribute =
           $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
-        $scope.modality = $scope.attribute.modalities.filter(function(mod) {
+        $scope.modality = Object.values($scope.attribute.modalities).filter(function(mod) {
           return mod.value == $location.search().m
         })[0]
         $scope.modalityFlow =
-          $scope.attribute.data.modalityFlow[$scope.modality.value][
+          $scope.attribute.modalities[$scope.modality.value].flow[
             $scope.modality.value
           ]
         if ($scope.attribute.type !== 'partition') {
@@ -410,7 +410,7 @@ angular
         }
 
         // Node filter imprint (used in URLs)
-        $scope.nodeFilterImprint = $scope.attribute.modalities
+        $scope.nodeFilterImprint = Object.values($scope.attribute.modalities)
           .map(function(mod) {
             return mod.value == $scope.modality.value
           })

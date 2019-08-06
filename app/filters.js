@@ -54,6 +54,9 @@ angular
 
   .filter('values', function() {
     return function(o) {
+      if (!o)
+        return;
+
       return Object.values(o)
     }
   });

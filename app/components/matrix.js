@@ -175,7 +175,7 @@ angular
             // Color
             if ($scope.att.type == 'partition') {
               var colorByModality = {}
-              $scope.att.modalities.forEach(function(m) {
+              Object.values($scope.att.modalities).forEach(function(m) {
                 colorByModality[m.value] = m.color
               })
               var colorScale = function(val) {

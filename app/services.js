@@ -675,7 +675,7 @@ angular
           var att = networkData.nodeAttributesIndex[attributeId]
           if (att.type == 'partition') {
             var modalitiesIndex = {}
-            att.modalities.forEach(function(mod, i) {
+            Object.values(att.modalities).forEach(function(mod, i) {
               modalitiesIndex[mod.value] = i
             })
             nodes.sort(function(a, b) {
