@@ -62,7 +62,7 @@
           "NGO": {
             "value": "NGO",
             "color": "rgb(239, 143, 120)",
-            "nodes": 171,
+            "count": 171,
             "internalEdges": 196,
             "inboundEdges": 217,
             "outboundEdges": 268,
@@ -132,7 +132,7 @@
           "Trans-institutional": {
             "value": "Trans-institutional",
             "color": "rgb(92, 212, 211)",
-            "nodes": 42,
+            "count": 42,
             "internalEdges": 46,
             "inboundEdges": 123,
             "outboundEdges": 55,
@@ -202,7 +202,7 @@
           "Individual": {
             "value": "Individual",
             "color": "rgb(234, 145, 175)",
-            "nodes": 32,
+            "count": 32,
             "internalEdges": 18,
             "inboundEdges": 56,
             "outboundEdges": 116,
@@ -272,7 +272,7 @@
           "Educational": {
             "value": "Educational",
             "color": "rgb(124, 210, 158)",
-            "nodes": 25,
+            "count": 25,
             "internalEdges": 15,
             "inboundEdges": 71,
             "outboundEdges": 98,
@@ -342,7 +342,7 @@
           "Social Movement": {
             "value": "Social Movement",
             "color": "rgb(208, 159, 226)",
-            "nodes": 23,
+            "count": 23,
             "internalEdges": 18,
             "inboundEdges": 83,
             "outboundEdges": 43,
@@ -412,7 +412,7 @@
           "Event": {
             "value": "Event",
             "color": "rgb(171, 202, 119)",
-            "nodes": 22,
+            "count": 22,
             "internalEdges": 22,
             "inboundEdges": 86,
             "outboundEdges": 71,
@@ -482,7 +482,7 @@
           "Media": {
             "value": "Media",
             "color": "rgb(122, 177, 234)",
-            "nodes": 20,
+            "count": 20,
             "internalEdges": 3,
             "inboundEdges": 60,
             "outboundEdges": 69,
@@ -552,7 +552,7 @@
           "Governmental": {
             "value": "Governmental",
             "color": "rgb(222, 166, 93)",
-            "nodes": 15,
+            "count": 15,
             "internalEdges": 6,
             "inboundEdges": 46,
             "outboundEdges": 19,
@@ -622,7 +622,7 @@
           "Business": {
             "value": "Business",
             "color": "rgb(207, 192, 118)",
-            "nodes": 9,
+            "count": 9,
             "internalEdges": 3,
             "inboundEdges": 25,
             "outboundEdges": 20,
@@ -692,7 +692,7 @@
           "Religious": {
             "value": "Religious",
             "color": "rgb(225, 169, 132)",
-            "nodes": 6,
+            "count": 6,
             "internalEdges": 1,
             "inboundEdges": 12,
             "outboundEdges": 16,
@@ -762,7 +762,7 @@
           "Politic": {
             "value": "Politic",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 0,
             "outboundEdges": 4,
@@ -844,7 +844,7 @@
           "Social Ecology": {
             "value": "Social Ecology",
             "color": "rgb(212, 157, 214)",
-            "nodes": 134,
+            "count": 134,
             "internalEdges": 273,
             "inboundEdges": 120,
             "outboundEdges": 175,
@@ -884,7 +884,7 @@
           "Green-economy": {
             "value": "Green-economy",
             "color": "rgb(121, 212, 168)",
-            "nodes": 120,
+            "count": 120,
             "internalEdges": 227,
             "inboundEdges": 177,
             "outboundEdges": 99,
@@ -924,7 +924,7 @@
           "Deep Ecology": {
             "value": "Deep Ecology",
             "color": "rgb(230, 156, 121)",
-            "nodes": 85,
+            "count": 85,
             "internalEdges": 139,
             "inboundEdges": 113,
             "outboundEdges": 137,
@@ -964,7 +964,7 @@
           "New Ecologism": {
             "value": "New Ecologism",
             "color": "rgb(100, 193, 227)",
-            "nodes": 20,
+            "count": 20,
             "internalEdges": 4,
             "inboundEdges": 17,
             "outboundEdges": 43,
@@ -1004,7 +1004,7 @@
           "Others": {
             "value": "Others",
             "color": "rgb(196, 195, 115)",
-            "nodes": 7,
+            "count": 7,
             "internalEdges": 2,
             "inboundEdges": 35,
             "outboundEdges": 8,
@@ -1056,7 +1056,7 @@
           "Undefined": {
             "value": "Undefined",
             "color": "rgb(208, 159, 194)",
-            "nodes": 223,
+            "count": 223,
             "internalEdges": 324,
             "inboundEdges": 229,
             "outboundEdges": 267,
@@ -1081,7 +1081,7 @@
           "Dially": {
             "value": "Dially",
             "color": "rgb(165, 201, 148)",
-            "nodes": 143,
+            "count": 143,
             "internalEdges": 287,
             "inboundEdges": 267,
             "outboundEdges": 229,
@@ -1118,7 +1118,7 @@
           "English": {
             "value": "English",
             "color": "rgb(189, 197, 121)",
-            "nodes": 153,
+            "count": 153,
             "internalEdges": 272,
             "inboundEdges": 106,
             "outboundEdges": 181,
@@ -1158,7 +1158,7 @@
           "Portuguese": {
             "value": "Portuguese",
             "color": "rgb(220, 153, 207)",
-            "nodes": 120,
+            "count": 120,
             "internalEdges": 276,
             "inboundEdges": 117,
             "outboundEdges": 114,
@@ -1198,7 +1198,7 @@
           "All": {
             "value": "All",
             "color": "rgb(110, 213, 177)",
-            "nodes": 63,
+            "count": 63,
             "internalEdges": 75,
             "inboundEdges": 225,
             "outboundEdges": 116,
@@ -1238,7 +1238,7 @@
           "Spanish": {
             "value": "Spanish",
             "color": "rgb(230, 159, 118)",
-            "nodes": 18,
+            "count": 18,
             "internalEdges": 2,
             "inboundEdges": 24,
             "outboundEdges": 44,
@@ -1278,7 +1278,7 @@
           "French": {
             "value": "French",
             "color": "rgb(113, 185, 231)",
-            "nodes": 12,
+            "count": 12,
             "internalEdges": 6,
             "inboundEdges": 4,
             "outboundEdges": 21,
@@ -1330,7 +1330,7 @@
           "Multimedia": {
             "value": "Multimedia",
             "color": "rgb(205, 181, 132)",
-            "nodes": 346,
+            "count": 346,
             "internalEdges": 903,
             "inboundEdges": 62,
             "outboundEdges": 131,
@@ -1365,7 +1365,7 @@
           "No": {
             "value": "No",
             "color": "rgb(109, 197, 221)",
-            "nodes": 16,
+            "count": 16,
             "internalEdges": 7,
             "inboundEdges": 85,
             "outboundEdges": 54,
@@ -1400,7 +1400,7 @@
           "Multi-Wiki": {
             "value": "Multi-Wiki",
             "color": "#AAA",
-            "nodes": 3,
+            "count": 3,
             "internalEdges": 1,
             "inboundEdges": 48,
             "outboundEdges": 5,
@@ -1435,7 +1435,7 @@
           "Multiwiki": {
             "value": "Multiwiki",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 1,
             "outboundEdges": 6,

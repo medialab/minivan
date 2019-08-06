@@ -39,7 +39,7 @@ angular
             settings.percent_box_width = 36
             settings.label_in_out_threshold = 0.4
 
-            var data = $scope.att.modalities.filter(function(d, i) {
+            var data = Object.values($scope.att.modalities).filter(function(d, i) {
               return i < 10
             })
 
@@ -75,6 +75,7 @@ angular
             x.domain([
               0,
               d3.max(data, function(d) {
+                console.log(d);
                 return d.count
               })
             ])

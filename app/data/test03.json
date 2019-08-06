@@ -34,7 +34,7 @@
           "Network Science": {
             "value": "Network Science",
             "color": "rgb(141, 151, 90)",
-            "nodes": 10,
+            "count": 10,
             "internalEdges": 58,
             "inboundEdges": 235,
             "outboundEdges": 368,
@@ -64,7 +64,7 @@
           "Pareto Power Law": {
             "value": "Pareto Power Law",
             "color": "rgb(178, 122, 169)",
-            "nodes": 10,
+            "count": 10,
             "internalEdges": 50,
             "inboundEdges": 76,
             "outboundEdges": 113,
@@ -94,7 +94,7 @@
           "null": {
             "value": "null",
             "color": "#AAA",
-            "nodes": 86,
+            "count": 86,
             "internalEdges": 1823,
             "inboundEdges": 466,
             "outboundEdges": 296,
@@ -136,7 +136,7 @@
           "true": {
             "value": "true",
             "color": "#666",
-            "nodes": 30,
+            "count": 30,
             "internalEdges": 320,
             "inboundEdges": 111,
             "outboundEdges": 87,
@@ -161,7 +161,7 @@
           "false": {
             "value": "false",
             "color": "#AAA",
-            "nodes": 76,
+            "count": 76,
             "internalEdges": 2190,
             "inboundEdges": 87,
             "outboundEdges": 111,
@@ -198,7 +198,7 @@
           "true": {
             "value": "true",
             "color": "#666",
-            "nodes": 72,
+            "count": 72,
             "internalEdges": 2262,
             "inboundEdges": 39,
             "outboundEdges": 89,
@@ -223,7 +223,7 @@
           "false": {
             "value": "false",
             "color": "#AAA",
-            "nodes": 34,
+            "count": 34,
             "internalEdges": 318,
             "inboundEdges": 89,
             "outboundEdges": 39,
@@ -260,7 +260,7 @@
           "true": {
             "value": "true",
             "color": "#666",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 51,
             "outboundEdges": 59,
@@ -285,7 +285,7 @@
           "false": {
             "value": "false",
             "color": "#AAA",
-            "nodes": 105,
+            "count": 105,
             "internalEdges": 2598,
             "inboundEdges": 59,
             "outboundEdges": 51,
@@ -322,7 +322,7 @@
           "true": {
             "value": "true",
             "color": "#666",
-            "nodes": 12,
+            "count": 12,
             "internalEdges": 89,
             "inboundEdges": 375,
             "outboundEdges": 470,
@@ -347,7 +347,7 @@
           "false": {
             "value": "false",
             "color": "#AAA",
-            "nodes": 94,
+            "count": 94,
             "internalEdges": 1774,
             "inboundEdges": 470,
             "outboundEdges": 375,
@@ -384,7 +384,7 @@
           "true": {
             "value": "true",
             "color": "#666",
-            "nodes": 5,
+            "count": 5,
             "internalEdges": 9,
             "inboundEdges": 152,
             "outboundEdges": 96,
@@ -409,7 +409,7 @@
           "false": {
             "value": "false",
             "color": "#AAA",
-            "nodes": 101,
+            "count": 101,
             "internalEdges": 2451,
             "inboundEdges": 96,
             "outboundEdges": 152,
@@ -446,7 +446,7 @@
           "true": {
             "value": "true",
             "color": "#666",
-            "nodes": 10,
+            "count": 10,
             "internalEdges": 75,
             "inboundEdges": 298,
             "outboundEdges": 515,
@@ -471,7 +471,7 @@
           "false": {
             "value": "false",
             "color": "#AAA",
-            "nodes": 96,
+            "count": 96,
             "internalEdges": 1820,
             "inboundEdges": 515,
             "outboundEdges": 298,

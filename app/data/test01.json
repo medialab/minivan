@@ -34,7 +34,7 @@
           "[Denmark]": {
             "value": "[Denmark]",
             "color": "rgb(99, 207, 223)",
-            "nodes": 103,
+            "count": 103,
             "internalEdges": 376,
             "inboundEdges": 104,
             "outboundEdges": 66,
@@ -84,7 +84,7 @@
           "[Sweden]": {
             "value": "[Sweden]",
             "color": "rgb(227, 154, 122)",
-            "nodes": 82,
+            "count": 82,
             "internalEdges": 342,
             "inboundEdges": 105,
             "outboundEdges": 95,
@@ -134,7 +134,7 @@
           "[Norway]": {
             "value": "[Norway]",
             "color": "rgb(153, 170, 236)",
-            "nodes": 30,
+            "count": 30,
             "internalEdges": 93,
             "inboundEdges": 34,
             "outboundEdges": 70,
@@ -184,7 +184,7 @@
           "[Finland]": {
             "value": "[Finland]",
             "color": "rgb(192, 195, 113)",
-            "nodes": 23,
+            "count": 23,
             "internalEdges": 54,
             "inboundEdges": 25,
             "outboundEdges": 23,
@@ -234,7 +234,7 @@
           "[Iceland]": {
             "value": "[Iceland]",
             "color": "rgb(227, 152, 207)",
-            "nodes": 7,
+            "count": 7,
             "internalEdges": 8,
             "inboundEdges": 17,
             "outboundEdges": 20,
@@ -284,7 +284,7 @@
           "[Nordic]": {
             "value": "[Nordic]",
             "color": "rgb(120, 211, 163)",
-            "nodes": 7,
+            "count": 7,
             "internalEdges": 1,
             "inboundEdges": 24,
             "outboundEdges": 39,
@@ -334,7 +334,7 @@
           "[\"Other or Not Relevant\"]": {
             "value": "[\"Other or Not Relevant\"]",
             "color": "#AAA",
-            "nodes": 2,
+            "count": 2,
             "internalEdges": 1,
             "inboundEdges": 17,
             "outboundEdges": 13,
@@ -396,7 +396,7 @@
           "[Company]": {
             "value": "[Company]",
             "color": "rgb(137, 182, 106)",
-            "nodes": 149,
+            "count": 149,
             "internalEdges": 263,
             "inboundEdges": 411,
             "outboundEdges": 163,
@@ -431,7 +431,7 @@
           "Public@- &a=b": {
             "value": "Public@- &a=b",
             "color": "rgb(213, 144, 209)",
-            "nodes": 51,
+            "count": 51,
             "internalEdges": 91,
             "inboundEdges": 167,
             "outboundEdges": 270,
@@ -466,7 +466,7 @@
           "Trade Association?": {
             "value": "Trade Association?",
             "color": "rgb(105, 190, 218)",
-            "nodes": 38,
+            "count": 38,
             "internalEdges": 30,
             "inboundEdges": 126,
             "outboundEdges": 242,
@@ -501,7 +501,7 @@
           "[Research/Education]": {
             "value": "[Research/Education]",
             "color": "rgb(220, 141, 106)",
-            "nodes": 16,
+            "count": 16,
             "internalEdges": 34,
             "inboundEdges": 79,
             "outboundEdges": 108,
@@ -548,7 +548,7 @@
           "False": {
             "value": "False",
             "color": "rgb(209, 158, 195)",
-            "nodes": 188,
+            "count": 188,
             "internalEdges": 508,
             "inboundEdges": 299,
             "outboundEdges": 201,
@@ -578,7 +578,7 @@
           "True": {
             "value": "True",
             "color": "rgb(161, 202, 148)",
-            "nodes": 65,
+            "count": 65,
             "internalEdges": 192,
             "inboundEdges": 200,
             "outboundEdges": 300,
@@ -608,7 +608,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -650,7 +650,7 @@
           "False": {
             "value": "False",
             "color": "rgb(164, 200, 146)",
-            "nodes": 187,
+            "count": 187,
             "internalEdges": 451,
             "inboundEdges": 344,
             "outboundEdges": 204,
@@ -680,7 +680,7 @@
           "True": {
             "value": "True",
             "color": "rgb(207, 158, 200)",
-            "nodes": 66,
+            "count": 66,
             "internalEdges": 201,
             "inboundEdges": 203,
             "outboundEdges": 345,
@@ -710,7 +710,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -752,7 +752,7 @@
           "False": {
             "value": "False",
             "color": "rgb(161, 202, 148)",
-            "nodes": 183,
+            "count": 183,
             "internalEdges": 388,
             "inboundEdges": 361,
             "outboundEdges": 202,
@@ -782,7 +782,7 @@
           "True": {
             "value": "True",
             "color": "rgb(209, 158, 195)",
-            "nodes": 70,
+            "count": 70,
             "internalEdges": 249,
             "inboundEdges": 201,
             "outboundEdges": 362,
@@ -812,7 +812,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -854,7 +854,7 @@
           "False": {
             "value": "False",
             "color": "rgb(161, 202, 148)",
-            "nodes": 198,
+            "count": 198,
             "internalEdges": 529,
             "inboundEdges": 326,
             "outboundEdges": 183,
@@ -884,7 +884,7 @@
           "True": {
             "value": "True",
             "color": "rgb(209, 158, 195)",
-            "nodes": 55,
+            "count": 55,
             "internalEdges": 163,
             "inboundEdges": 181,
             "outboundEdges": 326,
@@ -914,7 +914,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -956,7 +956,7 @@
           "False": {
             "value": "False",
             "color": "rgb(204, 159, 201)",
-            "nodes": 179,
+            "count": 179,
             "internalEdges": 412,
             "inboundEdges": 367,
             "outboundEdges": 176,
@@ -986,7 +986,7 @@
           "True": {
             "value": "True",
             "color": "rgb(165, 200, 145)",
-            "nodes": 74,
+            "count": 74,
             "internalEdges": 245,
             "inboundEdges": 175,
             "outboundEdges": 368,
@@ -1016,7 +1016,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -1058,7 +1058,7 @@
           "False": {
             "value": "False",
             "color": "rgb(209, 158, 195)",
-            "nodes": 176,
+            "count": 176,
             "internalEdges": 379,
             "inboundEdges": 375,
             "outboundEdges": 199,
@@ -1088,7 +1088,7 @@
           "True": {
             "value": "True",
             "color": "rgb(161, 202, 148)",
-            "nodes": 77,
+            "count": 77,
             "internalEdges": 247,
             "inboundEdges": 198,
             "outboundEdges": 376,
@@ -1118,7 +1118,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -1160,7 +1160,7 @@
           "False": {
             "value": "False",
             "color": "rgb(205, 159, 200)",
-            "nodes": 135,
+            "count": 135,
             "internalEdges": 124,
             "inboundEdges": 377,
             "outboundEdges": 191,
@@ -1190,7 +1190,7 @@
           "True": {
             "value": "True",
             "color": "rgb(165, 200, 146)",
-            "nodes": 118,
+            "count": 118,
             "internalEdges": 508,
             "inboundEdges": 190,
             "outboundEdges": 378,
@@ -1220,7 +1220,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -1262,7 +1262,7 @@
           "False": {
             "value": "False",
             "color": "rgb(209, 158, 195)",
-            "nodes": 146,
+            "count": 146,
             "internalEdges": 226,
             "inboundEdges": 375,
             "outboundEdges": 199,
@@ -1292,7 +1292,7 @@
           "True": {
             "value": "True",
             "color": "rgb(161, 202, 148)",
-            "nodes": 107,
+            "count": 107,
             "internalEdges": 400,
             "inboundEdges": 198,
             "outboundEdges": 376,
@@ -1322,7 +1322,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -1364,7 +1364,7 @@
           "False": {
             "value": "False",
             "color": "rgb(203, 161, 202)",
-            "nodes": 152,
+            "count": 152,
             "internalEdges": 242,
             "inboundEdges": 361,
             "outboundEdges": 241,
@@ -1394,7 +1394,7 @@
           "True": {
             "value": "True",
             "color": "rgb(165, 200, 143)",
-            "nodes": 101,
+            "count": 101,
             "internalEdges": 356,
             "inboundEdges": 240,
             "outboundEdges": 362,
@@ -1424,7 +1424,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,
@@ -1466,7 +1466,7 @@
           "Multiples": {
             "value": "Multiples",
             "color": "rgb(114, 193, 227)",
-            "nodes": 123,
+            "count": 123,
             "internalEdges": 508,
             "inboundEdges": 201,
             "outboundEdges": 343,
@@ -1526,7 +1526,7 @@
           "None": {
             "value": "None",
             "color": "rgb(226, 157, 120)",
-            "nodes": 112,
+            "count": 112,
             "internalEdges": 97,
             "inboundEdges": 324,
             "outboundEdges": 171,
@@ -1586,7 +1586,7 @@
           "Service design": {
             "value": "Service design",
             "color": "rgb(109, 214, 173)",
-            "nodes": 5,
+            "count": 5,
             "internalEdges": 2,
             "inboundEdges": 23,
             "outboundEdges": 45,
@@ -1646,7 +1646,7 @@
           "Styling/formgiving of products (physical/tactile appearance)": {
             "value": "Styling/formgiving of products (physical/tactile appearance)",
             "color": "rgb(215, 155, 214)",
-            "nodes": 5,
+            "count": 5,
             "internalEdges": 0,
             "inboundEdges": 19,
             "outboundEdges": 15,
@@ -1706,7 +1706,7 @@
           "Strategic design": {
             "value": "Strategic design",
             "color": "rgb(183, 198, 120)",
-            "nodes": 5,
+            "count": 5,
             "internalEdges": 0,
             "inboundEdges": 14,
             "outboundEdges": 13,
@@ -1766,7 +1766,7 @@
           "Management/facilitation of development processes": {
             "value": "Management/facilitation of development processes",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 5,
             "outboundEdges": 7,
@@ -1826,7 +1826,7 @@
           "Graphic and visual design": {
             "value": "Graphic and visual design",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 3,
             "outboundEdges": 0,
@@ -1886,7 +1886,7 @@
           "Design/user research": {
             "value": "Design/user research",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 3,
             "outboundEdges": 0,
@@ -1946,7 +1946,7 @@
           "N/A": {
             "value": "N/A",
             "color": "#AAA",
-            "nodes": 1,
+            "count": 1,
             "internalEdges": 0,
             "inboundEdges": 2,
             "outboundEdges": 0,

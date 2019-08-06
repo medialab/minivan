@@ -19,7 +19,7 @@
           "1B": {
             "value": "1B",
             "color": "rgb(103, 211, 157)",
-            "nodes": 25,
+            "count": 25,
             "internalEdges": 293,
             "inboundEdges": 268,
             "outboundEdges": 433,
@@ -89,7 +89,7 @@
           "2B": {
             "value": "2B",
             "color": "rgb(233, 148, 200)",
-            "nodes": 25,
+            "count": 25,
             "internalEdges": 265,
             "inboundEdges": 330,
             "outboundEdges": 278,
@@ -159,7 +159,7 @@
           "3A": {
             "value": "3A",
             "color": "rgb(181, 204, 109)",
-            "nodes": 23,
+            "count": 23,
             "internalEdges": 236,
             "inboundEdges": 366,
             "outboundEdges": 482,
@@ -229,7 +229,7 @@
           "5B": {
             "value": "5B",
             "color": "rgb(178, 166, 234)",
-            "nodes": 23,
+            "count": 23,
             "internalEdges": 239,
             "inboundEdges": 439,
             "outboundEdges": 342,
@@ -299,7 +299,7 @@
           "1A": {
             "value": "1A",
             "color": "rgb(182, 166, 93)",
-            "nodes": 22,
+            "count": 22,
             "internalEdges": 226,
             "inboundEdges": 336,
             "outboundEdges": 456,
@@ -369,7 +369,7 @@
           "4B": {
             "value": "4B",
             "color": "rgb(106, 193, 228)",
-            "nodes": 22,
+            "count": 22,
             "internalEdges": 212,
             "inboundEdges": 392,
             "outboundEdges": 178,
@@ -439,7 +439,7 @@
           "5A": {
             "value": "5A",
             "color": "rgb(227, 184, 117)",
-            "nodes": 22,
+            "count": 22,
             "internalEdges": 212,
             "inboundEdges": 361,
             "outboundEdges": 299,
@@ -509,7 +509,7 @@
           "2A": {
             "value": "2A",
             "color": "rgb(104, 218, 205)",
-            "nodes": 22,
+            "count": 22,
             "internalEdges": 185,
             "inboundEdges": 338,
             "outboundEdges": 173,
@@ -579,7 +579,7 @@
           "4A": {
             "value": "4A",
             "color": "rgb(231, 147, 130)",
-            "nodes": 21,
+            "count": 21,
             "internalEdges": 205,
             "inboundEdges": 251,
             "outboundEdges": 293,
@@ -649,7 +649,7 @@
           "3B": {
             "value": "3B",
             "color": "rgb(163, 205, 144)",
-            "nodes": 21,
+            "count": 21,
             "internalEdges": 200,
             "inboundEdges": 339,
             "outboundEdges": 510,
@@ -719,7 +719,7 @@
           "Teachers": {
             "value": "Teachers",
             "color": "#AAA",
-            "nodes": 10,
+            "count": 10,
             "internalEdges": 23,
             "inboundEdges": 183,
             "outboundEdges": 159,
@@ -801,7 +801,7 @@
           "M": {
             "value": "M",
             "color": "rgb(199, 65, 155)",
-            "nodes": 112,
+            "count": 112,
             "internalEdges": 1667,
             "inboundEdges": 1424,
             "outboundEdges": 1347,
@@ -831,7 +831,7 @@
           "F": {
             "value": "F",
             "color": "rgb(161, 194, 65)",
-            "nodes": 110,
+            "count": 110,
             "internalEdges": 1187,
             "inboundEdges": 1339,
             "outboundEdges": 1418,
@@ -861,7 +861,7 @@
           "Unknown": {
             "value": "Unknown",
             "color": "#AAA",
-            "nodes": 14,
+            "count": 14,
             "internalEdges": 27,
             "inboundEdges": 255,
             "outboundEdges": 253,
