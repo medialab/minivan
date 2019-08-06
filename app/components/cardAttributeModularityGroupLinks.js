@@ -362,7 +362,7 @@ angular
               crossings.push({
                 v1: v1,
                 v2: v2,
-                nd: attData.modalityFlow[v1][v2].nd
+                nd: attData.modalities[v1].flow[v2].normalizedDensity
               })
             })
           })
