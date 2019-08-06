@@ -325,7 +325,7 @@ angular
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
               if (nodeColorAtt.type == 'partition') {
                 var colorByModality = {}
-                nodeColorAtt.modalities.forEach(function(m) {
+                Object.values(nodeColorAtt.modalities).forEach(function(m) {
                   colorByModality[m.value] = m.color
                 })
                 getNodeColor = function(nid) {

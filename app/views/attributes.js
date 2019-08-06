@@ -50,11 +50,11 @@ angular
     $scope.$watch('networkData.loaded', function() {
       if ($scope.networkData.loaded) {
         $scope.attributeList = []
-        $scope.networkData.nodeAttributes.forEach(function(d) {
+        $scope.networkData.model.nodeAttributes.forEach(function(d) {
           d.obj = 'node'
           $scope.attributeList.push(d)
         })
-        $scope.networkData.edgeAttributes.forEach(function(d) {
+        $scope.networkData.model.edgeAttributes.forEach(function(d) {
           d.obj = 'edge'
           $scope.attributeList.push(d)
         })
