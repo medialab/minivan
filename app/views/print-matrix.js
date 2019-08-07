@@ -53,17 +53,16 @@ angular
       }
       if ($scope.attribute && $scope.attribute.type == 'partition') {
         $scope.modalitiesSelection = {}
-        var modSelection = $location
-          .search()
-          .filter.split(',')
+        var modSelection = ($location.search().filter || '')
+          .split(',')
           .map(function(d) {
             return d == 'true'
           })
-        $scope.attribute.modalities.forEach(function(mod, i) {
+        Object.values($scope.attribute.modalities).forEach(function(mod, i) {
           $scope.modalitiesSelection[mod.value] = modSelection[i]
         })
         if (
-          $scope.attribute.modalities.some(function(mod) {
+          Object.values($scope.attribute.modalities).some(function(mod) {
             return $scope.modalitiesSelection[mod.value]
           })
         ) {
@@ -75,7 +74,7 @@ angular
           $scope.modalityFilter = function(modValue) {
             return $scope.modalitiesSelection[modValue]
           }
-          var modalities = $scope.attribute.modalities.filter(function(mod) {
+          var modalities = Object.values($scope.attribute.modalities).filter(function(mod) {
             return $scope.modalitiesSelection[mod.value]
           })
           if (modalities.length == 1) {
