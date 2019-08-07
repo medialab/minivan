@@ -20,11 +20,12 @@ angular
       ns.cache = bundle
     }
 
+    var fileLocationCache = undefined;
+
     ns.get = function(fileLocation, callback) {
       var settings = {}
       settings.simulate_loading_time = 500
       settings.allow_gexf = true
-
       var bundle_import
       if (
         settings.allow_gexf &&
@@ -35,8 +36,7 @@ angular
       } else {
         bundle_import = netBundleManager.importBundle
       }
-
-      if (ns.cache === undefined) {
+      if (ns.cache === undefined || (fileLocation !== undefined && fileLocation !== fileLocationCache)) {
         if (fileLocation === undefined) {
           alert(
             'Weird!\nWe cannot locate the data...\nThis is not supposed to happen.'
@@ -45,6 +45,7 @@ angular
           return
         }
         var networkData = { loaded: false }
+        fileLocationCache = fileLocation;
         bundle_import(
           ns.decodeLocation(fileLocation) || settings.default_file_location,
           function(data) {
