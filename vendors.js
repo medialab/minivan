@@ -20,6 +20,9 @@ window.Sigma = require('sigma/endpoint');
 window.Graph = require('graphology');
 window.Graph.library = require('graphology-library/browser');
 
+var minivan = require('graphology-minivan');
+window.minivan = minivan;
+
 // Misc
 window.saveAs = require('file-saver');
 window.screenfull = require('screenfull');
