@@ -156,44 +156,44 @@ angular
     }
 
     ns.exportBundle = function(bundle) {
-      var validKeys = [
-        'title',
-        'authors',
-        'bundleVersion',
-        'consolidated',
-        'date',
-        'defaultNodeColor',
-        'defaultNodeSize',
-        'defaultEdgeColor',
-        'defaultEdgeSize',
-        'description',
-        'edgeAttributes',
-        'nodeAttributes',
-        'url',
-        'doi'
-      ]
-      var validAttTypes = ['partition', 'ranking-size', 'ranking-color']
-      var bundleSerialize = {}
-      validKeys.forEach(function(k) {
-        if (bundle[k]) {
-          bundleSerialize[k] = bundle[k]
-        }
-      })
-      bundleSerialize.nodeAttributes = bundleSerialize.nodeAttributes.filter(
-        function(att) {
-          return validAttTypes.indexOf(att.type) >= 0
-        }
-      )
-      bundleSerialize.edgeAttributes = bundleSerialize.edgeAttributes.filter(
-        function(att) {
-          return validAttTypes.indexOf(att.type) >= 0
-        }
-      )
-      bundleSerialize.graphSettings = {}
-      bundleSerialize.graphSettings.type = bundle.g.type
-      bundleSerialize.graphSettings.multi = bundle.g.multi
-      bundleSerialize.g = bundle.g.export()
-      return JSON.stringify(bundleSerialize, null, '\t')
+      // var validKeys = [
+      //   'title',
+      //   'authors',
+      //   'bundleVersion',
+      //   'consolidated',
+      //   'date',
+      //   'defaultNodeColor',
+      //   'defaultNodeSize',
+      //   'defaultEdgeColor',
+      //   'defaultEdgeSize',
+      //   'description',
+      //   'edgeAttributes',
+      //   'nodeAttributes',
+      //   'url',
+      //   'doi'
+      // ]
+      // var validAttTypes = ['partition', 'ranking-size', 'ranking-color']
+      // var bundleSerialize = {}
+      // validKeys.forEach(function(k) {
+      //   if (bundle[k]) {
+      //     bundleSerialize[k] = bundle[k]
+      //   }
+      // })
+      // bundleSerialize.nodeAttributes = bundleSerialize.nodeAttributes.filter(
+      //   function(att) {
+      //     return validAttTypes.indexOf(att.type) >= 0
+      //   }
+      // )
+      // bundleSerialize.edgeAttributes = bundleSerialize.edgeAttributes.filter(
+      //   function(att) {
+      //     return validAttTypes.indexOf(att.type) >= 0
+      //   }
+      // )
+      // bundleSerialize.graphSettings = {}
+      // bundleSerialize.graphSettings.type = bundle.g.type
+      // bundleSerialize.graphSettings.multi = bundle.g.multi
+      // bundleSerialize.g = bundle.g.export()
+      return angular.toJson(bundle, null, '\t')
     }
 
     ns.slugify = function(str) {

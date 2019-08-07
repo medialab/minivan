@@ -221,42 +221,42 @@
           <!-- Node attribute -->
           <md-list-item
             class="md-2-line"
-            ng-repeat="(k, v) in nodeAttributesIndex"
-            ng-click="editNodeAttribute(k)"
-            ng-style="{opacity: networkData.nodeAttributesIndex[k].type ? 1 : 0.5}"
+            ng-repeat="(index, value) in networkData.model.nodeAttributes"
+            ng-click="editNodeAttribute(value)"
+            ng-style="{opacity: value.type ? 1 : 0.5}"
           >
             <md-icon
-              ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+              ng-if="value.type == 'ranking-color'"
               >gradient</md-icon
             >
             <md-icon
-              ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+              ng-if="value.type == 'ranking-size'"
               >bubble_chart</md-icon
             >
             <md-icon
-              ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
+              ng-if="value.type == 'partition'"
               >color_lens</md-icon
             >
-            <md-icon ng-if="!networkData.nodeAttributesIndex[k].type"
+            <md-icon ng-if="!value.type"
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
-              <h3>{{networkData.nodeAttributesIndex[k].name || k}}</h3>
+              <h3>{{value.name || k}}</h3>
               <p
-                ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+                ng-if="value.type == 'ranking-color'"
               >
                 Color gradient
               </p>
               <p
-                ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+                ng-if="value.type == 'ranking-size'"
               >
                 Size gradient
               </p>
-              <p ng-if="networkData.nodeAttributesIndex[k].type == 'partition'">
+              <p ng-if="value.type == 'partition'">
                 Color categories
               </p>
-              <p ng-if="!networkData.nodeAttributesIndex[k].type">
-                Hidden
+              <p ng-if="!value.type">
+                Hidden {{k}} {{v}}
               </p>
             </div>
           </md-list-item>
@@ -275,41 +275,41 @@
           <!-- Edge attribute -->
           <md-list-item
             class="md-2-line"
-            ng-repeat="(k, v) in edgeAttributesIndex"
-            ng-click="editEdgeAttribute(k)"
-            ng-style="{opacity: networkData.edgeAttributesIndex[k].type ? 1 : 0.5}"
+            ng-repeat="(index, value) in networkData.model.edgeAttributes"
+            ng-click="editEdgeAttribute(value)"
+            ng-style="{opacity: value.type ? 1 : 0.5}"
           >
             <md-icon
-              ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
+              ng-if="value.type == 'ranking-color'"
               >gradient</md-icon
             >
             <md-icon
-              ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
+              ng-if="value.type == 'ranking-size'"
               >line_weight</md-icon
             >
             <md-icon
-              ng-if="networkData.edgeAttributesIndex[k].type == 'partition'"
+              ng-if="value.type == 'partition'"
               >color_lens</md-icon
             >
-            <md-icon ng-if="!networkData.edgeAttributesIndex[k].type"
+            <md-icon ng-if="!value.type"
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
-              <h3>{{networkData.edgeAttributesIndex[k].name || k}}</h3>
+              <h3>{{value.name || k}}</h3>
               <p
-                ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
+                ng-if="value.type == 'ranking-color'"
               >
                 Color gradient
               </p>
               <p
-                ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
+                ng-if="value.type == 'ranking-size'"
               >
                 Thickness gradient
               </p>
-              <p ng-if="networkData.edgeAttributesIndex[k].type == 'partition'">
+              <p ng-if="value.type == 'partition'">
                 Color categories
               </p>
-              <p ng-if="!networkData.edgeAttributesIndex[k].type">
+              <p ng-if="!value.type">
                 Hidden
               </p>
             </div>

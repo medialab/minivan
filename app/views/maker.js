@@ -152,33 +152,33 @@ angular
       )
     }
 
-    $scope.editNodeAttribute = function(id) {
+    $scope.editNodeAttribute = function(attribute) {
       $scope.attMode = 'node'
-      $scope.attData = $scope.nodeAttributesIndex[id]
-      $scope.attId = id
-      $scope.att = $scope.networkData.nodeAttributesIndex[id]
+      $scope.attData = $scope.nodeAttributesIndex[attribute.id]
+      $scope.attId = attribute.id
+      $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
     }
 
-    $scope.editEdgeAttribute = function(id) {
+    $scope.editEdgeAttribute = function(attribute) {
+      console.log(attribute)
       $scope.attMode = 'edge'
-      $scope.attData = $scope.edgeAttributesIndex[id]
-      $scope.attId = id
-      $scope.att = $scope.networkData.edgeAttributesIndex[id]
+      $scope.attData = $scope.edgeAttributesIndex[attribute.id]
+      $scope.attId = attribute.id
+      $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
     }
 
     $scope.cancelEditAttribute = function() {
-      var k
-      if ($scope.attMode == 'node') {
-        for (k in $scope.networkData.nodeAttributesIndex[$scope.attId]) {
-          $scope.networkData.nodeAttributesIndex[$scope.attId][k] =
-            $scope.originalAtt[k]
+      if ($scope.attMode === 'node') {
+        var index = $scope.networkData.model.nodeAttributes.indexOf($scope.att);
+        if (index >= 0) {
+          $scope.networkData.model.nodeAttributes[index] = $scope.originalAtt;
         }
-      } else if ($scope.attMode == 'edge') {
-        for (k in $scope.networkData.edgeAttributesIndex[$scope.attId]) {
-          $scope.networkData.edgeAttributesIndex[$scope.attId][k] =
-            $scope.originalAtt[k]
+      } else if ($scope.attMode) {
+        var index = $scope.networkData.model.edgeAttributes.indexOf($scope.att);
+        if (index >= 0) {
+          $scope.networkData.model.edgeAttributes[index] = $scope.originalAtt;
         }
       }
       $scope.attMode = undefined
@@ -266,8 +266,14 @@ angular
     // Init at bundle build
     function initBundle(bundle) {
       console.log('networkData', bundle)
+      $scope.g = bundle.g;
       dataLoader.set(bundle)
-      $scope.networkData = bundle
+      $scope.networkData = minivan.buildBundle(bundle.g, {
+        authors: [],
+        date: bundle.date,
+        description: bundle.description,
+        bundleVersion: bundle.bundleVersion,
+      })
       $scope.networkData.loaded = true
       $scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(
         bundle.g
