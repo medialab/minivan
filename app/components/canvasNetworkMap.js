@@ -54,6 +54,7 @@ angular
         var container = el[0]
 
         function _redraw() {
+
           // Postpone if network data not loaded
           if (!$scope.networkData.loaded) {
             $timeout(redraw, 500)
@@ -190,7 +191,7 @@ angular
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
               if (colorAtt.type == 'partition') {
                 var colorByModality = {}
-                colorAtt.modalities.forEach(function(m) {
+                Object.values(colorAtt.modalities).forEach(function(m) {
                   colorByModality[m.value] = m.color
                 })
                 var colorScale = function(val) {
