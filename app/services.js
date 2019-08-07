@@ -787,7 +787,7 @@ angular
     }
 
     ns.getModalityNormalizedDensities = function(attributeId, modSelection) {
-      return ns._getModalityCrossings(attributeId, modSelection, 'nd')
+      return ns._getModalityCrossings(attributeId, modSelection, 'normalizedDensity')
     }
 
     ns._getModalityCrossings = function(
@@ -807,13 +807,13 @@ angular
       ) {
         modSelection = {}
         var mod
-        for (mod in attribute.data.modalityFlow) {
+        for (mod in attribute.modalities) {
           modSelection[mod] = true
         }
       }
 
       // Select modalities
-      var modalities = attribute.data.modalities.filter(function(mod) {
+      var modalities = Object.keys(attribute.modalities).filter(function(mod) {
         return modSelection[mod]
       })
 
@@ -832,7 +832,7 @@ angular
       sortedModalities.forEach(function(mod) {
         row = [mod]
         sortedModalities.forEach(function(mod2) {
-          row.push(+attribute.data.modalityFlow[mod][mod2][modalityAtt])
+          row.push(+attribute.modalities[mod].flow[mod2][modalityAtt])
         })
         rows.push(row)
       })
