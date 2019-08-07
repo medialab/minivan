@@ -45,7 +45,7 @@ angular
     $scope.$watch('networkData.loaded', function() {
       if ($scope.networkData.loaded) {
         $scope.attribute =
-          $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
+          $scope.networkData.model.nodeAttributes[$routeParams.attribute]
         $scope.modality = Object.values($scope.attribute.modalities).filter(
           function(mod) {
             return mod.value == $location.search().m
@@ -183,7 +183,7 @@ angular
       mdLines.push(
         '\nOther modality\tEdges to original modality\tND to original modality\tEdges from original modality\tND from original modality'
       )
-      var sortedValues = $scope.attribute.data.modalities
+      var sortedValues = Object.values($scope.attribute.modalities)
         .slice(0)
         .sort(function(v1, v2) {
           return (
@@ -199,14 +199,14 @@ angular
           return {
             label: v2,
             ndToVal:
-              $scope.attribute.data.modalityFlow[v2][$scope.modality.value].nd,
+              $scope.attribute.modalities[v2].flow[$scope.modality.value].nd,
             linksToVal:
-              $scope.attribute.data.modalityFlow[v2][$scope.modality.value]
+              $scope.attribute.modalities[v2].flow[$scope.modality.value]
                 .count,
             ndFromVal:
-              $scope.attribute.data.modalityFlow[$scope.modality.value][v2].nd,
+              $scope.attribute.modalities[$scope.modality.value].flow[v2].nd,
             linksFromVal:
-              $scope.attribute.data.modalityFlow[$scope.modality.value][v2]
+              $scope.attribute.modalities[$scope.modality.value].flow[v2]
                 .count
           }
         })

@@ -39,11 +39,11 @@ angular
           .map(function(d) {
             return d == 'true'
           })
-        $scope.attribute.modalities.forEach(function(mod, i) {
+        Object.values($scope.attribute.modalities).forEach(function(mod, i) {
           $scope.modalitiesSelection[mod.value] = modSelection[i]
         })
         if (
-          $scope.attribute.modalities.some(function(mod) {
+          Object.values($scope.attribute.modalities).some(function(mod) {
             return $scope.modalitiesSelection[mod.value]
           })
         ) {
@@ -78,7 +78,7 @@ angular
 
     function update() {
       var colorByModality = {}
-      $scope.attribute.modalities.forEach(function(m) {
+      Object.values($scope.attribute.modalities).forEach(function(m) {
         colorByModality[m.value] = m.color
       })
       var colorScale = function(val) {

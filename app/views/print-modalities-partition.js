@@ -29,7 +29,7 @@ angular
         $scope.attribute =
           $scope.networkData.nodeAttributesIndex[$scope.attributeId]
         $scope.maxModCount = d3.max(
-          $scope.attribute.modalities.map(function(mod) {
+          Object.values($scope.attribute.modalities).map(function(mod) {
             return mod.count
           })
         )

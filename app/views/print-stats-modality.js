@@ -36,11 +36,11 @@ angular
       if ($scope.networkData.loaded) {
         $scope.attribute =
           $scope.networkData.nodeAttributesIndex[$scope.attributeId]
-        $scope.modality = $scope.attribute.modalities.filter(function(mod) {
+        $scope.modality = Object.values($scope.attribute.modalities).filter(function(mod) {
           return mod.value == $scope.modalityValue
         })[0]
         $scope.modalityFlow =
-          $scope.attribute.data.modalityFlow[$scope.modality.value][
+          $scope.attribute.modalities[$scope.modality.value].flow[
             $scope.modality.value
           ]
         if ($scope.attribute.type !== 'partition') {
