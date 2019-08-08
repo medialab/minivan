@@ -56,6 +56,7 @@ angular
           $scope.startLayoutOnLoad === undefined || $scope.startLayoutOnLoad
 
         $scope.$watch('networkData.loaded', function() {
+          console.log($scope.networkData);
           if ($scope.networkData.loaded) {
             $scope.g = $scope.networkData.g.copy()
             $scope.loaded = true
@@ -607,10 +608,6 @@ angular
                 x: settings.default_x,
                 y: settings.default_y
               })
-            }
-
-            $scope.getRenderer = function() {
-              return renderer
             }
 
             if ($scope.layout) {

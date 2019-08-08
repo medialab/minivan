@@ -268,12 +268,18 @@ angular
       console.log('networkData', bundle)
       $scope.g = bundle.g;
       dataLoader.set(bundle)
+      $scope.bundle = bundle;
       $scope.networkData = minivan.buildBundle(bundle.g, {
+        title: bundle.title,
         authors: [],
-        date: bundle.date,
         description: bundle.description,
+        url: bundle.url,
+        doi: bundle.doi,
         bundleVersion: bundle.bundleVersion,
+        consolidated: bundle.consolidated,
+        date: bundle.date,
       })
+      console.log($scope.networkData);
       $scope.networkData.loaded = true
       $scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(
         bundle.g
@@ -306,7 +312,7 @@ angular
             $scope.nodeAttributesIndex[k]
           )
           att.type = undefined
-          bundle.nodeAttributes.push(att)
+          bundle.model.nodeAttributes.push(att)
           netBundleManager.consolidateNodeAttribute(bundle, att)
         }
       }
@@ -318,7 +324,7 @@ angular
             $scope.edgeAttributesIndex[k]
           )
           att.type = undefined
-          bundle.edgeAttributes.push(att)
+          bundle.model.edgeAttributes.push(att)
           netBundleManager.consolidateEdgeAttribute(bundle, att)
         }
       }
