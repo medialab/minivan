@@ -7,21 +7,21 @@ angular
 
   .factory('netBundleManager', function($http, $timeout, paletteGenerator) {
     var ns = {} // namespace
-    ns.bundleVersion = '0.1alpha'
+    ns.bundleVersion = '1.0.0'
     ns.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
     ns.ignored_edge_attributes = ['label', 'color']
+    var defaults = {
+      title: 'Untitled Network',
+      authors: [],
+      date: 'Unknown',
+      url: undefined,
+      doi: undefined,
+      description: 'This network has no description.',
+      bundleVersion: ns.bundleVersion,
+    }
 
     // Sets the passed value and if none sets a default value if the attribute is required
     ns.setBundleAttribute = function(bundle, attribute, value, verbose) {
-      var defaults = {}
-      defaults.title = 'Untitled Network'
-      defaults.authors = []
-      defaults.date = 'Unknown'
-      defaults.url = undefined
-      defaults.doi = undefined
-      defaults.description = 'This network has no description.'
-      defaults.bundleVersion = ns.bundleVersion
-
       if (value !== undefined) {
         bundle[attribute] = value
         if (verbose) {
@@ -100,13 +100,16 @@ angular
     }
 
     ns.parseGEXF = function(data, title, callback, verbose) {
-      var bundle = {}
+      var graph = Graph.library.gexf.parse(Graph, data)
 
-      bundle.g = Graph.library.gexf.parse(Graph, data)
-
-      ns._addMissingVisualizationData(bundle.g)
+      ns._addMissingVisualizationData(graph)
       // window.g = bundle.g
 
+      var bundle = minivan.buildBundle(graph, {
+        title: title
+      })
+
+      bundle.g = graph
       // Add default attributes when necessary
       ns.setBundleAttribute(bundle, 'title', title, verbose)
       ns.setBundleAttribute(bundle, 'authors', undefined, verbose)
@@ -126,32 +129,10 @@ angular
       )
       ns.setBundleAttribute(bundle, 'bundleVersion', ns.bundleVersion, verbose)
 
-      // Create metadata for node attributes
-      var nodeAttributesIndex = ns.buildNodeAttributesIndex(bundle.g)
-      bundle.nodeAttributes = []
-      ns.createAttributesMetaData(
-        bundle.g,
-        nodeAttributesIndex,
-        bundle.nodeAttributes,
-        ns.nodeAttributeNames
-      )
-
-      // Create metadata for node attributes
-      var edgeAttributesIndex = ns.buildEdgeAttributesIndex(bundle.g)
-      bundle.edgeAttributes = []
-      ns.createAttributesMetaData(
-        bundle.g,
-        edgeAttributesIndex,
-        bundle.edgeAttributes,
-        ns.edgeAttributeNames
-      )
-
       // Set default node and edges size and color (for Home page)
       ns._setDefaultAttributes(bundle)
 
       // Consolidate (indexes...)
-      ns.consolidateBundle(bundle)
-
       callback(bundle)
     }
 
@@ -535,47 +516,48 @@ angular
 
     ns._setDefaultAttributes = function(bundle) {
       // Is there a node attribute partition?
-      bundle.nodeAttributes.some(function(na) {
+      bundle.model.nodeAttributes.some(function(na) {
+        console.log('coucou', na);
         if (na.type == 'partition') {
-          bundle.defaultNodeColor = na.id
+          bundle.model.defaultNodeColor = na.id
           return true
         } else return false
       })
-
       // If not, is there a ranking-color?
-      if (!bundle.defaultNodeColor) {
-        bundle.nodeAttributes.some(function(na) {
+      if (!bundle.model.defaultNodeColor) {
+        bundle.model.nodeAttributes.some(function(na) {
+          console.log('coucou', na);
           if (na.type == 'ranking-color') {
-            bundle.defaultNodeColor = na.id
+            bundle.model.defaultNodeColor = na.id
             return true
           } else return false
         })
       }
 
       // Is there a node attribute ranking-size?
-      bundle.nodeAttributes.some(function(na) {
+      bundle.model.nodeAttributes.some(function(na) {
         if (na.type == 'ranking-size') {
-          bundle.defaultNodeSize = na.id
+          bundle.model.defaultNodeSize = na.id
           return true
         } else return false
       })
 
       // If no node color, look for edge colors
       // (we do not want too much color)
-      if (!bundle.defaultNodeColor) {
+      if (!bundle.model.defaultNodeColor) {
         // Is there an edge attribute partition?
-        bundle.edgeAttributes.some(function(ea) {
+        bundle.model.edgeAttributes.some(function(ea) {
           if (ea.type == 'partition') {
-            bundle.defaultEdgeColor = ea.id
+            bundle.model.defaultEdgeColor = ea.id
             return true
           } else return false
         })
 
         // If not, is there a ranking-color?
-        if (!bundle.defaultEdgeColor) {
-          bundle.edgeAttributes.some(function(ea) {
+        if (!bundle.model.defaultEdgeColor) {
+          bundle.model.edgeAttributes.some(function(ea) {
             if (ea.type == 'ranking-color') {
-              bundle.defaultEdgeColor = ea.id
+              bundle.model.defaultEdgeColor = ea.id
               return true
             } else return false
           })
@@ -583,18 +565,19 @@ angular
       }
 
       // Is there an edge attribute ranking-size?
-      bundle.edgeAttributes.some(function(ea) {
+      bundle.model.edgeAttributes.some(function(ea) {
         if (ea.type == 'ranking-size') {
-          bundle.defaultEdgeSize = ea.id
+          bundle.model.defaultEdgeSize = ea.id
           return true
         } else return false
       })
     }
 
     ns._addMissingVisualizationData = function(g) {
-      var settings = {}
-      settings.node_default_color = '#665'
-      settings.edge_default_color = '#CCC9C9'
+      var settings = {
+        node_default_color: '#665',
+        edge_default_color: '#CCC9C9',
+      }
 
       // Nodes
       var colorIssues = 0
@@ -668,11 +651,12 @@ angular
     }
 
     ns.consolidateBundle = function(bundle) {
+      console.warn('consolidateBundle is deprecated');
       ns.setBundleAttribute(bundle, 'consolidated', true)
 
       // Node attributes index
       bundle.nodeAttributesIndex = {}
-      bundle.nodeAttributes.forEach(function(att) {
+      bundle.model.nodeAttributes.forEach(function(att) {
         ns.consolidateNodeAttribute(bundle, att)
       })
 

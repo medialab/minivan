@@ -99,7 +99,7 @@
               start-layout-on-load="false"
               node-size-att-id="
                 (att === undefined) ?
-                  (bundle.defaultNodeSize) :
+                  (networkData.model.defaultNodeSize) :
                   (
                     (attMode=='node' && att.type=='ranking-size') ?
                       (attId) :
@@ -107,7 +107,7 @@
                   )"
               node-color-att-id="
                 (att === undefined) ?
-                  (bundle.defaultNodeColor) :
+                  (networkData.model.defaultNodeColor) :
                   (
                     (attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ?
                       (attId) :
@@ -115,7 +115,7 @@
                   )"
               edge-size-att-id="
                 (att === undefined) ?
-                  (bundle.defaultEdgeSize) :
+                  (networkData.model.defaultEdgeSize) :
                   (
                     (attMode=='edge' && att.type=='ranking-size') ?
                       (attId) :
@@ -123,7 +123,7 @@
                   )"
               edge-color-att-id="
                 (att === undefined) ?
-                  (bundle.defaultEdgeColor) :
+                  (networkData.model.defaultEdgeColor) :
                   (
                     (attMode=='edge' && (att.type=='ranking-color' || att.type=='partition')) ?
                       (attId) :

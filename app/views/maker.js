@@ -265,22 +265,12 @@ angular
 
     // Init at bundle build
     function initBundle(bundle) {
-      console.log('networkData', bundle)
       $scope.g = bundle.g;
       dataLoader.set(bundle)
-      $scope.bundle = bundle;
-      $scope.networkData = minivan.buildBundle(bundle.g, {
-        title: bundle.title,
-        authors: [],
-        description: bundle.description,
-        url: bundle.url,
-        doi: bundle.doi,
-        bundleVersion: bundle.bundleVersion,
-        consolidated: bundle.consolidated,
-        date: bundle.date,
-      })
+      $scope.networkData = bundle
       console.log($scope.networkData);
-      $scope.networkData.loaded = true
+      // Can't find what this next line is for, commenting it until something crashes.
+      // $scope.networkData.loaded = true
       $scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(
         bundle.g
       )
@@ -303,31 +293,6 @@ angular
       // node attributes index or edge attribute index are not listed in the bundle.
       // This may cause some issues, so we create them with no type, as this means that
       // they are not published.
-      var k
-      for (k in $scope.nodeAttributesIndex) {
-        if (bundle.nodeAttributesIndex[k] === undefined) {
-          var att = netBundleManager.initAttribute(
-            k,
-            k,
-            $scope.nodeAttributesIndex[k]
-          )
-          att.type = undefined
-          bundle.model.nodeAttributes.push(att)
-          netBundleManager.consolidateNodeAttribute(bundle, att)
-        }
-      }
-      for (k in $scope.edgeAttributesIndex) {
-        if (bundle.edgeAttributesIndex[k] === undefined) {
-          var att = netBundleManager.initAttribute(
-            k,
-            k,
-            $scope.edgeAttributesIndex[k]
-          )
-          att.type = undefined
-          bundle.model.edgeAttributes.push(att)
-          netBundleManager.consolidateEdgeAttribute(bundle, att)
-        }
-      }
     }
 
     // Parsing functions
