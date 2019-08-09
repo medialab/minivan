@@ -154,7 +154,7 @@ angular
 
     $scope.editNodeAttribute = function(attribute) {
       $scope.attMode = 'node'
-      $scope.attData = $scope.nodeAttributesIndex[attribute.id]
+      $scope.attData = attribute
       $scope.attId = attribute.id
       $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
@@ -221,24 +221,6 @@ angular
       })
     }
 
-    // On type change
-    $scope.$watch('att.type', function(newType, oldType) {
-      if ($scope.attId) {
-        // Look for necessary metadata
-        $scope.attData.type = newType
-        var metadataAttribute = netBundleManager.createAttributeMetaData(
-          $scope.networkData.g,
-          $scope.attData
-        )
-        var k
-        for (k in metadataAttribute) {
-          if ($scope.att[k] === undefined) {
-            $scope.att[k] = metadataAttribute[k]
-          }
-        }
-      }
-    })
-
     /// Functions
 
     function uploadParsingSuccess() {
@@ -268,12 +250,7 @@ angular
       $scope.g = bundle.g;
       dataLoader.set(bundle)
       $scope.networkData = bundle
-      console.log($scope.networkData);
-      // Can't find what this next line is for, commenting it until something crashes.
-      // $scope.networkData.loaded = true
-      $scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(
-        bundle.g
-      )
+      $scope.nodeAttributesIndex = bundle.nodeAttributesIndex;
       netBundleManager.ignored_node_attributes.forEach(function(d) {
         if ($scope.nodeAttributesIndex[d]) {
           delete $scope.nodeAttributesIndex[d]
@@ -288,6 +265,7 @@ angular
           delete $scope.edgeAttributesIndex[d]
         }
       })
+      $scope.loaded = true
       console.log('Edge attributes', $scope.edgeAttributesIndex)
       // It's possible, when loading an existing bundle, that some attributes registered in the
       // node attributes index or edge attribute index are not listed in the bundle.

@@ -55,9 +55,9 @@ angular
         $scope.stateOnSuspendLayout =
           $scope.startLayoutOnLoad === undefined || $scope.startLayoutOnLoad
 
-        $scope.$watch('networkData.loaded', function() {
-          console.log($scope.networkData);
-          if ($scope.networkData.loaded) {
+        $scope.$parent.$watch('loaded', function() {
+          console.log('coucou', $scope.networkData);
+          if ($scope.$parent.loaded) {
             $scope.g = $scope.networkData.g.copy()
             $scope.loaded = true
             $scope.nodesCount = $scope.g.order
@@ -482,6 +482,7 @@ angular
             settings.default_y = 0.5
 
             var container = document.getElementById('sigma-div')
+            console.log('container', container, $scope.g);
             if (!container) return
             container.innerHTML = ''
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
