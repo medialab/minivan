@@ -230,7 +230,9 @@
           "app.start"
         ])
 
-        .config(function($mdThemingProvider, $routeProvider) {
+        .config(function($mdThemingProvider, $routeProvider, $locationProvider) {
+          $locationProvider.hashPrefix('');
+
           // Route
           $routeProvider.otherwise({ redirectTo: "/" });
 

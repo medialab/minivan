@@ -21,7 +21,7 @@
     <md-button
       class="md-fab md-mini md-primary md-secondary"
       ng-if="isSelected"
-      ng-href="#!/partition/{{attributeId}}/modality/?m={{mod.value|encodeURIComponent}}&panel={{panel}}&bundle={{bundleLocation}}"
+      ng-href="#/partition/{{attributeId}}/modality/?m={{mod.value|encodeURIComponent}}&panel={{panel}}&bundle={{bundleLocation}}"
       ng-click="$event.stopPropagation();"
     >
       <md-icon>arrow_forward</md-icon>
@@ -98,7 +98,7 @@
       <md-button
         class="md-fab md-mini md-primary md-secondary"
         ng-if="isSelected"
-        ng-href="#!/partition/{{attributeId}}/modality/?m={{mod.value}}&panel={{panel}}&bundle={{bundleLocation}}"
+        ng-href="#/partition/{{attributeId}}/modality/?m={{mod.value}}&panel={{panel}}&bundle={{bundleLocation}}"
         ng-click="$event.stopPropagation();"
       >
         <md-icon>arrow_forward</md-icon>

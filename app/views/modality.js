@@ -45,7 +45,7 @@ angular
     $scope.$watch('networkData.loaded', function() {
       if ($scope.networkData.loaded) {
         $scope.attribute =
-          $scope.networkData.model.nodeAttributes[$routeParams.attribute]
+          $scope.networkData.nodeAttributesIndex[$routeParams.attribute]
         $scope.modality = Object.values($scope.attribute.modalities).filter(
           function(mod) {
             return mod.value == $location.search().m
