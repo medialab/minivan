@@ -265,7 +265,7 @@ angular
           delete $scope.edgeAttributesIndex[d]
         }
       })
-      $scope.loaded = true
+      $scope.networkData.loaded = true;
       console.log('Edge attributes', $scope.edgeAttributesIndex)
       // It's possible, when loading an existing bundle, that some attributes registered in the
       // node attributes index or edge attribute index are not listed in the bundle.

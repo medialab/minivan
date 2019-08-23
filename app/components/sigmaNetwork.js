@@ -4,7 +4,6 @@
 
 angular
   .module('app.components.sigmaNetworkComponent', [])
-
   .directive('sigmaNetwork', function(
     $timeout,
     dataLoader,
@@ -55,9 +54,8 @@ angular
         $scope.stateOnSuspendLayout =
           $scope.startLayoutOnLoad === undefined || $scope.startLayoutOnLoad
 
-        $scope.$parent.$watch('loaded', function() {
-          console.log('coucou', $scope.networkData);
-          if ($scope.$parent.loaded) {
+        $scope.$watch('networkData.loaded', function() {
+          if ($scope.networkData.loaded) {
             $scope.g = $scope.networkData.g.copy()
             $scope.loaded = true
             $scope.nodesCount = $scope.g.order
