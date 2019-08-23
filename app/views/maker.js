@@ -157,11 +157,11 @@ angular
       $scope.attData = attribute
       $scope.attId = attribute.id
       $scope.att = attribute
+      console.log($scope.networkData);
       $scope.originalAtt = angular.copy($scope.att)
     }
 
     $scope.editEdgeAttribute = function(attribute) {
-      console.log(attribute)
       $scope.attMode = 'edge'
       $scope.attData = $scope.edgeAttributesIndex[attribute.id]
       $scope.attId = attribute.id
@@ -212,13 +212,12 @@ angular
         undefined,
         $scope.colorPalettes[$scope.paletteIndex].settings
       )
-      $scope.att.modalities.forEach(function(mod, i) {
-        if (i < colors.length) {
-          mod.color = colors[i].toString()
-        } else {
-          mod.color = $scope.defaultColor
+      for (const key in $scope.att.modalities) {
+        if ($scope.att.modalities.hasOwnProperty(key)) {
+          const mod = $scope.att.modalities[key];
+          debugger
         }
-      })
+      }
     }
 
     /// Functions
@@ -275,8 +274,9 @@ angular
 
     // Parsing functions
     function parseUpload(data, fileName) {
-      if (!fileName) return false
-      var bundle_import
+      if (!fileName) {
+        return false
+      }
       if (fileName.substr(-5).toUpperCase() == '.GEXF') {
         var title = netBundleManager._toTitleCase(
           fileName
@@ -290,8 +290,9 @@ angular
         fileName.substr(-3).toUpperCase() == '.JS'
       ) {
         netBundleManager.parseBundle(JSON.parse(data), initBundle)
-      } else return false
-
+      } else {
+        return false
+      }
       return true
     }
   })

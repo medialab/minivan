@@ -319,6 +319,7 @@ angular
 
             // Node color
             var getNodeColor
+            console.log('hébé ?', $scope.nodeColorAttId);
             if ($scope.nodeColorAttId) {
               var nodeColorAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
@@ -329,7 +330,7 @@ angular
                 })
                 getNodeColor = function(nid) {
                   return (
-                    colorByModality[g.getNodeAttribute(nid, nodeColorAtt.id)] ||
+                    colorByModality[g.getNodeAttribute(nid, nodeColorAtt.name)] ||
                     '#000'
                   )
                 }
@@ -342,17 +343,25 @@ angular
                   nodeColorAtt.truncateScale
                 )
                 getNodeColor = function(nid) {
+                  console.log('surement des choses a faire ici à un momoent poto');
+                  console.log(
+                    colorScale(
+                      g.getNodeAttribute(nid, nodeColorAtt.id)
+                    ).toString()
+                  )
                   return colorScale(
                     g.getNodeAttribute(nid, nodeColorAtt.id)
                   ).toString()
                 }
               } else {
                 getNodeColor = function() {
+                  console.log('surement des choses a faire ici à un momoent poto');
                   return settings.default_node_color
                 }
               }
             } else {
               getNodeColor = function() {
+                console.log('surement des choses a faire ici à un momoent poto');
                 return settings.default_node_color
               }
             }
@@ -480,7 +489,6 @@ angular
             settings.default_y = 0.5
 
             var container = document.getElementById('sigma-div')
-            console.log('container', container, $scope.g);
             if (!container) return
             container.innerHTML = ''
             renderer = new Sigma.WebGLRenderer($scope.g, container, {

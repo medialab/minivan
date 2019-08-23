@@ -544,7 +544,6 @@ angular
 
     ns.getColors = function(count, randomSeed, settings) {
       console.log('hello ?')
-      debugger;
       settings = settings || {}
       settings.cmin = settings.cmin || 25.59
       settings.cmax = settings.cmax || 55.59

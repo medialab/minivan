@@ -373,16 +373,18 @@
         </div>
       </md-content>
       <md-content flex layout="column" style="padding: 48px 48px 48px 0px">
+        <h1>wesh</h1>
+        <h1>{{$scope.att}}</h1>
         <md-input-container>
           <label>Visualize as...</label>
-          <md-select ng-model="$parent.att.type">
+          <md-select ng-model="att.type">
             <md-option ng-value="undefined">
               <md-icon>visibility_off</md-icon>
               <em>Hidden</em>
             </md-option>
             <md-option
               value="partition"
-              ng-if="attData.dataType == 'string' || attData.dataType == 'integer'"
+              ng-if="(originalAtt.type == 'partition' || originalAtt.integer) && !originalAtt.integer"
             >
               <md-icon style="font-size: 20px; height: 20px"
                 >color_lens</md-icon
@@ -391,14 +393,14 @@
             </md-option>
             <md-option
               value="ranking-color"
-              ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
+              ng-if="originalAtt.type !== 'partition' || originalAtt.integer"
             >
               <md-icon style="font-size: 20px; height: 20px">gradient</md-icon>
               Color gradient
             </md-option>
             <md-option
               value="ranking-size"
-              ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
+              ng-if="originalAtt.type !== 'partition' || originalAtt.integer"
             >
               <md-icon
                 style="font-size: 20px; height: 20px"
