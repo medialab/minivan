@@ -10,8 +10,9 @@
     "defaultEdgeSize": "duration",
     "nodeAttributes": [
       {
-        "id": "classname",
-        "name": "Classname",
+        "slug": "classname",
+        "label": "Classname",
+        "key": "classname",
         "count": 236,
         "cardinality": 11,
         "type": "partition",
@@ -792,8 +793,9 @@
         }
       },
       {
-        "id": "gender",
-        "name": "Gender",
+        "slug": "gender",
+        "label": "Gender",
+        "key": "gender",
         "count": 236,
         "cardinality": 3,
         "type": "partition",
@@ -896,8 +898,6 @@
     ],
     "edgeAttributes": [
       {
-        "id": "duration",
-        "name": "Duration",
         "count": 5899,
         "type": "ranking-size",
         "integer": true,
@@ -907,11 +907,12 @@
           "min": 1,
           "max": 100,
           "interpolation": "pow-2"
-        }
+        },
+        "slug": "duration",
+        "label": "Duration",
+        "key": "duration"
       },
       {
-        "id": "count",
-        "name": "Count",
         "count": 5899,
         "type": "ranking-color",
         "integer": true,
@@ -919,11 +920,15 @@
         "max": 149,
         "colorScale": "interpolateYlOrBr",
         "invertScale": false,
-        "truncateScale": false
+        "truncateScale": false,
+        "slug": "count",
+        "label": "Count",
+        "key": "count"
       },
       {
-        "id": "gender-pair",
-        "name": "Gender Pair",
+        "slug": "gender-pair",
+        "label": "Gender Pair",
+        "key": "gender-pair",
         "count": 5899,
         "cardinality": 4,
         "type": "partition",
