@@ -542,41 +542,11 @@ angular
       else return 'string'
     }
 
-    ns.getColors = function(count, randomSeed, settings) {
-      console.log('hello ?')
-      settings = settings || {}
-      settings.cmin = settings.cmin || 25.59
-      settings.cmax = settings.cmax || 55.59
-      settings.lmin = settings.lmin || 60.94
-      settings.lmax = settings.lmax || 90.94
-
-      if (count == 0) {
-        return []
-      } else if (count == 1) {
-        return ['#666']
-      }
-      // Generate colors (as Chroma.js objects)
-      var colors = paletteGenerator.generate(
-        count, // Colors
-        function(color) {
-          // This function filters valid colors
-          var hcl = d3.hcl(color)
-          return (
-            hcl.c >= settings.cmin &&
-            hcl.c <= settings.cmax &&
-            hcl.l >= settings.lmin &&
-            hcl.l <= settings.lmax
-          )
-        },
-        false, // Using Force Vector instead of k-Means
-        50, // Steps (quality)
-        false, // Ultra precision
-        'Default', // Color distance type (colorblindness)
-        randomSeed // Random seed. Undefined = Math.random
-      )
-      // Sort colors by differenciation first
-      colors = paletteGenerator.diffSort(colors, 'Default')
-      return colors
+    ns.getColors = function(count, randomSeed = Math.random(), settings) {
+      return iwanthue(count, {
+        seed: randomSeed,
+        colorSpace: settings,
+      });
     }
 
     ns.colorScales = [

@@ -319,7 +319,6 @@ angular
 
             // Node color
             var getNodeColor
-            console.log('hébé ?', $scope.nodeColorAttId);
             if ($scope.nodeColorAttId) {
               var nodeColorAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
@@ -355,13 +354,11 @@ angular
                 }
               } else {
                 getNodeColor = function() {
-                  console.log('surement des choses a faire ici à un momoent poto');
                   return settings.default_node_color
                 }
               }
             } else {
               getNodeColor = function() {
-                console.log('surement des choses a faire ici à un momoent poto');
                 return settings.default_node_color
               }
             }

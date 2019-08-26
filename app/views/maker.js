@@ -153,11 +153,11 @@ angular
     }
 
     $scope.editNodeAttribute = function(attribute) {
+      console.log('editNodeAttribute');
       $scope.attMode = 'node'
       $scope.attData = attribute
       $scope.attId = attribute.id
       $scope.att = attribute
-      console.log($scope.networkData);
       $scope.originalAtt = angular.copy($scope.att)
     }
 
@@ -208,20 +208,16 @@ angular
 
     $scope.repaint = function() {
       var colors = netBundleManager.getColors(
-        Math.min($scope.maxColors, $scope.att.modalities.length),
+        Math.min($scope.maxColors, Object.keys($scope.att.modalities).length),
         undefined,
         $scope.colorPalettes[$scope.paletteIndex].settings
       )
-      for (const key in $scope.att.modalities) {
-        if ($scope.att.modalities.hasOwnProperty(key)) {
-          const mod = $scope.att.modalities[key];
-          debugger
-        }
-      }
+      Object.keys($scope.att.modalities).forEach(function (key, i) {
+        $scope.att.modalities[key].color = colors[i];
+      });
     }
 
     /// Functions
-
     function uploadParsingSuccess() {
       $scope.uploadingMessage = ''
       $scope.uploadingDropClass = ''
@@ -255,7 +251,6 @@ angular
           delete $scope.nodeAttributesIndex[d]
         }
       })
-      console.log('Node attributes', $scope.nodeAttributesIndex)
       $scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(
         bundle.g
       )
@@ -265,7 +260,7 @@ angular
         }
       })
       $scope.networkData.loaded = true;
-      console.log('Edge attributes', $scope.edgeAttributesIndex)
+      console.log('Edge attributes', $scope.networkData, $scope.edgeAttributesIndex)
       // It's possible, when loading an existing bundle, that some attributes registered in the
       // node attributes index or edge attribute index are not listed in the bundle.
       // This may cause some issues, so we create them with no type, as this means that
