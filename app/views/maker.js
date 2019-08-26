@@ -251,9 +251,7 @@ angular
           delete $scope.nodeAttributesIndex[d]
         }
       })
-      $scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(
-        bundle.g
-      )
+      $scope.edgeAttributesIndex = bundle.edgeAttributesIndex;
       netBundleManager.ignored_edge_attributes.forEach(function(d) {
         if ($scope.edgeAttributesIndex[d]) {
           delete $scope.edgeAttributesIndex[d]

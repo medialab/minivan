@@ -342,14 +342,8 @@ angular
                   nodeColorAtt.truncateScale
                 )
                 getNodeColor = function(nid) {
-                  console.log('surement des choses a faire ici à un momoent poto');
-                  console.log(
-                    colorScale(
-                      g.getNodeAttribute(nid, nodeColorAtt.id)
-                    ).toString()
-                  )
                   return colorScale(
-                    g.getNodeAttribute(nid, nodeColorAtt.id)
+                    g.getNodeAttribute(nid, nodeColorAtt.name)
                   ).toString()
                 }
               } else {
@@ -416,7 +410,7 @@ angular
                 )
                 getEdgeColor = function(eid) {
                   return edgeColorScale(
-                    g.getEdgeAttribute(eid, edgeColorAtt.id)
+                    g.getEdgeAttribute(eid, edgeColorAtt.name)
                   ).toString()
                 }
               } else {
