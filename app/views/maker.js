@@ -219,6 +219,7 @@ angular
 
     /// Functions
     function uploadParsingSuccess() {
+      console.log('mais c fou', $scope.networkData.g.getNodeAttributes('142'))
       $scope.uploadingMessage = ''
       $scope.uploadingDropClass = ''
       $scope.$apply()
@@ -246,17 +247,7 @@ angular
       dataLoader.set(bundle)
       $scope.networkData = bundle
       $scope.nodeAttributesIndex = bundle.nodeAttributesIndex;
-      netBundleManager.ignored_node_attributes.forEach(function(d) {
-        if ($scope.nodeAttributesIndex[d]) {
-          delete $scope.nodeAttributesIndex[d]
-        }
-      })
       $scope.edgeAttributesIndex = bundle.edgeAttributesIndex;
-      netBundleManager.ignored_edge_attributes.forEach(function(d) {
-        if ($scope.edgeAttributesIndex[d]) {
-          delete $scope.edgeAttributesIndex[d]
-        }
-      })
       $scope.networkData.loaded = true;
       console.log('Edge attributes', $scope.networkData, $scope.edgeAttributesIndex)
       // It's possible, when loading an existing bundle, that some attributes registered in the

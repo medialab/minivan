@@ -42,88 +42,7 @@ angular
       }
     }
 
-    ns.importBundle = function(fileLocation, callback, verbose) {
-      $http.get(fileLocation).then(
-        function(r) {
-          ns.parseBundle(r.data, callback, verbose)
-        },
-        function(e) {
-          console.error(
-            'Error loading file at location:',
-            fileLocation,
-            '\n',
-            e
-          )
-        }
-      )
-    }
-
-    ns.parseBundle = function(bundle, callback, verbose) {
-      var deserializedGraph = new Graph(bundle.settings || {})
-      deserializedGraph.import(bundle.graph)
-      bundle.g = deserializedGraph
-
-      // BEWARE: [new-bundle]: overloading attributes not to change
-      // the current code semantics too much
-      // Basically, we went from the sometimes problematic id,name couple
-      // to the unambiguous key,label,slug trio
-      bundle.model.nodeAttributes.forEach(function(attr) {
-        attr.id = attr.key
-        attr.name = attr.label
-      })
-      bundle.model.edgeAttributes.forEach(function(attr) {
-        attr.id = attr.key
-        attr.name = attr.label
-      })
-
-      // Build attributes indexes
-      // TODO: [new-bundle] overloading bundle could be problematic
-      bundle.nodeAttributesIndex = {}
-      bundle.model.nodeAttributes.forEach(function(d) {
-        bundle.nodeAttributesIndex[d.id] = d
-      })
-      bundle.edgeAttributesIndex = {}
-      bundle.model.edgeAttributes.forEach(function(d) {
-        bundle.edgeAttributesIndex[d.id] = d
-      })
-
-      // TODO: [new-bundle] probably need to update that
-      if (!bundle.consolidated) {
-        // Consolidate (indexes...)
-        ns.consolidateBundle(bundle)
-      }
-      
-      callback(bundle)
-    }
-
-    ns.importGEXF = function(fileLocation, callback, verbose) {
-      $http.get(fileLocation).then(
-        function(r) {
-          var title = ns._toTitleCase(
-            fileLocation
-              .substring(fileLocation.lastIndexOf('/') + 1)
-              .replace(/\..*/gi, '')
-          )
-          ns.parseGEXF(r.data, title, callback, verbose)
-        },
-        function() {
-          console.error('Error loading file at location:', fileLocation)
-        }
-      )
-    }
-
-    // ns.handleBadGraph = function (graph) {
-    //   graph.forEachNode(function (node) {
-    //     if (!graph.getNodeAttribute(node, 'x')) {
-    //       graph.setNodeAttribute(node, 'x', Math.random() * 10)
-    //     }
-    //     if (!graph.getNodeAttribute(node, 'y')) {
-    //       graph.setNodeAttribute(node, 'y', Math.random() * 10)
-    //     }
-    //   });
-    // }
-
-    ns._addMissingVisualizationData = function(g) {
+    function _addMissingVisualizationData(g) {
       var settings = {}
       settings.node_default_color = '#665'
       settings.edge_default_color = '#CCC9C9'
@@ -199,17 +118,109 @@ angular
       }
     }
 
+    function fromOldFormat (bundle) {
+      // BEWARE: [new-bundle]: overloading attributes not to change
+      // the current code semantics too much
+      // Basically, we went from the sometimes problematic id,name couple
+      // to the unambiguous key,label,slug trio
+      bundle.model.nodeAttributes.forEach(function(attr) {
+        attr.id = attr.key
+        attr.name = attr.label
+      })
+      bundle.model.edgeAttributes.forEach(function(attr) {
+        attr.id = attr.key
+        attr.name = attr.label
+      })
+    };
+
+    function buildIndexes (bundle) {
+      // Build attributes indexes
+      // TODO: [new-bundle] overloading bundle could be problematic
+      bundle.nodeAttributesIndex = {}
+      bundle.model.nodeAttributes.forEach(function(d) {
+        bundle.nodeAttributesIndex[d.id] = d
+      })
+      bundle.edgeAttributesIndex = {}
+      bundle.model.edgeAttributes.forEach(function(d) {
+        bundle.edgeAttributesIndex[d.id] = d
+      })
+    }
+
+    ns.importBundle = function(fileLocation, callback, verbose) {
+      $http.get(fileLocation).then(
+        function(r) {
+          ns.parseBundle(r.data, callback, verbose)
+        },
+        function(e) {
+          console.error(
+            'Error loading file at location:',
+            fileLocation,
+            '\n',
+            e
+          )
+        }
+      )
+    }
+    
+    function uglyReinforce (graph, bundle) {
+      graph.forEachNode(function (nid) {
+        var n = graph.getNodeAttributes(nid);
+        for (let index = 0; index < bundle.model.nodeAttributes.length; index++) {
+          const nodeAttribute = bundle.model.nodeAttributes[index];
+          if (!(nodeAttribute.key in n)) {
+            if (nodeAttribute.type === 'partition') {
+              debugger;
+            } else {
+              n[nodeAttribute.key] = 0;
+            }
+          }
+        }
+      });
+    }
+
+    ns.parseBundle = function(bundle, callback, verbose) {
+      var deserializedGraph = new Graph(bundle.settings || {})
+      deserializedGraph.import(bundle.graph)
+      bundle.g = deserializedGraph
+      _addMissingVisualizationData(g);
+      fromOldFormat(bundle);
+      buildIndexes(bundle);
+
+      // TODO: [new-bundle] probably need to update that
+      if (!bundle.consolidated) {
+        // Consolidate (indexes...)
+        ns.consolidateBundle(bundle)
+      }
+      
+      callback(bundle)
+    }
+
+    ns.importGEXF = function(fileLocation, callback, verbose) {
+      $http.get(fileLocation).then(
+        function(r) {
+          var title = ns._toTitleCase(
+            fileLocation
+              .substring(fileLocation.lastIndexOf('/') + 1)
+              .replace(/\..*/gi, '')
+          )
+          ns.parseGEXF(r.data, title, callback, verbose)
+        },
+        function() {
+          console.error('Error loading file at location:', fileLocation)
+        }
+      )
+    }
+
     ns.parseGEXF = function(data, title, callback, verbose) {
       var graph = Graph.library.gexf.parse(Graph, data)
-
-      ns._addMissingVisualizationData(graph);
+      _addMissingVisualizationData(graph);
       window.graph = graph;
-
       var bundle = minivan.buildBundle(graph, {
         title: title
-      })
-
-      console.log(bundle);
+      });
+      fromOldFormat(bundle);
+      buildIndexes(bundle);
+      uglyReinforce(graph, bundle)
 
       bundle.g = graph
       // Add default attributes when necessary
@@ -231,16 +242,6 @@ angular
       )
       ns.setBundleAttribute(bundle, 'bundleVersion', ns.bundleVersion, verbose)
 
-      // Set default node and edges size and color (for Home page)
-      bundle.nodeAttributesIndex = {}
-      bundle.model.nodeAttributes.forEach(function(d) {
-        bundle.nodeAttributesIndex[d.id] = d
-      })
-      bundle.edgeAttributesIndex = {}
-      bundle.model.edgeAttributes.forEach(function(d) {
-        bundle.edgeAttributesIndex[d.id] = d
-      })
-
       // Consolidate (indexes...)
       callback(bundle)
     }
@@ -250,325 +251,10 @@ angular
       return angular.toJson(cleanBundle, null, '\t')
     }
 
-    ns.slugify = function(str) {
-      str = str.replace(/^\s+|\s+$/g, '') // trim
-      str = str.toLowerCase()
-
-      // remove accents, swap ñ for n, etc
-      var from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;'
-      var to = 'aaaaeeeeiiiioooouuuunc------'
-      for (var i = 0, l = from.length; i < l; i++) {
-        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i))
-      }
-
-      str = str
-        .replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-') // collapse dashes
-
-      return str
-    }
-
-    ns.nodeAttributeNames = {}
-
-    ns.buildNodeAttributesIndex = function(g) {
-      console.log('mdr non ?');
-      // FIXME: Slugify from Graphology directly if possible
-      // Determine the slugs
-      var slugIndex = {}
-      ns.nodeAttributeNames = {}
-      g.nodes().forEach(function(nid) {
-        var n = g.getNodeAttributes(nid)
-        console.log(n);
-        d3.keys(n).forEach(function(k) {
-          if (slugIndex[k] === undefined) {
-            var slug = ns.slugify(k)
-            console.log('avant:', k, 'après:', slug);
-            while (ns.nodeAttributeNames[slug]) {
-              // Detect collision
-              slug = slug + '-'
-            }
-            slugIndex[k] = slug
-            ns.nodeAttributeNames[slug] = ns._toTitleCase(k)
-          }
-        })
-      })
-
-      // Replace node attributes with slugs
-      g.nodes().forEach(function(nid) {
-        var n = g.getNodeAttributes(nid)
-        var n2 = {}
-        d3.keys(n).forEach(function(k) {
-          n2[slugIndex[k]] = n[k]
-        })
-        d3.keys(n).forEach(function(k) {
-          g.removeNodeAttribute(nid, k)
-        })
-        d3.keys(n2).forEach(function(sk) {
-          g.setNodeAttribute(nid, sk, n2[sk])
-        })
-      })
-
-      // Index all node attributes from GEXF
-      var nodeAttributesIndex = {}
-      g.nodes().forEach(function(nid) {
-        var n = g.getNodeAttributes(nid)
-        d3.keys(n).forEach(function(k) {
-          if (nodeAttributesIndex[k]) {
-            nodeAttributesIndex[k].count++
-          } else {
-            nodeAttributesIndex[k] = { count: 1 }
-          }
-        })
-      })
-
-      // Analyze the data of each node attribute
-      d3.keys(nodeAttributesIndex).forEach(function(k) {
-        var attData = nodeAttributesIndex[k]
-        if (ns.ignored_node_attributes.indexOf(k) >= 0) {
-          attData.type = 'ignore'
-          return
-        }
-
-        // Gather variable types from the nodes
-        attData.modalityTypes = {}
-        g.nodes().forEach(function(nid) {
-          var t = ns._getType(g.getNodeAttribute(nid, k))
-          attData.modalityTypes[t] = (attData.modalityTypes[t] || 0) + 1
-        })
-      })
-      ns._analyseAttributeIndex(
-        g,
-        g.nodes().map(function(nid) {
-          return g.getNodeAttributes(nid)
-        }),
-        nodeAttributesIndex,
-        ns.ignored_node_attributes
-      )
-      return nodeAttributesIndex
-    }
-
-    ns.edgeAttributeNames = {}
-
-    ns._analyseAttributeIndex = function(
-      g,
-      items,
-      attributesIndex,
-      ignored_attributes
-    ) {
-      d3.keys(attributesIndex).forEach(function(k) {
-        var attData = attributesIndex[k]
-        if (ignored_attributes.indexOf(k) >= 0) {
-          attData.type = 'ignore'
-          return
-        }
-
-        // Infer a data type
-        if (attData.modalityTypes.string !== undefined) {
-          attData.dataType = 'string'
-        } else if (attData.modalityTypes.float !== undefined) {
-          attData.dataType = 'float'
-        } else if (attData.modalityTypes.integer !== undefined) {
-          attData.dataType = 'integer'
-        } else {
-          attData.dataType = 'error'
-        }
-
-        // Aggregate the distribution of modalities
-        attData.modalities = {}
-        items.forEach(function(item) {
-          var v = item[k]
-          attData.modalities[v] = (attData.modalities[v] || 0) + 1
-        })
-
-        // Build stats for the distribution
-        attData.stats = {}
-        var modalityCountsArray = d3.values(attData.modalities)
-        attData.stats.differentModalities = modalityCountsArray.length
-        attData.stats.sizeOfSmallestModality = d3.min(modalityCountsArray)
-        attData.stats.sizeOfBiggestModality = d3.max(modalityCountsArray)
-        attData.stats.medianSize = d3.median(modalityCountsArray)
-        attData.stats.deviation = d3.deviation(modalityCountsArray)
-        attData.stats.modalitiesUnitary = modalityCountsArray.filter(function(
-          d
-        ) {
-          return d == 1
-        }).length
-        attData.stats.modalitiesAbove1Percent = modalityCountsArray.filter(
-          function(d) {
-            return d >= g.order * 0.01
-          }
-        ).length
-        attData.stats.modalitiesAbove10Percent = modalityCountsArray.filter(
-          function(d) {
-            return d >= g.order * 0.1
-          }
-        ).length
-
-        // Decide what how the attribute should be visualized
-        if (attData.dataType == 'string') {
-          if (
-            attData.stats.modalitiesAbove10Percent == 0 ||
-            attData.stats.differentModalities < 2 ||
-            attData.stats.differentModalities == g.order
-          ) {
-            attData.type = 'ignore'
-          } else {
-            attData.type = 'partition'
-          }
-        } else if (attData.dataType == 'float') {
-          attData.type = 'ranking-size'
-        } else if (attData.dataType == 'integer') {
-          attData.type = 'ranking-size'
-        } else {
-          attData.type = 'ignore'
-        }
-      })
-    }
-
-    ns.createAttributeMetaData = function(g, attData) {
-      debugger
-      var settings = {}
-      settings.max_colors = 10
-      settings.min_proportion_for_a_color = 0.01
-      settings.default_color = '#AAA'
-      settings.min_node_size = 10
-      settings.max_node_size = 100
-
-      if (attData.type == 'ignore') {
-        return
-      } else {
-        var att = {}
-        if (attData.type == 'partition') {
-          // Default settings for partition
-          att.modalities = d3.keys(attData.modalities).map(function(m) {
-            return {
-              value: m,
-              count: attData.modalities[m]
-            }
-          })
-          var colors = ns.getColors(
-            Math.min(
-              settings.max_colors,
-              att.modalities.filter(function(m) {
-                return m.count / g.order >= settings.min_proportion_for_a_color
-              }).length
-            ),
-            att.id // random seed
-          )
-          att.modalities.sort(function(a, b) {
-            return b.count - a.count
-          })
-          att.modalities.forEach(function(m, i) {
-            m.color = (colors[i] || settings.default_color).toString()
-            debugger
-          })
-        } else if (attData.type == 'ranking-color') {
-          var extent = d3.extent(d3.keys(attData.modalities), function(d) {
-            return +d
-          })
-          att.min = extent[0]
-          att.max = extent[1]
-          att.colorScale = 'interpolateGreys'
-          att.invertScale = false
-          att.truncateScale = true
-        } else if (attData.type == 'ranking-size') {
-          var extent = d3.extent(d3.keys(attData.modalities), function(d) {
-            return +d
-          })
-          att.min = extent[0]
-          att.max = extent[1]
-          att.areaScaling = {
-            min: settings.min_node_size,
-            max: settings.max_node_size,
-            interpolation: 'linear'
-          }
-        }
-        return att
-      }
-    }
-
-    ns._setDefaultAttributes = function(bundle) {
-      // Is there a node attribute partition?
-      bundle.model.nodeAttributes.some(function(na) {
-        if (na.type == 'partition') {
-          bundle.model.defaultNodeColor = na.id
-          return true
-        } else return false
-      })
-      // If not, is there a ranking-color?
-      if (!bundle.model.defaultNodeColor) {
-        bundle.model.nodeAttributes.some(function(na) {
-          if (na.type == 'ranking-color') {
-            bundle.model.defaultNodeColor = na.id
-            return true
-          } else return false
-        })
-      }
-
-      // Is there a node attribute ranking-size?
-      bundle.model.nodeAttributes.some(function(na) {
-        if (na.type == 'ranking-size') {
-          bundle.model.defaultNodeSize = na.id
-          return true
-        } else return false
-      })
-
-      // If no node color, look for edge colors
-      // (we do not want too much color)
-      if (!bundle.model.defaultNodeColor) {
-        // Is there an edge attribute partition?
-        bundle.model.edgeAttributes.some(function(ea) {
-          if (ea.type == 'partition') {
-            bundle.model.defaultEdgeColor = ea.id
-            return true
-          } else return false
-        })
-
-        // If not, is there a ranking-color?
-        if (!bundle.model.defaultEdgeColor) {
-          bundle.model.edgeAttributes.some(function(ea) {
-            if (ea.type == 'ranking-color') {
-              bundle.model.defaultEdgeColor = ea.id
-              return true
-            } else return false
-          })
-        }
-      }
-
-      // Is there an edge attribute ranking-size?
-      bundle.model.edgeAttributes.some(function(ea) {
-        if (ea.type == 'ranking-size') {
-          bundle.model.defaultEdgeSize = ea.id
-          return true
-        } else return false
-      })
-    }
-
     ns._toTitleCase = function(str) {
       return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
       })
-    }
-
-    ns._getType = function(str) {
-      // Adapted from http://stackoverflow.com/questions/16775547/javascript-guess-data-type-from-string
-      if (str === undefined) str = 'undefined'
-      if (typeof str !== 'string') str = str.toString()
-      var nan = isNaN(Number(str))
-      var isfloat = /^\d*(\.|,)\d*$/
-      var commaFloat = /^(\d{0,3}(,)?)+\.\d*$/
-      var dotFloat = /^(\d{0,3}(\.)?)+,\d*$/
-      if (!nan) {
-        if (parseFloat(str) === parseInt(str)) return 'integer'
-        else return 'float'
-      } else if (
-        isfloat.test(str) ||
-        commaFloat.test(str) ||
-        dotFloat.test(str)
-      )
-        return 'float'
-      else return 'string'
     }
 
     ns.getColors = function(count, randomSeed = Math.random(), settings) {

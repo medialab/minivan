@@ -319,14 +319,11 @@ angular
 
             // Node color
             var getNodeColor
-            console.log('toujours', $scope.nodeColorAttId);
             if ($scope.nodeColorAttId) {
               var nodeColorAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
               if (nodeColorAtt.type == 'partition') {
                 getNodeColor = function(nid) {
-                  console.log(g.getNodeAttributes(nid), nodeColorAtt.name, nid);
-                  console.log('hében', nodeColorAtt.modalities[`${g.getNodeAttribute(nid, nodeColorAtt.name)}`])
                   return (
                     nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.name)].color ||
                     '#000'
@@ -477,7 +474,6 @@ angular
             var container = document.getElementById('sigma-div')
             if (!container) return
             container.innerHTML = ''
-            console.log($scope.g);
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: 'Quicksand',
               labelWeight: '400',
