@@ -319,17 +319,16 @@ angular
 
             // Node color
             var getNodeColor
+            console.log('toujours', $scope.nodeColorAttId);
             if ($scope.nodeColorAttId) {
               var nodeColorAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
               if (nodeColorAtt.type == 'partition') {
-                var colorByModality = {}
-                Object.values(nodeColorAtt.modalities).forEach(function(m) {
-                  colorByModality[m.value] = m.color
-                })
                 getNodeColor = function(nid) {
+                  console.log(g.getNodeAttributes(nid), nodeColorAtt.name, nid);
+                  console.log('hében', nodeColorAtt.modalities[`${g.getNodeAttribute(nid, nodeColorAtt.name)}`])
                   return (
-                    colorByModality[g.getNodeAttribute(nid, nodeColorAtt.name)] ||
+                    nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.name)].color ||
                     '#000'
                   )
                 }
@@ -352,7 +351,7 @@ angular
                 }
               }
             } else {
-              getNodeColor = function() {
+              getNodeColor = function(koi) {
                 return settings.default_node_color
               }
             }
@@ -390,13 +389,9 @@ angular
               var edgeColorAtt =
                 $scope.networkData.edgeAttributesIndex[$scope.edgeColorAttId]
               if (edgeColorAtt.type == 'partition') {
-                var colorByModality = {}
-                edgeColorAtt.modalities.forEach(function(m) {
-                  colorByModality[m.value] = m.color
-                })
                 getEdgeColor = function(eid) {
                   return (
-                    colorByModality[g.getEdgeAttribute(eid, edgeColorAtt.id)] ||
+                    edgeColorAtt.modalities[g.getEdgeAttribute(eid, edgeColorAtt.name)].color ||
                     '#000'
                   )
                 }
@@ -482,6 +477,7 @@ angular
             var container = document.getElementById('sigma-div')
             if (!container) return
             container.innerHTML = ''
+            console.log($scope.g);
             renderer = new Sigma.WebGLRenderer($scope.g, container, {
               labelFont: 'Quicksand',
               labelWeight: '400',

@@ -99,12 +99,104 @@ angular
       )
     }
 
+    // ns.handleBadGraph = function (graph) {
+    //   graph.forEachNode(function (node) {
+    //     if (!graph.getNodeAttribute(node, 'x')) {
+    //       graph.setNodeAttribute(node, 'x', Math.random() * 10)
+    //     }
+    //     if (!graph.getNodeAttribute(node, 'y')) {
+    //       graph.setNodeAttribute(node, 'y', Math.random() * 10)
+    //     }
+    //   });
+    // }
+
+    ns._addMissingVisualizationData = function(g) {
+      var settings = {}
+      settings.node_default_color = '#665'
+      settings.edge_default_color = '#CCC9C9'
+
+      // Nodes
+      var colorIssues = 0
+      var coordinateIssues = 0
+      g.forEachNode(function(nid) {
+        var n = g.getNodeAttributes(nid)
+        if (!isNumeric(n.x) || !isNumeric(n.y)) {
+          var c = getRandomCoordinates()
+          n.x = c[0]
+          n.y = c[1]
+          coordinateIssues++
+        }
+        if (!isNumeric(n.size) || n.size == 0) {
+          n.size = 1
+        }
+        if (n.color == undefined) {
+          n.color = settings.node_default_color
+          colorIssues++
+        }
+      })
+
+      if (coordinateIssues > 0) {
+        console.warn(
+          'Note: ' +
+            coordinateIssues +
+            ' nodes had coordinate issues. We set them to a random position.'
+        )
+      }
+
+      if (colorIssues > 0) {
+        console.warn(
+          'Note: ' +
+            colorIssues +
+            ' nodes had no color. We colored them to a default value.'
+        )
+      }
+
+      colorIssues = 0
+      g.edges().forEach(function(eid) {
+        var e = g.getEdgeAttributes(eid)
+        if (e.color == undefined) {
+          e.color = settings.edge_default_color
+          colorIssues++
+        }
+      })
+
+      if (colorIssues > 0) {
+        console.warn(
+          'Note: ' +
+            colorIssues +
+            ' edges had no color. We colored them to a default value.'
+        )
+      }
+
+      function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n)
+      }
+
+      function getRandomCoordinates() {
+        var candidates
+        var d2 = Infinity
+        while (d2 > 1) {
+          candidates = [2 * Math.random() - 1, 2 * Math.random() - 1]
+          d2 = candidates[0] * candidates[0] + candidates[1] * candidates[1]
+        }
+        var heuristicRatio = 5 * Math.sqrt(g.order)
+        return candidates.map(function(d) {
+          return d * heuristicRatio
+        })
+      }
+    }
+
     ns.parseGEXF = function(data, title, callback, verbose) {
       var graph = Graph.library.gexf.parse(Graph, data)
+
+      ns._addMissingVisualizationData(graph);
+      window.graph = graph;
 
       var bundle = minivan.buildBundle(graph, {
         title: title
       })
+
+      console.log(bundle);
 
       bundle.g = graph
       // Add default attributes when necessary
@@ -127,8 +219,6 @@ angular
       ns.setBundleAttribute(bundle, 'bundleVersion', ns.bundleVersion, verbose)
 
       // Set default node and edges size and color (for Home page)
-      ns._setDefaultAttributes(bundle)
-      
       bundle.nodeAttributesIndex = {}
       bundle.model.nodeAttributes.forEach(function(d) {
         bundle.nodeAttributesIndex[d.id] = d
