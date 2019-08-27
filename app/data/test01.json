@@ -11,8 +11,6 @@
     "defaultEdgeSize": "count",
     "nodeAttributes": [
       {
-        "id": "indegree",
-        "name": "Indegree",
         "count": 254,
         "type": "ranking-size",
         "integer": true,
@@ -22,11 +20,15 @@
           "min": 10,
           "max": 100,
           "interpolation": "linear"
-        }
+        },
+        "slug": "indegree",
+        "label": "Indegree",
+        "key": "indegree"
       },
       {
-        "id": "country",
-        "name": "Country",
+        "slug": "country",
+        "label": "Country",
+        "key": "country",
         "count": 254,
         "cardinality": 7,
         "type": "partition",
@@ -387,8 +389,9 @@
         }
       },
       {
-        "id": "branch",
-        "name": "Branch",
+        "slug": "branch",
+        "label": "Branch",
+        "key": "branch",
         "count": 254,
         "cardinality": 4,
         "type": "partition",
@@ -539,8 +542,9 @@
         }
       },
       {
-        "id": "design-user-research",
-        "name": "Design/user Research",
+        "slug": "design-user-research",
+        "label": "Design/user Research",
+        "key": "design-user-research",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -641,8 +645,9 @@
         }
       },
       {
-        "id": "digital-design",
-        "name": "Digital Design",
+        "slug": "digital-design",
+        "label": "Digital Design",
+        "key": "digital-design",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -743,8 +748,9 @@
         }
       },
       {
-        "id": "experience-design",
-        "name": "Experience Design",
+        "slug": "experience-design",
+        "label": "Experience Design",
+        "key": "experience-design",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -845,8 +851,9 @@
         }
       },
       {
-        "id": "graphic-and-visual-design",
-        "name": "Graphic And Visual Design",
+        "slug": "graphic-and-visual-design",
+        "label": "Graphic And Visual Design",
+        "key": "graphic-and-visual-design",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -947,8 +954,9 @@
         }
       },
       {
-        "id": "management-facilitation-of-development-processes",
-        "name": "Management/facilitation Of Development Processes",
+        "slug": "management-facilitation-of-development-processes",
+        "label": "Management/facilitation Of Development Processes",
+        "key": "management-facilitation-of-development-processes",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -1049,8 +1057,9 @@
         }
       },
       {
-        "id": "product-development",
-        "name": "Product Development",
+        "slug": "product-development",
+        "label": "Product Development",
+        "key": "product-development",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -1151,8 +1160,9 @@
         }
       },
       {
-        "id": "service-design",
-        "name": "Service Design",
+        "slug": "service-design",
+        "label": "Service Design",
+        "key": "service-design",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -1253,8 +1263,9 @@
         }
       },
       {
-        "id": "strategic-design",
-        "name": "Strategic Design",
+        "slug": "strategic-design",
+        "label": "Strategic Design",
+        "key": "strategic-design",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -1355,8 +1366,9 @@
         }
       },
       {
-        "id": "styling-formgiving-of-products-physical-tactile-appearance",
-        "name": "Styling/formgiving Of Products (Physical/tactile Appearance)",
+        "slug": "styling-formgiving-of-products-physical-tactile-appearance",
+        "label": "Styling/formgiving Of Products (Physical/tactile Appearance)",
+        "key": "styling-formgiving-of-products-physical-tactile-appearance",
         "count": 254,
         "cardinality": 3,
         "type": "partition",
@@ -1457,8 +1469,9 @@
         }
       },
       {
-        "id": "discipline",
-        "name": "Discipline",
+        "slug": "discipline",
+        "label": "Discipline",
+        "key": "discipline",
         "count": 254,
         "cardinality": 9,
         "type": "partition",
@@ -2009,8 +2022,6 @@
         }
       },
       {
-        "id": "eccentricity",
-        "name": "Eccentricity",
         "count": 254,
         "type": "ranking-color",
         "integer": true,
@@ -2018,11 +2029,12 @@
         "max": 6,
         "colorScale": "interpolateYlGnBu",
         "invertScale": false,
-        "truncateScale": true
+        "truncateScale": true,
+        "slug": "eccentricity",
+        "label": "Eccentricity",
+        "key": "eccentricity"
       },
       {
-        "id": "closnesscentrality",
-        "name": "Closnesscentrality",
         "count": 254,
         "type": "ranking-color",
         "integer": false,
@@ -2030,11 +2042,12 @@
         "max": 1,
         "colorScale": "interpolateYlGnBu",
         "invertScale": true,
-        "truncateScale": true
+        "truncateScale": true,
+        "slug": "closnesscentrality",
+        "label": "Closnesscentrality",
+        "key": "closnesscentrality"
       },
       {
-        "id": "harmonicclosnesscentrality",
-        "name": "Harmonicclosnesscentrality",
         "count": 254,
         "type": "ranking-size",
         "integer": false,
@@ -2044,11 +2057,12 @@
           "min": 10,
           "max": 100,
           "interpolation": "linear"
-        }
+        },
+        "slug": "harmonicclosnesscentrality",
+        "label": "Harmonicclosnesscentrality",
+        "key": "harmonicclosnesscentrality"
       },
       {
-        "id": "betweenesscentrality",
-        "name": "Betweenesscentrality",
         "count": 254,
         "type": "ranking-size",
         "integer": false,
@@ -2058,11 +2072,12 @@
           "min": 10,
           "max": 100,
           "interpolation": "linear"
-        }
+        },
+        "slug": "betweenesscentrality",
+        "label": "Betweenesscentrality",
+        "key": "betweenesscentrality"
       },
       {
-        "id": "pageranks",
-        "name": "Pageranks",
         "count": 254,
         "type": "ranking-size",
         "integer": false,
@@ -2072,13 +2087,14 @@
           "min": 10,
           "max": 100,
           "interpolation": "linear"
-        }
+        },
+        "slug": "pageranks",
+        "label": "Pageranks",
+        "key": "pageranks"
       }
     ],
     "edgeAttributes": [
       {
-        "id": "count",
-        "name": "Count",
         "count": 1201,
         "type": "ranking-size",
         "integer": true,
@@ -2087,6 +2103,9 @@
           "max": 100,
           "interpolation": "linear"
         },
+        "slug": "count",
+        "label": "Count",
+        "key": "count",
         "min": 1,
         "max": 5763
       }

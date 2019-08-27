@@ -11,8 +11,6 @@
     "defaultEdgeSize": "count",
     "nodeAttributes": [
       {
-        "id": "indegree",
-        "name": "Indegree",
         "count": 106,
         "type": "ranking-size",
         "integer": true,
@@ -22,11 +20,15 @@
           "min": 10,
           "max": 30,
           "interpolation": "linear"
-        }
+        },
+        "slug": "indegree",
+        "label": "Indegree",
+        "key": "indegree"
       },
       {
-        "id": "list",
-        "name": "Starting List",
+        "slug": "list",
+        "label": "Starting List",
+        "key": "list",
         "count": 106,
         "cardinality": 3,
         "type": "partition",
@@ -127,8 +129,9 @@
         }
       },
       {
-        "id": "pareto-power-law-extended",
-        "name": "Pareto Power Law Extended",
+        "slug": "pareto-power-law-extended",
+        "label": "Pareto Power Law Extended",
+        "key": "pareto-power-law-extended",
         "count": 106,
         "cardinality": 2,
         "type": "partition",
@@ -189,8 +192,9 @@
         }
       },
       {
-        "id": "network-science-extended",
-        "name": "Network Science Extended",
+        "slug": "network-science-extended",
+        "label": "Network Science Extended",
+        "key": "network-science-extended",
         "count": 106,
         "cardinality": 2,
         "type": "partition",
@@ -251,8 +255,9 @@
         }
       },
       {
-        "id": "bridge-ppl-to-ns",
-        "name": "Bridge PPL => NS",
+        "slug": "bridge-ppl-to-ns",
+        "label": "Bridge PPL => NS",
+        "key": "bridge-ppl-to-ns",
         "count": 106,
         "cardinality": 2,
         "type": "partition",
@@ -313,8 +318,9 @@
         }
       },
       {
-        "id": "bridge-ns-to-ppl",
-        "name": "Bridge NS => PPL",
+        "slug": "bridge-ns-to-ppl",
+        "label": "Bridge NS => PPL",
+        "key": "bridge-ns-to-ppl",
         "count": 106,
         "cardinality": 2,
         "type": "partition",
@@ -375,8 +381,9 @@
         }
       },
       {
-        "id": "bridge-cited-by-both",
-        "name": "Bridge Cited By Both",
+        "slug": "bridge-cited-by-both",
+        "label": "Bridge Cited By Both",
+        "key": "bridge-cited-by-both",
         "count": 106,
         "cardinality": 2,
         "type": "partition",
@@ -437,8 +444,9 @@
         }
       },
       {
-        "id": "bridge-citing-both",
-        "name": "Bridge Citing Both",
+        "slug": "bridge-citing-both",
+        "label": "Bridge Citing Both",
+        "key": "bridge-citing-both",
         "count": 106,
         "cardinality": 2,
         "type": "partition",

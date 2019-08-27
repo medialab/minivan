@@ -63,6 +63,19 @@ angular
       deserializedGraph.import(bundle.graph)
       bundle.g = deserializedGraph
 
+      // BEWARE: [new-bundle]: overloading attributes not to change
+      // the current code semantics too much
+      // Basically, we went from the sometimes problematic id,name couple
+      // to the unambiguous key,label,slug trio
+      bundle.model.nodeAttributes.forEach(function(attr) {
+        attr.id = attr.key
+        attr.name = attr.label
+      })
+      bundle.model.edgeAttributes.forEach(function(attr) {
+        attr.id = attr.key
+        attr.name = attr.label
+      })
+
       // Build attributes indexes
       // TODO: [new-bundle] overloading bundle could be problematic
       bundle.nodeAttributesIndex = {}
