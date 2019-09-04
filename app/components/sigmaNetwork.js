@@ -325,7 +325,7 @@ angular
               if (nodeColorAtt.type == 'partition') {
                 getNodeColor = function(nid) {
                   return (
-                    nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.name)].color ||
+                    nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.key)].color ||
                     '#000'
                   )
                 }
@@ -339,7 +339,7 @@ angular
                 )
                 getNodeColor = function(nid) {
                   return colorScale(
-                    g.getNodeAttribute(nid, nodeColorAtt.name)
+                    g.getNodeAttribute(nid, nodeColorAtt.key)
                   ).toString()
                 }
               } else {
@@ -388,7 +388,7 @@ angular
               if (edgeColorAtt.type == 'partition') {
                 getEdgeColor = function(eid) {
                   return (
-                    edgeColorAtt.modalities[g.getEdgeAttribute(eid, edgeColorAtt.name)].color ||
+                    edgeColorAtt.modalities[g.getEdgeAttribute(eid, edgeColorAtt.key)].color ||
                     '#000'
                   )
                 }
@@ -402,7 +402,7 @@ angular
                 )
                 getEdgeColor = function(eid) {
                   return edgeColorScale(
-                    g.getEdgeAttribute(eid, edgeColorAtt.name)
+                    g.getEdgeAttribute(eid, edgeColorAtt.key)
                   ).toString()
                 }
               } else {

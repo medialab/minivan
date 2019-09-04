@@ -241,7 +241,7 @@
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
-              <h3>{{value.name || k}}</h3>
+              <h3>{{value.label || k}}</h3>
               <p
                 ng-if="value.type == 'ranking-color'"
               >
@@ -295,7 +295,7 @@
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
-              <h3>{{value.name || k}}</h3>
+              <h3>{{value.label || k}}</h3>
               <p
                 ng-if="value.type == 'ranking-color'"
               >
@@ -419,7 +419,7 @@
         <!-- Attribute name -->
         <md-input-container ng-if="att.type">
           <label>Name</label>
-          <input ng-model="$parent.att.name" />
+          <input ng-model="$parent.att.label" />
         </md-input-container>
 
         <!-- Spacer -->
@@ -455,7 +455,7 @@
                   ng-repeat="palette in colorPalettes"
                   ng-value="$index"
                 >
-                  {{palette.name}}
+                  {{palette.label}}
                 </md-option>
               </md-select>
             </md-input-container>
@@ -482,7 +482,7 @@
                 <h3>{{modality.value}}</h3>
                 <p>{{modality.count|number}} node{{modality.count>1?'s':''}}</p>
                 <md-icon
-                  ng-click="modalityUp($index)"
+                  ng-click="modalityUp(modality)"
                   aria-label="Up"
                   class="md-secondary"
                   ng-disabled="$index == 0"

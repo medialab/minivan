@@ -163,13 +163,14 @@ angular
     }
     
     function uglyReinforce (graph, bundle) {
+      // To avoid empty node attributes. It is that or check undefined on getNodeSize or smth.
       graph.forEachNode(function (nid) {
         var n = graph.getNodeAttributes(nid);
         for (let index = 0; index < bundle.model.nodeAttributes.length; index++) {
           const nodeAttribute = bundle.model.nodeAttributes[index];
           if (!(nodeAttribute.key in n)) {
             if (nodeAttribute.type === 'partition') {
-              debugger;
+              // debugger;
             } else {
               n[nodeAttribute.key] = 0;
             }
@@ -182,16 +183,15 @@ angular
       var deserializedGraph = new Graph(bundle.settings || {})
       deserializedGraph.import(bundle.graph)
       bundle.g = deserializedGraph
-      _addMissingVisualizationData(g);
+      _addMissingVisualizationData(deserializedGraph);
       fromOldFormat(bundle);
       buildIndexes(bundle);
-
+      // uglyReinforce(deserializedGraph, bundle)
       // TODO: [new-bundle] probably need to update that
-      if (!bundle.consolidated) {
-        // Consolidate (indexes...)
-        ns.consolidateBundle(bundle)
-      }
-      
+      // if (!bundle.consolidated) {
+      //   // Consolidate (indexes...)
+      //   ns.consolidateBundle(bundle)
+      // }
       callback(bundle)
     }
 
@@ -214,10 +214,10 @@ angular
     ns.parseGEXF = function(data, title, callback, verbose) {
       var graph = Graph.library.gexf.parse(Graph, data)
       _addMissingVisualizationData(graph);
-      window.graph = graph;
       var bundle = minivan.buildBundle(graph, {
         title: title
       });
+      // debugger
       fromOldFormat(bundle);
       buildIndexes(bundle);
       uglyReinforce(graph, bundle)
@@ -247,8 +247,13 @@ angular
     }
 
     ns.exportBundle = function(bundle) {
-      const {nodeAttributesIndex, edgeAttributesIndex, ...cleanBundle} = bundle
-      return angular.toJson(cleanBundle, null, '\t')
+      let {nodeAttributesIndex, edgeAttributesIndex, ...cleanBundle} = bundle
+      return angular.toJson(
+        minivan.buildBundle(
+          bundle.g,
+          cleanBundle
+        ), null, '\t'
+      );
     }
 
     ns._toTitleCase = function(str) {

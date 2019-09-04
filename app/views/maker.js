@@ -219,7 +219,6 @@ angular
 
     /// Functions
     function uploadParsingSuccess() {
-      console.log('mais c fou', $scope.networkData.g.getNodeAttributes('142'))
       $scope.uploadingMessage = ''
       $scope.uploadingDropClass = ''
       $scope.$apply()
