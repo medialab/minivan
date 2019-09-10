@@ -386,7 +386,16 @@
         },
         "stats": {
           "modularity": 0.1636705916038602
-        }
+        },
+        "modalitiesOrder": [
+          "[Denmark]",
+          "[Sweden]",
+          "[Norway]",
+          "[Finland]",
+          "[Iceland]",
+          "[Nordic]",
+          "[\"Other or Not Relevant\"]"
+        ]
       },
       {
         "slug": "branch",
@@ -539,7 +548,13 @@
         },
         "stats": {
           "modularity": -0.027021698542915595
-        }
+        },
+        "modalitiesOrder": [
+          "[Company]",
+          "Public@- &a=b",
+          "Trade Association?",
+          "[Research/Education]"
+        ]
       },
       {
         "slug": "design-user-research",
@@ -642,7 +657,12 @@
         },
         "stats": {
           "modularity": 0.03382771157258149
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "digital-design",
@@ -745,7 +765,12 @@
         },
         "stats": {
           "modularity": 0.017955218417071383
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "experience-design",
@@ -848,7 +873,12 @@
         },
         "stats": {
           "modularity": 0.015947974939008788
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "graphic-and-visual-design",
@@ -951,7 +981,12 @@
         },
         "stats": {
           "modularity": 0.02842612768571529
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "management-facilitation-of-development-processes",
@@ -1054,7 +1089,12 @@
         },
         "stats": {
           "modularity": 0.024508007828614186
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "product-development",
@@ -1157,7 +1197,12 @@
         },
         "stats": {
           "modularity": 0.012029335115547615
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "service-design",
@@ -1260,7 +1305,12 @@
         },
         "stats": {
           "modularity": 0.003573988786752671
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "strategic-design",
@@ -1363,7 +1413,12 @@
         },
         "stats": {
           "modularity": 0.010915567168907762
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "styling-formgiving-of-products-physical-tactile-appearance",
@@ -1466,7 +1521,12 @@
         },
         "stats": {
           "modularity": -0.0006900820229603652
-        }
+        },
+        "modalitiesOrder": [
+          "False",
+          "True",
+          "N/A"
+        ]
       },
       {
         "slug": "discipline",
@@ -2019,7 +2079,18 @@
         },
         "stats": {
           "modularity": 0.003284367523318176
-        }
+        },
+        "modalitiesOrder": [
+          "Multiples",
+          "None",
+          "Service design",
+          "Strategic design",
+          "Styling/formgiving of products (physical/tactile appearance)",
+          "Design/user research",
+          "Graphic and visual design",
+          "Management/facilitation of development processes",
+          "N/A"
+        ]
       },
       {
         "count": 254,

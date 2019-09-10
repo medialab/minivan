@@ -836,7 +836,20 @@
         },
         "stats": {
           "modularity": -0.028106738836134893
-        }
+        },
+        "modalitiesOrder": [
+          "NGO",
+          "Trans-institutional",
+          "Individual",
+          "Educational",
+          "Social Movement",
+          "Event",
+          "Media",
+          "Governmental",
+          "Business",
+          "Religious",
+          "Politic"
+        ]
       },
       {
         "slug": "category",
@@ -1049,7 +1062,14 @@
         },
         "stats": {
           "modularity": 0.08907520835220445
-        }
+        },
+        "modalitiesOrder": [
+          "Social Ecology",
+          "Green-economy",
+          "Deep Ecology",
+          "New Ecologism",
+          "Others"
+        ]
       },
       {
         "slug": "latest-six-posts-frequency",
@@ -1112,7 +1132,11 @@
         },
         "stats": {
           "modularity": 0.025978743301433422
-        }
+        },
+        "modalitiesOrder": [
+          "Undefined",
+          "Dially"
+        ]
       },
       {
         "slug": "language",
@@ -1325,7 +1349,14 @@
         },
         "stats": {
           "modularity": 0.08181480828659514
-        }
+        },
+        "modalitiesOrder": [
+          "English",
+          "Portuguese",
+          "All",
+          "Spanish",
+          "French"
+        ]
       },
       {
         "slug": "information-resources",
@@ -1478,7 +1509,13 @@
         },
         "stats": {
           "modularity": 0.08170627663816496
-        }
+        },
+        "modalitiesOrder": [
+          "Multimedia",
+          "No",
+          "Multi-Wiki",
+          "Multiwiki"
+        ]
       }
     ],
     "edgeAttributes": []
