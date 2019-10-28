@@ -790,7 +790,20 @@
         },
         "stats": {
           "modularity": -0.055390744193931175
-        }
+        },
+        "modalitiesOrder": [
+          "1B",
+          "2B",
+          "3A",
+          "5B",
+          "1A",
+          "2A",
+          "4B",
+          "5A",
+          "3B",
+          "4A",
+          "Teachers"
+        ]
       },
       {
         "slug": "gender",
@@ -893,7 +906,12 @@
         },
         "stats": {
           "modularity": -0.005806068825224625
-        }
+        },
+        "modalitiesOrder": [
+          "M",
+          "F",
+          "Unknown"
+        ]
       }
     ],
     "edgeAttributes": [
@@ -953,7 +971,13 @@
             "color": "rgb(183, 197, 119)",
             "edges": 535
           }
-        }
+        },
+        "modalitiesOrder": [
+          "F-F",
+          "F-M",
+          "M-M",
+          "Other"
+        ]
       }
     ]
   },

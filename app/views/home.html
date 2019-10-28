@@ -16,7 +16,9 @@
           md-rowspan="1"
           md-colspan="1"
         >
-          <img src="res/logo.png" style="width:100%">
+          <div layout="column" layout-fill>
+            <img src="res/logo.svg" style="width:100%">
+          </div>
         </md-grid-tile>
       </md-grid-list>
     </div>
@@ -33,11 +35,9 @@
       >
         <h1>
           Welcome to MINIVAN
-          <br>
-          closed beta
         </h1>
         <p>
-          <strong>What is this?</strong> MiniVan, as "mini visual analyser of networks", is an online tool for publishing and exploring networks. It is currently in <strong>closed beta</strong>. You can use this interface but please do not share its URL. At this point, the developers already have a huge road map, need specific feedback, but not a massive flow of issues or missing features that they are already dealing with.
+          <strong>What is this?</strong> MiniVan, as "mini visual analyser of networks", is an online tool for publishing and exploring networks.
         </p>
         <p>
           <strong>How to use.</strong> You can upload a GEXF network in an interface named "Maker" and tune publication settings. You will get a "data bundle" containing your network, its metadata (title, description...) and publication settings. You need to host this bundle somewhere online, for instance on GitHub. You then have to pass the data bundle's URL to MiniVan, in order to explore your network.

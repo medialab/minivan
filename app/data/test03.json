@@ -126,7 +126,12 @@
         },
         "stats": {
           "modularity": 0.06122502203657334
-        }
+        },
+        "modalitiesOrder": [
+          "null",
+          "Network Science",
+          "Pareto Power Law"
+        ]
       },
       {
         "slug": "pareto-power-law-extended",
@@ -189,7 +194,11 @@
         },
         "stats": {
           "modularity": 0.15384465907677727
-        }
+        },
+        "modalitiesOrder": [
+          "false",
+          "true"
+        ]
       },
       {
         "slug": "network-science-extended",
@@ -252,7 +261,11 @@
         },
         "stats": {
           "modularity": 0.16199123609896005
-        }
+        },
+        "modalitiesOrder": [
+          "true",
+          "false"
+        ]
       },
       {
         "slug": "bridge-ppl-to-ns",
@@ -315,7 +328,11 @@
         },
         "stats": {
           "modularity": 0.11463974295756561
-        }
+        },
+        "modalitiesOrder": [
+          "false",
+          "true"
+        ]
       },
       {
         "slug": "bridge-ns-to-ppl",
@@ -378,7 +395,11 @@
         },
         "stats": {
           "modularity": 0.04573829607116449
-        }
+        },
+        "modalitiesOrder": [
+          "false",
+          "true"
+        ]
       },
       {
         "slug": "bridge-cited-by-both",
@@ -441,7 +462,11 @@
         },
         "stats": {
           "modularity": 0.10261399289592996
-        }
+        },
+        "modalitiesOrder": [
+          "false",
+          "true"
+        ]
       },
       {
         "slug": "bridge-citing-both",
@@ -504,7 +529,11 @@
         },
         "stats": {
           "modularity": 0.04878755217322209
-        }
+        },
+        "modalitiesOrder": [
+          "false",
+          "true"
+        ]
       }
     ],
     "edgeAttributes": []
