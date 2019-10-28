@@ -364,6 +364,13 @@ angular
             if ($scope.edgeSizeAttId) {
               var edgeSizeAtt =
                 $scope.networkData.edgeAttributesIndex[$scope.edgeSizeAttId]
+              if (!edgeSizeAtt.areaScaling) {
+                edgeSizeAtt.areaScaling = {
+                  min: 10,
+                  max: 100,
+                  interpolation: 'linear'
+                }
+              }
               var areaScale = scalesUtils.getAreaScale(
                 edgeSizeAtt.min,
                 edgeSizeAtt.max,
@@ -398,6 +405,13 @@ angular
                   )
                 }
               } else if (edgeColorAtt.type == 'ranking-color') {
+                if (!edgeColorAtt.areaScaling) {
+                  edgeColorAtt.areaScaling = {
+                    min: 10,
+                    max: 100,
+                    interpolation: 'linear'
+                  }
+                }
                 var edgeColorScale = scalesUtils.getColorScale(
                   edgeColorAtt.min,
                   edgeColorAtt.max,
@@ -406,9 +420,9 @@ angular
                   edgeColorAtt.truncateScale
                 )
                 getEdgeColor = function(eid) {
-                  return edgeColorScale(
-                    g.getEdgeAttribute(eid, edgeColorAtt.key)
-                  ).toString()
+                  const value = g.getEdgeAttribute(eid, edgeColorAtt.key)
+                  const color = edgeColorScale(value || 0)
+                  return color.toString()
                 }
               } else {
                 getEdgeColor = function() {

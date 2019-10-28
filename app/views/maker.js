@@ -38,7 +38,7 @@ angular
           $scope.networkData.g,
           {
             model: {
-              nodeAttributes: [$scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug]]
+              [nodeOrEdge]: [$scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug]]
             }
           }
         )
