@@ -161,7 +161,7 @@ angular
         }
       )
     }
-    
+
     function uglyReinforce (graph, bundle) {
       // To avoid empty node attributes. It is that or check undefined on getNodeSize or smth.
       graph.forEachNode(function (nid) {
@@ -183,15 +183,10 @@ angular
       var deserializedGraph = new Graph(bundle.settings || {})
       deserializedGraph.import(bundle.graph)
       bundle.g = deserializedGraph
-      _addMissingVisualizationData(deserializedGraph);
-      fromOldFormat(bundle);
-      buildIndexes(bundle);
-      // uglyReinforce(deserializedGraph, bundle)
-      // TODO: [new-bundle] probably need to update that
-      // if (!bundle.consolidated) {
-      //   // Consolidate (indexes...)
-      //   ns.consolidateBundle(bundle)
-      // }
+      _addMissingVisualizationData(deserializedGraph)
+      fromOldFormat(bundle)
+      buildIndexes(bundle)
+      uglyReinforce(deserializedGraph, bundle)
       callback(bundle)
     }
 
@@ -213,16 +208,15 @@ angular
 
     ns.parseGEXF = function(data, title, callback, verbose) {
       var graph = Graph.library.gexf.parse(Graph, data)
-      _addMissingVisualizationData(graph);
+      _addMissingVisualizationData(graph)
       var bundle = minivan.buildBundle(graph, {
         title: title
       });
-      // debugger
-      fromOldFormat(bundle);
-      buildIndexes(bundle);
+      bundle.g = graph
+      fromOldFormat(bundle)
+      buildIndexes(bundle)
       uglyReinforce(graph, bundle)
 
-      bundle.g = graph
       // Add default attributes when necessary
       ns.setBundleAttribute(bundle, 'title', title, verbose)
       ns.setBundleAttribute(bundle, 'authors', undefined, verbose)

@@ -15,9 +15,6 @@ angular
 
   .controller('MakerController', function(
     $scope,
-    $location,
-    $timeout,
-    $routeParams,
     dataLoader,
     netBundleManager,
     FileLoader,
@@ -26,6 +23,33 @@ angular
   ) {
     // DEV MODE: auto load
     // netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
+    $scope.$watch('networkData.loaded', function() {
+      if ($scope.networkData && $scope.networkData.loaded) {
+        $scope.infered = minivan.performTypeInference(
+          $scope.networkData.g
+        )
+      }
+    })
+
+    $scope.$watch('att.type', function (newVal, oldVal) {
+      if ($scope.att && $scope.att.type && oldVal !== undefined) {
+        const nodeOrEdge = $scope.attMode + 'Attributes';
+        const newBundle = minivan.buildBundle(
+          $scope.networkData.g,
+          {
+            model: {
+              nodeAttributes: [$scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug]]
+            }
+          }
+        )
+        const indexOf = $scope.networkData.model[nodeOrEdge].findIndex(function (attribute) {
+          return attribute.slug === $scope.att.slug
+        })
+        $scope.networkData.model[nodeOrEdge][indexOf] = newBundle.model[nodeOrEdge][0]
+        $scope.att = $scope.networkData.model[nodeOrEdge][indexOf]
+        $scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug] = $scope.networkData.model[nodeOrEdge][indexOf]
+      }
+    });
 
     $scope.attMode = undefined
     $scope.attId = undefined
@@ -33,7 +57,7 @@ angular
     $scope.att = undefined
     $scope.colorScales = netBundleManager.colorScales
     $scope.maxColors = 5
-    $scope.defaultColor = '#AAA'
+    $scope.defaultColor = '#FFF'
     $scope.colorPalettes = [
       {
         name: 'Default',
@@ -153,18 +177,17 @@ angular
     }
 
     $scope.editNodeAttribute = function(attribute) {
-      console.log('editNodeAttribute');
       $scope.attMode = 'node'
       $scope.attData = attribute
-      $scope.attId = attribute.id
+      $scope.attId = attribute.key
       $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
     }
 
     $scope.editEdgeAttribute = function(attribute) {
       $scope.attMode = 'edge'
-      $scope.attData = $scope.edgeAttributesIndex[attribute.id]
-      $scope.attId = attribute.id
+      $scope.attData = $scope.edgeAttributesIndex[attribute.key]
+      $scope.attId = attribute.key
       $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
     }
@@ -174,17 +197,20 @@ angular
         var index = $scope.networkData.model.nodeAttributes.indexOf($scope.att);
         if (index >= 0) {
           $scope.networkData.model.nodeAttributes[index] = $scope.originalAtt;
+          $scope.networkData.nodeAttributesIndex[$scope.originalAtt.key] = $scope.originalAtt;
         }
       } else if ($scope.attMode) {
         var index = $scope.networkData.model.edgeAttributes.indexOf($scope.att);
         if (index >= 0) {
           $scope.networkData.model.edgeAttributes[index] = $scope.originalAtt;
+          $scope.networkData.edgeAttributesIndex[$scope.originalAtt.key] = $scope.originalAtt;
         }
       }
       $scope.attMode = undefined
       $scope.attData = undefined
       $scope.attId = undefined
       $scope.att = undefined
+      $scope.originalAtt = undefined
     }
 
     $scope.validateEditAttribute = function() {
@@ -195,15 +221,15 @@ angular
     }
 
     $scope.modalityUp = function(i) {
-      var m = $scope.att.modalities[i - 1]
-      $scope.att.modalities[i - 1] = $scope.att.modalities[i]
-      $scope.att.modalities[i] = m
+      var m = $scope.att.modalitiesOrder[i - 1]
+      $scope.att.modalitiesOrder[i - 1] = $scope.att.modalitiesOrder[i]
+      $scope.att.modalitiesOrder[i] = m
     }
 
     $scope.modalityDown = function(i) {
-      var m = $scope.att.modalities[i + 1]
-      $scope.att.modalities[i + 1] = $scope.att.modalities[i]
-      $scope.att.modalities[i] = m
+      var m = $scope.att.modalitiesOrder[i + 1]
+      $scope.att.modalitiesOrder[i + 1] = $scope.att.modalitiesOrder[i]
+      $scope.att.modalitiesOrder[i] = m
     }
 
     $scope.repaint = function() {
@@ -212,8 +238,8 @@ angular
         undefined,
         $scope.colorPalettes[$scope.paletteIndex].settings
       )
-      Object.keys($scope.att.modalities).forEach(function (key, i) {
-        $scope.att.modalities[key].color = colors[i];
+      $scope.att.modalitiesOrder.forEach(function (key, i) {
+        $scope.att.modalities[key].color = colors[i] || $scope.defaultColor;
       });
     }
 
@@ -248,7 +274,6 @@ angular
       $scope.nodeAttributesIndex = bundle.nodeAttributesIndex;
       $scope.edgeAttributesIndex = bundle.edgeAttributesIndex;
       $scope.networkData.loaded = true;
-      console.log('Edge attributes', $scope.networkData, $scope.edgeAttributesIndex)
       // It's possible, when loading an existing bundle, that some attributes registered in the
       // node attributes index or edge attribute index are not listed in the bundle.
       // This may cause some issues, so we create them with no type, as this means that

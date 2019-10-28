@@ -223,7 +223,7 @@
             class="md-2-line"
             ng-repeat="(index, value) in networkData.model.nodeAttributes"
             ng-click="editNodeAttribute(value)"
-            ng-style="{opacity: value.type ? 1 : 0.5}"
+            ng-style="{opacity: value.type !== 'ignore' ? 1 : 0.5}"
           >
             <md-icon
               ng-if="value.type == 'ranking-color'"
@@ -237,7 +237,7 @@
               ng-if="value.type == 'partition'"
               >color_lens</md-icon
             >
-            <md-icon ng-if="!value.type"
+            <md-icon ng-if="value.type === 'ignore'"
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
@@ -245,7 +245,7 @@
               <p
                 ng-if="value.type == 'ranking-color'"
               >
-                Color gradient
+                Color gradient un
               </p>
               <p
                 ng-if="value.type == 'ranking-size'"
@@ -255,8 +255,8 @@
               <p ng-if="value.type == 'partition'">
                 Color categories
               </p>
-              <p ng-if="!value.type">
-                Hidden {{k}} {{v}}
+              <p ng-if="value.type === 'ignore'">
+                Hidden
               </p>
             </div>
           </md-list-item>
@@ -291,7 +291,7 @@
               ng-if="value.type == 'partition'"
               >color_lens</md-icon
             >
-            <md-icon ng-if="!value.type"
+            <md-icon ng-if="value.type == 'ignore'"
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
@@ -309,7 +309,7 @@
               <p ng-if="value.type == 'partition'">
                 Color categories
               </p>
-              <p ng-if="!value.type">
+              <p ng-if="value.type == 'ignore'">
                 Hidden
               </p>
             </div>
@@ -376,13 +376,13 @@
         <md-input-container>
           <label>Visualize as...</label>
           <md-select ng-model="att.type">
-            <md-option ng-value="undefined">
+            <md-option value="ignore">
               <md-icon>visibility_off</md-icon>
-              <em>Hidden</em>
+              <em>Hidden et lui</em>
             </md-option>
             <md-option
               value="partition"
-              ng-if="(originalAtt.type == 'partition' || originalAtt.integer) && !originalAtt.integer"
+              ng-if="infered[attMode + 's'][att.slug] == 'string' || infered[attMode + 's'][att.slug] == 'integer'"
             >
               <md-icon style="font-size: 20px; height: 20px"
                 >color_lens</md-icon
@@ -391,14 +391,14 @@
             </md-option>
             <md-option
               value="ranking-color"
-              ng-if="originalAtt.type !== 'partition' || originalAtt.integer"
+              ng-if="infered[attMode + 's'][att.slug] == 'float' || infered[attMode + 's'][att.slug] == 'integer'"
             >
               <md-icon style="font-size: 20px; height: 20px">gradient</md-icon>
               Color gradient
             </md-option>
             <md-option
               value="ranking-size"
-              ng-if="originalAtt.type !== 'partition' || originalAtt.integer"
+              ng-if="infered[attMode + 's'][att.slug] == 'float' || infered[attMode + 's'][att.slug] == 'integer'"
             >
               <md-icon
                 style="font-size: 20px; height: 20px"
@@ -435,7 +435,9 @@
                 <label>Max colors</label>
                 <input
                   ng-model="$parent.$parent.$parent.maxColors"
-                  min="1"
+                  min="2"
+                  required
+                  aria-required
                   type="number"
                 />
               </md-input-container>
@@ -455,7 +457,7 @@
                   ng-repeat="palette in colorPalettes"
                   ng-value="$index"
                 >
-                  {{palette.label}}
+                  {{palette.name}}
                 </md-option>
               </md-select>
             </md-input-container>
@@ -472,17 +474,17 @@
           <md-list>
             <md-list-item
               class="md-2-line"
-              ng-repeat="modality in att.modalities"
+              ng-repeat="modality in att.modalitiesOrder"
             >
               <md-icon
-                ng-style="{'color': modality.color, 'font-size':'42px', 'height':'42px  '}"
+                ng-style="{'color': att.modalities[modality].color, 'font-size':'42px', 'height':'42px  '}"
                 >brightness_1</md-icon
               >
               <div class="md-list-item-text" layout="column">
-                <h3>{{modality.value}}</h3>
-                <p>{{modality.count|number}} node{{modality.count>1?'s':''}}</p>
+                <h3>{{att.modalities[modality].value}}</h3>
+                <p>{{att.modalities[modality].count|number}} node{{att.modalities[modality].count>1?'s':''}}</p>
                 <md-icon
-                  ng-click="modalityUp(modality)"
+                  ng-click="modalityUp($index)"
                   aria-label="Up"
                   class="md-secondary"
                   ng-disabled="$index == 0"
@@ -503,7 +505,6 @@
             </md-list-item>
           </md-list>
         </div>
-
         <div layout="column" ng-if="att.type == 'ranking-color'">
           <md-input-container>
             <label>Color scale</label>

@@ -238,13 +238,12 @@ angular
           if ($scope.networkData.loaded) {
             var g = $scope.g
 
-            var settings = {}
-            settings.default_node_color = '#969390'
-            settings.default_node_color_muted = '#EEE'
-            settings.default_edge_color = '#DDD'
-            settings.default_edge_color_muted = '#FAFAFA'
-
-            /// NODES
+            var settings = {
+              default_node_color: '#969390',
+              default_node_color_muted: '#EEE',
+              default_edge_color: '#DDD',
+              default_edge_color_muted: '#FAFAFA',
+            }
 
             // Filter
             var nodeFilter
@@ -294,7 +293,15 @@ angular
             if ($scope.nodeSizeAttId) {
               var nodeSizeAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
-              var areaScale = scalesUtils.getAreaScale(
+
+              if (!nodeSizeAtt.areaScaling) {
+                nodeSizeAtt.areaScaling = {
+                  min: 10,
+                  max: 100,
+                  interpolation: 'linear'
+                }
+              }
+              var areaScaleSize = scalesUtils.getAreaScale(
                 nodeSizeAtt.min,
                 nodeSizeAtt.max,
                 nodeSizeAtt.areaScaling.min,
@@ -303,10 +310,8 @@ angular
               )
               getNodeSize = function(nid) {
                 return rScale(
-                  (nodeSizeAtt.areaScaling.max *
-                    areaScale(g.getNodeAttribute(nid, nodeSizeAtt.id)) *
-                    standardArea) /
-                    10
+                  (nodeSizeAtt.areaScaling.max * areaScaleSize(g.getNodeAttribute(nid, nodeSizeAtt.key)) * standardArea)
+                  / 10
                 )
               }
             } else {
@@ -338,9 +343,9 @@ angular
                   nodeColorAtt.truncateScale
                 )
                 getNodeColor = function(nid) {
-                  return colorScale(
-                    g.getNodeAttribute(nid, nodeColorAtt.key)
-                  ).toString()
+                  const value = g.getNodeAttribute(nid, nodeColorAtt.key)
+                  const color = colorScale(value).toString()
+                  return color
                 }
               } else {
                 getNodeColor = function() {
@@ -369,7 +374,7 @@ angular
               getEdgeSize = function(eid) {
                 return (
                   (edgeSizeAtt.areaScaling.max *
-                    areaScale(g.getEdgeAttribute(eid, edgeSizeAtt.id)) *
+                    areaScale(g.getEdgeAttribute(eid, edgeSizeAtt.key)) *
                     standardThickness) /
                   10
                 )
