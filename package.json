@@ -8,7 +8,7 @@
     "build": "webpack --colors --progress --devtool source-map",
     "build:prod": "webpack --colors --progress -p",
     "clean": "for f in `find ./app -name '*.js' -o -name '*.html'`; do expand -t 2 $f > $f.bak && mv $f.bak $f; done",
-    "deploy": "gh-pages-deploy",
+    "deploy": "npm run build:prod && gh-pages -d ./app",
     "postinstall": "npm run build",
     "serve": "http-server app -a localhost -o -p 8000",
     "style:js": "prettier --single-quote --no-semi 'app/**/*.js' --write",
@@ -40,17 +40,10 @@
     "sigma": "2.0.0-alpha20"
   },
   "devDependencies": {
-    "gh-pages-deploy": "^0.5.1",
+    "gh-pages": "^2.1.1",
     "http-server": "^0.11.1",
     "prettier": "^1.16.4",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
-  },
-  "gh-pages-deploy": {
-    "staticpath": "app",
-    "prep": [
-      "build:prod"
-    ],
-    "commit": "Deploying on gh-pages."
   }
 }
