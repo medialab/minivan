@@ -45,9 +45,9 @@ angular
         const indexOf = $scope.networkData.model[nodeOrEdge].findIndex(function (attribute) {
           return attribute.slug === $scope.att.slug
         })
-        $scope.networkData.model[nodeOrEdge][indexOf] = newBundle.model[nodeOrEdge][0]
-        $scope.att = $scope.networkData.model[nodeOrEdge][indexOf]
-        $scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug] = $scope.networkData.model[nodeOrEdge][indexOf]
+        $scope.att = newBundle.model[nodeOrEdge][0]
+        $scope.networkData.model[nodeOrEdge][indexOf] = $scope.att
+        $scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug] = $scope.att
       }
     });
 

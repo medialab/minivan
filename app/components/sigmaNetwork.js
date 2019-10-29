@@ -331,7 +331,7 @@ angular
                 getNodeColor = function(nid) {
                   return (
                     nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.key)].color ||
-                    '#000'
+                    settings.default_edge_color
                   )
                 }
               } else if (nodeColorAtt.type == 'ranking-color') {
@@ -353,7 +353,7 @@ angular
                 }
               }
             } else {
-              getNodeColor = function(koi) {
+              getNodeColor = function() {
                 return settings.default_node_color
               }
             }
