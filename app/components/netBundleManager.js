@@ -17,7 +17,7 @@ angular
       url: undefined,
       doi: undefined,
       description: 'This network has no description.',
-      bundleVersion: ns.bundleVersion,
+      bundleVersion: ns.bundleVersion
     }
 
     // Sets the passed value and if none sets a default value if the attribute is required
@@ -118,7 +118,7 @@ angular
       }
     }
 
-    function fromOldFormat (bundle) {
+    function fromOldFormat(bundle) {
       // BEWARE: [new-bundle]: overloading attributes not to change
       // the current code semantics too much
       // Basically, we went from the sometimes problematic id,name couple
@@ -131,9 +131,9 @@ angular
         attr.id = attr.key
         attr.name = attr.label
       })
-    };
+    }
 
-    function buildIndexes (bundle) {
+    function buildIndexes(bundle) {
       // Build attributes indexes
       // TODO: [new-bundle] overloading bundle could be problematic
       bundle.nodeAttributesIndex = {}
@@ -162,21 +162,25 @@ angular
       )
     }
 
-    function uglyReinforce (graph, bundle) {
+    function uglyReinforce(graph, bundle) {
       // To avoid empty node attributes. It is that or check undefined on getNodeSize or smth.
-      graph.forEachNode(function (nid) {
-        var n = graph.getNodeAttributes(nid);
-        for (let index = 0; index < bundle.model.nodeAttributes.length; index++) {
-          const nodeAttribute = bundle.model.nodeAttributes[index];
+      graph.forEachNode(function(nid) {
+        var n = graph.getNodeAttributes(nid)
+        for (
+          let index = 0;
+          index < bundle.model.nodeAttributes.length;
+          index++
+        ) {
+          const nodeAttribute = bundle.model.nodeAttributes[index]
           if (!(nodeAttribute.key in n)) {
             if (nodeAttribute.type === 'partition') {
               // debugger;
             } else {
-              n[nodeAttribute.key] = 0;
+              n[nodeAttribute.key] = 0
             }
           }
         }
-      });
+      })
     }
 
     ns.parseBundle = function(bundle, callback, verbose) {
@@ -211,7 +215,7 @@ angular
       _addMissingVisualizationData(graph)
       var bundle = minivan.buildBundle(graph, {
         title: title
-      });
+      })
       bundle.g = graph
       fromOldFormat(bundle)
       buildIndexes(bundle)
@@ -241,13 +245,12 @@ angular
     }
 
     ns.exportBundle = function(bundle) {
-      let {nodeAttributesIndex, edgeAttributesIndex, ...cleanBundle} = bundle
+      let { nodeAttributesIndex, edgeAttributesIndex, ...cleanBundle } = bundle
       return angular.toJson(
-        minivan.buildBundle(
-          bundle.g,
-          cleanBundle
-        ), null, '\t'
-      );
+        minivan.buildBundle(bundle.g, cleanBundle),
+        null,
+        '\t'
+      )
     }
 
     ns._toTitleCase = function(str) {
@@ -259,8 +262,8 @@ angular
     ns.getColors = function(count, randomSeed = Math.random(), settings) {
       return iwanthue(count, {
         seed: randomSeed,
-        colorSpace: settings,
-      });
+        colorSpace: settings
+      })
     }
 
     ns.colorScales = [

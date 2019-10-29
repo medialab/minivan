@@ -54,7 +54,6 @@ angular
         var container = el[0]
 
         function _redraw() {
-
           // Postpone if network data not loaded
           if (!$scope.networkData.loaded) {
             $timeout(redraw, 500)

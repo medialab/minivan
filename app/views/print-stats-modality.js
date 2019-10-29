@@ -36,9 +36,11 @@ angular
       if ($scope.networkData.loaded) {
         $scope.attribute =
           $scope.networkData.nodeAttributesIndex[$scope.attributeId]
-        $scope.modality = Object.values($scope.attribute.modalities).filter(function(mod) {
-          return mod.value == $scope.modalityValue
-        })[0]
+        $scope.modality = Object.values($scope.attribute.modalities).filter(
+          function(mod) {
+            return mod.value == $scope.modalityValue
+          }
+        )[0]
         $scope.modalityFlow =
           $scope.attribute.modalities[$scope.modality.value].flow[
             $scope.modality.value

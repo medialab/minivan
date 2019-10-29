@@ -242,7 +242,7 @@ angular
               default_node_color: '#969390',
               default_node_color_muted: '#EEE',
               default_edge_color: '#DDD',
-              default_edge_color_muted: '#FAFAFA',
+              default_edge_color_muted: '#FAFAFA'
             }
 
             // Filter
@@ -310,8 +310,10 @@ angular
               )
               getNodeSize = function(nid) {
                 return rScale(
-                  (nodeSizeAtt.areaScaling.max * areaScaleSize(g.getNodeAttribute(nid, nodeSizeAtt.key)) * standardArea)
-                  / 10
+                  (nodeSizeAtt.areaScaling.max *
+                    areaScaleSize(g.getNodeAttribute(nid, nodeSizeAtt.key)) *
+                    standardArea) /
+                    10
                 )
               }
             } else {
@@ -330,8 +332,9 @@ angular
               if (nodeColorAtt.type == 'partition') {
                 getNodeColor = function(nid) {
                   return (
-                    nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.key)].color ||
-                    settings.default_edge_color
+                    nodeColorAtt.modalities[
+                      g.getNodeAttribute(nid, nodeColorAtt.key)
+                    ].color || settings.default_edge_color
                   )
                 }
               } else if (nodeColorAtt.type == 'ranking-color') {
@@ -400,8 +403,9 @@ angular
               if (edgeColorAtt.type == 'partition') {
                 getEdgeColor = function(eid) {
                   return (
-                    edgeColorAtt.modalities[g.getEdgeAttribute(eid, edgeColorAtt.key)].color ||
-                    '#000'
+                    edgeColorAtt.modalities[
+                      g.getEdgeAttribute(eid, edgeColorAtt.key)
+                    ].color || '#000'
                   )
                 }
               } else if (edgeColorAtt.type == 'ranking-color') {
