@@ -167,9 +167,9 @@ angular
     ns.getColorScale = function(
       minValue,
       maxValue,
-      colorScaleInterpolator,
-      invert,
-      truncate
+      colorScaleInterpolator = 'interpolateGreys',
+      invert = false,
+      truncate = true,
     ) {
       var dScale = d3.scaleLinear().domain([minValue, maxValue])
       if (invert) {

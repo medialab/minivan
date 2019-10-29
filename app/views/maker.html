@@ -99,7 +99,7 @@
               start-layout-on-load="false"
               node-size-att-id="
                 (att === undefined) ?
-                  (networkData.defaultNodeSize) :
+                  (networkData.model.defaultNodeSize) :
                   (
                     (attMode=='node' && att.type=='ranking-size') ?
                       (attId) :
@@ -107,7 +107,7 @@
                   )"
               node-color-att-id="
                 (att === undefined) ?
-                  (networkData.defaultNodeColor) :
+                  (networkData.model.defaultNodeColor) :
                   (
                     (attMode=='node' && (att.type=='ranking-color' || att.type=='partition')) ?
                       (attId) :
@@ -115,7 +115,7 @@
                   )"
               edge-size-att-id="
                 (att === undefined) ?
-                  (networkData.defaultEdgeSize) :
+                  (networkData.model.defaultEdgeSize) :
                   (
                     (attMode=='edge' && att.type=='ranking-size') ?
                       (attId) :
@@ -123,7 +123,7 @@
                   )"
               edge-color-att-id="
                 (att === undefined) ?
-                  (networkData.defaultEdgeColor) :
+                  (networkData.model.defaultEdgeColor) :
                   (
                     (attMode=='edge' && (att.type=='ranking-color' || att.type=='partition')) ?
                       (attId) :
@@ -221,41 +221,41 @@
           <!-- Node attribute -->
           <md-list-item
             class="md-2-line"
-            ng-repeat="(k, v) in nodeAttributesIndex"
-            ng-click="editNodeAttribute(k)"
-            ng-style="{opacity: networkData.nodeAttributesIndex[k].type ? 1 : 0.5}"
+            ng-repeat="(index, value) in networkData.model.nodeAttributes"
+            ng-click="editNodeAttribute(value)"
+            ng-style="{opacity: value.type !== 'ignore' ? 1 : 0.5}"
           >
             <md-icon
-              ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+              ng-if="value.type == 'ranking-color'"
               >gradient</md-icon
             >
             <md-icon
-              ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+              ng-if="value.type == 'ranking-size'"
               >bubble_chart</md-icon
             >
             <md-icon
-              ng-if="networkData.nodeAttributesIndex[k].type == 'partition'"
+              ng-if="value.type == 'partition'"
               >color_lens</md-icon
             >
-            <md-icon ng-if="!networkData.nodeAttributesIndex[k].type"
+            <md-icon ng-if="value.type === 'ignore'"
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
-              <h3>{{networkData.nodeAttributesIndex[k].name || k}}</h3>
+              <h3>{{value.label || k}}</h3>
               <p
-                ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-color'"
+                ng-if="value.type == 'ranking-color'"
               >
-                Color gradient
+                Color gradient un
               </p>
               <p
-                ng-if="networkData.nodeAttributesIndex[k].type == 'ranking-size'"
+                ng-if="value.type == 'ranking-size'"
               >
                 Size gradient
               </p>
-              <p ng-if="networkData.nodeAttributesIndex[k].type == 'partition'">
+              <p ng-if="value.type == 'partition'">
                 Color categories
               </p>
-              <p ng-if="!networkData.nodeAttributesIndex[k].type">
+              <p ng-if="value.type === 'ignore'">
                 Hidden
               </p>
             </div>
@@ -275,41 +275,41 @@
           <!-- Edge attribute -->
           <md-list-item
             class="md-2-line"
-            ng-repeat="(k, v) in edgeAttributesIndex"
-            ng-click="editEdgeAttribute(k)"
-            ng-style="{opacity: networkData.edgeAttributesIndex[k].type ? 1 : 0.5}"
+            ng-repeat="(index, value) in networkData.model.edgeAttributes"
+            ng-click="editEdgeAttribute(value)"
+            ng-style="{opacity: value.type ? 1 : 0.5}"
           >
             <md-icon
-              ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
+              ng-if="value.type == 'ranking-color'"
               >gradient</md-icon
             >
             <md-icon
-              ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
+              ng-if="value.type == 'ranking-size'"
               >line_weight</md-icon
             >
             <md-icon
-              ng-if="networkData.edgeAttributesIndex[k].type == 'partition'"
+              ng-if="value.type == 'partition'"
               >color_lens</md-icon
             >
-            <md-icon ng-if="!networkData.edgeAttributesIndex[k].type"
+            <md-icon ng-if="value.type == 'ignore'"
               >visibility_off</md-icon
             >
             <div class="md-list-item-text" layout="column">
-              <h3>{{networkData.edgeAttributesIndex[k].name || k}}</h3>
+              <h3>{{value.label || k}}</h3>
               <p
-                ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-color'"
+                ng-if="value.type == 'ranking-color'"
               >
                 Color gradient
               </p>
               <p
-                ng-if="networkData.edgeAttributesIndex[k].type == 'ranking-size'"
+                ng-if="value.type == 'ranking-size'"
               >
                 Thickness gradient
               </p>
-              <p ng-if="networkData.edgeAttributesIndex[k].type == 'partition'">
+              <p ng-if="value.type == 'partition'">
                 Color categories
               </p>
-              <p ng-if="!networkData.edgeAttributesIndex[k].type">
+              <p ng-if="value.type == 'ignore'">
                 Hidden
               </p>
             </div>
@@ -375,14 +375,14 @@
       <md-content flex layout="column" style="padding: 48px 48px 48px 0px">
         <md-input-container>
           <label>Visualize as...</label>
-          <md-select ng-model="$parent.att.type">
-            <md-option ng-value="undefined">
+          <md-select ng-model="att.type">
+            <md-option value="ignore">
               <md-icon>visibility_off</md-icon>
-              <em>Hidden</em>
+              <em>Hidden et lui</em>
             </md-option>
             <md-option
               value="partition"
-              ng-if="attData.dataType == 'string' || attData.dataType == 'integer'"
+              ng-if="infered[attMode + 's'][att.slug] == 'string' || infered[attMode + 's'][att.slug] == 'integer'"
             >
               <md-icon style="font-size: 20px; height: 20px"
                 >color_lens</md-icon
@@ -391,14 +391,14 @@
             </md-option>
             <md-option
               value="ranking-color"
-              ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
+              ng-if="infered[attMode + 's'][att.slug] == 'float' || infered[attMode + 's'][att.slug] == 'integer'"
             >
               <md-icon style="font-size: 20px; height: 20px">gradient</md-icon>
               Color gradient
             </md-option>
             <md-option
               value="ranking-size"
-              ng-if="attData.dataType == 'float' || attData.dataType == 'integer'"
+              ng-if="infered[attMode + 's'][att.slug] == 'float' || infered[attMode + 's'][att.slug] == 'integer'"
             >
               <md-icon
                 style="font-size: 20px; height: 20px"
@@ -419,7 +419,7 @@
         <!-- Attribute name -->
         <md-input-container ng-if="att.type">
           <label>Name</label>
-          <input ng-model="$parent.att.name" />
+          <input ng-model="$parent.att.label" />
         </md-input-container>
 
         <!-- Spacer -->
@@ -435,7 +435,9 @@
                 <label>Max colors</label>
                 <input
                   ng-model="$parent.$parent.$parent.maxColors"
-                  min="1"
+                  min="2"
+                  required
+                  aria-required
                   type="number"
                 />
               </md-input-container>
@@ -472,15 +474,15 @@
           <md-list>
             <md-list-item
               class="md-2-line"
-              ng-repeat="modality in att.modalities"
+              ng-repeat="modality in att.modalitiesOrder"
             >
               <md-icon
-                ng-style="{'color': modality.color, 'font-size':'42px', 'height':'42px  '}"
+                ng-style="{'color': att.modalities[modality].color, 'font-size':'42px', 'height':'42px  '}"
                 >brightness_1</md-icon
               >
               <div class="md-list-item-text" layout="column">
-                <h3>{{modality.value}}</h3>
-                <p>{{modality.count|number}} node{{modality.count>1?'s':''}}</p>
+                <h3>{{att.modalities[modality].value}}</h3>
+                <p>{{att.modalities[modality].count|number}} node{{att.modalities[modality].count>1?'s':''}}</p>
                 <md-icon
                   ng-click="modalityUp($index)"
                   aria-label="Up"
@@ -503,7 +505,6 @@
             </md-list-item>
           </md-list>
         </div>
-
         <div layout="column" ng-if="att.type == 'ranking-color'">
           <md-input-container>
             <label>Color scale</label>
@@ -527,16 +528,13 @@
               </md-option>
             </md-select>
           </md-input-container>
-
           <md-switch ng-model="att.invertScale" aria-label="Invert scale">
             Invert
           </md-switch>
-
           <md-switch ng-model="att.truncateScale" aria-label="Truncate scale">
             Short scale
           </md-switch>
         </div>
-
         <div layout="column" ng-if="att.type == 'ranking-size'">
           <div layout="row">
             <md-input-container flex>

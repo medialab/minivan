@@ -4,7 +4,6 @@
 
 angular
   .module('app.components.sigmaNetworkComponent', [])
-
   .directive('sigmaNetwork', function(
     $timeout,
     dataLoader,
@@ -239,13 +238,12 @@ angular
           if ($scope.networkData.loaded) {
             var g = $scope.g
 
-            var settings = {}
-            settings.default_node_color = '#969390'
-            settings.default_node_color_muted = '#EEE'
-            settings.default_edge_color = '#DDD'
-            settings.default_edge_color_muted = '#FAFAFA'
-
-            /// NODES
+            var settings = {
+              default_node_color: '#969390',
+              default_node_color_muted: '#EEE',
+              default_edge_color: '#DDD',
+              default_edge_color_muted: '#FAFAFA',
+            }
 
             // Filter
             var nodeFilter
@@ -295,7 +293,15 @@ angular
             if ($scope.nodeSizeAttId) {
               var nodeSizeAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeSizeAttId]
-              var areaScale = scalesUtils.getAreaScale(
+
+              if (!nodeSizeAtt.areaScaling) {
+                nodeSizeAtt.areaScaling = {
+                  min: 10,
+                  max: 100,
+                  interpolation: 'linear'
+                }
+              }
+              var areaScaleSize = scalesUtils.getAreaScale(
                 nodeSizeAtt.min,
                 nodeSizeAtt.max,
                 nodeSizeAtt.areaScaling.min,
@@ -304,10 +310,8 @@ angular
               )
               getNodeSize = function(nid) {
                 return rScale(
-                  (nodeSizeAtt.areaScaling.max *
-                    areaScale(g.getNodeAttribute(nid, nodeSizeAtt.id)) *
-                    standardArea) /
-                    10
+                  (nodeSizeAtt.areaScaling.max * areaScaleSize(g.getNodeAttribute(nid, nodeSizeAtt.key)) * standardArea)
+                  / 10
                 )
               }
             } else {
@@ -324,14 +328,10 @@ angular
               var nodeColorAtt =
                 $scope.networkData.nodeAttributesIndex[$scope.nodeColorAttId]
               if (nodeColorAtt.type == 'partition') {
-                var colorByModality = {}
-                Object.values(nodeColorAtt.modalities).forEach(function(m) {
-                  colorByModality[m.value] = m.color
-                })
                 getNodeColor = function(nid) {
                   return (
-                    colorByModality[g.getNodeAttribute(nid, nodeColorAtt.id)] ||
-                    '#000'
+                    nodeColorAtt.modalities[g.getNodeAttribute(nid, nodeColorAtt.key)].color ||
+                    settings.default_edge_color
                   )
                 }
               } else if (nodeColorAtt.type == 'ranking-color') {
@@ -343,9 +343,9 @@ angular
                   nodeColorAtt.truncateScale
                 )
                 getNodeColor = function(nid) {
-                  return colorScale(
-                    g.getNodeAttribute(nid, nodeColorAtt.id)
-                  ).toString()
+                  const value = g.getNodeAttribute(nid, nodeColorAtt.key)
+                  const color = colorScale(value).toString()
+                  return color
                 }
               } else {
                 getNodeColor = function() {
@@ -364,6 +364,13 @@ angular
             if ($scope.edgeSizeAttId) {
               var edgeSizeAtt =
                 $scope.networkData.edgeAttributesIndex[$scope.edgeSizeAttId]
+              if (!edgeSizeAtt.areaScaling) {
+                edgeSizeAtt.areaScaling = {
+                  min: 10,
+                  max: 100,
+                  interpolation: 'linear'
+                }
+              }
               var areaScale = scalesUtils.getAreaScale(
                 edgeSizeAtt.min,
                 edgeSizeAtt.max,
@@ -374,7 +381,7 @@ angular
               getEdgeSize = function(eid) {
                 return (
                   (edgeSizeAtt.areaScaling.max *
-                    areaScale(g.getEdgeAttribute(eid, edgeSizeAtt.id)) *
+                    areaScale(g.getEdgeAttribute(eid, edgeSizeAtt.key)) *
                     standardThickness) /
                   10
                 )
@@ -391,17 +398,20 @@ angular
               var edgeColorAtt =
                 $scope.networkData.edgeAttributesIndex[$scope.edgeColorAttId]
               if (edgeColorAtt.type == 'partition') {
-                var colorByModality = {}
-                edgeColorAtt.modalities.forEach(function(m) {
-                  colorByModality[m.value] = m.color
-                })
                 getEdgeColor = function(eid) {
                   return (
-                    colorByModality[g.getEdgeAttribute(eid, edgeColorAtt.id)] ||
+                    edgeColorAtt.modalities[g.getEdgeAttribute(eid, edgeColorAtt.key)].color ||
                     '#000'
                   )
                 }
               } else if (edgeColorAtt.type == 'ranking-color') {
+                if (!edgeColorAtt.areaScaling) {
+                  edgeColorAtt.areaScaling = {
+                    min: 10,
+                    max: 100,
+                    interpolation: 'linear'
+                  }
+                }
                 var edgeColorScale = scalesUtils.getColorScale(
                   edgeColorAtt.min,
                   edgeColorAtt.max,
@@ -410,9 +420,9 @@ angular
                   edgeColorAtt.truncateScale
                 )
                 getEdgeColor = function(eid) {
-                  return edgeColorScale(
-                    g.getEdgeAttribute(eid, edgeColorAtt.id)
-                  ).toString()
+                  const value = g.getEdgeAttribute(eid, edgeColorAtt.key)
+                  const color = edgeColorScale(value || 0)
+                  return color.toString()
                 }
               } else {
                 getEdgeColor = function() {
@@ -607,10 +617,6 @@ angular
                 x: settings.default_x,
                 y: settings.default_y
               })
-            }
-
-            $scope.getRenderer = function() {
-              return renderer
             }
 
             if ($scope.layout) {

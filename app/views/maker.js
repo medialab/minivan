@@ -15,9 +15,6 @@ angular
 
   .controller('MakerController', function(
     $scope,
-    $location,
-    $timeout,
-    $routeParams,
     dataLoader,
     netBundleManager,
     FileLoader,
@@ -26,6 +23,33 @@ angular
   ) {
     // DEV MODE: auto load
     // netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
+    $scope.$watch('networkData.loaded', function() {
+      if ($scope.networkData && $scope.networkData.loaded) {
+        $scope.infered = minivan.performTypeInference(
+          $scope.networkData.g
+        )
+      }
+    })
+
+    $scope.$watch('att.type', function (newVal, oldVal) {
+      if ($scope.att && $scope.att.type && oldVal !== undefined) {
+        const nodeOrEdge = $scope.attMode + 'Attributes';
+        const newBundle = minivan.buildBundle(
+          $scope.networkData.g,
+          {
+            model: {
+              [nodeOrEdge]: [$scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug]]
+            }
+          }
+        )
+        const indexOf = $scope.networkData.model[nodeOrEdge].findIndex(function (attribute) {
+          return attribute.slug === $scope.att.slug
+        })
+        $scope.att = newBundle.model[nodeOrEdge][0]
+        $scope.networkData.model[nodeOrEdge][indexOf] = $scope.att
+        $scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug] = $scope.att
+      }
+    });
 
     $scope.attMode = undefined
     $scope.attId = undefined
@@ -33,7 +57,7 @@ angular
     $scope.att = undefined
     $scope.colorScales = netBundleManager.colorScales
     $scope.maxColors = 5
-    $scope.defaultColor = '#AAA'
+    $scope.defaultColor = '#FFF'
     $scope.colorPalettes = [
       {
         name: 'Default',
@@ -152,39 +176,41 @@ angular
       )
     }
 
-    $scope.editNodeAttribute = function(id) {
+    $scope.editNodeAttribute = function(attribute) {
       $scope.attMode = 'node'
-      $scope.attData = $scope.nodeAttributesIndex[id]
-      $scope.attId = id
-      $scope.att = $scope.networkData.nodeAttributesIndex[id]
+      $scope.attData = attribute
+      $scope.attId = attribute.key
+      $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
     }
 
-    $scope.editEdgeAttribute = function(id) {
+    $scope.editEdgeAttribute = function(attribute) {
       $scope.attMode = 'edge'
-      $scope.attData = $scope.edgeAttributesIndex[id]
-      $scope.attId = id
-      $scope.att = $scope.networkData.edgeAttributesIndex[id]
+      $scope.attData = $scope.edgeAttributesIndex[attribute.key]
+      $scope.attId = attribute.key
+      $scope.att = attribute
       $scope.originalAtt = angular.copy($scope.att)
     }
 
     $scope.cancelEditAttribute = function() {
-      var k
-      if ($scope.attMode == 'node') {
-        for (k in $scope.networkData.nodeAttributesIndex[$scope.attId]) {
-          $scope.networkData.nodeAttributesIndex[$scope.attId][k] =
-            $scope.originalAtt[k]
+      if ($scope.attMode === 'node') {
+        var index = $scope.networkData.model.nodeAttributes.indexOf($scope.att);
+        if (index >= 0) {
+          $scope.networkData.model.nodeAttributes[index] = $scope.originalAtt;
+          $scope.networkData.nodeAttributesIndex[$scope.originalAtt.key] = $scope.originalAtt;
         }
-      } else if ($scope.attMode == 'edge') {
-        for (k in $scope.networkData.edgeAttributesIndex[$scope.attId]) {
-          $scope.networkData.edgeAttributesIndex[$scope.attId][k] =
-            $scope.originalAtt[k]
+      } else if ($scope.attMode) {
+        var index = $scope.networkData.model.edgeAttributes.indexOf($scope.att);
+        if (index >= 0) {
+          $scope.networkData.model.edgeAttributes[index] = $scope.originalAtt;
+          $scope.networkData.edgeAttributesIndex[$scope.originalAtt.key] = $scope.originalAtt;
         }
       }
       $scope.attMode = undefined
       $scope.attData = undefined
       $scope.attId = undefined
       $scope.att = undefined
+      $scope.originalAtt = undefined
     }
 
     $scope.validateEditAttribute = function() {
@@ -195,52 +221,29 @@ angular
     }
 
     $scope.modalityUp = function(i) {
-      var m = $scope.att.modalities[i - 1]
-      $scope.att.modalities[i - 1] = $scope.att.modalities[i]
-      $scope.att.modalities[i] = m
+      var m = $scope.att.modalitiesOrder[i - 1]
+      $scope.att.modalitiesOrder[i - 1] = $scope.att.modalitiesOrder[i]
+      $scope.att.modalitiesOrder[i] = m
     }
 
     $scope.modalityDown = function(i) {
-      var m = $scope.att.modalities[i + 1]
-      $scope.att.modalities[i + 1] = $scope.att.modalities[i]
-      $scope.att.modalities[i] = m
+      var m = $scope.att.modalitiesOrder[i + 1]
+      $scope.att.modalitiesOrder[i + 1] = $scope.att.modalitiesOrder[i]
+      $scope.att.modalitiesOrder[i] = m
     }
 
     $scope.repaint = function() {
       var colors = netBundleManager.getColors(
-        Math.min($scope.maxColors, $scope.att.modalities.length),
+        Math.min($scope.maxColors, Object.keys($scope.att.modalities).length),
         undefined,
         $scope.colorPalettes[$scope.paletteIndex].settings
       )
-      $scope.att.modalities.forEach(function(mod, i) {
-        if (i < colors.length) {
-          mod.color = colors[i].toString()
-        } else {
-          mod.color = $scope.defaultColor
-        }
-      })
+      $scope.att.modalitiesOrder.forEach(function (key, i) {
+        $scope.att.modalities[key].color = colors[i] || $scope.defaultColor;
+      });
     }
 
-    // On type change
-    $scope.$watch('att.type', function(newType, oldType) {
-      if ($scope.attId) {
-        // Look for necessary metadata
-        $scope.attData.type = newType
-        var metadataAttribute = netBundleManager.createAttributeMetaData(
-          $scope.networkData.g,
-          $scope.attData
-        )
-        var k
-        for (k in metadataAttribute) {
-          if ($scope.att[k] === undefined) {
-            $scope.att[k] = metadataAttribute[k]
-          }
-        }
-      }
-    })
-
     /// Functions
-
     function uploadParsingSuccess() {
       $scope.uploadingMessage = ''
       $scope.uploadingDropClass = ''
@@ -265,63 +268,23 @@ angular
 
     // Init at bundle build
     function initBundle(bundle) {
-      console.log('networkData', bundle)
+      $scope.g = bundle.g;
       dataLoader.set(bundle)
       $scope.networkData = bundle
-      $scope.networkData.loaded = true
-      $scope.nodeAttributesIndex = netBundleManager.buildNodeAttributesIndex(
-        bundle.g
-      )
-      netBundleManager.ignored_node_attributes.forEach(function(d) {
-        if ($scope.nodeAttributesIndex[d]) {
-          delete $scope.nodeAttributesIndex[d]
-        }
-      })
-      console.log('Node attributes', $scope.nodeAttributesIndex)
-      $scope.edgeAttributesIndex = netBundleManager.buildEdgeAttributesIndex(
-        bundle.g
-      )
-      netBundleManager.ignored_edge_attributes.forEach(function(d) {
-        if ($scope.edgeAttributesIndex[d]) {
-          delete $scope.edgeAttributesIndex[d]
-        }
-      })
-      console.log('Edge attributes', $scope.edgeAttributesIndex)
+      $scope.nodeAttributesIndex = bundle.nodeAttributesIndex;
+      $scope.edgeAttributesIndex = bundle.edgeAttributesIndex;
+      $scope.networkData.loaded = true;
       // It's possible, when loading an existing bundle, that some attributes registered in the
       // node attributes index or edge attribute index are not listed in the bundle.
       // This may cause some issues, so we create them with no type, as this means that
       // they are not published.
-      var k
-      for (k in $scope.nodeAttributesIndex) {
-        if (bundle.nodeAttributesIndex[k] === undefined) {
-          var att = netBundleManager.initAttribute(
-            k,
-            k,
-            $scope.nodeAttributesIndex[k]
-          )
-          att.type = undefined
-          bundle.nodeAttributes.push(att)
-          netBundleManager.consolidateNodeAttribute(bundle, att)
-        }
-      }
-      for (k in $scope.edgeAttributesIndex) {
-        if (bundle.edgeAttributesIndex[k] === undefined) {
-          var att = netBundleManager.initAttribute(
-            k,
-            k,
-            $scope.edgeAttributesIndex[k]
-          )
-          att.type = undefined
-          bundle.edgeAttributes.push(att)
-          netBundleManager.consolidateEdgeAttribute(bundle, att)
-        }
-      }
     }
 
     // Parsing functions
     function parseUpload(data, fileName) {
-      if (!fileName) return false
-      var bundle_import
+      if (!fileName) {
+        return false
+      }
       if (fileName.substr(-5).toUpperCase() == '.GEXF') {
         var title = netBundleManager._toTitleCase(
           fileName
@@ -335,8 +298,9 @@ angular
         fileName.substr(-3).toUpperCase() == '.JS'
       ) {
         netBundleManager.parseBundle(JSON.parse(data), initBundle)
-      } else return false
-
+      } else {
+        return false
+      }
       return true
     }
   })
