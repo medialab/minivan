@@ -25,31 +25,30 @@ angular
     // netBundleManager.importBundle('data/BUNDLE - Sample Rio+20.json', initBundle)
     $scope.$watch('networkData.loaded', function() {
       if ($scope.networkData && $scope.networkData.loaded) {
-        $scope.infered = minivan.performTypeInference(
-          $scope.networkData.g
-        )
+        $scope.infered = minivan.performTypeInference($scope.networkData.g)
       }
     })
 
-    $scope.$watch('att.type', function (newVal, oldVal) {
+    $scope.$watch('att.type', function(newVal, oldVal) {
       if ($scope.att && $scope.att.type && oldVal !== undefined) {
-        const nodeOrEdge = $scope.attMode + 'Attributes';
-        const newBundle = minivan.buildBundle(
-          $scope.networkData.g,
-          {
-            model: {
-              [nodeOrEdge]: [$scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug]]
-            }
+        const nodeOrEdge = $scope.attMode + 'Attributes'
+        const newBundle = minivan.buildBundle($scope.networkData.g, {
+          model: {
+            [nodeOrEdge]: [
+              $scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug]
+            ]
           }
-        )
-        const indexOf = $scope.networkData.model[nodeOrEdge].findIndex(function (attribute) {
+        })
+        const indexOf = $scope.networkData.model[nodeOrEdge].findIndex(function(
+          attribute
+        ) {
           return attribute.slug === $scope.att.slug
         })
         $scope.att = newBundle.model[nodeOrEdge][0]
         $scope.networkData.model[nodeOrEdge][indexOf] = $scope.att
         $scope.networkData[nodeOrEdge + 'Index'][$scope.att.slug] = $scope.att
       }
-    });
+    })
 
     $scope.attMode = undefined
     $scope.attId = undefined
@@ -194,16 +193,18 @@ angular
 
     $scope.cancelEditAttribute = function() {
       if ($scope.attMode === 'node') {
-        var index = $scope.networkData.model.nodeAttributes.indexOf($scope.att);
+        var index = $scope.networkData.model.nodeAttributes.indexOf($scope.att)
         if (index >= 0) {
-          $scope.networkData.model.nodeAttributes[index] = $scope.originalAtt;
-          $scope.networkData.nodeAttributesIndex[$scope.originalAtt.key] = $scope.originalAtt;
+          $scope.networkData.model.nodeAttributes[index] = $scope.originalAtt
+          $scope.networkData.nodeAttributesIndex[$scope.originalAtt.key] =
+            $scope.originalAtt
         }
       } else if ($scope.attMode) {
-        var index = $scope.networkData.model.edgeAttributes.indexOf($scope.att);
+        var index = $scope.networkData.model.edgeAttributes.indexOf($scope.att)
         if (index >= 0) {
-          $scope.networkData.model.edgeAttributes[index] = $scope.originalAtt;
-          $scope.networkData.edgeAttributesIndex[$scope.originalAtt.key] = $scope.originalAtt;
+          $scope.networkData.model.edgeAttributes[index] = $scope.originalAtt
+          $scope.networkData.edgeAttributesIndex[$scope.originalAtt.key] =
+            $scope.originalAtt
         }
       }
       $scope.attMode = undefined
@@ -238,9 +239,9 @@ angular
         undefined,
         $scope.colorPalettes[$scope.paletteIndex].settings
       )
-      $scope.att.modalitiesOrder.forEach(function (key, i) {
-        $scope.att.modalities[key].color = colors[i] || $scope.defaultColor;
-      });
+      $scope.att.modalitiesOrder.forEach(function(key, i) {
+        $scope.att.modalities[key].color = colors[i] || $scope.defaultColor
+      })
     }
 
     /// Functions
@@ -268,12 +269,12 @@ angular
 
     // Init at bundle build
     function initBundle(bundle) {
-      $scope.g = bundle.g;
+      $scope.g = bundle.g
       dataLoader.set(bundle)
       $scope.networkData = bundle
-      $scope.nodeAttributesIndex = bundle.nodeAttributesIndex;
-      $scope.edgeAttributesIndex = bundle.edgeAttributesIndex;
-      $scope.networkData.loaded = true;
+      $scope.nodeAttributesIndex = bundle.nodeAttributesIndex
+      $scope.edgeAttributesIndex = bundle.edgeAttributesIndex
+      $scope.networkData.loaded = true
       // It's possible, when loading an existing bundle, that some attributes registered in the
       // node attributes index or edge attribute index are not listed in the bundle.
       // This may cause some issues, so we create them with no type, as this means that

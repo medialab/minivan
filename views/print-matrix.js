@@ -74,9 +74,11 @@ angular
           $scope.modalityFilter = function(modValue) {
             return $scope.modalitiesSelection[modValue]
           }
-          var modalities = Object.values($scope.attribute.modalities).filter(function(mod) {
-            return $scope.modalitiesSelection[mod.value]
-          })
+          var modalities = Object.values($scope.attribute.modalities).filter(
+            function(mod) {
+              return $scope.modalitiesSelection[mod.value]
+            }
+          )
           if (modalities.length == 1) {
             $scope.modality = modalities[0]
           }

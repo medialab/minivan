@@ -20,7 +20,7 @@ angular
       ns.cache = bundle
     }
 
-    var fileLocationCache = undefined;
+    var fileLocationCache = undefined
 
     ns.get = function(fileLocation, callback) {
       var settings = {}
@@ -36,7 +36,10 @@ angular
       } else {
         bundle_import = netBundleManager.importBundle
       }
-      if (ns.cache === undefined || (fileLocation !== undefined && fileLocation !== fileLocationCache)) {
+      if (
+        ns.cache === undefined ||
+        (fileLocation !== undefined && fileLocation !== fileLocationCache)
+      ) {
         if (fileLocation === undefined) {
           alert(
             'Weird!\nWe cannot locate the data...\nThis is not supposed to happen.'
@@ -45,7 +48,7 @@ angular
           return
         }
         var networkData = { loaded: false }
-        fileLocationCache = fileLocation;
+        fileLocationCache = fileLocation
         bundle_import(
           ns.decodeLocation(fileLocation) || settings.default_file_location,
           function(data) {
@@ -169,7 +172,7 @@ angular
       maxValue,
       colorScaleInterpolator = 'interpolateGreys',
       invert = false,
-      truncate = true,
+      truncate = true
     ) {
       var dScale = d3.scaleLinear().domain([minValue, maxValue])
       if (invert) {
@@ -787,7 +790,11 @@ angular
     }
 
     ns.getModalityNormalizedDensities = function(attributeId, modSelection) {
-      return ns._getModalityCrossings(attributeId, modSelection, 'normalizedDensity')
+      return ns._getModalityCrossings(
+        attributeId,
+        modSelection,
+        'normalizedDensity'
+      )
     }
 
     ns._getModalityCrossings = function(

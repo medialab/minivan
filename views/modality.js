@@ -201,13 +201,11 @@ angular
             ndToVal:
               $scope.attribute.modalities[v2].flow[$scope.modality.value].nd,
             linksToVal:
-              $scope.attribute.modalities[v2].flow[$scope.modality.value]
-                .count,
+              $scope.attribute.modalities[v2].flow[$scope.modality.value].count,
             ndFromVal:
               $scope.attribute.modalities[$scope.modality.value].flow[v2].nd,
             linksFromVal:
-              $scope.attribute.modalities[$scope.modality.value].flow[v2]
-                .count
+              $scope.attribute.modalities[$scope.modality.value].flow[v2].count
           }
         })
         .forEach(function(d) {
