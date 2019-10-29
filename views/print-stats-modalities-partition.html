@@ -1,0 +1,39 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1>Statistics of {{attribute.name}}</h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <md-content style="background-color: #FFF">
+      <md-card
+        card-attribute-modularity
+        att-id="$parent.attribute.id"
+        detail-level="$parent.attributeListDetailLevel"
+        print-mode="true"
+        layout="column"
+        layout-align="center center"
+        class="card-for-print print-no-break"
+      ></md-card>
+      <div class="thin-h-line"></div>
+      <md-card
+        card-attribute-modularity-group-links
+        att-id="$parent.attribute.id"
+        modalities-selection="$parent.modalitiesSelection"
+        detail-level="$parent.attributeListDetailLevel"
+        print-mode="true"
+        layout="column"
+        layout-align="center center"
+        class="card-for-print"
+      ></md-card>
+    </md-content>
+  </div>
+</div>

@@ -1,0 +1,240 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page-overlay" layout="row" style="height: 100%;">
+    <div flex></div>
+    <div layout="column" style="height: 100%; width: 0px;">
+      <div flex="20"></div>
+
+      <!-- Tools Panel -->
+      <div
+        flex
+        class="md-whiteframe-3dp"
+        style="width: 360px; margin: 12px; background-color: #FFF;"
+        layout="column"
+      >
+        <md-toolbar>
+          <div class="md-toolbar-tools" layout-align="start">
+            <md-button md-truncate>
+              Image settings
+            </md-button>
+          </div>
+        </md-toolbar>
+        <div layout="column" style="overflow-y: auto; padding: 12px">
+          <div layout="row" style="margin-bottom: -36px;">
+            <!-- Node size -->
+            <div flex="50">
+              <md-input-container>
+                <label>Node size</label>
+                <input
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="10000"
+                  ng-model="nodeSize"
+                />
+              </md-input-container>
+            </div>
+
+            <!-- Label size -->
+            <div flex="50">
+              <md-input-container>
+                <label>Label size</label>
+                <input
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="10000"
+                  ng-model="labelSize"
+                />
+              </md-input-container>
+            </div>
+          </div>
+
+          <div layout="row">
+            <!-- Sized labels -->
+            <div flex="50">
+              <md-switch ng-model="sizedLabels">
+                Sized labels
+              </md-switch>
+            </div>
+
+            <!-- Colored labels -->
+            <div flex="50">
+              <md-switch ng-model="coloredLabels">
+                Colored labels
+              </md-switch>
+            </div>
+          </div>
+
+          <div layout="row">
+            <!-- Show edges -->
+            <div flex="50">
+              <md-switch ng-model="showEdges">
+                Show edges
+              </md-switch>
+            </div>
+
+            <!-- Curved edges -->
+            <div flex="50">
+              <md-switch ng-model="curvedEdges">
+                Curved edges
+              </md-switch>
+            </div>
+          </div>
+
+          <div layout="row">
+            <!-- Oversampling -->
+            <div flex="50" layout="column" style="padding-right: 12px">
+              <md-input-container>
+                <label>Oversampling</label>
+                <input
+                  type="number"
+                  step="1"
+                  min="1"
+                  max="16"
+                  ng-pattern="/^\d+$/"
+                  ng-model="$parent.oversampling"
+                />
+                <div class="input-hint" ng-show="imageWidth">
+                  Resolution: {{imageWidth}} x {{imageHeight}}
+                </div>
+              </md-input-container>
+            </div>
+
+            <!-- High quality rendering -->
+            <div flex="50">
+              <md-switch ng-model="highQuality">
+                High quality
+              </md-switch>
+            </div>
+          </div>
+
+          <!-- Download image -->
+          <md-button class="md-primary" ng-click="downloadImage()">
+            <md-icon>file_download</md-icon>
+            Download PNG
+          </md-button>
+        </div>
+      </div>
+
+      <div flex="20"></div>
+    </div>
+  </div>
+  <div class="a4page" layout="column">
+    <h1>{{networkData.title}}</h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <div style="width: 170mm; height: 170mm">
+      <canvas-network-map
+        layout="column"
+        layout-align="center center"
+        layout-fill
+        node-color-att-id="colorAttId"
+        node-size-att-id="sizeAttId"
+        node-size="nodeSize"
+        label-size="labelSize"
+        sized-labels="sizedLabels"
+        colored-labels="coloredLabels"
+        show-edges="showEdges"
+        curved-edges="curvedEdges"
+        oversampling="oversampling"
+        clear-edges-around-nodes="highQuality"
+        scales="scales"
+        x="camX || 0.5"
+        y="camY || 0.5"
+        ratio="camRatio || 1"
+      ></canvas-network-map>
+    </div>
+    <div class="thin-h-line"></div>
+  </div>
+  <div class="page-break"></div>
+  <div class="a4page" layout="column">
+    <!-- Key -->
+    <h1>Key</h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <div layout="row" style="padding-top: 24px">
+      <div layout="column" flex="33" ng-if="sizeAttId">
+        <h3 style="margin-bottom: 12px">Node size</h3>
+        <div
+          ranking-size-key
+          scales="scales"
+          att="sizeAtt"
+          modalities="sizeModalities"
+          layout-fill
+        ></div>
+      </div>
+
+      <div layout="column" flex="33" ng-if="colorAttId">
+        <h3 style="margin-bottom: 12px">Node color</h3>
+        <div
+          ng-if="colorAtt.type == 'partition'"
+          partition-color-key
+          att="colorAtt"
+          modalities="colorModalities"
+          layout-fill
+        ></div>
+        <div
+          ng-if="colorAtt.type == 'ranking-color'"
+          ranking-color-key
+          att="colorAtt"
+          modalities="colorModalities"
+          layout-fill
+        ></div>
+      </div>
+
+      <div layout="column" flex="33">
+        <div
+          layout="column"
+          style="margin-bottom: 24px"
+          ng-if="showEdges && curvedEdges"
+        >
+          <h3 style="margin-bottom: 12px">How to read</h3>
+          <p class="key-element-p" ng-if="showEdges && curvedEdges">
+            <span style="font-weight: 400">Curved edges</span>
+            indicate the direction of the link. Follow the line so that it turns
+            clockwise, and it will lead you from the source to the target.
+          </p>
+        </div>
+
+        <h3 style="margin-bottom: 12px">About</h3>
+        <p class="key-element-p" style="font-weight: 400">
+          {{networkData.title}}
+        </p>
+        <p class="key-element-p" ng-if="networkData.date">
+          {{networkData.date}}
+        </p>
+        <p class="key-element-p">
+          {{networkData.g.order|number}} nodes
+          <br />
+          {{networkData.g.size|number}} edges
+        </p>
+        <p
+          class="key-element-p"
+          ng-if="networkData.authors && networkData.authors.length > 0"
+        >
+          Author{{networkData.authors.length > 1 ? 's' : ''}}:
+          <span ng-repeat="author in networkData.authors"
+            ><br />{{author}}</span
+          >
+        </p>
+        <p
+          class="key-element-p"
+          ng-if="networkData.url"
+          style="word-break: break-all;"
+        >
+          {{networkData.url}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

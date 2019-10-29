@@ -1,0 +1,213 @@
+<!-- Message if too big -->
+<div layout-fill layout="column" layout-align="center center" ng-if="tooBig">
+  <!-- Round -->
+  <div
+    md-colors="{'background': 'default-primary'}"
+    style="width:200px;height:200px;border-radius:50%;"
+    layout="column"
+    layout-align="center center"
+  >
+    <div><strong>{{nodesCount|number}} NODES</strong></div>
+    <div><strong>{{edgesCount|number}} EDGES</strong></div>
+  </div>
+
+  <!-- Message -->
+  <div style="margin-top: 16px">
+    THIS NETWORK IS LARGE
+  </div>
+  <div>
+    Displaying it may be slow
+  </div>
+  <div style="margin-top: 16px">
+    <md-button
+      class="md-raised md-primary"
+      aria-label="Display large network"
+      ng-click="displayLargeNetwork()"
+    >
+      Display
+    </md-button>
+  </div>
+</div>
+
+<!-- Sigma network -->
+<div
+  layout-fill
+  layout="column"
+  layout-align="center center"
+  ng-if="loaded && !tooBig"
+  style="position: relative"
+>
+  <!-- Sigma container -->
+  <div
+    id="sigma-div"
+    layout-fill
+    style="background-color: #FFF; overflow: hidden"
+  ></div>
+
+  <!-- Buttons -->
+  <div
+    style="position: absolute; left: 16px; top: 16px;"
+    layout="column"
+    ng-if="!hideCommands"
+  >
+    <md-progress-circular
+      class="md-accent"
+      ng-if="layout.running && enableLayout"
+      md-mode="indeterminate"
+      style="position: absolute; top: -4px; left: 2px;"
+      md-diameter="48"
+    ></md-progress-circular>
+    <md-button
+      class="md-icon-button md-accent md-mini sigma-button"
+      aria-label="Pause Layout"
+      ng-click="stopLayout()"
+      ng-if="layout.running && enableLayout"
+    >
+      <md-tooltip md-direction="right">Pause Layout</md-tooltip>
+      <md-icon>pause</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-primary md-mini sigma-button"
+      aria-label="Start Layout"
+      ng-click="startLayout()"
+      ng-if="!layout.running && enableLayout"
+    >
+      <md-tooltip md-direction="right">Start Layout</md-tooltip>
+      <md-icon>play_arrow</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      aria-label="Restore original layout"
+      ng-click="restoreOriginalLayout()"
+      ng-if="enableLayout"
+    >
+      <md-tooltip md-direction="right">Restore original layout</md-tooltip>
+      <md-icon>restore</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      aria-label="Zoom In"
+      ng-click="zoomIn()"
+    >
+      <md-tooltip md-direction="right">Zoom In</md-tooltip>
+      <md-icon>zoom_in</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      aria-label="Zoom Out"
+      ng-click="zoomOut()"
+    >
+      <md-tooltip md-direction="right">Zoom Out</md-tooltip>
+      <md-icon>zoom_out</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      aria-label="Reset Camera"
+      ng-click="resetCamera()"
+    >
+      <md-tooltip md-direction="right">Reset Camera</md-tooltip>
+      <md-icon>gps_fixed</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      aria-label="Fullscreen"
+      ng-click="toggleFullscreen()"
+    >
+      <md-tooltip md-direction="right">Toogle fullscreen</md-tooltip>
+      <md-icon>fullscreen</md-icon>
+    </md-button>
+  </div>
+
+  <!-- Panels -->
+  <div
+    style="position: absolute; left: 12px; bottom: 12px; height: 54px;"
+    ng-if="!hideKey"
+    layout="row"
+  >
+    <div class="sigma-key">
+      {{g.order|number}} nodes
+      <br />
+      {{g.size|number}} edges
+    </div>
+    <div class="sigma-key" ng-if="nodeSizeAttId" layout="row">
+      <div>
+        <span class="key-title">Node size</span>
+        <br />
+        {{nodeSizeAtt.name}}
+      </div>
+      <div
+        layout="column"
+        layout-align="center center"
+        ng-if="editableAttributes"
+      >
+        <md-button
+          class="md-icon-button mini-icon-button"
+          ng-click="$parent.$parent.$parent.$parent.nodeSizeAttId = undefined"
+          style="opacity: 0.6"
+        >
+          <md-icon class="md-icon-18">close</md-icon>
+        </md-button>
+      </div>
+    </div>
+    <div class="sigma-key" ng-if="nodeColorAttId" layout="row">
+      <div>
+        <span class="key-title">Node color</span>
+        <br />
+        {{nodeColorAtt.name}}
+      </div>
+      <div
+        layout="column"
+        layout-align="center center"
+        ng-if="editableAttributes"
+      >
+        <md-button
+          class="md-icon-button mini-icon-button"
+          ng-click="$parent.$parent.$parent.$parent.nodeColorAttId = undefined"
+          style="opacity: 0.6"
+        >
+          <md-icon class="md-icon-18">close</md-icon>
+        </md-button>
+      </div>
+    </div>
+    <div class="sigma-key" ng-if="edgeSizeAttId" layout="row">
+      <div>
+        <span class="key-title">Edge thickness</span>
+        <br />
+        {{edgeSizeAtt.name}}
+      </div>
+      <div
+        layout="column"
+        layout-align="center center"
+        ng-if="editableAttributes"
+      >
+        <md-button
+          class="md-icon-button mini-icon-button"
+          ng-click="$parent.$parent.$parent.$parent.edgeSizeAttId = undefined"
+          style="opacity: 0.6"
+        >
+          <md-icon class="md-icon-18">close</md-icon>
+        </md-button>
+      </div>
+    </div>
+    <div class="sigma-key" ng-if="edgeColorAttId" layout="row">
+      <div>
+        <span class="key-title">Edge color</span>
+        <br />
+        {{edgeColorAtt.name}}
+      </div>
+      <div
+        layout="column"
+        layout-align="center center"
+        ng-if="editableAttributes"
+      >
+        <md-button
+          class="md-icon-button mini-icon-button"
+          ng-click="$parent.$parent.$parent.$parent.edgeColorAttId = undefined"
+          style="opacity: 0.6"
+        >
+          <md-icon class="md-icon-18">close</md-icon>
+        </md-button>
+      </div>
+    </div>
+  </div>
+</div>

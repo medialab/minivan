@@ -1,0 +1,37 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1>Modalities of {{attribute.name}}</h1>
+    <div class="thin-h-line"></div>
+    <div ng-if="decileMode">
+      <p><em>Deciles are used for the distribution</em></p>
+      <div class="thin-h-line"></div>
+      <div class="thin-h-line" ng-if="modalityListDetailLevel>1"></div>
+    </div>
+    <md-list>
+      <div ng-repeat="mod in modalities" md-item-size="20">
+        <div class="thin-h-line" ng-if="modalityListDetailLevel==1"></div>
+        <div
+          modality-ranking-list-element
+          att="attribute"
+          mod="mod"
+          max-mod-count="maxModCount"
+          print-mode="true"
+          detail-level="modalityListDetailLevel"
+          class="print-no-break"
+          style="margin-top: 12px; margin-bottom: 12px"
+        ></div>
+      </div>
+    </md-list>
+    <div class="thin-h-line"></div>
+  </div>
+</div>

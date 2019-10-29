@@ -1,0 +1,43 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1 ng-if="!modality">
+      Adjacency matrix<span ng-if="attribute" style="opacity: 0.5">
+        - Rows and columns sorted by {{attribute.name}}</span
+      >
+    </h1>
+    <h1 ng-if="modality">
+      Adjacency matrix - {{attribute.id}}: {{modality.value}}<span
+        ng-if="attribute"
+        style="opacity: 0.5"
+      >
+        - Rows and columns sorted by {{attribute.name}}</span
+      >
+    </h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <div
+      layout="column"
+      layout-align="center center"
+      style="width: 642px; height: 642px"
+    >
+      <matrix
+        selected-att-id="selectedAttId"
+        detail-level="matrixDetailLevel"
+        view-box="viewBox"
+        print-mode="true"
+        node-filter="nodeFilter"
+        layout-fill
+      ></matrix>
+    </div>
+  </div>
+</div>

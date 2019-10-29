@@ -1,0 +1,77 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1>Statistics of {{modality.value}}</h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <md-content style="background-color: #FFF">
+      <md-card
+        card-modality-summary
+        att-id="$parent.attribute.id"
+        mod-value="$parent.modality.value"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+      <div class="thin-h-line"></div>
+      <md-card
+        card-modality-internal-external
+        att-id="$parent.attribute.id"
+        mod-value="$parent.modality.value"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+      <div class="thin-h-line"></div>
+      <md-card
+        card-modality-in-out
+        ng-if="networkData.g.type != 'undirected'"
+        att-id="$parent.attribute.id"
+        mod-value="$parent.modality.value"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+      <div class="thin-h-line"></div>
+      <md-card
+        card-modality-connectivity-balance
+        ng-if="networkData.g.type != 'undirected'"
+        att-id="$parent.attribute.id"
+        mod-value="$parent.modality.value"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+      <div class="thin-h-line"></div>
+      <md-card
+        card-modality-remarkable-nodes
+        att-id="$parent.attribute.id"
+        mod-value="$parent.modality.value"
+        top-cut="$parent.statsTopCut"
+        sorted-nodes="$parent.sortedNodes"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+    </md-content>
+  </div>
+</div>

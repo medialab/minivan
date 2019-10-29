@@ -1,0 +1,20 @@
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline">
+      Connectivity Balance Breakdown
+    </span>
+  </md-card-title-text>
+</md-card-title>
+<md-card-content style="width: 100%">
+  <div
+    modality-balance-chart
+    print-mode="printMode"
+    data="attribute"
+    modality-value="modality.value"
+    style="width: 100%"
+  ></div>
+  <p ng-if="detailLevel>1">
+    We compare inbound to outbound normalized densities modality by modality. It
+    hints at the structure of power balance.
+  </p>
+</md-card-content>

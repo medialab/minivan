@@ -1,0 +1,14 @@
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline">
+      Profile of range {{range[0]|number}} to {{range[1]|number}}
+    </span>
+  </md-card-title-text>
+</md-card-title>
+<md-card-content>
+  Nodes = <strong>{{subgraph.nodes().length|number}}</strong>
+  <br />
+  Edges = <strong>{{subgraph.edges().length|number}}</strong>
+  <br />
+  Density = <strong>{{density|number}}</strong>
+</md-card-content>

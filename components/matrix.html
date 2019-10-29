@@ -1,0 +1,174 @@
+<!-- Message if too big -->
+<div layout-fill layout="column" layout-align="center center" ng-if="tooBig">
+  <!-- Round -->
+  <div
+    md-colors="{'background': 'default-primary'}"
+    style="width:200px;height:200px;border-radius:50%;"
+    layout="column"
+    layout-align="center center"
+  >
+    <div><strong>{{nodesCount|number}} NODES</strong></div>
+    <div><strong>{{edgesCount|number}} EDGES</strong></div>
+  </div>
+
+  <!-- Message -->
+  <div style="margin-top: 16px">
+    THIS NETWORK IS LARGE
+  </div>
+  <div>
+    Displaying it as a matrix may be slow
+  </div>
+  <div style="margin-top: 16px">
+    <md-button
+      class="md-raised md-primary"
+      aria-label="Display large network"
+      ng-click="displayLargeNetwork()"
+    >
+      Display
+    </md-button>
+  </div>
+</div>
+
+<!-- Details: level 1 -->
+<div
+  layout-fill
+  layout="column"
+  layout-align="center center"
+  ng-if="detailLevel == 1 && !tooBig"
+  style="position: relative; padding: 12px"
+>
+  <matrix-svg
+    nodes="nodes"
+    edge-index="edgeIndex"
+    headlines="selectedAttId"
+    get-radius="getRadius"
+    get-color="getColor"
+    layout-fill
+    layout="column"
+    layout-align="center center"
+  ></matrix-svg>
+</div>
+
+<!-- Details: level 2 -->
+<div layout-fill style="position: relative" ng-if="detailLevel == 2 && !tooBig">
+  <!-- Matrix -->
+  <div layout-fill layout="column" style="user-select: none">
+    <div ng-style="{height: headlineSize+'px'}">
+      <div layout-fill layout="row">
+        <div ng-style="{width: headlineSize+'px'}" md-truncate></div>
+        <div flex>
+          <md-virtual-repeat-container
+            layout-fill
+            md-orient-horizontal="true"
+            class="scroll-target-x md-virtual-repeat-no-scroll-bar"
+            md-top-index="$parent.topIndexX"
+          >
+            <div
+              md-virtual-repeat="nid in nodes"
+              md-item-size="16"
+              ng-style="{'width': cellSize+'px', 'height': headlineSize+'px'}"
+              style="display: inline-block; padding-top: 3px; overflow: hidden"
+              flex
+            >
+              <div
+                layout="column"
+                layout-align="center center"
+                ng-style="{'width': cellSize+'px', 'height': cellSize+'px'}"
+              >
+                <node-list-pic
+                  class="md-avatar"
+                  radius="$parent.getRadius(nid) * cellSize / 2 - 1"
+                  color="$parent.getColor(nid)"
+                  layout-fill
+                ></node-list-pic>
+              </div>
+              <div
+                flex
+                class="matrix-label"
+                style="writing-mode: vertical-rl; text-orientation: sideways; overflow: hidden"
+              >
+                {{networkData.g.getNodeAttribute(nid, 'label')}}
+              </div>
+            </div>
+          </md-virtual-repeat-container>
+        </div>
+      </div>
+    </div>
+    <div flex>
+      <md-virtual-repeat-container
+        layout-fill
+        class="scroll-target-y md-virtual-repeat-no-scroll-bar"
+        md-top-index="$parent.topIndexY"
+      >
+        <div md-virtual-repeat="nid in nodes" md-item-size="16" flex>
+          <div
+            matrix-line
+            get-radius="getRadius"
+            get-color="getColor"
+            node-id="nid"
+            nodes="nodes"
+            edge-index="edgeIndex"
+            headline-size="headlineSize"
+            cell-size="cellSize"
+            att="att"
+            top-index-x="$parent.$parent.topIndexX"
+            style="height: {{cellSize}}px"
+          ></div>
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </div>
+
+  <!-- Scroll overlay 1: minimap -->
+  <div
+    layout-fill
+    style="position: absolute; left: 0px; top: 0px;"
+    layout="column"
+  >
+    <div
+      layout="column"
+      layout-align="center center"
+      ng-style="{'width':headlineSize+'px', 'height':headlineSize+'px'}"
+    >
+      <matrix-svg
+        nodes="nodes"
+        edge-index="edgeIndex"
+        headlines="false"
+        layout-fill
+      ></matrix-svg>
+    </div>
+  </div>
+
+  <!-- Scroll overlay 2: drag div -->
+  <div
+    layout-fill
+    style="position: absolute; left: 0px; top: 0px;"
+    layout="column"
+  >
+    <div
+      layout-fill
+      style="cursor: move"
+      ng-style="{overflow:printMode ? 'hidden' : 'scroll'}"
+      drag-scroll="true"
+      id="scroll-source"
+    >
+      <div
+        ng-style="{'width':(headlineSize + cellSize*nodes.length)+'px', 'height':(headlineSize + cellSize*nodes.length)+'px'}"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Scroll overlay 3: view box -->
+  <div
+    style="position: absolute; left: 0px; top: 0px; cursor: pointer"
+    ng-style="{'width':headlineSize+'px', 'height':headlineSize+'px'}"
+  >
+    <div layout="column" layout-align="center center" layout-fill>
+      <matrix-view-box
+        view-box="$parent.viewBox"
+        view-box-dragged="$parent.minimapViewBox"
+        layout-fill
+      ></matrix-view-box>
+    </div>
+  </div>
+</div>

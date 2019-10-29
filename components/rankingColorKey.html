@@ -1,0 +1,38 @@
+<div layout="column">
+  <div layout="row" style="height: {{elementSize}}px; margin-bottom: 6px">
+    <div style="width: {{elementSize}}px;"></div>
+    <div
+      flex
+      layout="column"
+      layout-align="center"
+      class="key-element-label"
+      md-truncate
+    >
+      <span style="font-weight: 400">{{att.name}}</span>
+    </div>
+  </div>
+  <div
+    layout="row"
+    style="height: {{elementSize}}px; margin-bottom: 6px"
+    ng-repeat="mod in modalities"
+    ng-if="!modalityFilter || modalityFilter(mod.value)"
+  >
+    <div style="width: {{elementSize}}px;">
+      <ranking-color-key-item
+        modality="mod"
+        layout-fill
+        layout="column"
+        layout-align="center center"
+      ></ranking-color-key-item>
+    </div>
+    <div
+      flex
+      layout="column"
+      layout-align="center"
+      class="key-element-label"
+      md-truncate
+    >
+      {{mod.label}}
+    </div>
+  </div>
+</div>

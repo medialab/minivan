@@ -1,0 +1,22 @@
+<md-button
+  class="md-primary md-hue-1"
+  aria-label="{{label}}"
+  ng-click="go()"
+  ng-if="viewmode != viewmodeTarget"
+>
+  <md-icon>{{icon}}</md-icon>
+  {{label}}
+</md-button>
+<div
+  ng-if="viewmode == viewmodeTarget"
+  class="toolbar-item-as-a-tab"
+  layout="row"
+  layout-align="center center"
+>
+  <div>
+    <h2 style="opacity: 0.8">
+      <md-icon>{{icon}}</md-icon>
+      {{label}}
+    </h2>
+  </div>
+</div>

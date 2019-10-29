@@ -1,0 +1,38 @@
+<div layout="column">
+  <div layout="row" style="height: {{elementSize}}px; margin-bottom: 6px">
+    <div style="width: {{elementSize}}px;"></div>
+    <div
+      flex
+      layout="column"
+      layout-align="center"
+      class="key-element-label"
+      md-truncate
+    >
+      <span style="font-weight: 400">{{att.name}}</span>
+    </div>
+  </div>
+  <div
+    layout="row"
+    style="height: {{elementSize}}px; margin-bottom: 6px"
+    ng-repeat="m in att.modalities"
+    ng-if="!modalityFilter || modalityFilter(m.value)"
+  >
+    <div style="width: {{elementSize}}px;">
+      <partition-color-key-item
+        modality="m"
+        layout-fill
+        layout="column"
+        layout-align="center center"
+      ></partition-color-key-item>
+    </div>
+    <div
+      flex
+      layout="column"
+      layout-align="center"
+      class="key-element-label"
+      md-truncate
+    >
+      {{m.value}}
+    </div>
+  </div>
+</div>

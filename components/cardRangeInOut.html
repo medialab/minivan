@@ -1,0 +1,21 @@
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline">
+      Inbound vs. Outbound connectivity
+    </span>
+  </md-card-title-text>
+</md-card-title>
+<md-card-content style="width: 100%">
+  <div
+    range-in-out-chart
+    print-mode="printMode"
+    subgraph="subgraph"
+    modality-value="modality.value"
+    style="width: 100%"
+  ></div>
+  <p ng-if="detailLevel>1">
+    We compare inbound edges to outbound edges. Bars display the amount of
+    edges. Internal edges are not counted. Being cited is usually considered
+    more favorable than citing.
+  </p>
+</md-card-content>

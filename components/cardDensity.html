@@ -1,0 +1,13 @@
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline"
+      >Density = <strong>{{density|number}}</strong></span
+    >
+  </md-card-title-text>
+</md-card-title>
+<md-card-content ng-if="detailLevel>1">
+  The density of a graph is the number of its edges, called its size, divided by
+  the total number of edges possible. This metric is useful to assess whether
+  the graph is dense or sparse. For more information, check out
+  <a href="https://en.wikipedia.org/wiki/Dense_graph">Wikipedia</a>.
+</md-card-content>

@@ -1,0 +1,31 @@
+<div layout-fill md-theme="prepare-dark">
+  <div layout-fill layout="row">
+    <md-content
+      flex
+      layout="row"
+      style="padding: 48px; font-size: 1.1em; font-family: 'Quicksand', sans-serif;"
+    >
+      <div flex>
+        <h1 style="font-size: 2.4em; font-weight: 400; margin-top: 0px">
+          WHERE IS YOUR MINIVAN BUNDLE?
+        </h1>
+        <md-input-container layout="fill">
+          <label>Url</label>
+          <input
+            type="text"
+            ng-model="bundleUrl"
+            placeholder="URL of the JSON Bundle"
+          />
+        </md-input-container>
+        <div ng-if="bundleUrl">
+          <p>
+            <a ng-href="{{getUrl()}}" style="color: white;">{{getUrl()}}</a>
+          </p>
+          <md-button class="md-primary md-raised" ng-click="start()">
+            Start
+          </md-button>
+        </div>
+      </div>
+    </md-content>
+  </div>
+</div>

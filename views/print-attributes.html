@@ -1,0 +1,36 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1>Attributes</h1>
+    <div class="thin-h-line"></div>
+    <md-list>
+      <div
+        ng-repeat="att in networkData.model.nodeAttributes"
+        md-item-size="20"
+        ng-class="{'leftshift-80':isSelected, 'rightshift-80':!isSelected}"
+      >
+        <div class="thin-h-line"></div>
+        <!-- TODO: set correct 'obj' when handling edge attributes -->
+        <div
+          obj="'node'"
+          attribute-list-element
+          att="att"
+          print-mode="true"
+          detail-level="attributeListDetailLevel"
+          class="print-no-break"
+          style="margin-top: 12px; margin-bottom: 12px"
+        ></div>
+      </div>
+    </md-list>
+    <div class="thin-h-line"></div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<md-sidenav
+  class="md-sidenav-right md-whiteframe-4dp"
+  md-component-id="node-sidenav"
+>
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Node data</h1>
+  </md-toolbar>
+  <md-content ng-if="networkData.loaded">
+    <div layout="row" style="width: 300px; height: 300px">
+      <node-minimap
+        class="md-secondary"
+        node="nodeData"
+        print-mode="false"
+        large="true"
+        layout-fill
+      ></node-minimap>
+    </div>
+    <md-list class="md-dense" flex>
+      <md-list-item class="md-3-line">
+        <div class="md-list-item-text" layout="column">
+          <h3>Label</h3>
+          <h4>{{ nodeData.label }}</h4>
+        </div>
+      </md-list-item>
+      <md-list-item
+        class="md-3-line"
+        ng-repeat="item in networkData.model.nodeAttributes"
+      >
+        <div class="md-list-item-text" layout="column">
+          <h3>{{ item.name }}</h3>
+          <h4>{{ nodeData[item.id] }}</h4>
+          <!-- <p>{{ item.label }}</p> -->
+        </div>
+      </md-list-item>
+    </md-list>
+    <md-button ng-click="close()" class="md-primary">
+      Close
+    </md-button>
+  </md-content>
+</md-sidenav>

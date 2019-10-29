@@ -1,0 +1,245 @@
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline">
+      Remarkable nodes
+    </span>
+  </md-card-title-text>
+</md-card-title>
+<md-card-content style="width: 100%">
+  <md-list flex>
+    <!-- INSIDE CITED FROM INSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.inside.citedFromInside.length > 0"
+    >
+      Top {{topCut}} ENDO-CITED - Nodes of {{modality.value}} most cited from
+      {{modality.value}}
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.inside.citedFromInside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="modality.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4></h4>
+        <p>{{ item.score }} edges from {{modality.value}}</p>
+      </div>
+    </md-list-item>
+
+    <!-- INSIDE CITED FROM OUTSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.inside.citedFromOutside.length > 0"
+    >
+      Top {{topCut}} EXO-CITED - Nodes of {{modality.value}} most cited from
+      other modalities
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.inside.citedFromOutside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="modality.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4></h4>
+        <p>{{ item.score }} edges from other modalities</p>
+      </div>
+    </md-list-item>
+
+    <!-- INSIDE POINTING TO INSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.inside.pointingToInside.length > 0"
+    >
+      Top {{topCut}} ENDO-CITING - Nodes of {{modality.value}} most pointing to
+      {{modality.value}}
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.inside.pointingToInside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="modality.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4></h4>
+        <p>{{ item.score }} edges to {{modality.value}}</p>
+      </div>
+    </md-list-item>
+
+    <!-- INSIDE POINTING TO OUTSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.inside.pointingToOutside.length > 0"
+    >
+      Top {{topCut}} EXO-CITING - Nodes of {{modality.value}} most pointing to
+      other modalities
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.inside.pointingToOutside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="modality.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4></h4>
+        <p>{{ item.score }} edges to other modalities</p>
+      </div>
+    </md-list-item>
+
+    <!-- INSIDE CONNECTED INSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.inside.connectedInside.length > 0"
+    >
+      Top {{topCut}} ENDO-CONNECTED - Nodes of {{modality.value}} most tied to
+      {{modality.value}}
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.inside.connectedInside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="modality.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4></h4>
+        <p>{{ item.score }} edges with {{modality.value}}</p>
+      </div>
+    </md-list-item>
+
+    <!-- INSIDE CONNECTED OUTSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.inside.connectedOutside.length > 0"
+    >
+      Top {{topCut}} EXO-CONNECTED - Nodes of {{modality.value}} most tied to
+      other modalities
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.inside.connectedOutside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="modality.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4></h4>
+        <p>{{ item.score }} edges with other modalities</p>
+      </div>
+    </md-list-item>
+
+    <!-- OUTSIDE: -->
+    <!-- OUTSIDE CITED FROM INSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.outside.citedFromInside.length > 0"
+    >
+      Top {{topCut}} EXTERNAL-TARGETS - Nodes of other modalities most cited
+      from {{modality.value}}
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.outside.citedFromInside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="attribute.modalities[item.node[attribute.id]].color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4>{{item.node[attribute.id]}}</h4>
+        <p>{{ item.score }} edges from {{modality.value}}</p>
+      </div>
+    </md-list-item>
+
+    <!-- OUTSIDE POINTING TO INSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.outside.pointingToInside.length > 0"
+    >
+      Top {{topCut}} EXTERNAL-SOURCES - Nodes of other modalities most pointing
+      to {{modality.value}}
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.outside.pointingToInside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="attribute.modalities[item.node[attribute.id]].color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4>{{item.node[attribute.id]}}</h4>
+        <p>{{ item.score }} edges to {{modality.value}}</p>
+      </div>
+    </md-list-item>
+
+    <!-- OUTSIDE CONNECTED INSIDE -->
+    <md-subheader
+      class="md-no-sticky"
+      ng-if="sortedNodes.outside.connectedInside.length > 0"
+    >
+      Top {{topCut}} EXTERNAL-NEIGHBORS - Nodes of other modalities most tied to
+      {{modality.value}}
+    </md-subheader>
+    <md-list-item
+      class="md-3-line"
+      ng-repeat="item in sortedNodes.outside.connectedInside"
+      ng-click="null"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="16"
+        color="attribute.modalities[item.node[attribute.id]].color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+      <div class="md-list-item-text" layout="column">
+        <h3>{{ item.node.label }}</h3>
+        <h4>{{item.node[attribute.id]}}</h4>
+        <p>{{ item.score }} edges with {{modality.value}}</p>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-card-content>

@@ -1,0 +1,343 @@
+<div
+  layout="row"
+  layout-fill
+  md-colors="{background: 'default-background-500'}"
+>
+  <left-side-bar></left-side-bar>
+  <node-sidenav node-data="selectedNode"></node-sidenav>
+  <div layout="row" flex>
+    <!-- Left part of the screen -->
+    <div layout="column" flex="50" flex-md="60" flex-gt-md="66">
+      <div layout="column" flex>
+        <!-- Panel -->
+        <div
+          layout="column"
+          flex
+          class="component-panel top-panel md-whiteframe-6dp"
+          md-colors="{background: 'default-background-200'}"
+        >
+          <!-- Toolbar -->
+          <md-toolbar
+            md-colors="{background: 'default-primary-200-0.2'}"
+            style="overflow: hidden"
+          >
+            <div class="md-toolbar-tools">
+              <span flex></span>
+
+              <toolbar-viewmode-item
+                viewmode-target="'map'"
+                viewmode="panel"
+                icon="'bubble_chart'"
+                label="'Map'"
+              ></toolbar-viewmode-item>
+
+              <toolbar-viewmode-item
+                viewmode-target="'matrix'"
+                viewmode="panel"
+                icon="'apps'"
+                label="'Matrix'"
+              ></toolbar-viewmode-item>
+
+              <toolbar-viewmode-item
+                viewmode-target="'list'"
+                viewmode="panel"
+                icon="'list'"
+                label="'Nodes'"
+              ></toolbar-viewmode-item>
+
+              <toolbar-viewmode-item
+                viewmode-target="'stats'"
+                viewmode="panel"
+                icon="'insert_chart'"
+                label="'Stats'"
+              ></toolbar-viewmode-item>
+
+              <span flex></span>
+            </div>
+          </md-toolbar>
+          <!-- Content -->
+          <div
+            flex
+            layout="column"
+            layout-align="center center"
+            style="background-color: #FFF"
+          >
+            <md-progress-circular
+              ng-if="!networkData.loaded"
+              md-mode="indeterminate"
+            ></md-progress-circular>
+
+            <sigma-network
+              ng-if="networkData.loaded && panel == 'map'"
+              on-node-click="networkNodeClick"
+              start-layout-on-load="true"
+              node-color-att-id="attribute.type == 'ranking-color' ? $parent.attribute.id : undefined"
+              node-size-att-id="attribute.type == 'ranking-size' ? $parent.attribute.id : undefined"
+              get-renderer="$parent.getRenderer"
+              node-filter="$parent.nodeFilter"
+              layout-cache-key="attribute.id+':'+rangeMin+'-'+rangeMax"
+              hard-filter="true"
+              enable-layout="true"
+              layout-fill
+            ></sigma-network>
+
+            <matrix
+              ng-if="networkData.loaded && panel == 'matrix'"
+              on-node-click="networkNodeClick"
+              on-edge-click="networkEdgeClick"
+              selected-att-id="attribute.id"
+              detail-level="matrixDetailLevel"
+              view-box="$parent.viewBox"
+              node-filter="$parent.nodeFilter"
+              layout-fill
+            ></matrix>
+
+            <node-list
+              ng-if="networkData.loaded && panel == 'list'"
+              on-node-click="networkNodeClick"
+              color-att-id="attribute.type == 'ranking-color' ? $parent.attribute.id : undefined"
+              size-att-id="attribute.type == 'ranking-size' ? $parent.attribute.id : undefined"
+              selected-att-id="$parent.attribute.id"
+              search="$parent.search"
+              node-filter="$parent.nodeFilter"
+              layout-fill
+            ></node-list>
+
+            <md-content
+              ng-if="networkData.loaded && panel == 'stats'"
+              layout-fill
+              style="overflow: auto"
+              md-colors="{background: 'default-background-200-0.3'}"
+            >
+              <md-card
+                card-range-summary
+                att-id="$parent.attribute.id"
+                range="[$parent.rangeMin, $parent.rangeMax]"
+                subgraph="subgraph"
+                detail-level="$parent.statsDetailLevel"
+                print-mode="false"
+                layout="column"
+                layout-align="center center"
+              ></md-card>
+              <md-card
+                card-range-in-out
+                ng-if="networkData.g.type != 'undirected'"
+                att-id="$parent.attribute.id"
+                range="[$parent.rangeMin, $parent.rangeMax]"
+                subgraph="subgraph"
+                detail-level="$parent.statsDetailLevel"
+                print-mode="false"
+                layout="column"
+                layout-align="center center"
+              ></md-card>
+            </md-content>
+          </div>
+        </div>
+
+        <!-- Footer: MAP -->
+        <div
+          class="component-footer"
+          layout="row"
+          layout-align="center center"
+          ng-if="panel == 'map'"
+        >
+          <md-button class="footer-button" ng-click="downloadGEXF()">
+            <md-tooltip md-direction="top">Download network (GEXF)</md-tooltip>
+            <md-icon>file_download</md-icon>
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-href="#/print-network-modalities-ranking?att={{attribute.id}}&filter={{nodeFilterImprint}}&x={{getRenderer()|cameraX}}&y={{getRenderer()|cameraY}}&r={{getRenderer()|cameraRatio}}&layoutcache=true&bundle={{bundleLocation}}"
+            target="_blank"
+          >
+            <md-tooltip md-direction="top">Print network map</md-tooltip>
+            <md-icon>print</md-icon>
+          </md-button>
+        </div>
+
+        <!-- Footer: MATRIX -->
+        <div
+          class="component-footer"
+          layout="row"
+          layout-align="center center"
+          ng-if="panel == 'matrix'"
+        >
+          <md-button class="footer-button" ng-click="downloadMatrix()">
+            <md-tooltip md-direction="top"
+              >Download adjacency matrix (CSV)</md-tooltip
+            >
+            <md-icon>file_download</md-icon>
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-href="#/print-matrix?att={{attribute.id}}&detail={{matrixDetailLevel}}&x={{viewBox.x}}&y={{viewBox.y}}&w={{viewBox.w}}&h={{viewBox.h}}&filter={{nodeFilterImprint}}&bundle={{bundleLocation}}"
+            target="_blank"
+          >
+            <md-tooltip md-direction="top">Print adjacency matrix</md-tooltip>
+            <md-icon>print</md-icon>
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-click="$parent.matrixDetailLevel=1"
+          >
+            <md-tooltip md-direction="top">No details</md-tooltip>
+            Details
+            <md-icon ng-if="matrixDetailLevel==1">radio_button_checked</md-icon>
+            <md-icon ng-if="matrixDetailLevel!=1"
+              >radio_button_unchecked</md-icon
+            >
+            1
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-click="$parent.matrixDetailLevel=2"
+          >
+            <md-tooltip md-direction="top">Zoomed matrix</md-tooltip>
+            <md-icon ng-if="matrixDetailLevel==2">radio_button_checked</md-icon>
+            <md-icon ng-if="matrixDetailLevel!=2"
+              >radio_button_unchecked</md-icon
+            >
+            2
+          </md-button>
+        </div>
+
+        <!-- Footer: LIST -->
+        <div
+          class="component-footer"
+          layout="row"
+          layout-align="center center"
+          ng-if="panel == 'list'"
+        >
+          <md-button class="footer-button" ng-click="downloadNodeList()">
+            <md-tooltip md-direction="top">Download list</md-tooltip>
+            <md-icon>file_download</md-icon>
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-href="#/print-node-list-modalities-ranking?att={{attribute.id}}&filter={{nodeFilterImprint}}&bundle={{bundleLocation}}"
+            target="_blank"
+          >
+            <md-tooltip md-direction="top">Print list</md-tooltip>
+            <md-icon>print</md-icon>
+          </md-button>
+        </div>
+
+        <!-- Footer: STATS -->
+        <div
+          class="component-footer"
+          layout="row"
+          layout-align="center center"
+          ng-if="panel == 'stats'"
+        >
+          <md-button
+            class="footer-button"
+            ng-href="#/print-stats-range?att={{attribute.id}}&rangeMin={{rangeMin}}&rangeMax={{rangeMax}}&detail={{statsDetailLevel}}&bundle={{bundleLocation}}"
+            target="_blank"
+          >
+            <md-tooltip md-direction="top">Print statistics</md-tooltip>
+            <md-icon>print</md-icon>
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-click="$parent.statsDetailLevel=1"
+          >
+            <md-tooltip md-direction="top">No details</md-tooltip>
+            Details
+            <md-icon ng-if="statsDetailLevel==1">radio_button_checked</md-icon>
+            <md-icon ng-if="statsDetailLevel!=1"
+              >radio_button_unchecked</md-icon
+            >
+            1
+          </md-button>
+          <md-button
+            class="footer-button"
+            ng-click="$parent.statsDetailLevel=2"
+          >
+            <md-tooltip md-direction="top">More details</md-tooltip>
+            <md-icon ng-if="statsDetailLevel==2">radio_button_checked</md-icon>
+            <md-icon ng-if="statsDetailLevel!=2"
+              >radio_button_unchecked</md-icon
+            >
+            2
+          </md-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right part of the screen -->
+    <div layout="column" flex="50" flex-md="40" flex-gt-md="33">
+      <div layout="column" flex>
+        <!-- Panel -->
+        <div
+          layout="column"
+          flex
+          class="component-panel md-whiteframe-3dp"
+          md-colors="{background: 'default-background-300'}"
+        >
+          <project-title-bar title="networkData.title"></project-title-bar>
+
+          <!-- Attribute toolbar -->
+          <md-toolbar style="z-index: 0" class="md-hue-1">
+            <div class="md-toolbar-tools">
+              <md-button
+                class="md-icon-button"
+                ng-href="#/attributes?panel={{panel}}&bundle={{bundleLocation}}"
+              >
+                <md-icon>arrow_back</md-icon>
+              </md-button>
+              <h2 flex md-truncate>{{attribute.name}}:</h2>
+            </div>
+          </md-toolbar>
+
+          <!-- Modality toolbar -->
+          <md-toolbar style="z-index: 0">
+            <div class="md-toolbar-tools">
+              <md-button
+                class="md-icon-button"
+                ng-href="#/ranking/{{attribute.id}}/modalities?panel={{panel}}&bundle={{bundleLocation}}"
+              >
+                <md-icon>arrow_back</md-icon>
+              </md-button>
+              <h2 flex md-truncate ng-if="attribute.integer">
+                {{rangeMin|number}} to {{rangeMax|number}}
+              </h2>
+              <h2 flex md-truncate ng-if="!attribute.integer">
+                {{rangeMin|number}} - {{rangeMax|number}}
+              </h2>
+            </div>
+          </md-toolbar>
+
+          <!-- Custom range -->
+          <div layout="column" layout-align="center center" flex>
+            TODO: custom range
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="component-footer" layout="row" layout-align="center center">
+          <!-- <md-button class="footer-button" ng-click="downloadModalities()">
+            <md-tooltip md-direction="top">Download data</md-tooltip>
+            <md-icon>file_download</md-icon>
+          </md-button> -->
+          <!-- <md-button class="footer-button" ng-href="#/print-modalities-partition?att={{attribute.id}}&detail={{modalityListDetailLevel}}" target="_blank">
+            <md-tooltip md-direction="top">Print data visualization</md-tooltip>
+            <md-icon>print</md-icon>
+          </md-button> -->
+          <!-- <md-button class="footer-button" ng-click="modalityListDetailLevel=1">
+            <md-tooltip md-direction="top">No details</md-tooltip>
+            Details
+            <md-icon ng-if="modalityListDetailLevel==1">radio_button_checked</md-icon>
+            <md-icon ng-if="modalityListDetailLevel!=1">radio_button_unchecked</md-icon>
+            1
+          </md-button> -->
+          <!-- <md-button class="footer-button" ng-click="modalityListDetailLevel=2">
+            <md-tooltip md-direction="top">More details</md-tooltip>
+            <md-icon ng-if="modalityListDetailLevel==2">radio_button_checked</md-icon>
+            <md-icon ng-if="modalityListDetailLevel!=2">radio_button_unchecked</md-icon>
+            2
+          </md-button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

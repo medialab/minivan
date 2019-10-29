@@ -1,0 +1,30 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1>Nodes<span ng-if="att" style="opacity: 0.5"> - {{att.name}}</span></h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <md-list class="md-dense">
+      <div ng-repeat="node in nodes" md-item-size="88" flex>
+        <div
+          node-list-element
+          get-radius="getRadius"
+          get-color="getColor"
+          node="node"
+          att="att"
+          print-mode="true"
+          class="print-no-break"
+        ></div>
+      </div>
+    </md-list>
+  </div>
+</div>

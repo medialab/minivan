@@ -1,0 +1,96 @@
+<md-card-title>
+  <md-card-title-text>
+    <span class="md-headline">Distribution of {{attribute.name}}</span>
+  </md-card-title-text>
+</md-card-title>
+<md-card-content style="width: 100%">
+  <div style="overflow: hidden" class="print-no-break">
+    <!-- Distribution: bar chart, actual modalities -->
+    <div ng-if="useNaturalModalities">
+      <h2 ng-if="detailLevel>1">
+        Nodes count per modality of {{attribute.name}}
+      </h2>
+      <div
+        ranking-modalities-chart
+        print-mode="printMode"
+        attribute="attribute"
+        data="naturalModalities"
+        style="height: 300px; width: 100%"
+      ></div>
+      <p ng-if="detailLevel>1">
+        This chart plots the node count for each modality of {{attribute.name}}.
+        Modalities are integers.
+      </p>
+    </div>
+
+    <!-- Distribution: bar chart, ranges -->
+    <div ng-if="!useNaturalModalities">
+      <h2 ng-if="detailLevel>1">Nodes count per range of {{attribute.name}}</h2>
+      <div
+        ranking-distribution-chart
+        print-mode="printMode"
+        attribute="attribute"
+        data="distributionData"
+        style="height: 300px; width: 100%"
+      ></div>
+      <p ng-if="detailLevel>1">
+        This chart plots the node count for ranges of {{attribute.name}}.
+        <span ng-if="attribute.integer"
+          >Actual modalities are not used because there are too many of
+          them.</span
+        >
+        <span ng-if="!attribute.integer"
+          >Ranges are used because the modalities are not integer and as a
+          consequence do not aggregate naturally.</span
+        >
+      </p>
+    </div>
+  </div>
+  <div ng-if="detailLevel>1 && logPlot">
+    <br />
+    <br />
+    <!-- Distribution: log plot, actual modalities -->
+    <div ng-if="attribute.integer">
+      <h2>Nodes count per modality of {{attribute.name}}, LOG scale</h2>
+      <div style="overflow: hidden" class="print-no-break">
+        <div
+          ranking-modality-log-chart
+          print-mode="printMode"
+          attribute="attribute"
+          data="naturalModalities"
+          style="height: 300px; width: 100%"
+        ></div>
+      </div>
+      <p>
+        This chart plots the node count for each modality of {{attribute.name}}.
+        Modalities are integers. Using a logarithmic scale is useful when the
+        distribution follows a
+        <a href="https://en.wikipedia.org/wiki/Power_law" target="_blank"
+          >power law</a
+        >. The degrees in real world networks often follow such a law.
+      </p>
+    </div>
+    <!-- Distribution: log plot, ranges -->
+    <div ng-if="!attribute.integer">
+      <h2>Nodes count per range of {{attribute.name}}, LOG scale</h2>
+      <div style="overflow: hidden" class="print-no-break">
+        <div
+          ranking-distribution-log-chart
+          print-mode="printMode"
+          attribute="attribute"
+          data="distributionData"
+          style="height: 300px; width: 100%"
+        ></div>
+      </div>
+      <p>
+        This chart also plots the node count for ranges of {{attribute.name}}.
+        Though intervals are represented as dots, they represent groups of nodes
+        in the corresponding range of {{attribute.name}}. Using a logarithmic
+        scale is useful when the distribution follows a
+        <a href="https://en.wikipedia.org/wiki/Power_law" target="_blank"
+          >power law</a
+        >. The degrees in real world networks often follow such a law.
+      </p>
+    </div>
+  </div>
+</md-card-content>

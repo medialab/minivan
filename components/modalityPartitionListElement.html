@@ -1,0 +1,109 @@
+<!-- Detail level 1 -->
+<div ng-if="detailLevel==1" ng-class="{'md-whiteframe-3dp': isSelected}">
+  <md-list-item
+    md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
+    ng-class="{ontop: isSelected}"
+    ng-click="toggleSelection()"
+  >
+    <node-list-pic
+      class="md-avatar"
+      radius="'20'"
+      color="mod.color"
+      style="width: 40px; height: 40px"
+    ></node-list-pic>
+    <md-icon style="margin-right: 12px" ng-if="isSelected && !printMode"
+      >check_box</md-icon
+    >
+    <md-icon style="margin-right: 12px" ng-if="!isSelected  && !printMode"
+      >check_box_outline_blank</md-icon
+    >
+    <p class="md-truncate">{{mod.value}}</p>
+    <md-button
+      class="md-fab md-mini md-primary md-secondary"
+      ng-if="isSelected"
+      ng-href="#/partition/{{attributeId}}/modality/?m={{mod.value|encodeURIComponent}}&panel={{panel}}&bundle={{bundleLocation}}"
+      ng-click="$event.stopPropagation();"
+    >
+      <md-icon>arrow_forward</md-icon>
+    </md-button>
+  </md-list-item>
+</div>
+
+<!-- Detail level 2 -->
+<div
+  ng-if="detailLevel==2"
+  ng-class="{'md-whiteframe-3dp': isSelected}"
+  ng-click="toggleSelection()"
+  class="clickable-panel"
+>
+  <md-content
+    md-colors="{background: isSelected ? 'default-background-A100' : 'default-background-50-0.0'}"
+    ng-class="{ontop: isSelected}"
+    md-ink-ripple
+    layout-fill
+    layout="row"
+    style="height: 56px; padding-left: 8px"
+  >
+    <div style="width: 56px" layout="row" layout-align="center center">
+      <node-list-pic
+        radius="'20'"
+        color="mod.color"
+        style="width: 40px; height: 40px"
+      ></node-list-pic>
+    </div>
+    <div
+      style="width: 56px; font-family: 'Quicksand', sans-serif; font-weight: 500"
+      layout="column"
+      layout-align="center end"
+    >
+      <div style="font-size: 0.7em; text-align:right;" md-truncate>
+        {{mod.count|number}} nodes
+      </div>
+      <div style="font-size: 0.7em; text-align:right;" md-truncate>
+        {{(100*mod.count/networkData.g.order)|number:1}} %
+      </div>
+    </div>
+    <div flex style="margin-left: 12px; padding: 6px 0px" layout="row">
+      <div
+        style="background-color: rgba(160, 160, 160, 0.5); height:100%; width: {{(100*mod.count/maxModCount)|number:1}}%"
+        layout="column"
+        layout-align="center end"
+      >
+        <div
+          md-truncate
+          style="max-width: 100%; font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 0.9em; margin-right: 6px"
+          ng-if="100*mod.count/maxModCount>labelThreshold"
+        >
+          {{mod.value}}
+        </div>
+      </div>
+      <div flex style="height: 100%">
+        <div
+          md-truncate
+          style="height: 100%; max-width: 100%; font-family: 'Quicksand', sans-serif; font-weight: 400; font-size: 0.9em; padding-left: 6px"
+          ng-if="100*mod.count/maxModCount<=labelThreshold"
+          layout="column"
+          layout-align="center start"
+        >
+          <div>{{mod.value}}</div>
+        </div>
+      </div>
+    </div>
+    <div
+      style="width: 64px"
+      layout="row"
+      layout-align="center center"
+      ng-if="!printMode"
+    >
+      <md-button
+        class="md-fab md-mini md-primary md-secondary"
+        ng-if="isSelected"
+        ng-href="#/partition/{{attributeId}}/modality/?m={{mod.value}}&panel={{panel}}&bundle={{bundleLocation}}"
+        ng-click="$event.stopPropagation();"
+      >
+        <md-icon>arrow_forward</md-icon>
+      </md-button>
+    </div>
+    <div style="width: 12px" ng-if="printMode"></div>
+  </md-content>
+</div>

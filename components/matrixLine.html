@@ -1,0 +1,47 @@
+<div layout="row" ng-style="{height: cellSize+'px'}">
+  <div
+    ng-style="{width: headlineSize+'px'}"
+    class="matrix-label"
+    md-truncate
+    style="padding-left: 3px"
+    layout="row"
+  >
+    <div
+      layout="column"
+      layout-align="center center"
+      ng-style="{'width': cellSize+'px', 'height': cellSize+'px'}"
+    >
+      <node-list-pic
+        class="md-avatar"
+        radius="getRadius(nodeId) * cellSize / 2 - 1"
+        color="getColor(nodeId)"
+        layout-fill
+      ></node-list-pic>
+    </div>
+    <div flex style="overflow: hidden">
+      {{ node.label }}
+    </div>
+  </div>
+  <div flex>
+    <md-virtual-repeat-container
+      layout-fill
+      md-orient-horizontal
+      class="scroll-target-x md-virtual-repeat-no-scroll-bar"
+      md-top-index="topIndexX"
+    >
+      <div
+        md-virtual-repeat="nid in nodes"
+        md-item-size="cellSize"
+        style="display: inline-block"
+        ng-style="{'width': cellSize+'px'}"
+        flex
+      >
+        <div
+          ng-style="{width: cellSize+'px', height: cellSize+'px'}"
+          md-colors="{background: edgeIndex[nodeId][nid] ? 'default-background-500' : 'default-background-200-0.3'}"
+          style="border: 0.5px solid #FFF"
+        ></div>
+      </div>
+    </md-virtual-repeat-container>
+  </div>
+</div>

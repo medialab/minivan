@@ -1,0 +1,46 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <print-button-overlay></print-button-overlay>
+  <div class="a4page" layout="column" style="position: relative">
+    <h1>
+      Statistics of {{attribute.name}} from {{rangeMin|number}} to
+      {{rangeMax|number}}
+    </h1>
+    <div class="thin-h-line"></div>
+    <div class="thin-h-line"></div>
+    <md-content style="background-color: #FFF">
+      <md-card
+        card-range-summary
+        att-id="$parent.attribute.id"
+        range="[$parent.rangeMin, $parent.rangeMax]"
+        subgraph="subgraph"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+      <div class="thin-h-line"></div>
+      <md-card
+        card-range-in-out
+        ng-if="networkData.g.type != 'undirected'"
+        att-id="$parent.attribute.id"
+        range="[$parent.rangeMin, $parent.rangeMax]"
+        subgraph="subgraph"
+        detail-level="$parent.statsDetailLevel"
+        print-mode="true"
+        class="card-for-print print-no-break"
+        layout="column"
+        layout-align="center center"
+      ></md-card>
+    </md-content>
+  </div>
+</div>
