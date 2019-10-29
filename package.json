@@ -1,7 +1,7 @@
 {
   "name": "minivan",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A web interface for visual network analysis.",
   "repository": "https://github.com/medialab/visual-net-analyser",
   "scripts": {
