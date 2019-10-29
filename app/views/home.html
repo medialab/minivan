@@ -7,20 +7,14 @@
       layout="column"
       style="overflow: hidden; padding: 48px"
     >
-      <md-grid-list
-        md-cols="1"
-        md-row-height="1:1"
-        md-gutter="48px"
-      >
-        <md-grid-tile
-          md-rowspan="1"
-          md-colspan="1"
-        >
-          <div layout="column" layout-fill>
-            <img src="res/logo.svg" style="width:100%">
-          </div>
-        </md-grid-tile>
-      </md-grid-list>
+      <div layout="column" layout-fill>
+        <img src="res/logo.svg" style="width:100%">
+        <br><br><br><br>
+        <div style="width:100%">
+          <iframe src="https://player.vimeo.com/video/369148930" width="320" height="200" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <p><em><a href="https://vimeo.com/369148930">miniVAN Tutorial</a> from <a href="https://vimeo.com/user4877778">Axel Meunier</a> on <a href="https://vimeo.com">Vimeo</a>.</em></p>
+        </div>
+      </div>
     </div>
     <md-content
       flex
@@ -43,11 +37,11 @@
           <strong>How to use.</strong> You can upload a GEXF network in an interface named "Maker" and tune publication settings. You will get a "data bundle" containing your network, its metadata (title, description...) and publication settings. You need to host this bundle somewhere online, for instance on GitHub. You then have to pass the data bundle's URL to MiniVan, in order to explore your network.
         </p>
         <div>
-          <strong>Demo networks.</strong> Look at how it looks like:
+          <strong>Demo network.</strong> Look at how it looks like:
           <ul>
-            <li><a href="#/explorer?bundle=data%2Ftest00.json">Test network 00 - Rio +20 - Nodes attributes</a></li>
-            <li><a href="#/explorer?bundle=data%2Ftest01.json">Test network 01 - Nordic Design - Encoding stuff</a></li>
-            <li><a href="#/explorer?bundle=data%2Ftest02.json">Test network 02 - School - Edge attributes</a></li>
+            <li><a href="#/explorer?bundle=data%2Ftest00.json">Test network - Rio +20 - Nodes attributes</a></li>
+            <!-- <li><a href="#/explorer?bundle=data%2Ftest01.json">Test network 01 - Nordic Design - Encoding stuff</a></li>
+            <li><a href="#/explorer?bundle=data%2Ftest02.json">Test network 02 - School - Edge attributes</a></li> -->
           </ul>
         </div>
         <p>
