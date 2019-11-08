@@ -1,0 +1,91 @@
+<div
+  class="page-container"
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div class="page-container" ng-if="networkData.loaded">
+  <div layout="row" layout-xs="column">
+    <div flex="">
+      <h1>Embed settings</h1>
+      <md-select ng-model='inputs.size'>
+        <md-option ng-value='"small"'>Small width</md-option>
+        <md-option ng-value='"medium"'>Medium width</md-option>
+        <md-option ng-value='"big"'>Big width</md-option>
+        <md-option ng-value='"full"'>Full width</md-option>
+        <md-option ng-value='"custom"'>Custom</md-option>
+      </md-select>
+      <div ng-if="inputs.size === 'custom'">
+        <md-input-container>
+          <label>Width</label>
+          <input
+            type="number"
+            step="1"
+            min="0"
+            max="10000"
+            ng-value="0"
+            ng-model="size.width"
+          />
+        </md-input-container>
+        <md-input-container>
+          <label>Height</label>
+          <input
+            type="number"
+            step="1"
+            min="0"
+            max="10000"
+            ng-value="0"
+            ng-model="size.height"
+          />
+        </md-input-container>
+      </div>
+      <div>
+        <h2>Embed title</h2>
+        <md-input-container>
+          <input
+            type="text"
+            ng-model="inputs.title"
+          />
+        </md-input-container>
+      </div>
+      <md-switch ng-model="inputs.showLink" aria-label="Show minivan link in embed?">
+        Show minivan link in embed
+      </md-switch>
+      <div ng-if="embedType === 'map'">
+        <embed-builder-map
+          options="embedTypeOptions"
+          get-renderer="getRenderer"
+        />
+      </div>
+      <code>{{embedTypeOptions}}</code>
+    </div>
+    <div flex>
+      <iframe
+        style="border: none;"
+        title="{{title}}"
+        width="{{size.width}}"
+        height="{{size.height}}"
+        ng-src="{{printParams()}}">
+      </iframe>
+      <textarea class="code" style="width: 500px;">
+        {{printParams()}}
+      </textarea>
+      <div
+        id="quoi"
+        ng-style="{height: size.height + 'px', width: size.width + 'px'}"
+      >
+        <embeded-map
+          network-data="networkData"
+          hide-legend="embedTypeOptions.hideLegend"
+          block-gestures="embedTypeOptions.lockNavigation"
+          title="inputs.title"
+          attribute="attribute"
+          get-renderer="$parent.getRenderer"
+        />
+      </div>
+    </div>
+  </div>
+</div>

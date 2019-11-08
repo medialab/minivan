@@ -30,6 +30,7 @@ angular
         getRenderer: '=',
         defaultZoomShowPercent: '=', // Optional. If set to n, camera centered to barycenter with n% nodes visible
         hideCommands: '=', // Optional
+        rightCommands: '=', // Optional
         hideKey: '=', // Optional
         hideLabels: '=', // Optional
         enableLayout: '=',
@@ -621,6 +622,10 @@ angular
                 x: settings.default_x,
                 y: settings.default_y
               })
+            }
+
+            $scope.getRenderer = function() {
+              return renderer
             }
 
             if ($scope.layout) {

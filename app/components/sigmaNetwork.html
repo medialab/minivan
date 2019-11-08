@@ -46,7 +46,7 @@
 
   <!-- Buttons -->
   <div
-    style="position: absolute; left: 16px; top: 16px;"
+    ng-style="{position: 'absolute', [rightCommands ? 'right' : left] : '16px', top: '16px'}"
     layout="column"
     ng-if="!hideCommands"
   >

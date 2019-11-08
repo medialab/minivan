@@ -27,3 +27,4 @@ window.minivan = minivan;
 window.saveAs = require('file-saver');
 window.screenfull = require('screenfull');
 window.iwanthue = require('iwanthue');
+window.qs = require('qs');
