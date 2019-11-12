@@ -282,12 +282,11 @@
               <h2 flex md-truncate>{{attribute.name}}</h2>
             </div>
           </md-toolbar>
-
           <!-- Partition: modalities -->
           <md-virtual-repeat-container flex>
             <md-list layout-fill>
               <div
-                md-virtual-repeat="mod in attribute.modalities|values"
+                md-virtual-repeat="mod in attribute.modalitiesOrder"
                 md-item-size="20"
                 flex
               >
@@ -295,11 +294,11 @@
                   modality-partition-list-element
                   attribute-id="attribute.id"
                   panel="panel"
-                  mod="mod"
+                  mod="attribute.modalities[mod]"
                   max-mod-count="maxModCount"
                   print-mode="false"
                   detail-level="modalityListDetailLevel"
-                  is-selected="modalitiesSelection[mod.value]"
+                  is-selected="modalitiesSelection[attribute.modalities[mod].value]"
                 ></div>
               </div>
             </md-list>
