@@ -623,6 +623,10 @@ angular
               })
             }
 
+            $scope.getRenderer = function() {
+              return renderer
+            }
+
             if ($scope.layout) {
               $scope.layout.kill()
             }
