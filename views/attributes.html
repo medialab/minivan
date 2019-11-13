@@ -296,7 +296,7 @@
           <md-virtual-repeat-container flex>
             <md-list layout-fill>
               <div
-                md-virtual-repeat="att in attributeList"
+                md-virtual-repeat="att in networkData.model.nodeAttributes | filter: {type: '!ignore'}"
                 md-item-size="20"
                 flex
               >

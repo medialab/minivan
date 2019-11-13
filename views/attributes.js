@@ -47,20 +47,7 @@ angular
     $scope.$watch('matrixDetailLevel', updateMatrixDetailLevel)
     $scope.$watch('statsDetailLevel', updateStatsDetailLevel)
 
-    $scope.$watch('networkData.loaded', function() {
-      if ($scope.networkData.loaded) {
-        $scope.attributeList = []
-        $scope.networkData.model.nodeAttributes.forEach(function(d) {
-          d.obj = 'node'
-          $scope.attributeList.push(d)
-        })
-        $scope.networkData.model.edgeAttributes.forEach(function(d) {
-          d.obj = 'edge'
-          $scope.attributeList.push(d)
-        })
-      }
-    })
-
+    // In a perfect world, the edge properties are displayed as well.
     $scope.$watch('selectedAttId', function(
       newSelectedAttId,
       oldSelectedAttId
