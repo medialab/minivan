@@ -5,7 +5,7 @@
 angular
   .module('minivan.netBundleManager', [])
 
-  .factory('netBundleManager', function($http, $timeout, paletteGenerator) {
+  .factory('netBundleManager', function($http, paletteGenerator) {
     var ns = {} // namespace
     ns.bundleVersion = '1.0.0'
     ns.ignored_node_attributes = ['label', 'x', 'y', 'z', 'size', 'color']
@@ -152,6 +152,7 @@ angular
           ns.parseBundle(r.data, callback, verbose)
         },
         function(e) {
+          // console.error(e.headers())
           console.error(
             'Error loading file at location:',
             fileLocation,

@@ -358,6 +358,9 @@
 .por {
   position: relative;
 }
+.poa {
+  position: absolute;
+}
 
 .embed-map_container {
   position: relative;
@@ -408,4 +411,10 @@
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.embed-buttons__container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }

@@ -59,9 +59,6 @@ angular
   .directive('embedBuilderMap', function ($filter, $routeParams) {
     const defaultOptions = {
       lockNavigation: false,
-      roundEdges: false,
-      colorLabels: false,
-      sizeLabel: false,
       hideLegend: false,
       x: 0.1,
       y: 0.1,
@@ -84,7 +81,7 @@ angular
         getRenderer: '=',
       },
       templateUrl: 'views/embed-builder-map.html',
-      link: function ($scope, el, attrs) {
+      link: function ($scope) {
         $scope.options.position = {
           x: +$routeParams.x,
           y: +$routeParams.y,
@@ -206,6 +203,8 @@ angular
     )
     $scope.hideLegend = $routeParams.hideLegend === "true"
     $scope.lockNavigation = $routeParams.lockNavigation === "true"
+    $scope.showLink = $routeParams.showLink === "true"
+    console.log('c cluiiii')
     $scope.title = $routeParams.title
 
     $scope.$watchGroup(['networkData.loaded', 'getRenderer'], function () {

@@ -1,0 +1,62 @@
+<div>
+  <div
+    ng-style="{position: 'absolute', right : '16px', top: '16px'}"
+    layout="column"
+    ng-if="!hideCommands"
+  >
+    <div ng-if="isOpen" ng-click="toggle()">
+      <md-button aria-label="menu" class="md-mini md-fab md-warn">
+        <md-icon>lock</md-icon>
+      </md-button>
+    </div>
+    <div ng-if="!isOpen">
+      <div>
+        <md-button
+          class="md-icon-button md-mini sigma-button"
+          aria-label="Zoom In"
+          ng-click="zoomIn()"
+        >
+          <md-tooltip md-direction="right">Zoom In</md-tooltip>
+          <md-icon>zoom_in</md-icon>
+        </md-button>
+      </div>
+      <div>
+        <md-button
+          class="md-icon-button md-mini sigma-button"
+          aria-label="Zoom Out"
+          ng-click="zoomOut()"
+        >
+          <md-tooltip md-direction="right">Zoom Out</md-tooltip>
+          <md-icon>zoom_out</md-icon>
+        </md-button>
+      </div>
+      <div>
+        <md-button
+          class="md-icon-button md-mini sigma-button"
+          aria-label="Reset Camera"
+          ng-click="resetCamera()"
+        >
+          <md-tooltip md-direction="right">Reset Camera</md-tooltip>
+          <md-icon>gps_fixed</md-icon>
+        </md-button>
+      </div>
+    </div>
+  </div>
+  <div class="embed-buttons__container md-fab-top-right">
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      aria-label="Fullscreen"
+      ng-click="toggleFullscreen()"
+    >
+      <md-tooltip md-direction="top">Toogle fullscreen</md-tooltip>
+      <md-icon>fullscreen</md-icon>
+    </md-button>
+    <md-button
+      class="md-icon-button md-mini sigma-button"
+      ng-if="$parent.$parent.$parent.$parent.showLink"
+    >
+      <md-tooltip md-direction="top">Go to minivan</md-tooltip>
+      <md-icon>home</md-icon>
+    </md-button>
+  </div>
+</div>
