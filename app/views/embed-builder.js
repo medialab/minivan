@@ -204,7 +204,6 @@ angular
     $scope.hideLegend = $routeParams.hideLegend === "true"
     $scope.lockNavigation = $routeParams.lockNavigation === "true"
     $scope.showLink = $routeParams.showLink === "true"
-    console.log('c cluiiii')
     $scope.title = $routeParams.title
 
     $scope.$watchGroup(['networkData.loaded', 'getRenderer'], function () {

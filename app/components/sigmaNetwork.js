@@ -2,138 +2,8 @@
 
 /* Services */
 
-function MdFabController($scope, $element, $animate, $mdUtil, $mdConstant, $timeout) {
-  var vm = this;
-  var initialAnimationAttempts = 0;
-
-  // NOTE: We use async eval(s) below to avoid conflicts with any existing digest loops
-
-  vm.open = function() {
-    $scope.$evalAsync("vm.isOpen = true");
-  };
-
-  vm.close = function() {
-    // Async eval to avoid conflicts with existing digest loops
-    $scope.$evalAsync("vm.isOpen = false");
-
-    // Focus the trigger when the element closes so users can still tab to the next item
-    $element.find('md-fab-trigger')[0].focus();
-  };
-
-  // Toggle the open/close state when the trigger is clicked
-  vm.toggle = function() {
-    $scope.$evalAsync("vm.isOpen = !vm.isOpen");
-  };
-
-  /*
-   * AngularJS Lifecycle hook for newer AngularJS versions.
-   * Bindings are not guaranteed to have been assigned in the controller, but they are in the $onInit hook.
-   */
-  vm.$onInit = function() {
-    setupDefaults();
-    setupWatchers();
-
-    fireInitialAnimations();
-  };
-
-  // For AngularJS 1.4 and older, where there are no lifecycle hooks but bindings are pre-assigned,
-  // manually call the $onInit hook.
-  if (angular.version.major === 1 && angular.version.minor <= 4) {
-    this.$onInit();
-  }
-
-  function setupDefaults() {
-    // Set the default direction to 'down' if none is specified
-    vm.direction = vm.direction || 'down';
-
-    // Set the default to be closed
-    vm.isOpen = vm.isOpen || false;
-
-    // Start the keyboard interaction at the first action
-    resetActionIndex();
-
-    // Add an animations waiting class so we know not to run
-    $element.addClass('md-animations-waiting');
-  }
-
-  function resetActionIndex() {
-    vm.currentActionIndex = -1;
-  }
-
-  function setupWatchers() {
-    // Watch for changes to the direction and update classes/attributes
-    $scope.$watch('vm.direction', function(newDir, oldDir) {
-      // Add the appropriate classes so we can target the direction in the CSS
-      $animate.removeClass($element, 'md-' + oldDir);
-      $animate.addClass($element, 'md-' + newDir);
-
-      // Reset the action index since it may have changed
-      resetActionIndex();
-    });
-
-    var trigger, actions;
-
-    // Watch for changes to md-open
-    $scope.$watch('vm.isOpen', function(isOpen) {
-      // Reset the action index since it may have changed
-      resetActionIndex();
-
-      // We can't get the trigger/actions outside of the watch because the component hasn't been
-      // linked yet, so we wait until the first watch fires to cache them.
-      if (!trigger || !actions) {
-        trigger = getTriggerElement();
-        actions = getActionsElement();
-      }
-
-      var toAdd = isOpen ? 'md-is-open' : '';
-      var toRemove = isOpen ? '' : 'md-is-open';
-
-      // Set the proper ARIA attributes
-      trigger.attr('aria-haspopup', true);
-      trigger.attr('aria-expanded', isOpen);
-      actions.attr('aria-hidden', !isOpen);
-
-      // Animate the CSS classes
-      $animate.setClass($element, toAdd, toRemove);
-    });
-  }
-
-  function fireInitialAnimations() {
-    // If the element is actually visible on the screen
-    if ($element[0].scrollHeight > 0) {
-      // Fire our animation
-      $animate.addClass($element, '_md-animations-ready').then(function() {
-        // Remove the waiting class
-        $element.removeClass('md-animations-waiting');
-      });
-    }
-
-    // Otherwise, try for up to 1 second before giving up
-    else if (initialAnimationAttempts < 10) {
-      $timeout(fireInitialAnimations, 100);
-
-      // Increment our counter
-      initialAnimationAttempts = initialAnimationAttempts + 1;
-    }
-  }
-
-  function getTriggerElement() {
-    return $element.find('md-fab-trigger');
-  }
-
-  function getActionsElement() {
-    return $element.find('md-fab-actions');
-  }
-}
-
 angular
-  .module('app.components.sigmaNetworkComponent', [], function ($provide) {
-    $provide.decorator('mdFabSpeedDialDirective', function($delegate) {
-      $delegate[0].controller = 'MonkeyController'
-      return $delegate
-    })
-  })
-  .controller('MonkeyController', MdFabController)
+  .module('app.components.sigmaNetworkComponent', [])
   .directive('networkButtons', () => ({
     restrict: 'E',
     templateUrl: 'components/network-buttons.html',
@@ -147,9 +17,11 @@ angular
       $scope.toggle = () => {
         $scope.isOpen = !$scope.isOpen
       }
-      $scope.$watch('isOpen', () => {
-        console.log('coucou', $scope.$parent.$parent.$parent.$parent.showLink)
-        console.log($scope.isOpen)
+      $scope.$watchGroup(['isOpen', 'getRenderer'], () => {
+        if ($scope.getRenderer) {
+          var renderer = $scope.getRenderer()
+          renderer.getMouseCaptor().enabled = !$scope.isOpen
+        }
       })
     }
   }))
@@ -186,7 +58,7 @@ angular
         layoutCacheKey: '=', // Optional. Used to cache and recall layout.
         neverTooBig: '=' // Optional. When enabled, the warning nerver shows
       },
-      link: function($scope, el, attrs) {
+      link: function($scope, el) {
         var renderer
         var networkDisplayThreshold =
           storage.get('networkDisplayThreshold') || 1000
