@@ -37,6 +37,8 @@ angular
         title: '=',
         attribute: '=',
         getRenderer: '=',
+        nodeColorId: '=',
+        nodeSizeId: '=',
       },
       templateUrl: 'views/embeded-map.html',
       link: function ($scope, el, attrs) {
@@ -142,6 +144,9 @@ angular
     $scope.embedType = $routeParams.embed
     $scope.embedTypeOptions = {}
 
+    $scope.nodeColorId = $routeParams.color
+    $scope.nodeSizeId = $routeParams.size
+
     $scope.$watch('networkData.loaded', (loaded) => {
       if (loaded) {
         $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.att]
@@ -150,12 +155,14 @@ angular
 
     $scope.printParams = function printParams () {
       const queryString = qs.stringify({
-        ...$scope.size,
-        ...$scope.inputs,
         ...$scope.embedTypeOptions.position,
+        title: $scope.inputs.title,
+        showLink: $scope.inputs.showLink,
         bundle: $routeParams.bundle,
         hideLegend: $scope.embedTypeOptions.hideLegend,
         lockNavigation: $scope.embedTypeOptions.lockNavigation,
+        size: $routeParams.size,
+        color: $routeParams.color,
       })
       return `/#/embeded-network?${queryString}`
     }
@@ -205,6 +212,8 @@ angular
     $scope.lockNavigation = $routeParams.lockNavigation === "true"
     $scope.showLink = $routeParams.showLink === "true"
     $scope.title = $routeParams.title
+    $scope.nodeColorId = $routeParams.color
+    $scope.nodeSizeId = $routeParams.size
 
     $scope.$watchGroup(['networkData.loaded', 'getRenderer'], function () {
       if ($scope.networkData.loaded && $scope.getRenderer) {

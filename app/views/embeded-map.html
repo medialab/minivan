@@ -12,7 +12,7 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-content layout-margin="">
+    <md-content layout-margin>
       <div class="sigma-key">
         {{networkData.g.order|number}} nodes
         <br />
@@ -85,8 +85,8 @@
         right-commands="true"
         start-layout-on-load="false"
 
-        node-color-att-id="attribute.type == 'ranking-color' ? attribute.id : ''"
-        node-size-att-id="attribute.type == 'ranking-size' ? attribute.id : ''"
+        node-color-att-id="nodeColorId"
+        node-size-att-id="nodeSizeId"
 
         edge-size-att-id="networkData.model.defaultEdgeSize"
         edge-color-att-id="networkData.model.defaultEdgeColor"
