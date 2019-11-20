@@ -52,7 +52,7 @@
   <div md-colors="{background: 'default-background'}" ng-class="{'embed-map__details': true, 'embed-map__details--open': detailsOpen}" layout="column">
     <md-toolbar class="md-theme-light embed-map__details__header" ng-click='detailsOpen = !detailsOpen' >
       <div class="md-toolbar-tools">
-        <h2 flex="" md-truncate>{{ title.length ? title : networkData.title }}</h2>
+        <h2 flex="" md-truncate>{{ name.length ? name : networkData.title }}</h2>
         <md-button ng-if="detailsOpen" class="md-fab md-mini md-hue-3" aria-label="Favorite">
           <md-icon>close</md-icon>
         </md-button>
@@ -103,7 +103,7 @@
         <h2 md-truncate ng-click="toggleSidenav()">Legend</h2>
       </div>
       <div class="md-toolbar-tools embed-map__toggler embed-map__toggler--details">
-        <h2 ng-click="detailsOpen = !detailsOpen" md-truncate>{{ title.length ? title : networkData.title }}</h2>
+        <h2 ng-click="detailsOpen = !detailsOpen" md-truncate>{{ name.length ? name : networkData.title }}</h2>
       </div>
     </div>
   </div>

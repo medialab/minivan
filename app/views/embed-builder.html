@@ -47,7 +47,7 @@
         <md-input-container>
           <input
             type="text"
-            ng-model="inputs.title"
+            ng-model="inputs.name"
           />
         </md-input-container>
       </div>
@@ -69,20 +69,28 @@
           <embeded-map
             network-data="networkData"
             block-gestures="embedTypeOptions.lockNavigation"
-            title="inputs.title"
+            name="inputs.name"
             attribute="attribute"
             get-renderer="$parent.getRenderer"
             node-color-id="nodeColorId"
             node-size-id="nodeSizeId"
+            show-link="inputs.showLink"
           ></embeded-map>
         </div>
       </div>
       <pre class="embed-code__container">
-<code>&lt;iframe
+<code id="iframe-builder">&lt;iframe
   style="border: none; width: {{size.width === '100%' ? size.width : size.width + 'px'}}; height: {{size.height}}px"
   src="{{printParams()}}"&gt;
 &lt;/iframe&gt;</code>
       </pre>
+      <md-button
+        ngclipboard
+        data-clipboard-target="#iframe-builder">Copy</md-button>
+      <!-- <iframe
+        style="border: none; width: {{size.width === '100%' ? size.width : size.width + 'px'}}; height: {{size.height}}px"
+        src="{{printParams()}}">
+      </iframe> -->
     </div>
   </div>
 </div>

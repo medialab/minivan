@@ -24,7 +24,7 @@ angular
     dataLoader,
     scalesUtils,
     layoutCache,
-    storage
+    storage,
   ) {
     return {
       restrict: 'E',

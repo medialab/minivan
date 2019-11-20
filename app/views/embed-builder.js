@@ -43,12 +43,13 @@ angular
         width: '=',
         networkData: '=',
         blockGestures: '=',
-        title: '=',
+        name: '=',
         attribute: '=',
         getRenderer: '=',
         nodeColorId: '=',
         nodeSizeId: '=',
         hardFilter: '=',
+        showLink: '=',
       },
       templateUrl: 'views/embeded-map.html',
       link: function ($scope) {
@@ -167,12 +168,16 @@ angular
     }
     $scope.inputs = {
       size: 'medium',
-      title: '',
+      name: '',
       showLink: true
     }
     $scope.networkData = dataLoader.get(
       dataLoader.encodeLocation($routeParams.bundle)
     )
+
+    $scope.copy = function copy () {
+      
+    }
 
     $scope.embedType = $routeParams.embed
     $scope.embedTypeOptions = {}
@@ -192,7 +197,7 @@ angular
     $scope.printParams = function printParams () {
       const queryString = qs.stringify({
         ...$scope.embedTypeOptions.position,
-        title: $scope.inputs.title,
+        name: $scope.inputs.name,
         showLink: $scope.inputs.showLink,
         bundle: $routeParams.bundle,
         lockNavigation: $scope.embedTypeOptions.lockNavigation,
@@ -251,10 +256,11 @@ angular
     )
     $scope.lockNavigation = $routeParams.lockNavigation === "true"
     $scope.showLink = $routeParams.showLink === "true"
-    $scope.title = $routeParams.title
+    $scope.name = $routeParams.name
     $scope.nodeColorId = $routeParams.color
     $scope.nodeSizeId = $routeParams.size
     $scope.hardFilter = $routeParams.hardFilter
+    $scope.name = $routeParams.name
     $scope.$watch('networkData.loaded', (loaded) => {
       if (loaded) {
         // $routeParams.att !== ''
