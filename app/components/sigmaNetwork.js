@@ -12,17 +12,11 @@ angular
     restrict: 'E',
     replace: true,
     templateUrl: 'components/embed-buttons.html',
-    link: function ($scope, element, attrs) {
+    link: function ($scope) {
       $scope.isOpen = $scope.$parent.$parent.$parent.blockGestures
       $scope.toggle = () => {
         $scope.isOpen = !$scope.isOpen
       }
-      $scope.$watchGroup(['isOpen', 'getRenderer'], () => {
-        if ($scope.getRenderer) {
-          var renderer = $scope.getRenderer()
-          renderer.getMouseCaptor().enabled = !$scope.isOpen
-        }
-      })
     }
   }))
   .directive('sigmaNetwork', function(

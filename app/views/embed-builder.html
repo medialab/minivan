@@ -60,34 +60,29 @@
           get-renderer="getRenderer"
         />
       </div>
-      <code>{{embedTypeOptions}}</code>
     </div>
     <div flex>
-      <iframe
-        style="border: none;"
-        title="{{title}}"
-        width="{{size.width}}"
-        height="{{size.height}}"
-        ng-src="{{printParams()}}">
-      </iframe>
-      <textarea class="code" style="width: 500px;">
-        {{printParams()}}
-      </textarea>
-      <div
-        id="quoi"
-        ng-style="{height: size.height + 'px', width: size.width + 'px'}"
-      >
-        <embeded-map
-          network-data="networkData"
-          hide-legend="embedTypeOptions.hideLegend"
-          block-gestures="embedTypeOptions.lockNavigation"
-          title="inputs.title"
-          attribute="attribute"
-          get-renderer="$parent.getRenderer"
-          node-color-id="nodeColorId"
-          node-size-id="nodeSizeId"
-        />
+      <div class="embed-preview__container">
+        <div
+          ng-style="{height: size.height + 'px', width: size.width === '100%' ? size.width : size.width + 'px'}"
+        >
+          <embeded-map
+            network-data="networkData"
+            block-gestures="embedTypeOptions.lockNavigation"
+            title="inputs.title"
+            attribute="attribute"
+            get-renderer="$parent.getRenderer"
+            node-color-id="nodeColorId"
+            node-size-id="nodeSizeId"
+          ></embeded-map>
+        </div>
       </div>
+      <pre class="embed-code__container">
+<code>&lt;iframe
+  style="border: none; width: {{size.width === '100%' ? size.width : size.width + 'px'}}; height: {{size.height}}px"
+  src="{{printParams()}}"&gt;
+&lt;/iframe&gt;</code>
+      </pre>
     </div>
   </div>
 </div>

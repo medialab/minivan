@@ -81,6 +81,7 @@
     md-colors="{background: 'default-background-500'}">
     <div flex="100" layout="column" class="por">
       <sigma-network
+        hard-filter="hardFilter"
         hide-key="true"
         right-commands="true"
         start-layout-on-load="false"
@@ -90,13 +91,15 @@
 
         edge-size-att-id="networkData.model.defaultEdgeSize"
         edge-color-att-id="networkData.model.defaultEdgeColor"
+
         default-zoom-show-percent="100"
         editable-attributes="false"
-        get-renderer="getRenderer"
+        get-renderer="$parent.$parent.getRenderer"
         on-node-click="onNetworkNodeClick"
+        node-filter="nodeFilter"
         layout-fill>
       </sigma-network>
-      <div ng-if="!hideLegend" class="md-toolbar-tools embed-map__toggler embed-map__toggler--legend">
+      <div class="md-toolbar-tools embed-map__toggler embed-map__toggler--legend">
         <h2 md-truncate ng-click="toggleSidenav()">Legend</h2>
       </div>
       <div class="md-toolbar-tools embed-map__toggler embed-map__toggler--details">

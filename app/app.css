@@ -351,8 +351,16 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgba(70, 184, 218, 0.5);
   z-index: 1000;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  color: white;
+  cursor: pointer;
+}
+
+.hide-interactions:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
 }
 
 .por {
@@ -417,4 +425,19 @@
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+.embed-preview__container {
+  overflow: auto;
+  max-height: 50vh;
+  max-width: 100%;
+}
+
+.embed-code__container {
+  overflow: auto;
+  max-width: 100%;
+}
+
+.embed-code {
+
 }

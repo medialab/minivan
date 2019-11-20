@@ -8,6 +8,16 @@ const defaults = (dst, src) => {
   }
 }
 
+function guessNodeStyle ($scope, attribute) {
+  if (attribute.type === 'ranking-size') {
+    $scope.nodeSizeId = attribute.id
+  } else if (attribute.type === 'ranking-color') {
+    $scope.nodeColorId = attribute.id
+  } else if (attribute.type === 'partition') {
+    $scope.nodeColorId = attribute.id
+  }
+}
+
 angular
   .module('app.embed-builder', ['ngRoute'])
   .config([
@@ -25,23 +35,23 @@ angular
         })
     }
   ])
-  .directive('embededMap', function ($mdSidenav, $mdBottomSheet) {
+  .directive('embededMap', function ($mdSidenav, scalesUtils, $location) {
     return {
       restrict: 'E',
       scope: {
         height: '=',
         width: '=',
         networkData: '=',
-        hideLegend: '=',
         blockGestures: '=',
         title: '=',
         attribute: '=',
         getRenderer: '=',
         nodeColorId: '=',
         nodeSizeId: '=',
+        hardFilter: '=',
       },
       templateUrl: 'views/embeded-map.html',
-      link: function ($scope, el, attrs) {
+      link: function ($scope) {
         $scope.blocked = $scope.blockGestures
         $scope.detailsOpen = false
         $scope.legendOpen = false
@@ -55,16 +65,40 @@ angular
         $scope.toggleSidenav = function () {
           $mdSidenav('left').toggle()
         }
+
+        if ($scope.attribute && $scope.attribute.type === 'partition') {
+          const ranges = JSON.parse(`[${$location.search().filter}]` || '[]')
+          $scope.nodeFilter = ranges.some(bool => bool) && function (nid) {
+            var nodeValue = $scope.networkData.g.getNodeAttribute(
+              nid,
+              $scope.attribute.id
+            )
+            const index = $scope.attribute.modalitiesOrder.indexOf(nodeValue)
+            return ranges[index]
+          }
+        } else {
+          const ranges = JSON.parse($location.search().filter || '[]')
+          $scope.nodeFilter = ranges.length && function(nid) {
+            var nodeValue = $scope.networkData.g.getNodeAttribute(
+              nid,
+              $scope.attribute.id
+            )
+            return ranges.some(function(range) {
+              return nodeValue >= range[0] && nodeValue <= range[1]
+            })
+          }
+        }
       }
     }
   })
   .directive('embedBuilderMap', function ($filter, $routeParams) {
     const defaultOptions = {
-      lockNavigation: false,
-      hideLegend: false,
-      x: 0.1,
-      y: 0.1,
-      ratio: 0.1,
+      lockNavigation: true,
+      position: {
+        x: 0.1,
+        y: 0.1,
+        ratio: 0.1,
+      }
     }
 
     function positionUpdate (renderer) {
@@ -90,11 +124,9 @@ angular
           ratio: +$routeParams.r,
         }
         $scope.tempPosition = $scope.options.position
-
         $scope.onButtonClick = function () {
           $scope.options.position = $scope.tempPosition
         }
-
         defaults($scope.options, defaultOptions)
         $scope.$watch('getRenderer', () => {
           if ($scope.getRenderer) {
@@ -126,7 +158,8 @@ angular
   .controller('EmbedBuilderController', function (
     $scope,
     $routeParams,
-    dataLoader
+    dataLoader,
+    $location,
   ) {
     $scope.size = {
       width: 0,
@@ -149,7 +182,10 @@ angular
 
     $scope.$watch('networkData.loaded', (loaded) => {
       if (loaded) {
-        $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.att]
+        if ($routeParams.att) {
+          $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.att]
+          guessNodeStyle($scope, $scope.attribute)
+        }
       }
     })
 
@@ -159,14 +195,15 @@ angular
         title: $scope.inputs.title,
         showLink: $scope.inputs.showLink,
         bundle: $routeParams.bundle,
-        hideLegend: $scope.embedTypeOptions.hideLegend,
         lockNavigation: $scope.embedTypeOptions.lockNavigation,
         size: $routeParams.size,
         color: $routeParams.color,
+        att: $routeParams.att,
+        filter: $routeParams.filter,
+        hardFilter: $routeParams.hardFilter,
       })
-      return `/#/embeded-network?${queryString}`
+      return `${window.location.origin}/#/embeded-network?${queryString}`
     }
-    
 
     $scope.$watch('inputs.size', function (newVal) {
       switch (newVal) {
@@ -201,22 +238,35 @@ angular
           break
       }
     })
+    $scope.$watchCollection('size', (newVal) => {
+      $scope.getRenderer && $scope.getRenderer().listeners.handleResize()
+    })
   })
   .controller('EmbededNetworkController', function ($scope, $routeParams, dataLoader) {
+
     $scope.width = $routeParams.width
     $scope.height = $routeParams.height
     $scope.networkData = dataLoader.get(
       dataLoader.encodeLocation($routeParams.bundle)
     )
-    $scope.hideLegend = $routeParams.hideLegend === "true"
     $scope.lockNavigation = $routeParams.lockNavigation === "true"
     $scope.showLink = $routeParams.showLink === "true"
     $scope.title = $routeParams.title
     $scope.nodeColorId = $routeParams.color
     $scope.nodeSizeId = $routeParams.size
+    $scope.hardFilter = $routeParams.hardFilter
+    $scope.$watch('networkData.loaded', (loaded) => {
+      if (loaded) {
+        // $routeParams.att !== ''
+        if ($routeParams.att) {
+          $scope.attribute = $scope.networkData.nodeAttributesIndex[$routeParams.att]
+          guessNodeStyle($scope, $scope.attribute)
+        }
+      }
+    })
 
-    $scope.$watchGroup(['networkData.loaded', 'getRenderer'], function () {
-      if ($scope.networkData.loaded && $scope.getRenderer) {
+    $scope.$watch('getRenderer', function () {
+      if ($scope.getRenderer) {
         const renderer = $scope.getRenderer()
         const camera = renderer.getCamera()
         camera.animate({

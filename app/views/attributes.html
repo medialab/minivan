@@ -302,14 +302,14 @@
           <md-virtual-repeat-container flex>
             <md-list layout-fill>
               <div
-                md-virtual-repeat="att in attributeList"
+                md-virtual-repeat="att in networkData.model.nodeAttributes"
                 md-item-size="20"
                 flex
               >
                 <div
                   attribute-list-element
                   att="att"
-                  obj="att.obj"
+                  obj="'node'"
                   panel="panel"
                   print-mode="false"
                   detail-level="attributeListDetailLevel"

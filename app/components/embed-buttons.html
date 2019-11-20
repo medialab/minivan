@@ -1,14 +1,12 @@
 <div>
+  <div style="display: flex;" flex ng-if="isOpen" ng-click="toggle()" class="hide-interactions" layout-align="center center">
+    <p>Click to interact</p>
+  </div>
   <div
     ng-style="{position: 'absolute', right : '16px', top: '16px'}"
     layout="column"
     ng-if="!hideCommands"
   >
-    <div ng-if="isOpen" ng-click="toggle()" style="z-index: 1;">
-      <md-button aria-label="menu" class="md-mini md-fab md-warn">
-        <md-icon>lock</md-icon>
-      </md-button>
-    </div>
     <div ng-if="!isOpen">
       <div>
         <md-button

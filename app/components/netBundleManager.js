@@ -243,6 +243,7 @@ angular
 
       // Consolidate (indexes...)
       callback(bundle)
+      console.log(bundle)
     }
 
     ns.exportBundle = function(bundle) {
