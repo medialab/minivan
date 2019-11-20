@@ -14,11 +14,11 @@
     <div class="thin-h-line"></div>
     <div class="thin-h-line" ng-if="modalityListDetailLevel>1"></div>
     <md-list>
-      <div ng-repeat="mod in attribute.modalities" md-item-size="20">
+      <div ng-repeat="mod in attribute.modalitiesOrder" md-item-size="20">
         <div class="thin-h-line" ng-if="modalityListDetailLevel==1"></div>
         <div
           modality-partition-list-element
-          mod="mod"
+          mod="attribute.modalities[mod]"
           max-mod-count="maxModCount"
           print-mode="true"
           detail-level="modalityListDetailLevel"

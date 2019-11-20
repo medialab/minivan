@@ -47,6 +47,7 @@ angular
     $scope.$watch('matrixDetailLevel', updateMatrixDetailLevel)
     $scope.$watch('statsDetailLevel', updateStatsDetailLevel)
 
+    // In a perfect world, the edge properties are displayed as well.
     $scope.$watch('selectedAttId', function(
       newSelectedAttId,
       oldSelectedAttId
