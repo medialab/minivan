@@ -152,7 +152,6 @@ angular
           ns.parseBundle(r.data, callback, verbose)
         },
         function(e) {
-          // console.error(e.headers())
           console.error(
             'Error loading file at location:',
             fileLocation,
@@ -243,7 +242,6 @@ angular
 
       // Consolidate (indexes...)
       callback(bundle)
-      console.log(bundle)
     }
 
     ns.exportBundle = function(bundle) {

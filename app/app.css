@@ -352,14 +352,14 @@
   right: 0;
   bottom: 0;
   z-index: 1000;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   color: white;
   cursor: pointer;
 }
 
 .hide-interactions:hover {
-  background-color: rgba(0, 0, 0, 0.5);
   opacity: 1;
 }
 
@@ -438,6 +438,6 @@
   max-width: 100%;
 }
 
-.embed-code {
-
+.embed-copy--button {
+  position: relative;
 }

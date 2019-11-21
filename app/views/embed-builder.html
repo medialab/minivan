@@ -1,5 +1,4 @@
 <div
-  class="page-container"
   ng-if="!networkData.loaded"
   layout-fill
   layout="column"
@@ -7,7 +6,7 @@
 >
   <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
-<div class="page-container" ng-if="networkData.loaded">
+<div ng-if="networkData.loaded">
   <div layout="row" layout-xs="column">
     <div flex="">
       <h1>Embed settings</h1>
@@ -84,9 +83,7 @@
   src="{{printParams()}}"&gt;
 &lt;/iframe&gt;</code>
       </pre>
-      <md-button
-        ngclipboard
-        data-clipboard-target="#iframe-builder">Copy</md-button>
+      <md-button ng-click="copy()" class="embed-copy--button" ngclipboard data-clipboard-target="#iframe-builder">Copy</md-button>
       <!-- <iframe
         style="border: none; width: {{size.width === '100%' ? size.width : size.width + 'px'}}; height: {{size.height}}px"
         src="{{printParams()}}">

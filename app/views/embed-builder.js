@@ -160,7 +160,7 @@ angular
     $scope,
     $routeParams,
     dataLoader,
-    $location,
+    $mdToast,
   ) {
     $scope.size = {
       width: 0,
@@ -176,7 +176,12 @@ angular
     )
 
     $scope.copy = function copy () {
-      
+      $mdToast.show(
+        $mdToast
+          .simple()
+          .textContent('Copied to clipboard!')
+          .position('top right')
+      )
     }
 
     $scope.embedType = $routeParams.embed
