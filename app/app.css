@@ -395,10 +395,6 @@
   background: transparent;
 }
 
-/* .embed-map__details .embed-map__details__header {
-  background-color: transparent;
-} */
-
 .embed-map__toggler {
   position: absolute;
   display: flex;
@@ -440,4 +436,16 @@
 
 .embed-copy--button {
   position: relative;
+}
+
+.embed-copy--buttons-container {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+
+.network--buttons-container {
+  position: absolute;
+  left: 16px;
+  top: 16px;
 }

@@ -3,11 +3,11 @@
     <p>Click to interact</p>
   </div>
   <div
-    ng-style="{position: 'absolute', right : '16px', top: '16px'}"
+    class="embed-copy--buttons-container"
     layout="column"
     ng-if="!hideCommands"
   >
-    <div ng-if="!isOpen">
+    <div ng-if="!isOpen && !parent.hideCommands">
       <div>
         <md-button
           class="md-icon-button md-mini sigma-button"

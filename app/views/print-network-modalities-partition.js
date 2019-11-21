@@ -51,7 +51,6 @@ angular
           .map(function(d) {
             return d == 'true'
           })
-        console.log('ici', modSelection, qs.parse($location.search()))
         Object.values($scope.attribute.modalities).forEach(function(mod, i) {
           $scope.modalitiesSelection[mod.value] = modSelection[i]
         })

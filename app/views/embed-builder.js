@@ -103,12 +103,11 @@ angular
     }
 
     function positionUpdate (renderer) {
-      var position = {
+      return {
         x: $filter('cameraX')(renderer),
         y: $filter('cameraY')(renderer),
         ratio: $filter('cameraRatio')(renderer)
       }
-      return position
     }
 
     return {
@@ -200,7 +199,7 @@ angular
     })
 
     $scope.printParams = function printParams () {
-      const queryString = qs.stringify({
+      const params = {
         ...$scope.embedTypeOptions.position,
         name: $scope.inputs.name,
         showLink: $scope.inputs.showLink,
@@ -211,8 +210,16 @@ angular
         att: $routeParams.att,
         filter: $routeParams.filter,
         hardFilter: $routeParams.hardFilter,
-      })
-      return `${window.location.origin}/#/embeded-network?${queryString}`
+      }
+      const string = Object.keys(params)
+        .reduce((acc, key) => {
+          if (params[key]) {
+            acc.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+          }
+          return acc
+        }, [])
+        .join('&')
+      return `${window.location.origin}/#/embeded-network?${string}`
     }
 
     $scope.$watch('inputs.size', function (newVal) {
