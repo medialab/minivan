@@ -1,6 +1,6 @@
 <div class="embed-map_container">
   <md-sidenav
-    class="md-sidenav-left"
+    class="md-sidenav-left sidenav"
     md-component-id="left"
     md-whiteframe="4"
   >
@@ -60,16 +60,20 @@
     </md-toolbar>
     <md-content layout-margin>
       <div layout="row">
-        <div flex>
+        <div flex class="corpus-description">
           <p>{{networkData.description}}</p>
-          <a ng-href="{{networkData.url}}" target="_blank" rel="noopener">{{networkData.url}}</a>
         </div>
         <div flex>
-          <ul>
-            <li ng-repeat="(index, value) in networkData.authors">{{value}}</li>
-          </ul>
           <p>
-            The <span>{{networkData.date | date:"MM/dd/yyyy'at' h:mma"}}</span>
+            <strong>Authors: </strong>
+            <span ng-repeat="(index, value) in networkData.authors">{{value}}{{index === networkData.authors.length - 1 ? '' : ', '}}</span>
+          </p>
+          <p>
+            <strong>Date of publication: </strong> <span>{{networkData.date | date:"MM/dd/yyyy"}}</span>
+          </p>
+          <p class="more-information" ng-if="networkData.url">
+            <strong>More information: </strong>
+            <a ng-href="{{networkData.url}}" target="_blank" rel="noopener">{{networkData.url}}</a>
           </p>
         </div>
       </div>

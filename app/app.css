@@ -1,3 +1,6 @@
+[role="button"] {
+  outline: none;
+}
 
 .component-panel {
   /*margin-left: 6px;*/
@@ -370,12 +373,65 @@
   position: absolute;
 }
 
+/**
+ * Embed builder
+ */
+
+.embed-settings__container,
+.embed-preview__container,
+.embed-copy__container{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.embed-settings__container h2{
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.embed-settings__container md-input-container,
+.embed-settings__container md-select{
+  margin-top: 5px;
+}
+
+.embed-code__container{
+  max-width: calc(100% - 40px);
+  overflow: hidden;
+  position: relative;
+  height: 80px;
+  background: black;
+  color: white;
+  left: 20px;
+}
+#iframe-builder{
+  padding: 10px;
+  max-width: 100%;
+  overflow: auto;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  user-select: all;
+}
+
+
+/**
+ * Embed view
+ */
+
 .embed-map_container {
   position: relative;
   overflow: hidden;
   width: 100%;
   height: 100%;
 }
+
+.embed-map__details a{
+  color: inherit;
+  text-decoration: none;
+  font-style: italic;
+} 
 
 .embed-map__details {
   position: absolute;
@@ -399,6 +455,7 @@
   position: absolute;
   display: flex;
   width: auto;
+  cursor: pointer;
 }
 
 .embed-map__toggler--legend {
@@ -423,24 +480,28 @@
   right: 0;
 }
 
-.embed-preview__container {
-  overflow: auto;
-  max-height: 50vh;
-  max-width: 100%;
+.embed-preview__wrapper {
+  flex: 2;
 }
 
-.embed-code__container {
+.embed-preview__container {
   overflow: auto;
   max-width: 100%;
 }
 
 .embed-copy--button {
   position: relative;
+  margin-left: 0;
+  width: 100%;
+}
+
+.save-position--button{
+  margin-left: 40px;
 }
 
 .embed-copy--buttons-container {
   position: absolute;
-  right: 16px;
+  right: 0;
   top: 16px;
 }
 
@@ -448,4 +509,15 @@
   position: absolute;
   left: 16px;
   top: 16px;
+}
+
+
+/**
+ * Sidenavs
+ */
+.sidenav{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+  overflow: hidden;
 }
