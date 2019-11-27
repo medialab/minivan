@@ -1,0 +1,15 @@
+<div ng-if="networkData.loaded" style="width: 100; height: 100%">
+  <embeded-map
+    height="height"
+    width="width"
+    network-data="networkData"
+    block-gestures="lockNavigation"
+    name="name"
+    attribute="attribute"
+    get-renderer="getRenderer"
+    node-color-id="nodeColorId"
+    node-size-id="nodeSizeId"
+    hard-filter="hardFilter"
+    show-link="showLink"
+  />
+</div>

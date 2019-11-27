@@ -1,0 +1,11 @@
+<div>
+  <md-switch ng-model="options.lockNavigation" aria-label="Lock navigation by default">
+    Require one click before user can interact
+  </md-switch>
+  <md-button
+    ng-click="onButtonClick($event)"
+    class="md-raised save-position--button"
+    ng-disabled="tempPosition | equals:options.position" >
+    Save current camera position
+  </md-button>
+</div>

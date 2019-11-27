@@ -1,0 +1,72 @@
+<div
+  class="network--buttons-container"
+  layout="column"
+  ng-if="!$parent.hideCommands"
+>
+  <md-progress-circular
+    class="md-accent"
+    ng-if="layout.running && enableLayout"
+    md-mode="indeterminate"
+    style="position: absolute; top: -4px; left: 2px;"
+    md-diameter="48"
+  ></md-progress-circular>
+  <md-button
+    class="md-icon-button md-accent md-mini sigma-button"
+    aria-label="Pause Layout"
+    ng-click="stopLayout()"
+    ng-if="layout.running && enableLayout"
+  >
+    <md-tooltip md-direction="right">Pause Layout</md-tooltip>
+    <md-icon>pause</md-icon>
+  </md-button>
+  <md-button
+    class="md-icon-button md-primary md-mini sigma-button"
+    aria-label="Start Layout"
+    ng-click="startLayout()"
+    ng-if="!layout.running && enableLayout"
+  >
+    <md-tooltip md-direction="right">Start Layout</md-tooltip>
+    <md-icon>play_arrow</md-icon>
+  </md-button>
+  <md-button
+    class="md-icon-button md-mini sigma-button"
+    aria-label="Restore original layout"
+    ng-click="restoreOriginalLayout()"
+    ng-if="enableLayout"
+  >
+    <md-tooltip md-direction="right">Restore original layout</md-tooltip>
+    <md-icon>restore</md-icon>
+  </md-button>
+  <md-button
+    class="md-icon-button md-mini sigma-button"
+    aria-label="Zoom In"
+    ng-click="zoomIn()"
+  >
+    <md-tooltip md-direction="right">Zoom In</md-tooltip>
+    <md-icon>zoom_in</md-icon>
+  </md-button>
+  <md-button
+    class="md-icon-button md-mini sigma-button"
+    aria-label="Zoom Out"
+    ng-click="zoomOut()"
+  >
+    <md-tooltip md-direction="right">Zoom Out</md-tooltip>
+    <md-icon>zoom_out</md-icon>
+  </md-button>
+  <md-button
+    class="md-icon-button md-mini sigma-button"
+    aria-label="Reset Camera"
+    ng-click="resetCamera()"
+  >
+    <md-tooltip md-direction="right">Reset Camera</md-tooltip>
+    <md-icon>gps_fixed</md-icon>
+  </md-button>
+  <md-button
+    class="md-icon-button md-mini sigma-button"
+    aria-label="Fullscreen"
+    ng-click="toggleFullscreen()"
+  >
+    <md-tooltip md-direction="right">Toogle fullscreen</md-tooltip>
+    <md-icon>fullscreen</md-icon>
+  </md-button>
+</div>
