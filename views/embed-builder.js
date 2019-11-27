@@ -219,7 +219,7 @@ angular
           return acc
         }, [])
         .join('&')
-      return `${window.location.origin}/#/embeded-network?${string}`
+      return `${window.location.origin}${window.location.pathname}#/embeded-network?${string}`
     }
 
     $scope.$watch('inputs.size', function (newVal) {
