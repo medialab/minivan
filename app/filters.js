@@ -11,7 +11,7 @@ angular
     }
   })
 
-  .filter('equals', function () {
+  .filter('equals', function() {
     return angular.equals
   })
 

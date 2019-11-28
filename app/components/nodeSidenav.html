@@ -4,11 +4,15 @@
 >
   <md-toolbar class="md-theme-light">
     <div class="md-toolbar-tools">
-        <h2 flex md-truncate>Node data</h2>
-        <md-button ng-click="close()" class="md-fab md-mini md-hue-3" aria-label="Favorite">
-          <md-icon>close</md-icon>
-        </md-button>
-      </div>
+      <h2 flex md-truncate>Node data</h2>
+      <md-button
+        ng-click="close()"
+        class="md-fab md-mini md-hue-3"
+        aria-label="Favorite"
+      >
+        <md-icon>close</md-icon>
+      </md-button>
+    </div>
   </md-toolbar>
   <md-content ng-if="networkData.loaded">
     <div layout="row" style="width: 300px; height: 300px">

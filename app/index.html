@@ -187,10 +187,7 @@
     ></script>
     <script type="text/javascript" src="views/print-stats-modality.js"></script>
     <script type="text/javascript" src="views/print-stats-range.js"></script>
-    <script
-      type="text/javascript"
-      src="views/embed-builder.js"
-    ></script>
+    <script type="text/javascript" src="views/embed-builder.js"></script>
 
     <script type="text/javascript">
       angular
@@ -236,8 +233,12 @@
           "app.start"
         ])
 
-        .config(function($mdThemingProvider, $routeProvider, $locationProvider) {
-          $locationProvider.hashPrefix('');
+        .config(function(
+          $mdThemingProvider,
+          $routeProvider,
+          $locationProvider
+        ) {
+          $locationProvider.hashPrefix("");
 
           // Route
           $routeProvider.otherwise({ redirectTo: "/" });

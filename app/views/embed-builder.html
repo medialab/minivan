@@ -12,7 +12,7 @@
       <h1>Embed settings</h1>
       <div layout="column" layout-xs="column">
         <h2>Embed size</h2>
-        <md-select ng-model='inputs.size'>
+        <md-select ng-model="inputs.size">
           <md-option ng-value='"small"'>Small width (200px)</md-option>
           <md-option ng-value='"medium"'>Medium width (500px)</md-option>
           <md-option ng-value='"big"'>Big width(800px)</md-option>
@@ -47,16 +47,16 @@
       <div layout="column" layout-xs="column">
         <h2>Embed title</h2>
         <md-input-container>
-          <input
-            type="text"
-            ng-model="inputs.name"
-          />
+          <input type="text" ng-model="inputs.name" />
         </md-input-container>
       </div>
       <div layout="column" layout-xs="column">
         <h2>Embed parameters</h2>
         <div>
-          <md-switch ng-model="inputs.showLink" aria-label="Show minivan link in embed?">
+          <md-switch
+            ng-model="inputs.showLink"
+            aria-label="Show minivan link in embed?"
+          >
             Show minivan link in embed
           </md-switch>
           <div ng-if="embedType === 'map'">
@@ -69,7 +69,10 @@
       </div>
     </div>
     <div flex class="embed-preview__wrapper">
-      <div class="embed-preview__container" ng-style="{height: size.height + 100 + 'px' }">
+      <div
+        class="embed-preview__container"
+        ng-style="{height: size.height + 100 + 'px' }"
+      >
         <h1>Embed preview</h1>
         <div
           ng-style="{height: size.height + 'px', width: size.width === '100%' ? size.width : size.width + 'px'}"
@@ -93,7 +96,13 @@
 &lt;/iframe&gt;</code>
       </pre>
       <div class="embed-copy__container">
-        <md-button class="md-raised md-primary embed-copy--button" ng-click="copy()" ngclipboard data-clipboard-target="#iframe-builder">Copy code to clipboard</md-button>
+        <md-button
+          class="md-raised md-primary embed-copy--button"
+          ng-click="copy()"
+          ngclipboard
+          data-clipboard-target="#iframe-builder"
+          >Copy code to clipboard</md-button
+        >
       </div>
     </div>
   </div>

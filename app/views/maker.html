@@ -225,31 +225,16 @@
             ng-click="editNodeAttribute(value)"
             ng-style="{opacity: value.type !== 'ignore' ? 1 : 0.5}"
           >
-            <md-icon
-              ng-if="value.type == 'ranking-color'"
-              >gradient</md-icon
-            >
-            <md-icon
-              ng-if="value.type == 'ranking-size'"
-              >bubble_chart</md-icon
-            >
-            <md-icon
-              ng-if="value.type == 'partition'"
-              >color_lens</md-icon
-            >
-            <md-icon ng-if="value.type === 'ignore'"
-              >visibility_off</md-icon
-            >
+            <md-icon ng-if="value.type == 'ranking-color'">gradient</md-icon>
+            <md-icon ng-if="value.type == 'ranking-size'">bubble_chart</md-icon>
+            <md-icon ng-if="value.type == 'partition'">color_lens</md-icon>
+            <md-icon ng-if="value.type === 'ignore'">visibility_off</md-icon>
             <div class="md-list-item-text" layout="column">
               <h3>{{value.label || k}}</h3>
-              <p
-                ng-if="value.type == 'ranking-color'"
-              >
+              <p ng-if="value.type == 'ranking-color'">
                 Color gradient un
               </p>
-              <p
-                ng-if="value.type == 'ranking-size'"
-              >
+              <p ng-if="value.type == 'ranking-size'">
                 Size gradient
               </p>
               <p ng-if="value.type == 'partition'">
@@ -279,31 +264,16 @@
             ng-click="editEdgeAttribute(value)"
             ng-style="{opacity: value.type ? 1 : 0.5}"
           >
-            <md-icon
-              ng-if="value.type == 'ranking-color'"
-              >gradient</md-icon
-            >
-            <md-icon
-              ng-if="value.type == 'ranking-size'"
-              >line_weight</md-icon
-            >
-            <md-icon
-              ng-if="value.type == 'partition'"
-              >color_lens</md-icon
-            >
-            <md-icon ng-if="value.type == 'ignore'"
-              >visibility_off</md-icon
-            >
+            <md-icon ng-if="value.type == 'ranking-color'">gradient</md-icon>
+            <md-icon ng-if="value.type == 'ranking-size'">line_weight</md-icon>
+            <md-icon ng-if="value.type == 'partition'">color_lens</md-icon>
+            <md-icon ng-if="value.type == 'ignore'">visibility_off</md-icon>
             <div class="md-list-item-text" layout="column">
               <h3>{{value.label || k}}</h3>
-              <p
-                ng-if="value.type == 'ranking-color'"
-              >
+              <p ng-if="value.type == 'ranking-color'">
                 Color gradient
               </p>
-              <p
-                ng-if="value.type == 'ranking-size'"
-              >
+              <p ng-if="value.type == 'ranking-size'">
                 Thickness gradient
               </p>
               <p ng-if="value.type == 'partition'">
@@ -482,7 +452,10 @@
               >
               <div class="md-list-item-text" layout="column">
                 <h3>{{att.modalities[modality].value}}</h3>
-                <p>{{att.modalities[modality].count|number}} node{{att.modalities[modality].count>1?'s':''}}</p>
+                <p>
+                  {{att.modalities[modality].count|number}}
+                  node{{att.modalities[modality].count>1?'s':''}}
+                </p>
                 <md-icon
                   ng-click="modalityUp($index)"
                   aria-label="Up"

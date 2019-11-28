@@ -6,13 +6,13 @@ angular
   .module('app.components.sigmaNetworkComponent', [])
   .directive('networkButtons', () => ({
     restrict: 'E',
-    templateUrl: 'components/network-buttons.html',
+    templateUrl: 'components/network-buttons.html'
   }))
   .directive('embedButtons', () => ({
     restrict: 'E',
     replace: true,
     templateUrl: 'components/embed-buttons.html',
-    link: function ($scope) {
+    link: function($scope) {
       $scope.isOpen = $scope.$parent.$parent.$parent.blockGestures
       $scope.toggle = () => {
         $scope.isOpen = !$scope.isOpen
@@ -24,7 +24,7 @@ angular
     dataLoader,
     scalesUtils,
     layoutCache,
-    storage,
+    storage
   ) {
     return {
       restrict: 'E',
