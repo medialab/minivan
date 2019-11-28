@@ -7,7 +7,11 @@
     <md-toolbar class="embed-map__details__header md-theme-light">
       <div class="md-toolbar-tools">
         <h2 flex md-truncate>Legend</h2>
-        <md-button ng-click="toggleSidenav()" class="md-fab md-mini md-hue-3" aria-label="Favorite">
+        <md-button
+          ng-click="toggleSidenav()"
+          class="md-fab md-mini md-hue-3"
+          aria-label="Favorite"
+        >
           <md-icon>close</md-icon>
         </md-button>
       </div>
@@ -18,28 +22,44 @@
         <br />
         {{networkData.g.size|number}} edges
       </div>
-      <div class="sigma-key" ng-if="attribute.type == 'ranking-size'" layout="row">
+      <div
+        class="sigma-key"
+        ng-if="attribute.type == 'ranking-size'"
+        layout="row"
+      >
         <div>
           <span class="key-title">Node size</span>
           <br />
           {{attribute.name}}
         </div>
       </div>
-      <div class="sigma-key" ng-if="attribute.type == 'ranking-color'" layout="row">
+      <div
+        class="sigma-key"
+        ng-if="attribute.type == 'ranking-color'"
+        layout="row"
+      >
         <div>
           <span class="key-title">Node color</span>
           <br />
           {{attribute.name}}
         </div>
       </div>
-      <div class="sigma-key" ng-if="networkData.model.defaultEdgeSize" layout="row">
+      <div
+        class="sigma-key"
+        ng-if="networkData.model.defaultEdgeSize"
+        layout="row"
+      >
         <div>
           <span class="key-title">Edge thickness</span>
           <br />
           {{networkData.edgeAttributesIndex[networkData.model.defaultEdgeSize].name}}
         </div>
       </div>
-      <div class="sigma-key" ng-if="networkData.model.defaultEdgeColor" layout="row">
+      <div
+        class="sigma-key"
+        ng-if="networkData.model.defaultEdgeColor"
+        layout="row"
+      >
         <div>
           <span class="key-title">Edge color</span>
           <br />
@@ -49,11 +69,24 @@
     </md-content>
   </md-sidenav>
   <node-sidenav node-data="selectedNode"></node-sidenav>
-  <div md-colors="{background: 'default-background'}" ng-class="{'embed-map__details': true, 'embed-map__details--open': detailsOpen}" layout="column">
-    <md-toolbar class="md-theme-light embed-map__details__header" ng-click='detailsOpen = !detailsOpen' >
+  <div
+    md-colors="{background: 'default-background'}"
+    ng-class="{'embed-map__details': true, 'embed-map__details--open': detailsOpen}"
+    layout="column"
+  >
+    <md-toolbar
+      class="md-theme-light embed-map__details__header"
+      ng-click="detailsOpen = !detailsOpen"
+    >
       <div class="md-toolbar-tools">
-        <h2 flex="" md-truncate>{{ name.length ? name : networkData.title }}</h2>
-        <md-button ng-if="detailsOpen" class="md-fab md-mini md-hue-3" aria-label="Favorite">
+        <h2 flex="" md-truncate>
+          {{ name.length ? name : networkData.title }}
+        </h2>
+        <md-button
+          ng-if="detailsOpen"
+          class="md-fab md-mini md-hue-3"
+          aria-label="Favorite"
+        >
           <md-icon>close</md-icon>
         </md-button>
       </div>
@@ -66,14 +99,20 @@
         <div flex>
           <p>
             <strong>Authors: </strong>
-            <span ng-repeat="(index, value) in networkData.authors">{{value}}{{index === networkData.authors.length - 1 ? '' : ', '}}</span>
+            <span ng-repeat="(index, value) in networkData.authors"
+              >{{value}}{{index === networkData.authors.length - 1 ? '' : ',
+              '}}</span
+            >
           </p>
           <p>
-            <strong>Date of publication: </strong> <span>{{networkData.date | date:"MM/dd/yyyy"}}</span>
+            <strong>Date of publication: </strong>
+            <span>{{networkData.date | date:"MM/dd/yyyy"}}</span>
           </p>
           <p class="more-information" ng-if="networkData.url">
             <strong>More information: </strong>
-            <a ng-href="{{networkData.url}}" target="_blank" rel="noopener">{{networkData.url}}</a>
+            <a ng-href="{{networkData.url}}" target="_blank" rel="noopener"
+              >{{networkData.url}}</a
+            >
           </p>
         </div>
       </div>
@@ -82,32 +121,37 @@
   <div
     layout="row"
     layout-fill
-    md-colors="{background: 'default-background-500'}">
+    md-colors="{background: 'default-background-500'}"
+  >
     <div flex="100" layout="column" class="por">
       <sigma-network
         hard-filter="hardFilter"
         hide-key="true"
         right-commands="true"
         start-layout-on-load="false"
-
         node-color-att-id="nodeColorId"
         node-size-att-id="nodeSizeId"
-
         edge-size-att-id="networkData.model.defaultEdgeSize"
         edge-color-att-id="networkData.model.defaultEdgeColor"
-
         default-zoom-show-percent="100"
         editable-attributes="false"
         get-renderer="$parent.$parent.getRenderer"
         on-node-click="onNetworkNodeClick"
         node-filter="nodeFilter"
-        layout-fill>
+        layout-fill
+      >
       </sigma-network>
-      <div class="md-toolbar-tools embed-map__toggler embed-map__toggler--legend">
+      <div
+        class="md-toolbar-tools embed-map__toggler embed-map__toggler--legend"
+      >
         <h2 md-truncate ng-click="toggleSidenav()">Legend</h2>
       </div>
-      <div class="md-toolbar-tools embed-map__toggler embed-map__toggler--details">
-        <h2 ng-click="detailsOpen = !detailsOpen" md-truncate>{{ name.length ? name : networkData.title }}</h2>
+      <div
+        class="md-toolbar-tools embed-map__toggler embed-map__toggler--details"
+      >
+        <h2 ng-click="detailsOpen = !detailsOpen" md-truncate>
+          {{ name.length ? name : networkData.title }}
+        </h2>
       </div>
     </div>
   </div>
