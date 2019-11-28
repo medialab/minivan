@@ -1,0 +1,100 @@
+<div
+  ng-if="!networkData.loaded"
+  layout-fill
+  layout="column"
+  layout-align="center center"
+>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div ng-if="networkData.loaded">
+  <div layout="row" layout-xs="column">
+    <div flex="" class="embed-settings__container">
+      <h1>Embed settings</h1>
+      <div layout="column" layout-xs="column">
+        <h2>Embed size</h2>
+        <md-select ng-model='inputs.size'>
+          <md-option ng-value='"small"'>Small width (200px)</md-option>
+          <md-option ng-value='"medium"'>Medium width (500px)</md-option>
+          <md-option ng-value='"big"'>Big width(800px)</md-option>
+          <md-option ng-value='"full"'>Full width (100%)</md-option>
+          <md-option ng-value='"custom"'>Custom</md-option>
+        </md-select>
+        <div ng-if="inputs.size === 'custom'">
+          <md-input-container>
+            <label>Width</label>
+            <input
+              type="number"
+              step="1"
+              min="0"
+              max="10000"
+              ng-value="0"
+              ng-model="size.width"
+            />
+          </md-input-container>
+          <md-input-container>
+            <label>Height</label>
+            <input
+              type="number"
+              step="1"
+              min="0"
+              max="10000"
+              ng-value="0"
+              ng-model="size.height"
+            />
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="column" layout-xs="column">
+        <h2>Embed title</h2>
+        <md-input-container>
+          <input
+            type="text"
+            ng-model="inputs.name"
+          />
+        </md-input-container>
+      </div>
+      <div layout="column" layout-xs="column">
+        <h2>Embed parameters</h2>
+        <div>
+          <md-switch ng-model="inputs.showLink" aria-label="Show minivan link in embed?">
+            Show minivan link in embed
+          </md-switch>
+          <div ng-if="embedType === 'map'">
+            <embed-builder-map
+              options="embedTypeOptions"
+              get-renderer="getRenderer"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div flex class="embed-preview__wrapper">
+      <div class="embed-preview__container" ng-style="{height: size.height + 100 + 'px' }">
+        <h1>Embed preview</h1>
+        <div
+          ng-style="{height: size.height + 'px', width: size.width === '100%' ? size.width : size.width + 'px'}"
+        >
+          <embeded-map
+            network-data="networkData"
+            block-gestures="embedTypeOptions.lockNavigation"
+            name="inputs.name"
+            attribute="attribute"
+            get-renderer="$parent.getRenderer"
+            node-color-id="nodeColorId"
+            node-size-id="nodeSizeId"
+            show-link="inputs.showLink"
+          ></embeded-map>
+        </div>
+      </div>
+      <pre class="embed-code__container">
+<code id="iframe-builder">&lt;iframe allowfullscreen
+  style="border: none; width: {{size.width === '100%' ? size.width : size.width + 'px'}}; height: {{size.height}}px"
+  src="{{printParams()}}"&gt;
+&lt;/iframe&gt;</code>
+      </pre>
+      <div class="embed-copy__container">
+        <md-button class="md-raised md-primary embed-copy--button" ng-click="copy()" ngclipboard data-clipboard-target="#iframe-builder">Copy code to clipboard</md-button>
+      </div>
+    </div>
+  </div>
+</div>

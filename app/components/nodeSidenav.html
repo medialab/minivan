@@ -1,9 +1,14 @@
 <md-sidenav
-  class="md-sidenav-right md-whiteframe-4dp"
+  class="md-sidenav-right sidenav md-whiteframe-4dp"
   md-component-id="node-sidenav"
 >
   <md-toolbar class="md-theme-light">
-    <h1 class="md-toolbar-tools">Node data</h1>
+    <div class="md-toolbar-tools">
+        <h2 flex md-truncate>Node data</h2>
+        <md-button ng-click="close()" class="md-fab md-mini md-hue-3" aria-label="Favorite">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
   </md-toolbar>
   <md-content ng-if="networkData.loaded">
     <div layout="row" style="width: 300px; height: 300px">
@@ -33,8 +38,5 @@
         </div>
       </md-list-item>
     </md-list>
-    <md-button ng-click="close()" class="md-primary">
-      Close
-    </md-button>
   </md-content>
 </md-sidenav>

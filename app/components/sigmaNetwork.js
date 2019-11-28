@@ -4,12 +4,27 @@
 
 angular
   .module('app.components.sigmaNetworkComponent', [])
+  .directive('networkButtons', () => ({
+    restrict: 'E',
+    templateUrl: 'components/network-buttons.html',
+  }))
+  .directive('embedButtons', () => ({
+    restrict: 'E',
+    replace: true,
+    templateUrl: 'components/embed-buttons.html',
+    link: function ($scope) {
+      $scope.isOpen = $scope.$parent.$parent.$parent.blockGestures
+      $scope.toggle = () => {
+        $scope.isOpen = !$scope.isOpen
+      }
+    }
+  }))
   .directive('sigmaNetwork', function(
     $timeout,
     dataLoader,
     scalesUtils,
     layoutCache,
-    storage
+    storage,
   ) {
     return {
       restrict: 'E',
@@ -30,13 +45,14 @@ angular
         getRenderer: '=',
         defaultZoomShowPercent: '=', // Optional. If set to n, camera centered to barycenter with n% nodes visible
         hideCommands: '=', // Optional
+        rightCommands: '=', // Optional
         hideKey: '=', // Optional
         hideLabels: '=', // Optional
         enableLayout: '=',
         layoutCacheKey: '=', // Optional. Used to cache and recall layout.
         neverTooBig: '=' // Optional. When enabled, the warning nerver shows
       },
-      link: function($scope, el, attrs) {
+      link: function($scope, el) {
         var renderer
         var networkDisplayThreshold =
           storage.get('networkDisplayThreshold') || 1000

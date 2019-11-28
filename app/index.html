@@ -187,11 +187,16 @@
     ></script>
     <script type="text/javascript" src="views/print-stats-modality.js"></script>
     <script type="text/javascript" src="views/print-stats-range.js"></script>
+    <script
+      type="text/javascript"
+      src="views/embed-builder.js"
+    ></script>
 
     <script type="text/javascript">
       angular
         .module("app", [
           "ngMaterial",
+          "ngclipboard",
           "ngRoute",
           "ngSanitize",
           "ngMessages",
@@ -224,6 +229,7 @@
           "app.print-stats-modalities-ranking",
           "app.print-stats-modality",
           "app.print-stats-range",
+          "app.embed-builder",
           // Prepare
           "app.maker",
           // Start

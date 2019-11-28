@@ -18,7 +18,6 @@ angular
     $scope,
     $location,
     $timeout,
-    $route,
     $routeParams,
     $mdSidenav,
     dataLoader,

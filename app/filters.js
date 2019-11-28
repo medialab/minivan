@@ -11,6 +11,10 @@ angular
     }
   })
 
+  .filter('equals', function () {
+    return angular.equals
+  })
+
   .filter('simpleAttType', function() {
     return function(attType) {
       if (attType == 'ranking-size' || attType == 'ranking-color')
