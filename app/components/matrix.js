@@ -20,7 +20,8 @@ angular
         nodeFilter: '='
       },
       link: function($scope, el, attrs) {
-        var networkDisplayThreshold = 1000
+        var networkDisplayThreshold = 2500
+        console.log('coucou')
 
         $scope.tooBig = false
         $scope.headlineSize = 200
