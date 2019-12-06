@@ -55,7 +55,7 @@ angular
       link: function($scope, el) {
         var renderer
         var networkDisplayThreshold =
-          storage.get('networkDisplayThreshold') || 1000
+          storage.get('networkDisplayThreshold') || 2500
 
         $scope.networkData = dataLoader.get()
         $scope.nodesCount
