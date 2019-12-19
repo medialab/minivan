@@ -59,6 +59,8 @@
     <md-button
       class="md-icon-button md-mini sigma-button"
       ng-if="$parent.$parent.$parent.showLink"
+      ng-href="{{$parent.$parent.$parent.$parent.$parent.printMnvUrl()}}"
+      target="_blank"
     >
       <md-tooltip md-direction="top">Go to minivan</md-tooltip>
       <md-icon>home</md-icon>

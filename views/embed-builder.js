@@ -1,5 +1,17 @@
 'use strict'
 
+const objecToUrl = (params) =>
+  Object.keys(params)
+    .reduce((acc, key) => {
+      if (params[key]) {
+        acc.push(
+          encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+        )
+      }
+      return acc
+    }, [])
+    .join('&')
+
 const defaults = (dst, src) => {
   for (var property in src) {
     if (src.hasOwnProperty(property) && !dst.hasOwnProperty(property)) {
@@ -214,16 +226,7 @@ angular
         filter: $routeParams.filter,
         hardFilter: $routeParams.hardFilter
       }
-      const string = Object.keys(params)
-        .reduce((acc, key) => {
-          if (params[key]) {
-            acc.push(
-              encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-            )
-          }
-          return acc
-        }, [])
-        .join('&')
+      const string = objecToUrl(params)
       return `${window.location.origin}${window.location.pathname}#/embeded-network?${string}`
     }
 
@@ -281,6 +284,23 @@ angular
     $scope.nodeSizeId = $routeParams.size
     $scope.hardFilter = $routeParams.hardFilter
     $scope.name = $routeParams.name
+    $scope.printMnvUrl = () => {
+      let options = {
+        bundle: $routeParams.bundle,
+        panel: 'map',
+        x: $routeParams.x,
+        y: $routeParams.y,
+        z: $routeParams.z,
+      };
+      if ($routeParams.att) {
+        // let options = 
+        if ($scope.attribute.type === 'partition') {
+          return `#/partition/${$routeParams.att}/modalities?${objecToUrl(options)}`
+        }
+        return `#/ranking/${$routeParams.att}/modalities?${objecToUrl(options)}`
+      }
+      return `#/attributes?${objecToUrl(options)}`
+    }
     $scope.$watch('networkData.loaded', loaded => {
       if (loaded) {
         // $routeParams.att !== ''

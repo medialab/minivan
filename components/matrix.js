@@ -21,6 +21,7 @@ angular
       },
       link: function($scope, el, attrs) {
         var networkDisplayThreshold = 2500
+        console.log('coucou')
 
         $scope.tooBig = false
         $scope.headlineSize = 200
