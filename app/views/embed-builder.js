@@ -297,7 +297,6 @@ angular
     $routeParams,
     dataLoader
   ) {
-    console.log('cocou')
     $scope.width = $routeParams.width
     $scope.height = $routeParams.height
     $scope.networkData = dataLoader.get(
