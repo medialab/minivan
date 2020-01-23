@@ -57,9 +57,10 @@
       <md-icon>fullscreen</md-icon>
     </md-button>
     <md-button
+      embed-home-link
       class="md-icon-button md-mini sigma-button"
       ng-if="$parent.$parent.$parent.showLink"
-      ng-href="{{$parent.$parent.$parent.$parent.$parent.printMnvUrl()}}"
+      ng-href="{{printMnvUrl()}}"
       target="_blank"
     >
       <md-tooltip md-direction="top">Go to minivan</md-tooltip>

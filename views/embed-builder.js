@@ -18,6 +18,7 @@ const defaults = (dst, src) => {
       dst[property] = src[property]
     }
   }
+  return dst
 }
 
 function guessNodeStyle($scope, attribute) {
@@ -102,6 +103,30 @@ angular
                 return nodeValue >= range[0] && nodeValue <= range[1]
               })
             }
+        }
+      }
+    }
+  })
+  .directive('embedHomeLink', function ($routeParams) {
+    return {
+      restrict: 'A',
+      link: ($scope) => {
+        $scope.printMnvUrl = () => {
+          let options = {
+            bundle: $routeParams.bundle,
+            panel: 'map',
+            x: $routeParams.x,
+            y: $routeParams.y,
+            z: $routeParams.z,
+          };
+          if ($routeParams.att) {
+            // let options = 
+            if ($scope.attribute.type === 'partition') {
+              return `#/partition/${$routeParams.att}/modalities?${objecToUrl(options)}`
+            }
+            return `#/ranking/${$routeParams.att}/modalities?${objecToUrl(options)}`
+          }
+          return `#/attributes?${objecToUrl(options)}`
         }
       }
     }
@@ -284,23 +309,6 @@ angular
     $scope.nodeSizeId = $routeParams.size
     $scope.hardFilter = $routeParams.hardFilter
     $scope.name = $routeParams.name
-    $scope.printMnvUrl = () => {
-      let options = {
-        bundle: $routeParams.bundle,
-        panel: 'map',
-        x: $routeParams.x,
-        y: $routeParams.y,
-        z: $routeParams.z,
-      };
-      if ($routeParams.att) {
-        // let options = 
-        if ($scope.attribute.type === 'partition') {
-          return `#/partition/${$routeParams.att}/modalities?${objecToUrl(options)}`
-        }
-        return `#/ranking/${$routeParams.att}/modalities?${objecToUrl(options)}`
-      }
-      return `#/attributes?${objecToUrl(options)}`
-    }
     $scope.$watch('networkData.loaded', loaded => {
       if (loaded) {
         // $routeParams.att !== ''
@@ -316,10 +324,13 @@ angular
       if ($scope.getRenderer) {
         const renderer = $scope.getRenderer()
         const camera = renderer.getCamera()
+        const x = $routeParams.x ? +$routeParams.x : 0.5
+        const y = $routeParams.y ? +$routeParams.y : 0.5
+        const ratio = $routeParams.ratio ? +$routeParams.ratio : 1
         camera.animate({
-          x: +$routeParams.x,
-          y: +$routeParams.y,
-          ratio: +$routeParams.ratio
+          x: x,
+          y: y,
+          ratio: ratio
         })
       }
     })
