@@ -18,6 +18,7 @@ const defaults = (dst, src) => {
       dst[property] = src[property]
     }
   }
+  return dst
 }
 
 function guessNodeStyle($scope, attribute) {
@@ -296,6 +297,7 @@ angular
     $routeParams,
     dataLoader
   ) {
+    console.log('cocou')
     $scope.width = $routeParams.width
     $scope.height = $routeParams.height
     $scope.networkData = dataLoader.get(
@@ -323,10 +325,13 @@ angular
       if ($scope.getRenderer) {
         const renderer = $scope.getRenderer()
         const camera = renderer.getCamera()
+        const x = $routeParams.x ? +$routeParams.x : 0.5
+        const y = $routeParams.y ? +$routeParams.y : 0.5
+        const ratio = $routeParams.ratio ? +$routeParams.ratio : 1
         camera.animate({
-          x: +$routeParams.x,
-          y: +$routeParams.y,
-          ratio: +$routeParams.ratio
+          x: x,
+          y: y,
+          ratio: ratio
         })
       }
     })
