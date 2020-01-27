@@ -6,6 +6,7 @@ const defaults = (dst, src) => {
       dst[property] = src[property]
     }
   }
+  return dst
 }
 
 function guessNodeStyle($scope, attribute) {
@@ -94,6 +95,30 @@ angular
       }
     }
   })
+  .directive('embedHomeLink', function ($routeParams, $httpParamSerializer) {
+    return {
+      restrict: 'A',
+      link: ($scope) => {
+        $scope.printMnvUrl = () => {
+          let options = {
+            bundle: $routeParams.bundle,
+            panel: 'map',
+            x: $routeParams.x,
+            y: $routeParams.y,
+            z: $routeParams.z,
+          };
+          if ($routeParams.att) {
+            // let options = 
+            if ($scope.attribute.type === 'partition') {
+              return `#/partition/${$routeParams.att}/modalities?${$httpParamSerializer(options)}`
+            }
+            return `#/ranking/${$routeParams.att}/modalities?${$httpParamSerializer(options)}`
+          }
+          return `#/attributes?${$httpParamSerializer(options)}`
+        }
+      }
+    }
+  })
   .directive('embedBuilderMap', function($filter, $routeParams) {
     const defaultOptions = {
       lockNavigation: true,
@@ -161,7 +186,8 @@ angular
     $scope,
     $routeParams,
     dataLoader,
-    $mdToast
+    $mdToast,
+    $httpParamSerializer
   ) {
     $scope.size = {
       width: 0,
@@ -214,16 +240,7 @@ angular
         filter: $routeParams.filter,
         hardFilter: $routeParams.hardFilter
       }
-      const string = Object.keys(params)
-        .reduce((acc, key) => {
-          if (params[key]) {
-            acc.push(
-              encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-            )
-          }
-          return acc
-        }, [])
-        .join('&')
+      const string = $httpParamSerializer(params)
       return `${window.location.origin}${window.location.pathname}#/embeded-network?${string}`
     }
 
@@ -296,10 +313,13 @@ angular
       if ($scope.getRenderer) {
         const renderer = $scope.getRenderer()
         const camera = renderer.getCamera()
+        const x = $routeParams.x ? +$routeParams.x : 0.5
+        const y = $routeParams.y ? +$routeParams.y : 0.5
+        const ratio = $routeParams.ratio ? +$routeParams.ratio : 1
         camera.animate({
-          x: +$routeParams.x,
-          y: +$routeParams.y,
-          ratio: +$routeParams.ratio
+          x: x,
+          y: y,
+          ratio: ratio
         })
       }
     })
