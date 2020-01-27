@@ -1,17 +1,5 @@
 'use strict'
 
-const objecToUrl = (params) =>
-  Object.keys(params)
-    .reduce((acc, key) => {
-      if (params[key]) {
-        acc.push(
-          encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-        )
-      }
-      return acc
-    }, [])
-    .join('&')
-
 const defaults = (dst, src) => {
   for (var property in src) {
     if (src.hasOwnProperty(property) && !dst.hasOwnProperty(property)) {
@@ -107,7 +95,7 @@ angular
       }
     }
   })
-  .directive('embedHomeLink', function ($routeParams) {
+  .directive('embedHomeLink', function ($routeParams, $httpParamSerializer) {
     return {
       restrict: 'A',
       link: ($scope) => {
@@ -122,11 +110,11 @@ angular
           if ($routeParams.att) {
             // let options = 
             if ($scope.attribute.type === 'partition') {
-              return `#/partition/${$routeParams.att}/modalities?${objecToUrl(options)}`
+              return `#/partition/${$routeParams.att}/modalities?${$httpParamSerializer(options)}`
             }
-            return `#/ranking/${$routeParams.att}/modalities?${objecToUrl(options)}`
+            return `#/ranking/${$routeParams.att}/modalities?${$httpParamSerializer(options)}`
           }
-          return `#/attributes?${objecToUrl(options)}`
+          return `#/attributes?${$httpParamSerializer(options)}`
         }
       }
     }
@@ -198,7 +186,8 @@ angular
     $scope,
     $routeParams,
     dataLoader,
-    $mdToast
+    $mdToast,
+    $httpParamSerializer
   ) {
     $scope.size = {
       width: 0,
@@ -251,7 +240,7 @@ angular
         filter: $routeParams.filter,
         hardFilter: $routeParams.hardFilter
       }
-      const string = objecToUrl(params)
+      const string = $httpParamSerializer(params)
       return `${window.location.origin}${window.location.pathname}#/embeded-network?${string}`
     }
 
