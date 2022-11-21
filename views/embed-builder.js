@@ -95,24 +95,28 @@ angular
       }
     }
   })
-  .directive('embedHomeLink', function ($routeParams, $httpParamSerializer) {
+  .directive('embedHomeLink', function($routeParams, $httpParamSerializer) {
     return {
       restrict: 'A',
-      link: ($scope) => {
+      link: $scope => {
         $scope.printMnvUrl = () => {
           let options = {
             bundle: $routeParams.bundle,
             panel: 'map',
             x: $routeParams.x,
             y: $routeParams.y,
-            z: $routeParams.z,
-          };
+            z: $routeParams.z
+          }
           if ($routeParams.att) {
-            // let options = 
+            // let options =
             if ($scope.attribute.type === 'partition') {
-              return `#/partition/${$routeParams.att}/modalities?${$httpParamSerializer(options)}`
+              return `#/partition/${
+                $routeParams.att
+              }/modalities?${$httpParamSerializer(options)}`
             }
-            return `#/ranking/${$routeParams.att}/modalities?${$httpParamSerializer(options)}`
+            return `#/ranking/${
+              $routeParams.att
+            }/modalities?${$httpParamSerializer(options)}`
           }
           return `#/attributes?${$httpParamSerializer(options)}`
         }
